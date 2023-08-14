@@ -5,6 +5,10 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import lombok.experimental.UtilityClass;
 import org.bukkit.inventory.ItemStack;
 import org.metamechanists.aircraft.items.Groups;
+import org.metamechanists.aircraft.vehicles.Glider;
+
+import static org.metamechanists.aircraft.vehicles.Glider.GLIDER;
+
 
 @UtilityClass
 public class Aircraft {
