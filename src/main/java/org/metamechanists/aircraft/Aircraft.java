@@ -14,7 +14,6 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public void onEnable() {
-        getLogger().info("brrrrrrrrrrrrrrrrrrrrrrrr");
         instance = this;
         Groups.initialize();
     }

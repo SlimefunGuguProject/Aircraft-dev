@@ -34,10 +34,6 @@
                 <configuration>
                     <relocations>
                         <relocation>
-                            <pattern>dev.sefiraat.sefilib</pattern>
-                            <shadedPattern>org.metamechanists.aircraft.sefilib</shadedPattern>
-                        </relocation>
-                        <relocation>
                             <pattern>org.metamechanists.metalib</pattern>
                             <shadedPattern>org.metamechanists.aircraft.metalib</shadedPattern>
                         </relocation>
@@ -113,13 +109,6 @@
             <artifactId>Slimefun4</artifactId>
             <version>ddb7ebd134</version>
             <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>dev.sefiraat</groupId>
-            <artifactId>SefiLib</artifactId>
-            <version>0.2.6</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
