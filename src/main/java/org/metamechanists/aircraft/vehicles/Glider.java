@@ -27,7 +27,7 @@ public class Glider extends SlimefunItem {
         addItemHandler(onItemUse());
     }
 
-    private @NotNull ItemUseHandler onItemUse() {
+    private static @NotNull ItemUseHandler onItemUse() {
         return event -> {
             if (event.getClickedBlock().isPresent()) {
                 event.cancel();
@@ -36,9 +36,10 @@ public class Glider extends SlimefunItem {
         };
     }
 
-    private void place(final @NotNull Block block) {
+    private static void place(final @NotNull Block block) {
         final DisplayGroup displayGroup = new ModelBuilder()
                 .add("main", new ModelCuboid()
+                        .material(Material.WHITE_CONCRETE)
                         .size(1.5F, 0.5F, 1.5F)
                         .rotation(Math.PI / 2))
                 .buildAtBlockCenter(block.getLocation());
