@@ -1,7 +1,7 @@
 name: Aircraft
 version: '${project.version}'
 author: Idra
-main: org.metamechanists.quaptics.Aircraft
+main: org.metamechanists.aircraft.Aircraft
 api-version: 1.19
 
 depend:

@@ -4,6 +4,7 @@ import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.items.Groups;
 
 
@@ -27,7 +28,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
         return this;
     }
     @Override
-    public @NotNull String getBugTrackerURL() {
-        return "https://github.com/metamechanists/Quaptics/issues";
+    public @Nullable String getBugTrackerURL() {
+        return null;
     }
 }

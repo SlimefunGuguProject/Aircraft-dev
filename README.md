@@ -1,2 +1,1 @@
-# Quaptics
-Upcoming Slimefun addon based around a new type of energy with mysterious properties...
+# we're all gonna die
