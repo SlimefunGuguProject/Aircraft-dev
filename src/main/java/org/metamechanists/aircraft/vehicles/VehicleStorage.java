@@ -24,9 +24,10 @@ public class VehicleStorage {
     private void tick(final @NotNull DisplayGroupId id) {
         final DisplayGroup displayGroup = id.get().get();
         final PersistentDataTraverser traverser = new PersistentDataTraverser(displayGroup.getParentUUID());
-        final Vector3d rotation = traverser.getVector3d("rotation");
         final Vector3d velocity = traverser.getVector3d("velocity");
-        if (rotation == null || velocity == null) {
+        final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
+        final Vector3d rotation = traverser.getVector3d("rotation");
+        if (velocity == null || angularVelocity == null || rotation == null) {
             return;
         }
 
@@ -54,12 +55,14 @@ public class VehicleStorage {
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
-        final Vector3d resultantRotation = new Vector3d(resultantTorque).div(momentOfInertia).div(10);
+        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(momentOfInertia).div(10);
 
         velocity.add(resultantAcceleration);
-        rotation.add(resultantRotation);
+        angularVelocity.add(resultantAngularAcceleration);
+        rotation.add(angularVelocity);
 
         traverser.set("velocity", velocity);
+        traverser.set("angular_velocity", angularVelocity);
         traverser.set("rotation", rotation);
 
         displayGroup.getDisplays().values().forEach(display -> display.getPassengers()
