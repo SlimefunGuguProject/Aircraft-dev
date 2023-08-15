@@ -119,7 +119,7 @@ public class ModelCuboid implements ModelComponent {
     private @NotNull AircraftSurface getSurface(
             final double dragCoefficient, final double liftCoefficient,
             final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight) {
-        final double area = surfaceWidth * surfaceHeight * AREA_SCALE;
+        final double area = surfaceWidth * surfaceHeight;
         final Vector3d relativeLocation = startingLocation.rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z);
         final Vector3d normal = new Vector3d(relativeLocation).normalize();
         return new AircraftSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
