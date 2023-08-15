@@ -31,6 +31,7 @@ public class VehicleStorage {
         }
 
         final double mass = 200;
+        final double momentOfInertia = mass; // silly approximation
         final Vector3d centerOfMass = new Vector3d(0.0, 0.0, 0.0);
         final Vector3d weight = new Vector3d(0, -0.5 * mass, 0);
 
@@ -42,14 +43,21 @@ public class VehicleStorage {
         forces.addAll(Glider.getSurfaces().stream()
                 .map(aircraftSurface -> aircraftSurface.getLiftForce(velocity))
                 .collect(Collectors.toSet()));
+        final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
+
 
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
-        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(mass).div(100);
+        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(mass).div(400);
+
+        // Sum torque vectors to find resultant torque
+        final Vector3d resultantTorque = new Vector3d();
+        torqueVectors.forEach(resultantForce::add);
+        final Vector3d resultantRotation = new Vector3d(resultantTorque).div(momentOfInertia).div(400);
 
         velocity.add(resultantAcceleration);
-        //rotation.add(new Vector3d(0.0, 0.0, Math.PI / 16));
+        rotation.add(resultantRotation);
 
         traverser.set("velocity", velocity);
         traverser.set("rotation", rotation);
