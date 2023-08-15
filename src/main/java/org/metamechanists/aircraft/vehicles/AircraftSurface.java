@@ -54,7 +54,7 @@ public class AircraftSurface {
                         * dragCoefficient
                         * AIR_DENSITY
                         * getRelativeArea(airflowVelocity)
-                        * (aircraftSpeed * aircraftSpeed)).mul(-1);
+                        * (aircraftSpeed * aircraftSpeed));
         return new SpatialForce(force, relativeLocation, ForceType.DRAG);
     }
 
@@ -88,7 +88,7 @@ public class AircraftSurface {
                         * liftCoefficient
                         * AIR_DENSITY
                         * getRelativeArea(airflowVelocity)
-                        * (aircraftSpeed * aircraftSpeed)).mul(-1);
+                        * (aircraftSpeed * aircraftSpeed));
         return new SpatialForce(force, relativeLocation, ForceType.LIFT);
     }
 }
