@@ -95,7 +95,7 @@ public class Glider extends SlimefunItem {
 
     private static void place(final @NotNull Block block) {
         final DisplayGroup displayGroup = new ModelBuilder()
-                .rotation(Math.PI/4, 0.0, 0.0)
+                .rotation(0.0, 0.0, 0.0)
                 .add("main", modelMain())
                 .add("wing_front_1", modelWingFront1())
                 .add("wing_front_2", modelWingFront2())
@@ -106,7 +106,7 @@ public class Glider extends SlimefunItem {
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(displayGroup.getParentUUID());
         traverser.set("rotation", new Vector3d(0.0, 0.0, 0.0)); // roll, yaw, pitch
-        traverser.set("velocity", new Vector3d(0.0, 0.0, 0.0));
+        traverser.set("velocity", new Vector3d(0.00001, 0.0, 0.0)); // must start off with some velocity to prevent NaN issues
 
         VehicleStorage.add(new DisplayGroupId(displayGroup.getParentUUID()));
     }

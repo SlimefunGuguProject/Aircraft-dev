@@ -30,7 +30,6 @@ public class VehicleStorage {
             return;
         }
 
-        final Vector3d velocitySquared = velocity.mul(velocity);
         final double mass = 200;
         final Vector3d centerOfMass = new Vector3d(0.0, 0.0, 0.0);
         final Vector3d weight = new Vector3d(0, -0.5 * mass, 0);
