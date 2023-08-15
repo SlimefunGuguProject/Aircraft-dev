@@ -30,7 +30,7 @@ public class VehicleStorage {
             return;
         }
 
-        final double mass = 20;
+        final double mass = 1;
         final double momentOfInertia = mass; // silly approximation
         final Vector3d centerOfMass = new Vector3d(0.0, 0.0, 0.0);
         final Vector3d weight = new Vector3d(0, -0.0001 * mass, 0);
