@@ -5,7 +5,7 @@ import org.joml.Vector3d;
 
 
 public class AircraftSurface {
-    private static final double AIR_DENSITY = 1.204;
+    private static final double AIR_DENSITY = 20;
 
     private final double liftCoefficient;
     private final double dragCoefficient;
