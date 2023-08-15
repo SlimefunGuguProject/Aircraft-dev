@@ -128,7 +128,7 @@ public class Glider extends SlimefunItem {
     }
     private static DisplayGroup buildForceArrows(final @NotNull DisplayGroup group, final Location location) {
         final ModelBuilder forceArrowBuilder = new ModelBuilder();
-        getForces(STARTING_VELOCITY, STARTING_ROTATION).forEach(force -> forceArrowBuilder.add(force.stringHash(), force.getForceLine()));
+        getForces(STARTING_VELOCITY, STARTING_ROTATION).forEach(force -> forceArrowBuilder.add(force.stringHash(), force.getForceLine(STARTING_ROTATION)));
         return forceArrowBuilder.buildAtBlockCenter(location);
     }
 
@@ -185,7 +185,7 @@ public class Glider extends SlimefunItem {
         group.getParentDisplay().teleportAsync(group.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
         group.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
         for (final SpatialForce force : getForces(velocity, rotation)) {
-            group.getDisplays().get(force.stringHash()).setTransformationMatrix(force.getForceLine().getMatrix(new Vector3d()));
+            group.getDisplays().get(force.stringHash()).setTransformationMatrix(force.getForceLine(rotation).getMatrix(new Vector3d()));
         }
     }
 
