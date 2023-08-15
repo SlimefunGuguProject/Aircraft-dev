@@ -25,12 +25,18 @@ public class AircraftSurface {
         return new Vector3d(relativeNormal).dot(airflowVelocity) * area;
     }
 
-    public SpatialForce getDragForce(final @NotNull Vector3d aircraftVelocity) {
+    public SpatialForce getDragForce(final @NotNull Vector3d aircraftRotation, final @NotNull Vector3d aircraftVelocity) {
+        final Vector3d normal = new Vector3d(relativeNormal).rotateX(aircraftRotation.x).rotateY(aircraftRotation.y).rotateZ(aircraftRotation.z);
         final Vector3d airflowVelocity = new Vector3d(aircraftVelocity).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
-        if (relativeNormal.angle(airflowVelocity) < Math.PI / 2) {
+        if (normal.angle(airflowVelocity) < Math.PI / 2) {
             return new SpatialForce(new Vector3d(), relativeLocation, ForceType.DRAG);
+        }
+
+        // Check the airflow and normal are not in opposite directions - this causes NaN values
+        if (normal.angle(airflowVelocity) < 0.001) {
+            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
         }
 
         // D = 0.5 * Cd * ρ * A * V^2, where
