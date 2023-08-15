@@ -84,6 +84,9 @@ public class VehicleStorage {
         torqueVectors.forEach(resultantTorque::add);
         final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(momentOfInertia);
 
+        addForceVisual(forceVisualBuilder, Material.WHITE_CONCRETE, centerOfMass, new Vector3d(velocity).mul(500));
+        addForceVisual(forceVisualBuilder, Material.LIGHT_GRAY_CONCRETE, centerOfMass, new Vector3d(resultantForce).mul(500));
+
         velocity.add(resultantAcceleration);
         angularVelocity.add(resultantAngularAcceleration);
         rotation.add(angularVelocity);
@@ -92,7 +95,7 @@ public class VehicleStorage {
         traverser.set("angular_velocity", angularVelocity);
         traverser.set("rotation", rotation);
 
-        activeForceVisuals.add(new DisplayGroupId(forceVisualBuilder.buildAtBlockCenter(displayGroup.getLocation()).getParentUUID()));
+        activeForceVisuals.add(new DisplayGroupId(forceVisualBuilder.buildAtLocation(displayGroup.getParentDisplay().getLocation()).getParentUUID()));
 
         try {
             displayGroup.getDisplays().values().forEach(display -> display.getPassengers()
