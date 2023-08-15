@@ -27,6 +27,12 @@ public class AircraftSurface {
     }
 
     public SpatialForce getDragForce(final @NotNull Vector3d aircraftVelocity) {
+        // Check the airflow isn't coming *out* of the surface as opposed to going into it
+        final double angle = normal.angle(aircraftVelocity);
+        if (normal.angle(aircraftVelocity) > Math.PI) {
+            return new SpatialForce(new Vector3d(), relativeLocation);
+        }
+
         // D = 0.5 * Cd * ρ * A * V^2, where
         // D = drag force
         // Cd = coefficient of drag
@@ -40,6 +46,12 @@ public class AircraftSurface {
     }
 
     public SpatialForce getLiftForce(final @NotNull Vector3d aircraftVelocity) {
+        // Check the airflow isn't coming *out* of the surface as opposed to going into it
+        final double angle = normal.angle(aircraftVelocity);
+        if (normal.angle(aircraftVelocity) > Math.PI) {
+            return new SpatialForce(new Vector3d(), relativeLocation);
+        }
+
         // L = 0.5 * Cl * ρ * A * V^2,
         // L = lift force
         // Cl = coefficient of lift
@@ -49,13 +61,8 @@ public class AircraftSurface {
         final double speed = aircraftVelocity.length();
         final Vector3d perpendicularDirection = new Vector3d(aircraftVelocity).cross(normal);
         final Vector3d liftDirection = new Vector3d(perpendicularDirection).cross(aircraftVelocity);
-        final Vector3d force;
-        final double x = liftDirection.angle(normal);
-        if (liftDirection.angle(normal) > Math.PI) {
-            force = liftDirection.mul(0.5 * dragCoefficient * AIR_DENSITY * getRelativeArea(aircraftVelocity) * speed * speed);
-        } else {
-            force = new Vector3d();
-        }
+
+        final Vector3d force = liftDirection.mul(0.5 * dragCoefficient * AIR_DENSITY * getRelativeArea(aircraftVelocity) * speed * speed);
         return new SpatialForce(force, relativeLocation);
     }
 }
