@@ -108,9 +108,11 @@ public class ModelCuboid implements ModelComponent {
                 .scale(new Vector3f(size))
                 .buildForBlockDisplay();
     }
+    @Override
     public BlockDisplay build(@NotNull final Location origin, @NotNull final Vector3d modelRotation) {
         return main.transformation(getMatrix(modelRotation)).build(origin);
     }
+    @Override
     public BlockDisplay build(@NotNull final Block block, @NotNull final Vector3d modelRotation) {
         return build(block.getLocation(), modelRotation);
     }
