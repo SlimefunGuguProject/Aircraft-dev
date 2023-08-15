@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 
 
 public class Glider extends SlimefunItem {
-    private static final double AERODYNAMIC_COEFFICIENT = 1.2;
+    private static final double DRAG_COEFFICIENT_BODY = 1.2;
     private static final double DRAG_COEFFICIENT_WING = 0.8;
-    private static final double LIFT_COEFFICIENT_BODY = 0.8; // todo set this back to 0.2
+    private static final double LIFT_COEFFICIENT_BODY = 0.2; // todo set this back to 0.2
     private static final double LIFT_COEFFICIENT_WING = 1.0;
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
@@ -58,7 +58,7 @@ public class Glider extends SlimefunItem {
 
     private static @NotNull Set<AircraftSurface> getSurfaces() {
         final Set<AircraftSurface> surfaces = new HashSet<>();
-        surfaces.addAll(modelMain().getSurfaces(AERODYNAMIC_COEFFICIENT, LIFT_COEFFICIENT_BODY));
+        surfaces.addAll(modelMain().getSurfaces(DRAG_COEFFICIENT_BODY, LIFT_COEFFICIENT_BODY));
         surfaces.addAll(modelWingFront1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         surfaces.addAll(modelWingFront2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         surfaces.addAll(modelWingBack1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
@@ -70,7 +70,7 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelMain() {
         return new ModelCuboid()
                 .material(Material.WHITE_CONCRETE)
-                .size(2.0F, 0.4F, 2.0F)
+                .size(2.0F, 0.4F, 0.4F)
                 .location(0.0F, 0, 0);
     }
     private static ModelCuboid modelWingFront1() {
