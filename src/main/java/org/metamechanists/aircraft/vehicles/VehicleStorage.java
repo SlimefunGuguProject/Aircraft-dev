@@ -1,7 +1,6 @@
 package org.metamechanists.aircraft.vehicles;
 
 import lombok.experimental.UtilityClass;
-import org.bukkit.entity.Display;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
@@ -19,8 +18,7 @@ public class VehicleStorage {
     }
 
     private void tick(final @NotNull DisplayGroup displayGroup) {
-        final Display display = displayGroup.getDisplays().get("main");
-        display.teleportAsync(display.getLocation().add(0, -0.01, 0));
+        displayGroup.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(0, -0.01, 0)));
     }
 
     public void tick() {
