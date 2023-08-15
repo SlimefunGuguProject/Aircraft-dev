@@ -37,7 +37,7 @@ public class VehicleStorage {
                 .brightness(15)
                 .from(originFloat)
                 .to(destinationFloat)
-                .thickness(0.1F));
+                .thickness(0.12F));
     }
 
     private void tick(final @NotNull DisplayGroupId id) {
@@ -69,7 +69,7 @@ public class VehicleStorage {
 
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(weight);
-        forces.addAll(liftForces);
+        forces.addAll(dragForces);
         forces.addAll(liftForces);
 
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
