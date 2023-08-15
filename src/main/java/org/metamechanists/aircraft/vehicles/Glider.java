@@ -34,7 +34,7 @@ public class Glider extends SlimefunItem {
     private static final Vector3d STARTING_ROTATION = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
 
     private static final double MASS = 0.005;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.01; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 0.5; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -208,8 +208,9 @@ public class Glider extends SlimefunItem {
                 .collect(Collectors.toSet());
     }
     private static Set<SpatialForce> getLiftForces(final Vector3d rotation, final Vector3d velocity) {
-        return getSurfaces().stream()
-                .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity))
-                .collect(Collectors.toSet());
+        return new HashSet<>();
+        //return getSurfaces().stream()
+        //        .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity))
+        //        .collect(Collectors.toSet());
     }
 }

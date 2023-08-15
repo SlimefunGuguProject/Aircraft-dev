@@ -46,36 +46,37 @@ public class AircraftSurface {
         // A = surface area facing airflow
         // V = aircraft velocity
         final double aircraftSpeed = aircraftVelocity.length();
-        final Vector3d dragDirection = new Vector3d(airflowVelocity).normalize().mul(-1);
+        //final Vector3d dragDirection = new Vector3d(airflowVelocity).normalize().mul(-1);
+        final Vector3d dragDirection = relativeNormal;
         final Vector3d force = dragDirection.mul(0.5 * dragCoefficient * AIR_DENSITY * getRelativeArea(airflowVelocity) * aircraftSpeed * aircraftSpeed);
         return new SpatialForce(force, relativeLocation, ForceType.DRAG);
     }
 
-    public SpatialForce getLiftForce(final @NotNull Vector3d aircraftRotation, final @NotNull Vector3d aircraftVelocity) {
-        final Vector3d normal = new Vector3d(relativeNormal).rotateX(aircraftRotation.x).rotateY(aircraftRotation.y).rotateZ(aircraftRotation.z);
-        final Vector3d airflowVelocity = new Vector3d(aircraftVelocity).mul(-1);
-
-        // Check the airflow isn't coming *out* of the surface as opposed to going into it
-        if (normal.angle(airflowVelocity) < Math.PI / 2) {
-            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
-        }
-
-        // Check the airflow and normal are not in opposite directions - this causes NaN values
-        if (normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
-            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
-        }
-
-        // L = 0.5 * Cl * ρ * A * V^2,
-        // L = lift force
-        // Cl = coefficient of lift
-        // ρ = air density
-        // A = surface area facing airflow
-        // V = aircraft velocity
-        final double aircraftSpeed = aircraftVelocity.length();
-        final Vector3d perpendicularDirection = new Vector3d(airflowVelocity).cross(normal);
-        final Vector3d liftDirection = new Vector3d(perpendicularDirection).cross(airflowVelocity).normalize().mul(-1);
-
-        final Vector3d force = liftDirection.mul(0.5 * liftCoefficient * AIR_DENSITY * getRelativeArea(airflowVelocity) * aircraftSpeed * aircraftSpeed);
-        return new SpatialForce(force, relativeLocation, ForceType.LIFT);
-    }
+//    public SpatialForce getLiftForce(final @NotNull Vector3d aircraftRotation, final @NotNull Vector3d aircraftVelocity) {
+//        final Vector3d normal = new Vector3d(relativeNormal).rotateX(aircraftRotation.x).rotateY(aircraftRotation.y).rotateZ(aircraftRotation.z);
+//        final Vector3d airflowVelocity = new Vector3d(aircraftVelocity).mul(-1);
+//
+//        // Check the airflow isn't coming *out* of the surface as opposed to going into it
+//        if (normal.angle(airflowVelocity) < Math.PI / 2) {
+//            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
+//        }
+//
+//        // Check the airflow and normal are not in opposite directions - this causes NaN values
+//        if (normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
+//            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
+//        }
+//
+//        // L = 0.5 * Cl * ρ * A * V^2,
+//        // L = lift force
+//        // Cl = coefficient of lift
+//        // ρ = air density
+//        // A = surface area facing airflow
+//        // V = aircraft velocity
+//        final double aircraftSpeed = aircraftVelocity.length();
+//        final Vector3d perpendicularDirection = new Vector3d(airflowVelocity).cross(normal);
+//        final Vector3d liftDirection = new Vector3d(perpendicularDirection).cross(airflowVelocity).normalize().mul(-1);
+//
+//        final Vector3d force = liftDirection.mul(0.5 * liftCoefficient * AIR_DENSITY * getRelativeArea(airflowVelocity) * aircraftSpeed * aircraftSpeed);
+//        return new SpatialForce(force, relativeLocation, ForceType.LIFT);
+//    }
 }
