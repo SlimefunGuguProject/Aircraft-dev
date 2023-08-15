@@ -92,7 +92,7 @@ public class VehicleStorage {
         traverser.set("angular_velocity", angularVelocity);
         traverser.set("rotation", rotation);
 
-        activeForceVisuals.add(new DisplayGroupId(forceVisualBuilder.buildAtLocation(displayGroup.getLocation()).getParentUUID()));
+        activeForceVisuals.add(new DisplayGroupId(forceVisualBuilder.buildAtBlockCenter(displayGroup.getLocation()).getParentUUID()));
 
         try {
             displayGroup.getDisplays().values().forEach(display -> display.getPassengers()
