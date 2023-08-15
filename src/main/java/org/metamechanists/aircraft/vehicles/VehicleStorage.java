@@ -92,7 +92,10 @@ public class VehicleStorage {
         traverser.set("rotation", rotation);
 
         displayGroup.getDisplays().values().forEach(display -> display.getPassengers()
-                .forEach(passenger -> passenger.teleportAsync(passenger.getLocation().add(Vector.fromJOML(velocity)))));
+                .forEach(passenger -> {
+                    passenger.teleportAsync(passenger.getLocation().add(Vector.fromJOML(velocity)));
+                    display.addPassenger(passenger);
+                }));
         displayGroup.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
 
         activeForceVisuals.add(new DisplayGroupId(forceVisualBuilder.buildAtLocation(displayGroup.getLocation()).getParentUUID()));
