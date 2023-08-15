@@ -21,14 +21,15 @@ public class AircraftSurface {
         this.relativeLocation = relativeLocation;
     }
 
-    public double getRelativeArea(final @NotNull Vector3d aircraftVelocity) {
-        final Vector3d airflowVelocity = new Vector3d(aircraftVelocity).mul(-1);
+    public double getRelativeArea(final @NotNull Vector3d airflowVelocity) {
         return new Vector3d(normal).dot(airflowVelocity) * area;
     }
 
     public SpatialForce getDragForce(final @NotNull Vector3d aircraftVelocity) {
+        final Vector3d airflowVelocity = new Vector3d(aircraftVelocity).mul(-1);
+
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
-        if (normal.angle(aircraftVelocity) < Math.PI / 2) {
+        if (normal.angle(airflowVelocity) < Math.PI / 2) {
             return new SpatialForce(new Vector3d(), relativeLocation);
         }
 
@@ -38,15 +39,17 @@ public class AircraftSurface {
         // ρ = air density
         // A = surface area facing airflow
         // V = aircraft velocity
-        final double speed = aircraftVelocity.length();
-        final Vector3d dragDirection = new Vector3d(aircraftVelocity).mul(-1).normalize();
-        final Vector3d force = dragDirection.mul(0.5 * dragCoefficient * AIR_DENSITY * getRelativeArea(aircraftVelocity) * speed * speed);
+        final double aircraftSpeed = aircraftVelocity.length();
+        final Vector3d dragDirection = new Vector3d(airflowVelocity).normalize();
+        final Vector3d force = dragDirection.mul(0.5 * dragCoefficient * AIR_DENSITY * getRelativeArea(airflowVelocity) * aircraftSpeed * aircraftSpeed);
         return new SpatialForce(force, relativeLocation);
     }
 
     public SpatialForce getLiftForce(final @NotNull Vector3d aircraftVelocity) {
+        final Vector3d airflowVelocity = new Vector3d(aircraftVelocity).mul(-1);
+
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
-        if (normal.angle(aircraftVelocity) < Math.PI / 2) {
+        if (normal.angle(airflowVelocity) < Math.PI / 2) {
             return new SpatialForce(new Vector3d(), relativeLocation);
         }
 
@@ -56,11 +59,11 @@ public class AircraftSurface {
         // ρ = air density
         // A = surface area facing airflow
         // V = aircraft velocity
-        final double speed = aircraftVelocity.length();
-        final Vector3d perpendicularDirection = new Vector3d(aircraftVelocity).cross(normal);
-        final Vector3d liftDirection = new Vector3d(perpendicularDirection).cross(aircraftVelocity);
+        final double aircraftSpeed = aircraftVelocity.length();
+        final Vector3d perpendicularDirection = new Vector3d(airflowVelocity).cross(normal);
+        final Vector3d liftDirection = new Vector3d(perpendicularDirection).cross(airflowVelocity);
 
-        final Vector3d force = liftDirection.mul(0.5 * dragCoefficient * AIR_DENSITY * getRelativeArea(aircraftVelocity) * speed * speed);
+        final Vector3d force = liftDirection.mul(0.5 * dragCoefficient * AIR_DENSITY * getRelativeArea(airflowVelocity) * aircraftSpeed * aircraftSpeed);
         return new SpatialForce(force, relativeLocation);
     }
 }
