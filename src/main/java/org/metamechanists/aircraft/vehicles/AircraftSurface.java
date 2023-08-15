@@ -29,7 +29,7 @@ public class AircraftSurface {
         final Vector3d airflowVelocity = new Vector3d(aircraftVelocity).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
-        if (relativeNormal.angle(airflowVelocity) > Math.PI / 2) {
+        if (relativeNormal.angle(airflowVelocity) < Math.PI / 2) {
             return new SpatialForce(new Vector3d(), relativeLocation, ForceType.DRAG);
         }
 
@@ -50,7 +50,7 @@ public class AircraftSurface {
         final Vector3d airflowVelocity = new Vector3d(aircraftVelocity).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
-        if (normal.angle(airflowVelocity) > Math.PI / 2) {
+        if (normal.angle(airflowVelocity) < Math.PI / 2) {
             return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
         }
 
