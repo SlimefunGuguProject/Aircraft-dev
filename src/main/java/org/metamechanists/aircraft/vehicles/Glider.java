@@ -31,7 +31,7 @@ public class Glider extends SlimefunItem {
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
     private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
-    private static final Vector3d STARTING_ROTATION = new Vector3d(Math.PI / 3, 0.0, 0.0); // roll, yaw, pitch
+    private static final Vector3d STARTING_ROTATION = new Vector3d(Math.PI / 3, 0, Math.PI / 4); // roll, yaw, pitch
 
     private static final double MASS = 2.0;
     private static final double MOMENT_OF_INERTIA = MASS * 1; // silly approximation
@@ -113,11 +113,11 @@ public class Glider extends SlimefunItem {
         final DisplayGroup displayGroup = new ModelBuilder()
                 .rotation(STARTING_ROTATION.x, STARTING_ROTATION.y, STARTING_ROTATION.z)
                 .add("main", modelMain())
-                .add("wing_front_1", modelWingFront1())
-                .add("wing_front_2", modelWingFront2())
-                .add("wing_back_1", modelWingBack1())
-                .add("wing_back_2", modelWingBack2())
-                .add("rudder", modelRudder())
+//                .add("wing_front_1", modelWingFront1())
+//                .add("wing_front_2", modelWingFront2())
+//                .add("wing_back_1", modelWingBack1())
+//                .add("wing_back_2", modelWingBack2())
+//                .add("rudder", modelRudder())
                 .buildAtBlockCenter(location);
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(displayGroup.getParentUUID());
