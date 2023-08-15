@@ -20,7 +20,7 @@ import java.util.Set;
 
 @SuppressWarnings("unused")
 public class ModelCuboid implements ModelComponent {
-    private double AREA_SCALE = 0.1;
+    private static final double AREA_SCALE = 0.001;
 
     private final BlockDisplayBuilder main = new BlockDisplayBuilder();
 
