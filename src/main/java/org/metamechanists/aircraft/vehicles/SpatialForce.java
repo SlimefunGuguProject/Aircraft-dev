@@ -28,6 +28,6 @@ public record SpatialForce(Vector3d force, Vector3d relativeLocation, ForceType 
     }
 
     public String stringHash() {
-        return relativeLocation.toString();
+        return relativeLocation.toString() + type.toString();
     }
 }
