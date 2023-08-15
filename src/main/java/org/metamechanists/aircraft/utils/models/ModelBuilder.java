@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class ModelBuilder {
     private final Map<String, ModelComponent> components = new HashMap<>();
-    private Vector3d rotation;
+    private Vector3d rotation = new Vector3d();
 
     public ModelBuilder add(@NotNull final String name, @NotNull final ModelComponent component) {
         components.put(name, component);
