@@ -4,7 +4,6 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.BlockDisplay;
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +12,10 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.builders.BlockDisplayBuilder;
 import org.metamechanists.aircraft.utils.transformations.TransformationMatrixBuilder;
+import org.metamechanists.aircraft.vehicles.AircraftSurface;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @SuppressWarnings("unused")
@@ -20,7 +23,6 @@ public class ModelCuboid {
     private final BlockDisplayBuilder main = new BlockDisplayBuilder();
 
     private Vector3f location = new Vector3f();
-    private Vector3f facing = new Vector3f(0, 0, 1);
     private Vector3f size = new Vector3f();
     private Vector3d rotation = new Vector3d();
 
@@ -36,22 +38,6 @@ public class ModelCuboid {
      */
     public ModelCuboid location(final float x, final float y, final float z) {
         return location(new Vector3f(x, y, z));
-    }
-
-    /**
-     * Sets the starting orientation of the cuboid (default is south AKA positive Z)
-     * This is useful eg to align a model with the direction a player is looking
-     */
-    public ModelCuboid facing(final @NotNull Vector3f facing) {
-        this.facing = facing;
-        return this;
-    }
-    /**
-     * Sets the starting orientation of the cuboid (default is south AKA positive Z)
-     * This is useful eg to align a model with the direction a player is looking
-     */
-    public ModelCuboid facing(final @NotNull BlockFace face) {
-        return facing(face.getDirection().toVector3f());
     }
 
     /**
@@ -117,7 +103,6 @@ public class ModelCuboid {
     public Matrix4f getMatrix(final Vector3d modelRotation) {
         return new TransformationMatrixBuilder()
                 .rotate(modelRotation)
-                .lookAlong(facing)
                 .translate(location)
                 .rotate(rotation)
                 .scale(new Vector3f(size))
@@ -128,5 +113,27 @@ public class ModelCuboid {
     }
     public BlockDisplay build(@NotNull final Block block, @NotNull final Vector3d modelRotation) {
         return build(block.getLocation(), modelRotation);
+    }
+    private @NotNull AircraftSurface getSurface(
+            final double dragCoefficient, final double liftCoefficient,
+            final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight) {
+        final double area = surfaceWidth * surfaceHeight;
+        final Vector3d relativeLocation = startingLocation.rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z);
+        final Vector3d normal = new Vector3d(relativeLocation).normalize();
+        return new AircraftSurface(dragCoefficient, liftCoefficient, area, normal, relativeLocation);
+    }
+    public Set<AircraftSurface> getSurfaces(final double dragCoefficient, final double liftCoefficient) {
+        final Set<AircraftSurface> surfaces = new HashSet<>();
+
+        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(0, 0, size.z / 2), size.x, size.y));
+        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(0, 0, -size.z / 2), size.x, size.y));
+
+        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(0, size.y / 2, 0), size.x, size.z));
+        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(0, -size.y / 2, 0), size.x, size.z));
+
+        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(size.x, 0, 0), size.y, size.z));
+        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(-size.x, 0, 0), size.y, size.z));
+
+        return surfaces;
     }
 }

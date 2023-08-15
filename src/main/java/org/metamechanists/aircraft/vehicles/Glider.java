@@ -16,8 +16,16 @@ import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.models.ModelBuilder;
 import org.metamechanists.aircraft.utils.models.components.ModelCuboid;
 
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class Glider extends SlimefunItem {
+    private static final double DRAG_COEFFICIENT_BODY = 1.2;
+    private static final double DRAG_COEFFICIENT_WING = 0.8;
+    private static final double LIFT_COEFFICIENT_BODY = 0.2;
+    private static final double LIFT_COEFFICIENT_WING = 1.0;
+
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
             Material.FEATHER,
@@ -36,6 +44,17 @@ public class Glider extends SlimefunItem {
                 place(event.getClickedBlock().get().getRelative(event.getClickedFace()));
             }
         };
+    }
+
+    public static @NotNull Set<AircraftSurface> getSurfaces() {
+        final Set<AircraftSurface> surfaces = new HashSet<>();
+        surfaces.addAll(modelMain().getSurfaces(DRAG_COEFFICIENT_BODY, LIFT_COEFFICIENT_BODY));
+        surfaces.addAll(modelWingFront1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingFront2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingBack1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingBack2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelRudder().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        return surfaces;
     }
 
     public static ModelCuboid modelMain() {
@@ -86,8 +105,8 @@ public class Glider extends SlimefunItem {
                 .buildAtBlockCenter(block.getLocation());
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(displayGroup.getParentUUID());
-        traverser.set("rotation", new Vector3d(0.0, 0.0, 0.0));
-        traverser.set("speed", 0.2);
+        traverser.set("rotation", new Vector3d(0.0, 0.0, 0.0)); // roll, yaw, pitch
+        traverser.set("velocity", new Vector3d(0.0, 0.0, 0.0));
 
         VehicleStorage.add(new DisplayGroupId(displayGroup.getParentUUID()));
     }

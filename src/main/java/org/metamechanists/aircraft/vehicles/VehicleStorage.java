@@ -25,18 +25,38 @@ public class VehicleStorage {
         final DisplayGroup displayGroup = id.get().get();
         final PersistentDataTraverser traverser = new PersistentDataTraverser(displayGroup.getParentUUID());
         final Vector3d rotation = traverser.getVector3d("rotation");
-        double speed = traverser.getDouble("speed");
-        if (rotation == null) {
+        final Vector3d velocity = traverser.getVector3d("velocity");
+        if (rotation == null || velocity == null) {
             return;
         }
 
-        rotation.add(new Vector3d(0.0, 0.0, Math.PI / 16));
-        speed += 0.002;
-        traverser.set("speed", speed);
+        final Vector3d velocitySquared = velocity.mul(velocity);
+        final double mass = 200;
+        final Vector3d centerOfMass = new Vector3d(0.0, 0.0, 0.0);
+        final Vector3d weight = new Vector3d(0, -0.5 * mass, 0);
+
+        final Set<SpatialForce> forces = new HashSet<>();
+        forces.add(new SpatialForce(weight, centerOfMass));
+        forces.addAll(Glider.getSurfaces().stream()
+                .map(aircraftSurface -> aircraftSurface.getDragForce(velocity))
+                .collect(Collectors.toSet()));
+        forces.addAll(Glider.getSurfaces().stream()
+                .map(aircraftSurface -> aircraftSurface.getLiftForce(velocity))
+                .collect(Collectors.toSet()));
+
+        // Newton's 2nd law to calculate resultant force and then acceleration
+        final Vector3d resultantForce = new Vector3d();
+        forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
+        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(mass).div(100);
+
+        velocity.add(resultantAcceleration);
+        //rotation.add(new Vector3d(0.0, 0.0, Math.PI / 16));
+
+        traverser.set("velocity", velocity);
         traverser.set("rotation", rotation);
 
-        final Vector3d velocity = new Vector3d(1.0, 0.0, 0.0).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z).mul(speed);
-
+        displayGroup.getDisplays().values().forEach(display -> display.getPassengers()
+                .forEach(passenger -> passenger.teleportAsync(passenger.getLocation().add(Vector.fromJOML(velocity)))));
         displayGroup.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
 
         try {
