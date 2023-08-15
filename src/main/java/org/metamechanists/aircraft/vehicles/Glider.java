@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 
 
 public class Glider extends SlimefunItem {
-    private static final double AERODYNAMIC_COEFFICIENT = 12;
-    private static final double DRAG_COEFFICIENT_WING = 8;
-    private static final double LIFT_COEFFICIENT_BODY = 2;
-    private static final double LIFT_COEFFICIENT_WING = 10;
+    private static final double AERODYNAMIC_COEFFICIENT = 1.2;
+    private static final double DRAG_COEFFICIENT_WING = 0.8;
+    private static final double LIFT_COEFFICIENT_BODY = 0.2;
+    private static final double LIFT_COEFFICIENT_WING = 100;
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
     private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
