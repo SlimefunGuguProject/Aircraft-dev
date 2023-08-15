@@ -54,8 +54,8 @@ public class AircraftSurface {
             return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
         }
 
-        // Check the airflow and normal are not in the same direction - this causes NaN values
-        if (normal.angle(airflowVelocity) < 0.001) {
+        // Check the airflow and normal are not in the exact opposite direction - this causes NaN values
+        if (normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
             return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
         }
 
