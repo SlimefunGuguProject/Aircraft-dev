@@ -21,10 +21,10 @@ import java.util.Set;
 
 
 public class Glider extends SlimefunItem {
-    private static final double DRAG_COEFFICIENT_BODY = 12;
-    private static final double DRAG_COEFFICIENT_WING = 8;
-    private static final double LIFT_COEFFICIENT_BODY = 2;
-    private static final double LIFT_COEFFICIENT_WING = 10;
+    private static final double DRAG_COEFFICIENT_BODY = 12 * 5;
+    private static final double DRAG_COEFFICIENT_WING = 8 * 5;
+    private static final double LIFT_COEFFICIENT_BODY = 2 * 5;
+    private static final double LIFT_COEFFICIENT_WING = 10 * 5;
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
