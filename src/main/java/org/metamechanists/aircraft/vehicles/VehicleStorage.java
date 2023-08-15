@@ -16,6 +16,7 @@ import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -31,12 +32,12 @@ public class VehicleStorage {
     public void addForceVisual(final @NotNull ModelBuilder forceVisualBuilder, final Material material, final @NotNull Vector3d origin, final @NotNull Vector3d force) {
         final Vector3f originFloat = new Vector3f((float)origin.x, (float)origin.y, (float)origin.z);
         final Vector3f destinationFloat = new Vector3f(originFloat).add((float)force.x, (float)force.y, (float)force.z);
-        forceVisualBuilder.add("weight", new ModelLine()
+        forceVisualBuilder.add(UUID.randomUUID().toString(), new ModelLine()
                 .material(material)
                 .brightness(15)
                 .from(originFloat)
                 .to(destinationFloat)
-                .thickness(0.1F));
+                .thickness(0.5F));
     }
 
     private void tick(final @NotNull DisplayGroupId id) {
@@ -120,7 +121,7 @@ public class VehicleStorage {
                 .map(Optional::get)
                 .forEach(displayGroup -> {
                     displayGroup.getDisplays().values().forEach(Entity::remove);
-                    displayGroup.remove();
+                    displayGroup.getParentDisplay().remove();
                 });
         activeForceVisuals.clear();
         activeVehicles = activeVehicles.stream().filter(id -> id.get().isPresent()).collect(Collectors.toSet());
