@@ -54,7 +54,7 @@ public class VehicleStorage {
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
-        final Vector3d resultantRotation = new Vector3d(resultantTorque).div(momentOfInertia).div(400);
+        final Vector3d resultantRotation = new Vector3d(resultantTorque).div(momentOfInertia).mul(40);
 
         velocity.add(resultantAcceleration);
         rotation.add(resultantRotation);
