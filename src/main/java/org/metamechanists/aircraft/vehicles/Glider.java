@@ -33,8 +33,8 @@ public class Glider extends SlimefunItem {
     private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
     private static final Vector3d STARTING_ROTATION = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
 
-    private static final double MASS = 0.1;
-    private static final double MOMENT_OF_INERTIA = MASS * 2; // silly approximation
+    private static final double MASS = 0.02;
+    private static final double MOMENT_OF_INERTIA = MASS * 1; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -77,7 +77,7 @@ public class Glider extends SlimefunItem {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .size(0.6F, 0.1F, 1.2F)
-                .location(-0.2F, 0.0F, 0.6F);
+                .location(0.2F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingFront2() {
         return new ModelCuboid()
