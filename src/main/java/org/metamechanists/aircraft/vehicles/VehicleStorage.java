@@ -63,9 +63,9 @@ public class VehicleStorage {
                 .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity))
                 .collect(Collectors.toSet());
 
-        addForceVisual(forceVisualBuilder, Material.ORANGE_CONCRETE, weight.relativeLocation(), new Vector3d(weight.force()).mul(500));
-        dragForces.forEach(force -> addForceVisual(forceVisualBuilder, Material.BLUE_CONCRETE, force.relativeLocation(), new Vector3d(force.force()).mul(500)));
-        liftForces.forEach(force -> addForceVisual(forceVisualBuilder, Material.LIME_CONCRETE, force.relativeLocation(), new Vector3d(force.force()).mul(500)));
+        addForceVisual(forceVisualBuilder, Material.ORANGE_CONCRETE, weight.relativeLocation(), new Vector3d(weight.force()).mul(1000));
+        dragForces.forEach(force -> addForceVisual(forceVisualBuilder, Material.BLUE_CONCRETE, force.relativeLocation(), new Vector3d(force.force()).mul(1000)));
+        liftForces.forEach(force -> addForceVisual(forceVisualBuilder, Material.LIME_CONCRETE, force.relativeLocation(), new Vector3d(force.force()).mul(1000)));
 
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(weight);
@@ -84,8 +84,8 @@ public class VehicleStorage {
         torqueVectors.forEach(resultantTorque::add);
         final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(momentOfInertia);
 
-        addForceVisual(forceVisualBuilder, Material.WHITE_CONCRETE, centerOfMass, new Vector3d(velocity).mul(500));
-        addForceVisual(forceVisualBuilder, Material.LIGHT_GRAY_CONCRETE, centerOfMass, new Vector3d(resultantForce).mul(500));
+        addForceVisual(forceVisualBuilder, Material.WHITE_CONCRETE, centerOfMass, new Vector3d(velocity).mul(100));
+        addForceVisual(forceVisualBuilder, Material.LIGHT_GRAY_CONCRETE, centerOfMass, new Vector3d(resultantForce).mul(1000));
 
         velocity.add(resultantAcceleration);
         angularVelocity.add(resultantAngularAcceleration);
@@ -95,7 +95,7 @@ public class VehicleStorage {
         traverser.set("angular_velocity", angularVelocity);
         traverser.set("rotation", rotation);
 
-        activeForceVisuals.add(new DisplayGroupId(forceVisualBuilder.buildAtLocation(displayGroup.getParentDisplay().getLocation()).getParentUUID()));
+        activeForceVisuals.add(new DisplayGroupId(forceVisualBuilder.buildAtLocation(displayGroup.getParentDisplay().getLocation().add(0.5F, 0.5F, 0.5F)).getParentUUID()));
 
         try {
             displayGroup.getDisplays().values().forEach(display -> display.getPassengers()
