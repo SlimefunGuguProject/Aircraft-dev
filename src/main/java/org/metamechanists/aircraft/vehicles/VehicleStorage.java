@@ -29,7 +29,7 @@ public class VehicleStorage {
         }
 
         rotation.add(new Vector3d(0.0, Math.PI / 16, 0.0));
-        speed += 0.01;
+        speed += 0.002;
         traverser.set("speed", speed);
         traverser.set("rotation", rotation);
 
@@ -37,17 +37,21 @@ public class VehicleStorage {
 
         displayGroup.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
 
-        displayGroup.getDisplays().get("main").setTransformationMatrix(Glider.modelMain().getMatrix(rotation));
-        displayGroup.getDisplays().get("wing_front_1").setTransformationMatrix(Glider.modelWingFront1().getMatrix(rotation));
-        displayGroup.getDisplays().get("wing_front_2").setTransformationMatrix(Glider.modelWingFront2().getMatrix(rotation));
-        displayGroup.getDisplays().get("wing_back_1").setTransformationMatrix(Glider.modelWingBack1().getMatrix(rotation));
-        displayGroup.getDisplays().get("wing_back_2").setTransformationMatrix(Glider.modelWingBack2().getMatrix(rotation));
-        displayGroup.getDisplays().get("rudder").setTransformationMatrix(Glider.modelRudder().getMatrix(rotation));
+        try {
+            displayGroup.getDisplays().get("main").setTransformationMatrix(Glider.modelMain().getMatrix(rotation));
+            displayGroup.getDisplays().get("wing_front_1").setTransformationMatrix(Glider.modelWingFront1().getMatrix(rotation));
+            displayGroup.getDisplays().get("wing_front_2").setTransformationMatrix(Glider.modelWingFront2().getMatrix(rotation));
+            displayGroup.getDisplays().get("wing_back_1").setTransformationMatrix(Glider.modelWingBack1().getMatrix(rotation));
+            displayGroup.getDisplays().get("wing_back_2").setTransformationMatrix(Glider.modelWingBack2().getMatrix(rotation));
+            displayGroup.getDisplays().get("rudder").setTransformationMatrix(Glider.modelRudder().getMatrix(rotation));
+        } catch (final NullPointerException e) {
+            e.printStackTrace();
+        }
     }
 
     public void tick() {
         for (final DisplayGroupId id : activeVehicles) {
-            id.get().ifPresent(VehicleStorage::tick);
+            id.get().ifPresentOrElse(VehicleStorage::tick, () -> activeVehicles.remove(id));
         }
     }
 }
