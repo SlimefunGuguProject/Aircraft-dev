@@ -21,7 +21,8 @@ public class VehicleStorage {
         activeVehicles.add(id);
     }
 
-    private void tick(final @NotNull DisplayGroup displayGroup) {
+    private void tick(final @NotNull DisplayGroupId id) {
+        final DisplayGroup displayGroup = id.get().get();
         final PersistentDataTraverser traverser = new PersistentDataTraverser(displayGroup.getParentUUID());
         final Vector3d rotation = traverser.getVector3d("rotation");
         double speed = traverser.getDouble("speed");
@@ -29,7 +30,7 @@ public class VehicleStorage {
             return;
         }
 
-        rotation.add(new Vector3d(Math.PI / 16, 0.0, 0.0));
+        rotation.add(new Vector3d(0.0, 0.0, Math.PI / 16));
         speed += 0.002;
         traverser.set("speed", speed);
         traverser.set("rotation", rotation);
@@ -46,6 +47,7 @@ public class VehicleStorage {
             displayGroup.getDisplays().get("wing_back_2").setTransformationMatrix(Glider.modelWingBack2().getMatrix(rotation));
             displayGroup.getDisplays().get("rudder").setTransformationMatrix(Glider.modelRudder().getMatrix(rotation));
         } catch (final NullPointerException e) {
+            activeVehicles.remove(id);
             e.printStackTrace();
         }
     }
@@ -53,7 +55,7 @@ public class VehicleStorage {
     public void tick() {
         activeVehicles = activeVehicles.stream().filter(id -> id.get().isPresent()).collect(Collectors.toSet());
         for (final DisplayGroupId id : activeVehicles) {
-            tick(id.get().get());
+            tick(id);
         }
     }
 }
