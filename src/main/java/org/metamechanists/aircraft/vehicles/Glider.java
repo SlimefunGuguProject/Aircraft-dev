@@ -106,7 +106,7 @@ public class Glider extends SlimefunItem {
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(displayGroup.getParentUUID());
         traverser.set("rotation", new Vector3d(0.0, 0.0, 0.0)); // roll, yaw, pitch
-        traverser.set("velocity", new Vector3d(0.00001, 0.0, 0.0)); // must start off with some velocity to prevent NaN issues
+        traverser.set("velocity", new Vector3d(0.0, 0.00001, 0.0)); // must start off with some velocity to prevent NaN issues
 
         VehicleStorage.add(new DisplayGroupId(displayGroup.getParentUUID()));
     }
