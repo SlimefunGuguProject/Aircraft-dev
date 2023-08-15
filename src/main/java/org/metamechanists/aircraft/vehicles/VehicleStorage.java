@@ -1,14 +1,20 @@
 package org.metamechanists.aircraft.vehicles;
 
 import lombok.experimental.UtilityClass;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
+import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
+import org.metamechanists.aircraft.utils.models.ModelBuilder;
+import org.metamechanists.aircraft.utils.models.components.ModelLine;
 import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,12 +22,25 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class VehicleStorage {
     private Set<DisplayGroupId> activeVehicles = new HashSet<>();
+    private Set<DisplayGroupId> activeForceVisuals = new HashSet<>();
 
     public void add(final DisplayGroupId id) {
         activeVehicles.add(id);
     }
 
+    public void addForceVisual(final @NotNull ModelBuilder forceVisualBuilder, final Material material, final @NotNull Vector3d origin, final @NotNull Vector3d force) {
+        final Vector3f originFloat = new Vector3f((float)origin.x, (float)origin.y, (float)origin.z);
+        final Vector3f destinationFloat = new Vector3f(originFloat).add((float)force.x, (float)force.y, (float)force.z);
+        forceVisualBuilder.add("weight", new ModelLine()
+                .material(material)
+                .brightness(15)
+                .from(originFloat)
+                .to(destinationFloat)
+                .thickness(0.1F));
+    }
+
     private void tick(final @NotNull DisplayGroupId id) {
+        final ModelBuilder forceVisualBuilder = new ModelBuilder();
         final DisplayGroup displayGroup = id.get().get();
         final PersistentDataTraverser traverser = new PersistentDataTraverser(displayGroup.getParentUUID());
         final Vector3d velocity = traverser.getVector3d("velocity");
@@ -34,18 +53,25 @@ public class VehicleStorage {
         final double mass = 1;
         final double momentOfInertia = mass; // silly approximation
         final Vector3d centerOfMass = new Vector3d(0.0, 0.0, 0.0);
-        final Vector3d weight = new Vector3d(0, -0.01 * mass, 0);
+
+        final SpatialForce weight = new SpatialForce(new Vector3d(0, -0.01 * mass, 0), centerOfMass);
+        final Set<SpatialForce> dragForces = Glider.getSurfaces().stream()
+                .map(aircraftSurface -> aircraftSurface.getDragForce(velocity))
+                .collect(Collectors.toSet());
+        final Set<SpatialForce> liftForces =  Glider.getSurfaces().stream()
+                .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity))
+                .collect(Collectors.toSet());
+
+        addForceVisual(forceVisualBuilder, Material.ORANGE_CONCRETE, weight.relativeLocation(), weight.force());
+        dragForces.forEach(force -> addForceVisual(forceVisualBuilder, Material.BLUE_CONCRETE, force.relativeLocation(), force.force()));
+        liftForces.forEach(force -> addForceVisual(forceVisualBuilder, Material.LIME_CONCRETE, force.relativeLocation(), force.force()));
 
         final Set<SpatialForce> forces = new HashSet<>();
-        forces.add(new SpatialForce(weight, centerOfMass));
-        forces.addAll(Glider.getSurfaces().stream()
-                .map(aircraftSurface -> aircraftSurface.getDragForce(velocity))
-                .collect(Collectors.toSet()));
-        forces.addAll(Glider.getSurfaces().stream()
-                .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity))
-                .collect(Collectors.toSet()));
-        final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
+        forces.add(weight);
+        forces.addAll(liftForces);
+        forces.addAll(liftForces);
 
+        final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
@@ -69,6 +95,8 @@ public class VehicleStorage {
                 .forEach(passenger -> passenger.teleportAsync(passenger.getLocation().add(Vector.fromJOML(velocity)))));
         displayGroup.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
 
+        activeForceVisuals.add(new DisplayGroupId(forceVisualBuilder.buildAtLocation(displayGroup.getLocation()).getParentUUID()));
+
         try {
             displayGroup.getDisplays().get("main").setTransformationMatrix(Glider.modelMain().getMatrix(rotation));
             displayGroup.getDisplays().get("wing_front_1").setTransformationMatrix(Glider.modelWingFront1().getMatrix(rotation));
@@ -83,6 +111,15 @@ public class VehicleStorage {
     }
 
     public void tick() {
+        activeForceVisuals.stream()
+                .map(DisplayGroupId::get)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .forEach(displayGroup -> {
+                    displayGroup.getDisplays().values().forEach(Entity::remove);
+                    displayGroup.remove();
+                });
+        activeForceVisuals.clear();
         activeVehicles = activeVehicles.stream().filter(id -> id.get().isPresent()).collect(Collectors.toSet());
         for (final DisplayGroupId id : activeVehicles) {
             tick(id);

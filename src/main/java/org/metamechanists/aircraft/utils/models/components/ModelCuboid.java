@@ -19,7 +19,7 @@ import java.util.Set;
 
 
 @SuppressWarnings("unused")
-public class ModelCuboid {
+public class ModelCuboid implements ModelComponent {
     private final BlockDisplayBuilder main = new BlockDisplayBuilder();
 
     private Vector3f location = new Vector3f();

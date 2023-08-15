@@ -4,7 +4,7 @@ import dev.sefiraat.sefilib.entity.display.DisplayGroup;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
-import org.metamechanists.aircraft.utils.models.components.ModelCuboid;
+import org.metamechanists.aircraft.utils.models.components.ModelComponent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,10 +14,10 @@ import java.util.Map;
  * Builder class that allows you to construct a model using components
  */
 public class ModelBuilder {
-    private final Map<String, ModelCuboid> components = new HashMap<>();
+    private final Map<String, ModelComponent> components = new HashMap<>();
     private Vector3d rotation;
 
-    public ModelBuilder add(@NotNull final String name, @NotNull final ModelCuboid component) {
+    public ModelBuilder add(@NotNull final String name, @NotNull final ModelComponent component) {
         components.put(name, component);
         return this;
     }
