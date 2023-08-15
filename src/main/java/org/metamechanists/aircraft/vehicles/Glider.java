@@ -192,16 +192,16 @@ public class Glider extends SlimefunItem {
     private static @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation) {
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
-        forces.addAll(getDragForces(velocity));
+        forces.addAll(getDragForces(rotation, velocity));
         forces.addAll(getLiftForces(rotation, velocity));
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce() {
         return new SpatialForce(new Vector3d(0, -0.01 * MASS, 0), new Vector3d(0, 0, 0), ForceType.WEIGHT);
     }
-    private static Set<SpatialForce> getDragForces(final Vector3d velocity) {
+    private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity) {
         return getSurfaces().stream()
-                .map(aircraftSurface -> aircraftSurface.getDragForce(velocity))
+                .map(aircraftSurface -> aircraftSurface.getDragForce(rotation, velocity))
                 .collect(Collectors.toSet());
     }
     private static Set<SpatialForce> getLiftForces(final Vector3d rotation, final Vector3d velocity) {
