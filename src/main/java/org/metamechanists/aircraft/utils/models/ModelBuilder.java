@@ -3,7 +3,7 @@ package org.metamechanists.aircraft.utils.models;
 import dev.sefiraat.sefilib.entity.display.DisplayGroup;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
-import org.metamechanists.aircraft.utils.models.components.ModelComponent;
+import org.metamechanists.aircraft.utils.models.components.ModelCuboid;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,10 +13,15 @@ import java.util.Map;
  * Builder class that allows you to construct a model using components
  */
 public class ModelBuilder {
-    private final Map<String, ModelComponent> components = new HashMap<>();
+    private final Map<String, ModelCuboid> components = new HashMap<>();
 
-    public ModelBuilder add(@NotNull final String name, @NotNull final ModelComponent component) {
+    public ModelBuilder add(@NotNull final String name, @NotNull final ModelCuboid component) {
         components.put(name, component);
+        return this;
+    }
+    
+    public ModelBuilder rotation(final double x, final double y, final double z) {
+
         return this;
     }
 
