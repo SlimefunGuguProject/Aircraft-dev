@@ -23,7 +23,6 @@ public class ModelCuboid {
     private Vector3f facing = new Vector3f(0, 0, 1);
     private Vector3f size = new Vector3f();
     private Vector3d rotation = new Vector3d();
-    private Vector3d modelRotation = new Vector3d();
 
     /**
      * @param location The center of the cuboid
@@ -79,7 +78,7 @@ public class ModelCuboid {
      * @param rotation The rotation of the cuboid in radians
      */
     public ModelCuboid rotation(@NotNull final Vector3d rotation) {
-        this.modelRotation = rotation;
+        this.rotation = rotation;
         return this;
     }
     /**
@@ -92,26 +91,6 @@ public class ModelCuboid {
      * @param rotationY The rotation of the cuboid around the Y axis in radians
      */
     public ModelCuboid rotation(final double rotationY) {
-        return rotation(new Vector3d(0, rotationY, 0));
-    }
-
-    /**
-     * @param rotation The rotation of the model in radians
-     */
-    public ModelCuboid modelRotation(@NotNull final Vector3d rotation) {
-        this.rotation = rotation;
-        return this;
-    }
-    /**
-     * Sets the rotation of the cuboid in radians
-     */
-    public ModelCuboid modelRotation(final double x, final double y, final double z) {
-        return rotation(new Vector3d(x, y, z));
-    }
-    /**
-     * @param rotationY The rotation of the cuboid around the Y axis in radians
-     */
-    public ModelCuboid modelRotation(final double rotationY) {
         return rotation(new Vector3d(0, rotationY, 0));
     }
 
@@ -135,7 +114,7 @@ public class ModelCuboid {
         return this;
     }
 
-    public Matrix4f getMatrix() {
+    public Matrix4f getMatrix(final Vector3d modelRotation) {
         return new TransformationMatrixBuilder()
                 .rotate(modelRotation)
                 .lookAlong(facing)
@@ -144,10 +123,10 @@ public class ModelCuboid {
                 .scale(new Vector3f(size))
                 .buildForBlockDisplay();
     }
-    public BlockDisplay build(@NotNull final Location origin) {
-        return main.transformation(getMatrix()).build(origin);
+    public BlockDisplay build(@NotNull final Location origin, @NotNull final Vector3d modelRotation) {
+        return main.transformation(getMatrix(modelRotation)).build(origin);
     }
-    public BlockDisplay build(@NotNull final Block block) {
-        return build(block.getLocation());
+    public BlockDisplay build(@NotNull final Block block, @NotNull final Vector3d modelRotation) {
+        return build(block.getLocation(), modelRotation);
     }
 }

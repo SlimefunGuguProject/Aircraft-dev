@@ -38,6 +38,7 @@ public class Glider extends SlimefunItem {
 
     private static void place(final @NotNull Block block) {
         final DisplayGroup displayGroup = new ModelBuilder()
+                .rotation(Math.PI/4, 0.0, 0.0)
                 .add("main", new ModelCuboid()
                         .material(Material.WHITE_CONCRETE)
                         .size(2.0F, 0.4F, 0.4F))
@@ -61,7 +62,6 @@ public class Glider extends SlimefunItem {
                         .material(Material.BLUE_CONCRETE)
                         .size(0.4F, 0.8F, 0.1F)
                         .location(-0.7F, 0.6F, 0.0F))
-                .rotate(Math.PI/4, 0.0, 0.0)
                 .buildAtBlockCenter(block.getLocation());
         VehicleStorage.add(new DisplayGroupId(displayGroup.getParentUUID()));
     }
