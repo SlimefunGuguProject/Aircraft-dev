@@ -47,7 +47,7 @@ public class AircraftSurface {
         // V = aircraft velocity
         final double aircraftSpeed = aircraftVelocity.length();
         //final Vector3d dragDirection = new Vector3d(airflowVelocity).normalize().mul(-1);
-        final Vector3d dragDirection = relativeNormal;
+        final Vector3d dragDirection = normal;
         final Vector3d force = dragDirection.mul(0.5 * dragCoefficient * AIR_DENSITY * getRelativeArea(airflowVelocity) * aircraftSpeed * aircraftSpeed);
         return new SpatialForce(force, relativeLocation, ForceType.DRAG);
     }

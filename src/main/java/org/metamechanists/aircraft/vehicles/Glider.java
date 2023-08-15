@@ -150,12 +150,12 @@ public class Glider extends SlimefunItem {
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
-        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(200);
+        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(1000);
 
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
-        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(200);
+        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(1000);
 
         // Euler integration
         traverser.set("velocity", velocity.add(resultantAcceleration));
@@ -207,7 +207,7 @@ public class Glider extends SlimefunItem {
                 .map(aircraftSurface -> aircraftSurface.getDragForce(rotation, velocity))
                 .collect(Collectors.toSet());
     }
-    private static Set<SpatialForce> getLiftForces(final Vector3d rotation, final Vector3d velocity) {
+    private static @NotNull Set<SpatialForce> getLiftForces(final Vector3d rotation, final Vector3d velocity) {
         return new HashSet<>();
         //return getSurfaces().stream()
         //        .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity))
