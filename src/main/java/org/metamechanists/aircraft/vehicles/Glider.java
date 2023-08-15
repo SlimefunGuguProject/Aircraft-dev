@@ -33,7 +33,7 @@ public class Glider extends SlimefunItem {
     private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
     private static final Vector3d STARTING_ROTATION = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
 
-    private static final double MASS = 1.0;
+    private static final double MASS = 2.0;
     private static final double MOMENT_OF_INERTIA = MASS * 1; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
@@ -111,7 +111,7 @@ public class Glider extends SlimefunItem {
     }
     private static @NotNull DisplayGroup buildAircraft(final Location location) {
         final DisplayGroup displayGroup = new ModelBuilder()
-                .rotation(0.0, 0.0, 0.0)
+                .rotation(Math.PI / 8, 0.0, 0.0)
                 .add("main", modelMain())
                 .add("wing_front_1", modelWingFront1())
                 .add("wing_front_2", modelWingFront2())
