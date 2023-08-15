@@ -21,7 +21,10 @@ import java.util.Set;
 
 
 public class Glider extends SlimefunItem {
-    private static final double AERODYNAMIC_COEFFICIENT = 50;
+    private static final double AERODYNAMIC_COEFFICIENT = 12 * 5;
+    private static final double DRAG_COEFFICIENT_WING = 8 * 5;
+    private static final double LIFT_COEFFICIENT_BODY = 2 * 5;
+    private static final double LIFT_COEFFICIENT_WING = 10 * 5;
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -45,12 +48,12 @@ public class Glider extends SlimefunItem {
 
     public static @NotNull Set<AircraftSurface> getSurfaces() {
         final Set<AircraftSurface> surfaces = new HashSet<>();
-        surfaces.addAll(modelMain().getSurfaces(AERODYNAMIC_COEFFICIENT));
-        surfaces.addAll(modelWingFront1().getSurfaces(AERODYNAMIC_COEFFICIENT));
-        surfaces.addAll(modelWingFront2().getSurfaces(AERODYNAMIC_COEFFICIENT));
-        surfaces.addAll(modelWingBack1().getSurfaces(AERODYNAMIC_COEFFICIENT));
-        surfaces.addAll(modelWingBack2().getSurfaces(AERODYNAMIC_COEFFICIENT));
-        surfaces.addAll(modelRudder().getSurfaces(AERODYNAMIC_COEFFICIENT));
+        surfaces.addAll(modelMain().getSurfaces(AERODYNAMIC_COEFFICIENT, LIFT_COEFFICIENT_BODY));
+        surfaces.addAll(modelWingFront1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingFront2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingBack1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingBack2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelRudder().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         return surfaces;
     }
 
