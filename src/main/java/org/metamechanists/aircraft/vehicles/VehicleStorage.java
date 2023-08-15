@@ -39,10 +39,7 @@ public class VehicleStorage {
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(new SpatialForce(weight, centerOfMass));
         forces.addAll(Glider.getSurfaces().stream()
-                .map(aircraftSurface -> aircraftSurface.getDragForce(velocity))
-                .collect(Collectors.toSet()));
-        forces.addAll(Glider.getSurfaces().stream()
-                .map(aircraftSurface -> aircraftSurface.getLiftForce(velocity))
+                .map(aircraftSurface -> aircraftSurface.getAerodynamicForce(velocity))
                 .collect(Collectors.toSet()));
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 

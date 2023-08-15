@@ -23,7 +23,7 @@ public class AircraftSurface {
         return new Vector3d(normal).dot(airflowVelocity) * area;
     }
 
-    public SpatialForce getDragForce(final @NotNull Vector3d aircraftVelocity) {
+    public SpatialForce getAerodynamicForce(final @NotNull Vector3d aircraftVelocity) {
         final Vector3d airflowVelocity = new Vector3d(aircraftVelocity).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
