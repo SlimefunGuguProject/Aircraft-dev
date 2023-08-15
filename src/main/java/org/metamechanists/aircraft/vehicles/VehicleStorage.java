@@ -62,9 +62,9 @@ public class VehicleStorage {
                 .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity))
                 .collect(Collectors.toSet());
 
-        addForceVisual(forceVisualBuilder, Material.ORANGE_CONCRETE, weight.relativeLocation(), weight.force());
-        dragForces.forEach(force -> addForceVisual(forceVisualBuilder, Material.BLUE_CONCRETE, force.relativeLocation(), force.force()));
-        liftForces.forEach(force -> addForceVisual(forceVisualBuilder, Material.LIME_CONCRETE, force.relativeLocation(), force.force()));
+        addForceVisual(forceVisualBuilder, Material.ORANGE_CONCRETE, weight.relativeLocation(), new Vector3d(weight.force()).mul(500));
+        dragForces.forEach(force -> addForceVisual(forceVisualBuilder, Material.BLUE_CONCRETE, force.relativeLocation(), new Vector3d(force.force()).mul(500)));
+        liftForces.forEach(force -> addForceVisual(forceVisualBuilder, Material.LIME_CONCRETE, force.relativeLocation(), new Vector3d(force.force()).mul(500)));
 
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(weight);
