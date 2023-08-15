@@ -12,8 +12,9 @@ public record SpatialForce(Vector3d force, Vector3d relativeLocation, ForceType 
     }
 
     public ModelLine getForceLine() {
+        final Vector3d adjustedForce = new Vector3d(force).mul(1000);
         final Vector3f originFloat = new Vector3f((float)relativeLocation.x, (float)relativeLocation.y, (float)relativeLocation.z);
-        final Vector3f destinationFloat = new Vector3f(originFloat).add((float)force.x, (float)force.y, (float)force.z);
+        final Vector3f destinationFloat = new Vector3f(originFloat).add((float)adjustedForce.x, (float)adjustedForce.y, (float)adjustedForce.z);
         return new ModelLine()
                 .material(type.getMaterial())
                 .brightness(15)

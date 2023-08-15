@@ -183,6 +183,7 @@ public class Glider extends SlimefunItem {
     }
     private static void tickForceArrows(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
         group.getParentDisplay().teleportAsync(group.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
+        group.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
         for (final SpatialForce force : getForces(velocity, rotation)) {
             group.getDisplays().get(force.stringHash()).setTransformationMatrix(force.getForceLine().getMatrix(new Vector3d()));
         }
