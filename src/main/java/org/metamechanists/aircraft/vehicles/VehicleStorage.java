@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicles;
 
 import lombok.experimental.UtilityClass;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
@@ -20,15 +21,21 @@ public class VehicleStorage {
     }
 
     private void tick(final @NotNull DisplayGroup displayGroup) {
-        displayGroup.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(-0.04, 0, 0)));
         final PersistentDataTraverser traverser = new PersistentDataTraverser(displayGroup.getParentUUID());
         final Vector3d rotation = traverser.getVector3d("rotation");
+        double speed = traverser.getDouble("speed");
         if (rotation == null) {
             return;
         }
 
-        rotation.add(new Vector3d(0.0, Math.PI / 4, Math.PI / 16));
+        rotation.add(new Vector3d(0.0, Math.PI / 16, 0.0));
+        speed += 0.05;
+        traverser.set("speed", speed);
         traverser.set("rotation", rotation);
+
+        final Vector3d velocity = new Vector3d(0.0, 0.0, 1.0).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z);
+
+        displayGroup.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
 
         displayGroup.getDisplays().get("main").setTransformationMatrix(Glider.modelMain().getMatrix(rotation));
         displayGroup.getDisplays().get("wing_front_1").setTransformationMatrix(Glider.modelWingFront1().getMatrix(rotation));
