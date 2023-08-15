@@ -29,11 +29,11 @@ public class VehicleStorage {
         }
 
         rotation.add(new Vector3d(0.0, Math.PI / 16, 0.0));
-        speed += 0.05;
+        speed += 0.01;
         traverser.set("speed", speed);
         traverser.set("rotation", rotation);
 
-        final Vector3d velocity = new Vector3d(0.0, 0.0, 1.0).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z);
+        final Vector3d velocity = new Vector3d(1.0, 0.0, 0.0).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z).mul(speed);
 
         displayGroup.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
 
