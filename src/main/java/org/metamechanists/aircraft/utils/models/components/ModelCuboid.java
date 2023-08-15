@@ -120,7 +120,7 @@ public class ModelCuboid {
         final double area = surfaceWidth * surfaceHeight;
         final Vector3d relativeLocation = startingLocation.rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z);
         final Vector3d normal = new Vector3d(relativeLocation).normalize();
-        return new AircraftSurface(dragCoefficient, liftCoefficient, area, normal, relativeLocation);
+        return new AircraftSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
     }
     public Set<AircraftSurface> getSurfaces(final double dragCoefficient, final double liftCoefficient) {
         final Set<AircraftSurface> surfaces = new HashSet<>();
