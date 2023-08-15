@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 
 
 public class Glider extends SlimefunItem {
-    private static final double AERODYNAMIC_COEFFICIENT = 1.2;
-    private static final double DRAG_COEFFICIENT_WING = 0.8;
-    private static final double LIFT_COEFFICIENT_BODY = 0.2;
-    private static final double LIFT_COEFFICIENT_WING = 1.0;
+    private static final double AERODYNAMIC_COEFFICIENT = 12;
+    private static final double DRAG_COEFFICIENT_WING = 8;
+    private static final double LIFT_COEFFICIENT_BODY = 2;
+    private static final double LIFT_COEFFICIENT_WING = 10;
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
     private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
@@ -150,12 +150,12 @@ public class Glider extends SlimefunItem {
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
-        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(4);
+        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).mul(2);
 
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
-        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(4).mul(-1);
+        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).mul(2).mul(-1);
 
         // Euler integration
         traverser.set("velocity", velocity.add(resultantAcceleration));
