@@ -131,8 +131,8 @@ public class ModelCuboid implements ModelComponent {
         surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(0, size.y / 2, 0), size.x, size.z));
         surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(0, -size.y / 2, 0), size.x, size.z));
 
-        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(size.x, 0, 0), size.y, size.z));
-        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(-size.x, 0, 0), size.y, size.z));
+        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(size.x / 2, 0, 0), size.y, size.z));
+        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(-size.x / 2, 0, 0), size.y, size.z));
 
         return surfaces;
     }
