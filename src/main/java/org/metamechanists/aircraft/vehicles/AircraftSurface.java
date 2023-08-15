@@ -53,6 +53,11 @@ public class AircraftSurface {
             return new SpatialForce(new Vector3d(), relativeLocation);
         }
 
+        // Check the airflow and normal are not in the same direction - this causes divide by zero errors when normalizing
+        if (normal.angle(airflowVelocity) < 0.001) {
+            return new SpatialForce(new Vector3d(), relativeLocation);
+        }
+
         // L = 0.5 * Cl * ρ * A * V^2,
         // L = lift force
         // Cl = coefficient of lift
