@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 
 
 public class Glider extends SlimefunItem {
-    private static final double AERODYNAMIC_COEFFICIENT = 12 * 5;
-    private static final double DRAG_COEFFICIENT_WING = 8 * 5;
-    private static final double LIFT_COEFFICIENT_BODY = 2 * 5;
-    private static final double LIFT_COEFFICIENT_WING = 10 * 5;
+    private static final double AERODYNAMIC_COEFFICIENT = 12 * 2;
+    private static final double DRAG_COEFFICIENT_WING = 8 * 2;
+    private static final double LIFT_COEFFICIENT_BODY = 2 * 2;
+    private static final double LIFT_COEFFICIENT_WING = 10 * 2;
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
     private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
@@ -76,14 +76,14 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelWingFront1() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.1F, 1.6F)
-                .location(0.1F, 0.0F, 0.8F);
+                .size(0.6F, 0.1F, 1.2F)
+                .location(0.1F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingFront2() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.1F, 1.6F)
-                .location(0.1F, 0.0F, -0.8F);
+                .size(0.6F, 0.1F, 1.2F)
+                .location(0.1F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelWingBack1() {
         return new ModelCuboid()
