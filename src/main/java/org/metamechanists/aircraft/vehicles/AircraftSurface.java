@@ -30,7 +30,7 @@ public class AircraftSurface {
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         if (relativeNormal.angle(airflowVelocity) > Math.PI / 2) {
-            return new SpatialForce(new Vector3d(), relativeLocation);
+            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.DRAG);
         }
 
         // D = 0.5 * Cd * ρ * A * V^2, where
@@ -42,7 +42,7 @@ public class AircraftSurface {
         final double aircraftSpeed = aircraftVelocity.length();
         final Vector3d dragDirection = new Vector3d(airflowVelocity).normalize();
         final Vector3d force = dragDirection.mul(0.5 * dragCoefficient * AIR_DENSITY * getRelativeArea(airflowVelocity) * aircraftSpeed * aircraftSpeed);
-        return new SpatialForce(force, relativeLocation);
+        return new SpatialForce(force, relativeLocation, ForceType.DRAG);
     }
 
     public SpatialForce getLiftForce(final @NotNull Vector3d aircraftRotation, final @NotNull Vector3d aircraftVelocity) {
@@ -51,12 +51,12 @@ public class AircraftSurface {
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         if (normal.angle(airflowVelocity) > Math.PI / 2) {
-            return new SpatialForce(new Vector3d(), relativeLocation);
+            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
         }
 
         // Check the airflow and normal are not in the same direction - this causes NaN values
         if (normal.angle(airflowVelocity) < 0.001) {
-            return new SpatialForce(new Vector3d(), relativeLocation);
+            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
         }
 
         // L = 0.5 * Cl * ρ * A * V^2,
@@ -70,6 +70,6 @@ public class AircraftSurface {
         final Vector3d liftDirection = new Vector3d(perpendicularDirection).cross(airflowVelocity).normalize();
 
         final Vector3d force = liftDirection.mul(0.5 * liftCoefficient * AIR_DENSITY * getRelativeArea(airflowVelocity) * aircraftSpeed * aircraftSpeed);
-        return new SpatialForce(force, relativeLocation);
+        return new SpatialForce(force, relativeLocation, ForceType.LIFT);
     }
 }

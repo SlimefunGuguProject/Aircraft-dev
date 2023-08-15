@@ -1,10 +1,10 @@
 package org.metamechanists.aircraft.utils.models;
 
-import dev.sefiraat.sefilib.entity.display.DisplayGroup;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.models.components.ModelComponent;
+import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
 
 import java.util.HashMap;
 import java.util.Map;
