@@ -10,11 +10,12 @@ import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @UtilityClass
 public class VehicleStorage {
-    private final Set<DisplayGroupId> activeVehicles = new HashSet<>();
+    private Set<DisplayGroupId> activeVehicles = new HashSet<>();
 
     public void add(final DisplayGroupId id) {
         activeVehicles.add(id);
@@ -28,7 +29,7 @@ public class VehicleStorage {
             return;
         }
 
-        rotation.add(new Vector3d(0.0, Math.PI / 16, 0.0));
+        rotation.add(new Vector3d(Math.PI / 16, 0.0, 0.0));
         speed += 0.002;
         traverser.set("speed", speed);
         traverser.set("rotation", rotation);
@@ -50,8 +51,9 @@ public class VehicleStorage {
     }
 
     public void tick() {
+        activeVehicles = activeVehicles.stream().filter(id -> id.get().isPresent()).collect(Collectors.toSet());
         for (final DisplayGroupId id : activeVehicles) {
-            id.get().ifPresentOrElse(VehicleStorage::tick, () -> activeVehicles.remove(id));
+            tick(id.get().get());
         }
     }
 }
