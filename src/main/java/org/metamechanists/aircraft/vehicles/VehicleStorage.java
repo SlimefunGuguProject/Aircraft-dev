@@ -37,7 +37,7 @@ public class VehicleStorage {
                 .brightness(15)
                 .from(originFloat)
                 .to(destinationFloat)
-                .thickness(0.5F));
+                .thickness(0.1F));
     }
 
     private void tick(final @NotNull DisplayGroupId id) {
@@ -92,16 +92,16 @@ public class VehicleStorage {
         traverser.set("angular_velocity", angularVelocity);
         traverser.set("rotation", rotation);
 
-        displayGroup.getDisplays().values().forEach(display -> display.getPassengers()
-                .forEach(passenger -> {
-                    passenger.teleportAsync(passenger.getLocation().add(Vector.fromJOML(velocity)));
-                    display.addPassenger(passenger);
-                }));
-        displayGroup.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
-
         activeForceVisuals.add(new DisplayGroupId(forceVisualBuilder.buildAtLocation(displayGroup.getLocation()).getParentUUID()));
 
         try {
+            displayGroup.getDisplays().values().forEach(display -> display.getPassengers()
+                    .forEach(passenger -> {
+                        passenger.teleportAsync(passenger.getLocation().add(Vector.fromJOML(velocity)));
+                        display.addPassenger(passenger);
+                    }));
+            displayGroup.getParentDisplay().teleportAsync(displayGroup.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
+            displayGroup.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
             displayGroup.getDisplays().get("main").setTransformationMatrix(Glider.modelMain().getMatrix(rotation));
             displayGroup.getDisplays().get("wing_front_1").setTransformationMatrix(Glider.modelWingFront1().getMatrix(rotation));
             displayGroup.getDisplays().get("wing_front_2").setTransformationMatrix(Glider.modelWingFront2().getMatrix(rotation));
