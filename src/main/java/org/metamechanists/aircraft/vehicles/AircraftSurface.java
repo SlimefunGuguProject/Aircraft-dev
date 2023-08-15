@@ -83,7 +83,7 @@ public class AircraftSurface {
         final Vector3d liftDirection = new Vector3d(perpendicularDirection).cross(airflowVelocity).normalize();
 
         final Vector3d force = liftDirection.mul(
-                Math.sin(liftDirection.angle(airflowVelocity))
+                liftDirection.angleCos(airflowVelocity)
                         * 0.5
                         * liftCoefficient
                         * AIR_DENSITY
