@@ -59,11 +59,11 @@ public class Glider extends SlimefunItem {
     private static @NotNull Set<AircraftSurface> getSurfaces() {
         final Set<AircraftSurface> surfaces = new HashSet<>();
         surfaces.addAll(modelMain().getSurfaces(AERODYNAMIC_COEFFICIENT, LIFT_COEFFICIENT_BODY));
-//        surfaces.addAll(modelWingFront1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-//        surfaces.addAll(modelWingFront2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-//        surfaces.addAll(modelWingBack1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-//        surfaces.addAll(modelWingBack2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-//        surfaces.addAll(modelRudder().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingFront1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingFront2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingBack1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingBack2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelRudder().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         return surfaces;
     }
 
@@ -113,11 +113,11 @@ public class Glider extends SlimefunItem {
         final DisplayGroup displayGroup = new ModelBuilder()
                 .rotation(STARTING_ROTATION.x, STARTING_ROTATION.y, STARTING_ROTATION.z)
                 .add("main", modelMain())
-//                .add("wing_front_1", modelWingFront1())
-//                .add("wing_front_2", modelWingFront2())
-//                .add("wing_back_1", modelWingBack1())
-//                .add("wing_back_2", modelWingBack2())
-//                .add("rudder", modelRudder())
+                .add("wing_front_1", modelWingFront1())
+                .add("wing_front_2", modelWingFront2())
+                .add("wing_back_1", modelWingBack1())
+                .add("wing_back_2", modelWingBack2())
+                .add("rudder", modelRudder())
                 .buildAtBlockCenter(location);
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(displayGroup.getParentUUID());
@@ -176,11 +176,11 @@ public class Glider extends SlimefunItem {
         group.getParentDisplay().teleportAsync(group.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
         group.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
-//        group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
-//        group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
-//        group.getDisplays().get("wing_back_1").setTransformationMatrix(modelWingBack1().getMatrix(rotation));
-//        group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
-//        group.getDisplays().get("rudder").setTransformationMatrix(modelRudder().getMatrix(rotation));
+        group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
+        group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
+        group.getDisplays().get("wing_back_1").setTransformationMatrix(modelWingBack1().getMatrix(rotation));
+        group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
+        group.getDisplays().get("rudder").setTransformationMatrix(modelRudder().getMatrix(rotation));
     }
     private static void tickForceArrows(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
         group.getParentDisplay().teleportAsync(group.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
