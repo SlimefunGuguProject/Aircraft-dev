@@ -30,10 +30,10 @@ public class VehicleStorage {
             return;
         }
 
-        final double mass = 200;
+        final double mass = 20;
         final double momentOfInertia = mass; // silly approximation
         final Vector3d centerOfMass = new Vector3d(0.0, 0.0, 0.0);
-        final Vector3d weight = new Vector3d(0, -0.001 * mass, 0);
+        final Vector3d weight = new Vector3d(0, -0.0001 * mass, 0);
 
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(new SpatialForce(weight, centerOfMass));
