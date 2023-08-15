@@ -20,8 +20,6 @@ import java.util.Set;
 
 @SuppressWarnings("unused")
 public class ModelCuboid implements ModelComponent {
-    private static final double AREA_SCALE = 0.001;
-
     private final BlockDisplayBuilder main = new BlockDisplayBuilder();
 
     private Vector3f location = new Vector3f();
