@@ -63,7 +63,7 @@ public class AircraftSurface {
         final Vector3d perpendicularDirection = new Vector3d(airflowVelocity).cross(normal);
         final Vector3d liftDirection = new Vector3d(perpendicularDirection).cross(airflowVelocity);
 
-        final Vector3d force = liftDirection.mul(0.5 * dragCoefficient * AIR_DENSITY * getRelativeArea(airflowVelocity) * aircraftSpeed * aircraftSpeed);
+        final Vector3d force = liftDirection.mul(0.5 * liftCoefficient * AIR_DENSITY * getRelativeArea(airflowVelocity) * aircraftSpeed * aircraftSpeed);
         return new SpatialForce(force, relativeLocation);
     }
 }
