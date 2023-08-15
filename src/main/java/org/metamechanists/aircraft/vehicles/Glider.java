@@ -34,7 +34,7 @@ public class Glider extends SlimefunItem {
     private static final Vector3d STARTING_ROTATION = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
 
     private static final double MASS = 0.1;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.5; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 2; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -71,37 +71,37 @@ public class Glider extends SlimefunItem {
         return new ModelCuboid()
                 .material(Material.WHITE_CONCRETE)
                 .size(2.0F, 0.4F, 0.4F)
-                .location(-0.5F, 0, 0);
+                .location(0.0F, 0, 0);
     }
     private static ModelCuboid modelWingFront1() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .size(0.6F, 0.1F, 1.2F)
-                .location(-0.3F, 0.0F, 0.6F);
+                .location(-0.2F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingFront2() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .size(0.6F, 0.1F, 1.2F)
-                .location(-0.3F, 0.0F, -0.6F);
+                .location(0.2F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelWingBack1() {
         return new ModelCuboid()
                 .material(Material.BLUE_CONCRETE)
                 .size(0.4F, 0.1F, 0.8F)
-                .location(-1.3F, 0.0F, 0.6F);
+                .location(-0.8F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingBack2() {
         return new ModelCuboid()
                 .material(Material.BLUE_CONCRETE)
                 .size(0.4F, 0.1F, 0.8F)
-                .location(-1.3F, 0.0F, -0.6F);
+                .location(-0.8F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelRudder() {
         return new ModelCuboid()
                 .material(Material.BLUE_CONCRETE)
                 .size(0.4F, 0.8F, 0.1F)
-                .location(-1.3F, 0.6F, 0.0F);
+                .location(-0.8F, 0.6F, 0.0F);
     }
 
     private static void place(final @NotNull Block block) {
