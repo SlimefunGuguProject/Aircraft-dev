@@ -33,7 +33,7 @@ public class VehicleStorage {
         final double mass = 1;
         final double momentOfInertia = mass; // silly approximation
         final Vector3d centerOfMass = new Vector3d(0.0, 0.0, 0.0);
-        final Vector3d weight = new Vector3d(0, -0.0001 * mass, 0);
+        final Vector3d weight = new Vector3d(0, -0.000001 * mass, 0);
 
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(new SpatialForce(weight, centerOfMass));
@@ -49,12 +49,12 @@ public class VehicleStorage {
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
-        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(mass);
+        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(mass).mul(10);
 
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
-        final Vector3d resultantRotation = new Vector3d(resultantTorque).div(momentOfInertia);
+        final Vector3d resultantRotation = new Vector3d(resultantTorque).div(momentOfInertia).mul(10);
 
         velocity.add(resultantAcceleration);
         rotation.add(resultantRotation);
