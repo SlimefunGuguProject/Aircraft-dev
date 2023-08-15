@@ -29,9 +29,9 @@ public class AircraftSurface {
     public SpatialForce getDragForce(final @NotNull Vector3d aircraftVelocity) {
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         final double angle = normal.angle(aircraftVelocity);
-        //if (normal.angle(aircraftVelocity) > Math.PI) {
-        //    return new SpatialForce(new Vector3d(), relativeLocation);
-        //}
+        if (normal.angle(aircraftVelocity) > Math.PI) {
+            return new SpatialForce(new Vector3d(), relativeLocation);
+        }
 
         // D = 0.5 * Cd * ρ * A * V^2, where
         // D = drag force
@@ -48,9 +48,9 @@ public class AircraftSurface {
     public SpatialForce getLiftForce(final @NotNull Vector3d aircraftVelocity) {
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         final double angle = normal.angle(aircraftVelocity);
-        //if (normal.angle(aircraftVelocity) > Math.PI) {
-        //    return new SpatialForce(new Vector3d(), relativeLocation);
-        //}
+        if (normal.angle(aircraftVelocity) > Math.PI) {
+            return new SpatialForce(new Vector3d(), relativeLocation);
+        }
 
         // L = 0.5 * Cl * ρ * A * V^2,
         // L = lift force
