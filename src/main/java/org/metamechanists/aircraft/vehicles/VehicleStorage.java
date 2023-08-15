@@ -99,7 +99,7 @@ public class VehicleStorage {
                 }));
         displayGroup.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
 
-        //activeForceVisuals.add(new DisplayGroupId(forceVisualBuilder.buildAtLocation(displayGroup.getLocation()).getParentUUID()));
+        activeForceVisuals.add(new DisplayGroupId(forceVisualBuilder.buildAtLocation(displayGroup.getLocation()).getParentUUID()));
 
         try {
             displayGroup.getDisplays().get("main").setTransformationMatrix(Glider.modelMain().getMatrix(rotation));
