@@ -33,7 +33,7 @@ public class Glider extends SlimefunItem {
     private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
     private static final Vector3d STARTING_ROTATION = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
 
-    private static final double MASS = 0.5;
+    private static final double MASS = 0.005;
     private static final double MOMENT_OF_INERTIA = MASS * 0.01; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
@@ -150,12 +150,12 @@ public class Glider extends SlimefunItem {
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
-        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(20000);
+        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(200);
 
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
-        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(20000);
+        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(200);
 
         // Euler integration
         traverser.set("velocity", velocity.add(resultantAcceleration));
