@@ -113,11 +113,9 @@ public class Glider extends SlimefunItem {
         final DisplayGroup forceArrowGroup = buildForceArrows(block.getLocation());
 
         final Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
-        //pig.setInvulnerable(true);
+        pig.setInvulnerable(true);
         pig.setGravity(false);
-        //pig.setInvisible(true);
-
-        //player.hideEntity(Aircraft.getInstance(), pig);
+        pig.setInvisible(true);
 
         pig.addPassenger(componentGroup.getParentDisplay());
         componentGroup.getDisplays().values().forEach(pig::addPassenger);
@@ -209,7 +207,7 @@ public class Glider extends SlimefunItem {
         tickAircraftDisplays(componentGroup, rotation);
         tickForceArrows(forceArrowGroup, velocity, rotation);
 
-        if (pig.wouldCollideUsing(pig.getBoundingBox())) {
+        if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, 0.1, 0.1))) {
             remove(pig, componentGroup, forceArrowGroup);
         }
     }
