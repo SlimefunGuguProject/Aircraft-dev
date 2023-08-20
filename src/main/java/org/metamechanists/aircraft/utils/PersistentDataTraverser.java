@@ -112,7 +112,7 @@ public class PersistentDataTraverser {
             return;
         }
 
-        PersistentDataAPI.setUUID(persistentDataHolder, getKey(key), value);
+        PersistentDataAPI.setString(persistentDataHolder, getKey(key), value.toString());
     }
     public void set(@NotNull final String key, @Nullable final CustomId value) {
         set(key, value == null ? null : value.toString());
@@ -175,7 +175,12 @@ public class PersistentDataTraverser {
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "z")));
     }
     public @Nullable UUID getUuid(@NotNull final String key) {
-        return PersistentDataAPI.getUUID(persistentDataHolder, getKey(key));
+        final String uuidString = getString(key);
+        if (uuidString == null) {
+            return null;
+        }
+
+        return UUID.fromString(uuidString);
     }
     public @Nullable BlockDisplayId getBlockDisplayId(@NotNull final String key) {
         final String uuid = getString(key);
