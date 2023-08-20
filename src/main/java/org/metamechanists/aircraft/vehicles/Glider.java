@@ -121,8 +121,8 @@ public class Glider extends SlimefunItem {
         armorStand.setGravity(false);
 
         //armorStand.setAI(false);
-        armorStand.setCollidable(false);
-        armorStand.setInvisible(true);
+        //armorStand.setCollidable(false);
+        //armorStand.setInvisible(true);
 
         //player.hideEntity(Aircraft.getInstance(), armorStand);
 
