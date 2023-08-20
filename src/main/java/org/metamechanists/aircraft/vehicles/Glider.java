@@ -14,6 +14,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.BoundingBox;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -121,6 +122,7 @@ public class Glider extends SlimefunItem {
 
         //pig.setAI(false);
         pig.setCollidable(false);
+        pig.wouldCollideUsing(new BoundingBox());
         //pig.setInvisible(true);
 
         //player.hideEntity(Aircraft.getInstance(), pig);
