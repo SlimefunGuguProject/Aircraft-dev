@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -111,6 +113,16 @@ public class Glider extends SlimefunItem {
     private static void place(final @NotNull Block block, final @NotNull Player player) {
         final DisplayGroup componentGroup = buildAircraft(block.getLocation(), player);
         final DisplayGroup forceArrowGroup = buildForceArrows(componentGroup, block.getLocation());
+
+        final Entity pig = block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
+        pig.setInvulnerable(true);
+        pig.setGravity(false);
+
+        pig.addPassenger(componentGroup.getParentDisplay());
+        componentGroup.getDisplays().values().forEach(pig::addPassenger);
+        pig.addPassenger(forceArrowGroup.getParentDisplay());
+        forceArrowGroup.getDisplays().values().forEach(pig::addPassenger);
+
         VehicleStorage.add(new DisplayGroupId(componentGroup.getParentUUID()), new DisplayGroupId(forceArrowGroup.getParentUUID()));
     }
     private static @NotNull DisplayGroup buildAircraft(final Location location, final @NotNull Player player) {
@@ -129,6 +141,7 @@ public class Glider extends SlimefunItem {
         traverser.set("angularVelocity", STARTING_ANGULAR_VELOCITY); // roll, yaw, pitch
         traverser.set("rotation", STARTING_ROTATION); // roll, yaw, pitch
         traverser.set("player", player.getUniqueId());
+
         return displayGroup;
     }
     private static DisplayGroup buildForceArrows(final @NotNull DisplayGroup group, final Location location) {
