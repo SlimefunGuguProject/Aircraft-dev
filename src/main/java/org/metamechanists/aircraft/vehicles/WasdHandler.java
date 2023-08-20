@@ -20,7 +20,7 @@ public class WasdHandler  {
                 ListenerPriority.NORMAL,
                 Client.STEER_VEHICLE) {
             @Override
-            public void onPacketSending(final PacketEvent event) {
+            public void onPacketReceiving(final PacketEvent event) {
                 final PacketContainer packet = event.getPacket();
                 final float rightleft = packet.getFloat().readSafely(0);
                 final float forwardbackwards = packet.getFloat().readSafely(1);
