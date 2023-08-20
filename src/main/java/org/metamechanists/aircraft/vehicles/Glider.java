@@ -5,18 +5,15 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
@@ -25,8 +22,8 @@ import org.metamechanists.aircraft.utils.models.components.ModelCuboid;
 import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -112,15 +109,14 @@ public class Glider extends SlimefunItem {
     }
 
     private static void place(final @NotNull Block block, final @NotNull Player player) {
-        final DisplayGroup componentGroup = buildAircraft(block.getLocation(), player);
-        final DisplayGroup forceArrowGroup = buildForceArrows(componentGroup, block.getLocation());
+        final DisplayGroup componentGroup = buildAircraft(block.getLocation());
+        final DisplayGroup forceArrowGroup = buildForceArrows(block.getLocation());
 
         final Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
         pig.setInvulnerable(true);
         pig.setGravity(false);
 
-        //pig.setAI(false);
-        //pig.setCollidable(false);
+        pig.setAI(false);
         pig.setInvisible(true);
 
         //player.hideEntity(Aircraft.getInstance(), pig);
@@ -131,10 +127,17 @@ public class Glider extends SlimefunItem {
         forceArrowGroup.getDisplays().values().forEach(pig::addPassenger);
         pig.addPassenger(player);
 
-        VehicleStorage.add(pig.getUniqueId(), new DisplayGroupId(componentGroup.getParentUUID()), new DisplayGroupId(forceArrowGroup.getParentUUID()));
+        final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
+        traverser.set("velocity", STARTING_VELOCITY); // must start off with some velocity to prevent NaN issues
+        traverser.set("angularVelocity", STARTING_ANGULAR_VELOCITY); // roll, yaw, pitch
+        traverser.set("rotation", STARTING_ROTATION); // roll, yaw, pitch
+        traverser.set("player", player.getUniqueId());
+        traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
+        traverser.set("forceArrowGroupId", new DisplayGroupId(forceArrowGroup.getParentUUID()));
+        VehicleStorage.add(pig.getUniqueId());
     }
-    private static @NotNull DisplayGroup buildAircraft(final Location location, final @NotNull Player player) {
-        final DisplayGroup displayGroup = new ModelBuilder()
+    private static @NotNull DisplayGroup buildAircraft(final Location location) {
+        return new ModelBuilder()
                 .rotation(STARTING_ROTATION.x, STARTING_ROTATION.y, STARTING_ROTATION.z)
                 .add("main", modelMain())
                 .add("wing_front_1", modelWingFront1())
@@ -143,36 +146,48 @@ public class Glider extends SlimefunItem {
                 .add("wing_back_2", modelWingBack2())
                 .add("rudder", modelRudder())
                 .buildAtBlockCenter(location);
-
-        final PersistentDataTraverser traverser = new PersistentDataTraverser(displayGroup.getParentUUID());
-        traverser.set("velocity", STARTING_VELOCITY); // must start off with some velocity to prevent NaN issues
-        traverser.set("angularVelocity", STARTING_ANGULAR_VELOCITY); // roll, yaw, pitch
-        traverser.set("rotation", STARTING_ROTATION); // roll, yaw, pitch
-        traverser.set("player", player.getUniqueId());
-
-        return displayGroup;
     }
-    private static DisplayGroup buildForceArrows(final @NotNull DisplayGroup group, final Location location) {
+    private static DisplayGroup buildForceArrows(final Location location) {
         final ModelBuilder forceArrowBuilder = new ModelBuilder();
         getForces(STARTING_VELOCITY, STARTING_ROTATION).forEach(force -> forceArrowBuilder.add(force.stringHash(), force.getForceLine(STARTING_ROTATION)));
         forceArrowBuilder.add("velocity", new SpatialForce(STARTING_VELOCITY, new Vector3d(), ForceType.VELOCITY).getForceLine(STARTING_ROTATION));
         return forceArrowBuilder.buildAtBlockCenter(location);
     }
 
-    public static void tickAircraft(final @NotNull AircraftGroup aircraftGroup) {
-        final DisplayGroup componentGroup = aircraftGroup.componentGroupId().get().get();
-        final DisplayGroup forceArrowGroup = aircraftGroup.forceArrowGroupId().get().get();
-        final Entity pigEntity = Bukkit.getEntity(aircraftGroup.pigId());
-        final PersistentDataTraverser traverser = new PersistentDataTraverser(componentGroup.getParentUUID());
+    private static @NotNull Optional<Player> getPilot(final @NotNull Pig pig) {
+        return pig.getPassengers().stream()
+                .filter(entity -> entity instanceof Player)
+                .map(Player.class::cast)
+                .findFirst();
+    }
+
+    private static void remove(final @NotNull Pig pig, final @NotNull DisplayGroup componentGroup, final @NotNull DisplayGroup forceArrowGroup) {
+        componentGroup.remove();
+        forceArrowGroup.remove();
+        VehicleStorage.remove(pig.getUniqueId());
+        pig.getLocation().createExplosion(4);
+        getPilot(pig).ifPresent(pilot -> {
+            pilot.eject();
+            componentGroup.getParentDisplay().removePassenger(pilot);
+        });
+        pig.remove();
+    }
+
+    public static void tickAircraft(final @NotNull Pig pig) {
+        final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         final Vector3d velocity = traverser.getVector3d("velocity");
         final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Vector3d rotation = traverser.getVector3d("rotation");
-        final UUID playerUuid = traverser.getUuid("player");
-        if (velocity == null || angularVelocity == null || rotation == null || playerUuid == null || !(pigEntity instanceof final Pig pig)) {
+        final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
+        final DisplayGroupId forceArrowGroupId = traverser.getDisplayGroupId("forceArrowGroupId");
+        if (velocity == null || angularVelocity == null || rotation == null
+                || componentGroupId == null || componentGroupId.get().isEmpty()
+                || forceArrowGroupId == null || forceArrowGroupId.get().isEmpty()) {
             return;
         }
 
-        final Player player = Bukkit.getPlayer(playerUuid);
+        final DisplayGroup componentGroup = componentGroupId.get().get();
+        final DisplayGroup forceArrowGroup = forceArrowGroupId.get().get();
 
         final Set<SpatialForce> forces = getForces(velocity, rotation);
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
@@ -193,29 +208,17 @@ public class Glider extends SlimefunItem {
         traverser.set("rotation", rotation.add(angularVelocity));
 
         tickPig(pig, velocity);
-        tickAircraftDisplays(componentGroup, velocity, rotation, player);
+        tickAircraftDisplays(componentGroup, rotation);
         tickForceArrows(forceArrowGroup, velocity, rotation);
 
-        // Check central block to see whether plane should explode
-        final Location centralBlock = componentGroup.getLocation().toBlockLocation();
-        if (!centralBlock.getBlock().isEmpty()) {
-            pig.remove();
-            componentGroup.remove();
-            forceArrowGroup.remove();
-            VehicleStorage.remove(aircraftGroup.pigId(), aircraftGroup.componentGroupId(), aircraftGroup.forceArrowGroupId());
-            centralBlock.createExplosion(4);
-
-            // Player teleport
-            if (player != null) {
-                player.eject();
-                componentGroup.getParentDisplay().removePassenger(player);
-            }
+        if (pig.wouldCollideUsing(pig.getBoundingBox())) {
+            remove(pig, componentGroup, forceArrowGroup);
         }
     }
     private static void tickPig(final @NotNull Pig pig, final Vector3d velocity) {
         pig.setVelocity(Vector.fromJOML(velocity));
     }
-    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation, final @Nullable Player player) {
+    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d rotation) {
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
         group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
         group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
