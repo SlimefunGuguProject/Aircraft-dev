@@ -13,6 +13,18 @@ import java.lang.reflect.Method;
 
 
 public class WasdHandler  {
+    public static void get_key(final float rightLeft, final float forwardbackwards) {
+        if (rightLeft < 0) {
+            Aircraft.getInstance().getLogger().info("A");
+        } else if (rightLeft > 0) {
+            Aircraft.getInstance().getLogger().info("D");
+        } else if (forwardbackwards < 0) {
+            Aircraft.getInstance().getLogger().info("S");
+        } else if (forwardbackwards > 0) {
+            Aircraft.getInstance().getLogger().info("W");
+        }
+    }
+
     public static void addProtocolListener() {
         final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
         manager.addPacketListener(new PacketAdapter(
@@ -24,8 +36,7 @@ public class WasdHandler  {
                 final PacketContainer packet = event.getPacket();
                 final float rightleft = packet.getFloat().readSafely(0);
                 final float forwardbackwards = packet.getFloat().readSafely(1);
-                Aircraft.getInstance().getLogger().info(String.valueOf(rightleft));
-                Aircraft.getInstance().getLogger().info(String.valueOf(forwardbackwards));
+                get_key(rightleft, forwardbackwards);
             }
         });
     }
