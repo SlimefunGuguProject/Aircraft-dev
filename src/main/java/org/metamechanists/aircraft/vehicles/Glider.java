@@ -173,6 +173,7 @@ public class Glider extends SlimefunItem {
         // Player teleport
         if (player != null) {
             player.eject();
+            componentGroup.getParentDisplay().removePassenger(player);
             componentGroup.getParentDisplay().addPassenger(player);
         }
 
