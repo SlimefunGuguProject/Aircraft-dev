@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
@@ -176,7 +177,7 @@ public class Glider extends SlimefunItem {
 //                    display.addPassenger(passenger);
 //                }));
 
-        tickAircraftDisplays(componentGroup, velocity, rotation);
+        tickAircraftDisplays(componentGroup, velocity, rotation, player);
         tickForceArrows(forceArrowGroup, velocity, rotation);
 
         // Check central block to see whether plane should explode
@@ -190,16 +191,13 @@ public class Glider extends SlimefunItem {
                 player.setGravity(true);
             }
         }
-
-        // Teleport player
-
+    }
+    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation, final @Nullable Player player) {
+        group.getParentDisplay().teleport(group.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
         if (player != null) {
             player.setGravity(false);
-            player.teleportAsync(componentGroup.getLocation());
+            player.teleportAsync(group.getLocation());
         }
-    }
-    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
-        group.getParentDisplay().teleportAsync(group.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
         group.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
         group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
