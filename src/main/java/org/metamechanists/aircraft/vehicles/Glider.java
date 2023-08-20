@@ -77,13 +77,13 @@ public class Glider extends SlimefunItem {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .size(0.6F, 0.1F, 1.2F)
-                .location(0.4F, 0.0F, 0.6F);
+                .location(0.7F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingFront2() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .size(0.6F, 0.1F, 1.2F)
-                .location(0.4F, 0.0F, -0.6F);
+                .location(0.7F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelWingBack1() {
         return new ModelCuboid()
@@ -171,6 +171,15 @@ public class Glider extends SlimefunItem {
 
         tickAircraftDisplays(componentGroup, velocity, rotation);
         tickForceArrows(forceArrowGroup, velocity, rotation);
+
+        // Check central block to see whether plane should explode
+        final Location centralBlock = componentGroup.getLocation().toBlockLocation();
+        if (!centralBlock.getBlock().isEmpty()) {
+            componentGroup.remove();
+            forceArrowGroup.remove();
+            VehicleStorage.remove(aircraftGroup.componentGroupId(), aircraftGroup.forceArrowGroupId());
+            centralBlock.createExplosion(4);
+        }
     }
     private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
         group.getParentDisplay().teleportAsync(group.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
