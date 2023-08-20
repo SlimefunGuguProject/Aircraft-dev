@@ -15,9 +15,9 @@ import java.lang.reflect.Method;
 public class WasdHandler  {
     public static void get_key(final float rightLeft, final float forwardbackwards) {
         if (rightLeft < 0) {
-            Aircraft.getInstance().getLogger().info("A");
-        } else if (rightLeft > 0) {
             Aircraft.getInstance().getLogger().info("D");
+        } else if (rightLeft > 0) {
+            Aircraft.getInstance().getLogger().info("A");
         } else if (forwardbackwards < 0) {
             Aircraft.getInstance().getLogger().info("S");
         } else if (forwardbackwards > 0) {

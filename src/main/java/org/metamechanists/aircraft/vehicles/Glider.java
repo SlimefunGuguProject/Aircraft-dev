@@ -121,7 +121,7 @@ public class Glider extends SlimefunItem {
 
         //pig.setAI(false);
         //pig.setCollidable(false);
-        //pig.setInvisible(true);
+        pig.setInvisible(true);
 
         //player.hideEntity(Aircraft.getInstance(), pig);
 
