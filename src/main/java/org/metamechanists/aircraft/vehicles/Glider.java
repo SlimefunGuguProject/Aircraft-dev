@@ -170,12 +170,10 @@ public class Glider extends SlimefunItem {
         traverser.set("angular_velocity", angularVelocity.add(resultantAngularAcceleration));
         traverser.set("rotation", rotation.add(angularVelocity));
 
-        // justin's thing??
-//        componentGroup.getDisplays().values().forEach(display -> display.getPassengers()
-//                .forEach(passenger -> {
-//                    passenger.teleportAsync(passenger.getLocation().add(Vector.fromJOML(velocity)));
-//                    display.addPassenger(passenger);
-//                }));
+        // Player teleport
+        if (player != null) {
+            componentGroup.getParentDisplay().addPassenger(player);
+        }
 
         tickAircraftDisplays(componentGroup, velocity, rotation, player);
         tickForceArrows(forceArrowGroup, velocity, rotation);
@@ -187,18 +185,19 @@ public class Glider extends SlimefunItem {
             forceArrowGroup.remove();
             VehicleStorage.remove(aircraftGroup.componentGroupId(), aircraftGroup.forceArrowGroupId());
             centralBlock.createExplosion(4);
-            if (player != null) {
-                player.setGravity(true);
-            }
+//            if (player != null) {
+//                player.setGravity(true);
+//            }
         }
     }
     private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation, final @Nullable Player player) {
-        group.getParentDisplay().teleport(group.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
-        if (player != null) {
-            player.setGravity(false);
-            player.teleportAsync(group.getLocation());
-        }
+        group.getParentDisplay().teleportAsync(group.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
         group.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
+//        if (player != null) {
+//            player.setGravity(false);
+//            player.teleport(group.getLocation());
+//        }
+
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
         group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
         group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
