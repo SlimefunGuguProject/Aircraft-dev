@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 public class Glider extends SlimefunItem {
     private static final double DRAG_COEFFICIENT_BODY = 0.03;
-    private static final double DRAG_COEFFICIENT_WING = 0.3;
+    private static final double DRAG_COEFFICIENT_WING = 0.03;
     private static final double LIFT_COEFFICIENT_BODY = 0.17;
     private static final double LIFT_COEFFICIENT_WING = 0.17;
 
@@ -100,8 +100,8 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelRudder() {
         return new ModelCuboid()
                 .material(Material.BLUE_CONCRETE)
-                .size(0.5F, 1.0F, 0.1F)
-                .location(-0.8F, 0.6F, 0.0F);
+                .size(0.5F, 2.0F, 0.1F)
+                .location(-0.8F, 1.6F, 0.0F);
     }
 
     private static void place(final @NotNull Block block) {
