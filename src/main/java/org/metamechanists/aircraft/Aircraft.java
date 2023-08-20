@@ -2,13 +2,12 @@ package org.metamechanists.aircraft;
 
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.items.Groups;
 import org.metamechanists.aircraft.vehicles.VehicleTicker;
-import org.metamechanists.aircraft.vehicles.WasdListener;
+import org.metamechanists.aircraft.vehicles.WasdHandler;
 
 
 public final class Aircraft extends JavaPlugin implements SlimefunAddon {
@@ -16,7 +15,8 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
     private static Aircraft instance;
 
     private void initializeListeners() {
-        Bukkit.getPluginManager().registerEvents(new WasdListener(), this);
+        WasdHandler.addProtocolListener();
+        //Bukkit.getPluginManager().registerEvents(new WasdHandler(), this);
     }
 
     private void initializeRunnables() {

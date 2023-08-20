@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pig;
@@ -116,23 +115,23 @@ public class Glider extends SlimefunItem {
         final DisplayGroup componentGroup = buildAircraft(block.getLocation(), player);
         final DisplayGroup forceArrowGroup = buildForceArrows(componentGroup, block.getLocation());
 
-        final ArmorStand armorStand = (ArmorStand) block.getWorld().spawnEntity(block.getLocation(), EntityType.ARMOR_STAND);
-//        armorStand.setInvulnerable(true);
-//        armorStand.setGravity(false);
+        final Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
+        pig.setInvulnerable(true);
+        pig.setGravity(false);
 
-        //armorStand.setAI(false);
-        //armorStand.setCollidable(false);
-        //armorStand.setInvisible(true);
+        //pig.setAI(false);
+        //pig.setCollidable(false);
+        //pig.setInvisible(true);
 
-        //player.hideEntity(Aircraft.getInstance(), armorStand);
+        //player.hideEntity(Aircraft.getInstance(), pig);
 
-        armorStand.addPassenger(componentGroup.getParentDisplay());
-        componentGroup.getDisplays().values().forEach(armorStand::addPassenger);
-        armorStand.addPassenger(forceArrowGroup.getParentDisplay());
-        forceArrowGroup.getDisplays().values().forEach(armorStand::addPassenger);
-        armorStand.addPassenger(player);
+        pig.addPassenger(componentGroup.getParentDisplay());
+        componentGroup.getDisplays().values().forEach(pig::addPassenger);
+        pig.addPassenger(forceArrowGroup.getParentDisplay());
+        forceArrowGroup.getDisplays().values().forEach(pig::addPassenger);
+        pig.addPassenger(player);
 
-        VehicleStorage.add(armorStand.getUniqueId(), new DisplayGroupId(componentGroup.getParentUUID()), new DisplayGroupId(forceArrowGroup.getParentUUID()));
+        VehicleStorage.add(pig.getUniqueId(), new DisplayGroupId(componentGroup.getParentUUID()), new DisplayGroupId(forceArrowGroup.getParentUUID()));
     }
     private static @NotNull DisplayGroup buildAircraft(final Location location, final @NotNull Player player) {
         final DisplayGroup displayGroup = new ModelBuilder()
