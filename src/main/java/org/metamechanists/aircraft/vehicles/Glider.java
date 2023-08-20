@@ -207,7 +207,7 @@ public class Glider extends SlimefunItem {
         tickAircraftDisplays(componentGroup, rotation);
         tickForceArrows(forceArrowGroup, velocity, rotation);
 
-        if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, 0.1, 0.1))) {
+        if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup, forceArrowGroup);
         }
     }
