@@ -18,6 +18,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.models.ModelBuilder;
@@ -31,8 +32,8 @@ import java.util.stream.Collectors;
 
 
 public class Glider extends SlimefunItem {
-    private static final double DRAG_COEFFICIENT_BODY = 0.15;
-    private static final double DRAG_COEFFICIENT_WING = 0.15;
+    private static final double DRAG_COEFFICIENT_BODY = 0.30;
+    private static final double DRAG_COEFFICIENT_WING = 0.30;
     private static final double LIFT_COEFFICIENT_BODY = 0.60;
     private static final double LIFT_COEFFICIENT_WING = 0.60;
 
@@ -41,7 +42,7 @@ public class Glider extends SlimefunItem {
     private static final Vector3d STARTING_ROTATION = new Vector3d(Math.PI / 4, 0, 0); // roll, yaw, pitch
 
     private static final double MASS = 0.005;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.1; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 0.05; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -84,13 +85,13 @@ public class Glider extends SlimefunItem {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .size(0.6F, 0.1F, 1.2F)
-                .location(0.2F, 0.0F, 0.6F);
+                .location(0.7F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingFront2() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .size(0.6F, 0.1F, 1.2F)
-                .location(0.2F, 0.0F, -0.6F);
+                .location(0.7F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelWingBack1() {
         return new ModelCuboid()
@@ -115,9 +116,10 @@ public class Glider extends SlimefunItem {
         final DisplayGroup componentGroup = buildAircraft(block.getLocation(), player);
         final DisplayGroup forceArrowGroup = buildForceArrows(componentGroup, block.getLocation());
 
-        final Entity pig = block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
+        final Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
         pig.setInvulnerable(true);
         pig.setGravity(false);
+        player.hideEntity(Aircraft.getInstance(), pig);
 
         pig.addPassenger(componentGroup.getParentDisplay());
         componentGroup.getDisplays().values().forEach(pig::addPassenger);
@@ -193,6 +195,7 @@ public class Glider extends SlimefunItem {
         // Check central block to see whether plane should explode
         final Location centralBlock = componentGroup.getLocation().toBlockLocation();
         if (!centralBlock.getBlock().isEmpty()) {
+            pig.remove();
             componentGroup.remove();
             forceArrowGroup.remove();
             VehicleStorage.remove(aircraftGroup.pigId(), aircraftGroup.componentGroupId(), aircraftGroup.forceArrowGroupId());
