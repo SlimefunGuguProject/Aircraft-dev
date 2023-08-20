@@ -117,8 +117,8 @@ public class Glider extends SlimefunItem {
         final DisplayGroup forceArrowGroup = buildForceArrows(componentGroup, block.getLocation());
 
         final ArmorStand armorStand = (ArmorStand) block.getWorld().spawnEntity(block.getLocation(), EntityType.ARMOR_STAND);
-        armorStand.setInvulnerable(true);
-        armorStand.setGravity(false);
+//        armorStand.setInvulnerable(true);
+//        armorStand.setGravity(false);
 
         //armorStand.setAI(false);
         //armorStand.setCollidable(false);
