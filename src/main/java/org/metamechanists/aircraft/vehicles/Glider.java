@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 public class Glider extends SlimefunItem {
     private static final double DRAG_COEFFICIENT_BODY = 0.03;
-    private static final double DRAG_COEFFICIENT_WING = 0.03;
+    private static final double DRAG_COEFFICIENT_WING = 0.3;
     private static final double LIFT_COEFFICIENT_BODY = 0.17;
     private static final double LIFT_COEFFICIENT_WING = 0.17;
 
