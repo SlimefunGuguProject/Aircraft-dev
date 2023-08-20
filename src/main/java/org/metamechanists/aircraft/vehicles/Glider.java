@@ -171,11 +171,11 @@ public class Glider extends SlimefunItem {
         traverser.set("rotation", rotation.add(angularVelocity));
 
         // Player teleport
-        if (player != null) {
-            player.eject();
-            componentGroup.getParentDisplay().removePassenger(player);
-            componentGroup.getParentDisplay().addPassenger(player);
-        }
+//        if (player != null) {
+//            player.eject();
+//            componentGroup.getParentDisplay().removePassenger(player);
+//            componentGroup.getParentDisplay().addPassenger(player);
+//        }
 
         tickAircraftDisplays(componentGroup, velocity, rotation, player);
         tickForceArrows(forceArrowGroup, velocity, rotation);
