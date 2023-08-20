@@ -19,6 +19,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.models.ModelBuilder;
@@ -123,9 +124,9 @@ public class Glider extends SlimefunItem {
         //pig.setAI(false);
         pig.setCollidable(false);
         pig.wouldCollideUsing(new BoundingBox());
-        //pig.setInvisible(true);
+        pig.setInvisible(true);
 
-        //player.hideEntity(Aircraft.getInstance(), pig);
+        player.hideEntity(Aircraft.getInstance(), pig);
 
         pig.addPassenger(componentGroup.getParentDisplay());
         componentGroup.getDisplays().values().forEach(pig::addPassenger);
