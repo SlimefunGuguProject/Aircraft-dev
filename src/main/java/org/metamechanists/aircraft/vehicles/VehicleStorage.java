@@ -5,6 +5,7 @@ import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -12,12 +13,12 @@ import java.util.stream.Collectors;
 public class VehicleStorage {
     private Set<AircraftGroup> groups = new HashSet<>();
 
-    public void add(final DisplayGroupId aircraftGroupId, final DisplayGroupId forceArrowGroupId) {
-        groups.add(new AircraftGroup(aircraftGroupId, forceArrowGroupId));
+    public void add(final UUID pigId, final DisplayGroupId aircraftGroupId, final DisplayGroupId forceArrowGroupId) {
+        groups.add(new AircraftGroup(pigId, aircraftGroupId, forceArrowGroupId));
     }
 
-    public void remove(final DisplayGroupId aircraftGroupId, final DisplayGroupId forceArrowGroupId) {
-        groups.remove(new AircraftGroup(aircraftGroupId, forceArrowGroupId));
+    public void remove(final UUID pigId, final DisplayGroupId aircraftGroupId, final DisplayGroupId forceArrowGroupId) {
+        groups.remove(new AircraftGroup(pigId, aircraftGroupId, forceArrowGroupId));
     }
 
     public void tick() {

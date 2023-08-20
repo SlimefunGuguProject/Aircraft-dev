@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -122,8 +123,9 @@ public class Glider extends SlimefunItem {
         componentGroup.getDisplays().values().forEach(pig::addPassenger);
         pig.addPassenger(forceArrowGroup.getParentDisplay());
         forceArrowGroup.getDisplays().values().forEach(pig::addPassenger);
+        pig.addPassenger(player);
 
-        VehicleStorage.add(new DisplayGroupId(componentGroup.getParentUUID()), new DisplayGroupId(forceArrowGroup.getParentUUID()));
+        VehicleStorage.add(pig.getUniqueId(), new DisplayGroupId(componentGroup.getParentUUID()), new DisplayGroupId(forceArrowGroup.getParentUUID()));
     }
     private static @NotNull DisplayGroup buildAircraft(final Location location, final @NotNull Player player) {
         final DisplayGroup displayGroup = new ModelBuilder()
@@ -154,12 +156,13 @@ public class Glider extends SlimefunItem {
     public static void tickAircraft(final @NotNull AircraftGroup aircraftGroup) {
         final DisplayGroup componentGroup = aircraftGroup.componentGroupId().get().get();
         final DisplayGroup forceArrowGroup = aircraftGroup.forceArrowGroupId().get().get();
+        final Entity pigEntity = Bukkit.getEntity(aircraftGroup.pigId());
         final PersistentDataTraverser traverser = new PersistentDataTraverser(componentGroup.getParentUUID());
         final Vector3d velocity = traverser.getVector3d("velocity");
         final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Vector3d rotation = traverser.getVector3d("rotation");
         final UUID playerUuid = traverser.getUuid("player");
-        if (velocity == null || angularVelocity == null || rotation == null || playerUuid == null) {
+        if (velocity == null || angularVelocity == null || rotation == null || playerUuid == null || !(pigEntity instanceof final Pig pig)) {
             return;
         }
 
@@ -183,13 +186,7 @@ public class Glider extends SlimefunItem {
         traverser.set("angular_velocity", angularVelocity.add(resultantAngularAcceleration));
         traverser.set("rotation", rotation.add(angularVelocity));
 
-        // Player teleport
-//        if (player != null) {
-//            player.eject();
-//            componentGroup.getParentDisplay().removePassenger(player);
-//            componentGroup.getParentDisplay().addPassenger(player);
-//        }
-
+        tickPig(pig, velocity);
         tickAircraftDisplays(componentGroup, velocity, rotation, player);
         tickForceArrows(forceArrowGroup, velocity, rotation);
 
@@ -198,21 +195,20 @@ public class Glider extends SlimefunItem {
         if (!centralBlock.getBlock().isEmpty()) {
             componentGroup.remove();
             forceArrowGroup.remove();
-            VehicleStorage.remove(aircraftGroup.componentGroupId(), aircraftGroup.forceArrowGroupId());
+            VehicleStorage.remove(aircraftGroup.pigId(), aircraftGroup.componentGroupId(), aircraftGroup.forceArrowGroupId());
             centralBlock.createExplosion(4);
-//            if (player != null) {
-//                player.setGravity(true);
-//            }
+
+            // Player teleport
+            if (player != null) {
+                player.eject();
+                componentGroup.getParentDisplay().removePassenger(player);
+            }
         }
     }
+    private static void tickPig(final @NotNull Pig pig, final Vector3d velocity) {
+        pig.setVelocity(Vector.fromJOML(velocity));
+    }
     private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation, final @Nullable Player player) {
-//        group.getParentDisplay().teleportAsync(group.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
-//        group.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
-//        if (player != null) {
-//            player.setGravity(false);
-//            player.teleport(group.getLocation());
-//        }
-
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
         group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
         group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
@@ -221,8 +217,6 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("rudder").setTransformationMatrix(modelRudder().getMatrix(rotation));
     }
     private static void tickForceArrows(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
-        group.getParentDisplay().teleportAsync(group.getParentDisplay().getLocation().add(Vector.fromJOML(velocity)));
-        group.getDisplays().values().forEach(display -> display.teleportAsync(display.getLocation().add(Vector.fromJOML(velocity))));
         for (final SpatialForce force : getForces(velocity, rotation)) {
             group.getDisplays().get(force.stringHash()).setTransformationMatrix(force.getForceLine(rotation).getMatrix(new Vector3d()));
         }
