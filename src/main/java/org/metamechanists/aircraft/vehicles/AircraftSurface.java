@@ -49,8 +49,8 @@ public class AircraftSurface {
         final Vector3d dragDirection = new Vector3d(airflowVelocity).normalize();
         //final Vector3d dragDirection = normal;
         final Vector3d force = dragDirection.mul(
-                Math.sin(normal.angle(airflowVelocity))
-                        * -0.5
+                Math.cos(normal.angle(airflowVelocity))
+                        * 0.5
                         * dragCoefficient
                         * AIR_DENSITY
                         * getRelativeArea(airflowVelocity)
@@ -83,8 +83,8 @@ public class AircraftSurface {
         final Vector3d liftDirection = new Vector3d(perpendicularDirection).cross(airflowVelocity).normalize();
 
         final Vector3d force = liftDirection.mul(
-                Math.cos(normal.angle(airflowVelocity))
-                        * -0.5
+                Math.sin(normal.angle(airflowVelocity))
+                        * 0.5
                         * liftCoefficient
                         * AIR_DENSITY
                         * getRelativeArea(airflowVelocity)
