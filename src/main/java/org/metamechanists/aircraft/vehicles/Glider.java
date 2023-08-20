@@ -113,9 +113,9 @@ public class Glider extends SlimefunItem {
         final DisplayGroup forceArrowGroup = buildForceArrows(block.getLocation());
 
         final Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
-        pig.setInvulnerable(true);
+        //pig.setInvulnerable(true);
         pig.setGravity(false);
-        pig.setInvisible(true);
+        //pig.setInvisible(true);
 
         //player.hideEntity(Aircraft.getInstance(), pig);
 
