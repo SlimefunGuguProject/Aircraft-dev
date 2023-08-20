@@ -77,13 +77,13 @@ public class Glider extends SlimefunItem {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .size(0.6F, 0.1F, 1.2F)
-                .location(0.2F, 0.0F, 0.6F);
+                .location(0.4F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingFront2() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .size(0.6F, 0.1F, 1.2F)
-                .location(0.2F, 0.0F, -0.6F);
+                .location(0.4F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelWingBack1() {
         return new ModelCuboid()
