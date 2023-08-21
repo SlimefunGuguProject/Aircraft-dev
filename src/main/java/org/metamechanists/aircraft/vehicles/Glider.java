@@ -114,7 +114,7 @@ public class Glider extends SlimefunItem {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.1F, 1.2F)
-                .location(0.3F, (float)(-0.05 * Math.cos(rotation)), 0.6F)
+                .location(0.3F, (float)(-0.1 * Math.cos(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelAileron2(final double rotation) {
