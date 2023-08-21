@@ -54,6 +54,7 @@ public class Glider extends SlimefunItem {
     private static @NotNull ItemUseHandler onItemUse() {
         return event -> {
             if (event.getClickedBlock().isPresent()) {
+                event.getPlayer().getInventory().getItemInMainHand().subtract();
                 event.cancel();
                 place(event.getClickedBlock().get().getRelative(event.getClickedFace()), event.getPlayer());
             }

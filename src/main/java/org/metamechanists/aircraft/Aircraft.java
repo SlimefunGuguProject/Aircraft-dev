@@ -30,10 +30,6 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
         initializeListeners();
         initializeRunnables();
     }
-    @Override
-    public void onDisable() {
-
-    }
 
     @Override
     public @NotNull JavaPlugin getJavaPlugin() {
