@@ -7,21 +7,33 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
+import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 
-import java.lang.reflect.Method;
 
+public final class WasdHandler  {
+    private WasdHandler() {}
 
-public class WasdHandler  {
-    public static void get_key(final float rightLeft, final float forwardbackwards) {
+    private static void handleKey(final @NotNull Player player, final float rightLeft, final float forwardbackwards) {
+        if (player.getVehicle() == null) {
+            return;
+        }
+
+        final PersistentDataTraverser traverser = new PersistentDataTraverser(player.getVehicle());
+        if (!traverser.getBoolean("is_aircraft")) {
+            return;
+        }
+
         if (rightLeft < 0) {
-            Aircraft.getInstance().getLogger().info("D");
+            Glider.onKeyD(traverser);
         } else if (rightLeft > 0) {
-            Aircraft.getInstance().getLogger().info("A");
+            Glider.onKeyA(traverser);
         } else if (forwardbackwards < 0) {
-            Aircraft.getInstance().getLogger().info("S");
+            Glider.onKeyS(traverser);
         } else if (forwardbackwards > 0) {
-            Aircraft.getInstance().getLogger().info("W");
+            Glider.onKeyW(traverser);
         }
     }
 
@@ -34,30 +46,11 @@ public class WasdHandler  {
             @Override
             public void onPacketReceiving(final PacketEvent event) {
                 final PacketContainer packet = event.getPacket();
+                final Player player = event.getPlayer();
                 final float rightleft = packet.getFloat().readSafely(0);
                 final float forwardbackwards = packet.getFloat().readSafely(1);
-                get_key(rightleft, forwardbackwards);
+                handleKey(player, rightleft, forwardbackwards);
             }
         });
-    }
-
-    protected float getRotation(final Object packet) {
-        try {
-            final Method method = packet.getClass().getDeclaredMethod("a");
-            return (float) method.invoke(packet);
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    protected float getDirection(final Object packet) {
-        try {
-            final Method method = packet.getClass().getDeclaredMethod("c");
-            return (float) method.invoke(packet);
-        } catch (final Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
 }
