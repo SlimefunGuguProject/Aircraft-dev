@@ -156,8 +156,8 @@ public class Glider extends SlimefunItem {
                 .add("wing_back_1", modelWingBack1())
                 .add("wing_back_2", modelWingBack2())
                 .add("tail", modelTail())
-                .add("aileron1", modelAileron1())
-                .add("aileron2", modelAileron2())
+                .add("aileron_1", modelAileron1())
+                .add("aileron_2", modelAileron2())
                 .buildAtBlockCenter(location);
     }
     private static DisplayGroup buildForceArrows(final Location location) {
