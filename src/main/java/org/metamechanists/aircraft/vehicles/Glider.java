@@ -121,7 +121,7 @@ public class Glider extends SlimefunItem {
         componentGroup.getDisplays().values().forEach(pig::addPassenger);
         pig.addPassenger(forceArrowGroup.getParentDisplay());
         forceArrowGroup.getDisplays().values().forEach(pig::addPassenger);
-        pig.addPassenger(player);
+        //pig.addPassenger(player);
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         traverser.set("velocity", STARTING_VELOCITY); // must start off with some velocity to prevent NaN issues
