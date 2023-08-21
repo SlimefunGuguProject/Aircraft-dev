@@ -17,7 +17,6 @@ import org.metamechanists.aircraft.utils.id.simple.BlockDisplayId;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.id.simple.InteractionId;
 import org.metamechanists.aircraft.utils.id.simple.TextDisplayId;
-import org.metamechanists.aircraft.vehicles.ControlSurfaces;
 
 import java.util.List;
 import java.util.Map;
@@ -118,12 +117,6 @@ public class PersistentDataTraverser {
     public void set(@NotNull final String key, @Nullable final CustomId value) {
         set(key, value == null ? null : value.toString());
     }
-    public void set(@NotNull final String key, @NotNull final ControlSurfaces value) {
-        set(key + "aileron1", value.getAileron1());
-        set(key + "aileron2", value.getAileron2());
-        set(key + "elevator1", value.getElevator1());
-        set(key + "elevator2", value.getElevator2());
-    }
     public void set(@NotNull final String key, @NotNull final Map<String, ? extends CustomId> value) {
         set(key + "length", value.size());
         int i = 0;
@@ -204,13 +197,6 @@ public class PersistentDataTraverser {
     public @Nullable TextDisplayId getTextDisplayId(@NotNull final String key) {
         final String uuid = getString(key);
         return uuid == null ? null : new TextDisplayId(uuid);
-    }
-    public @NotNull ControlSurfaces getControlSurfaces(@NotNull final String key) {
-        return new ControlSurfaces(
-                getDouble(key + "aileron1"),
-                getDouble(key + "aileron2"),
-                getDouble(key + "elevator1"),
-                getDouble(key + "elevator2"));
     }
     public @Nullable List<UUID> getUuidList(@NotNull final String key) {
         final int size = getInt(key + "length");
