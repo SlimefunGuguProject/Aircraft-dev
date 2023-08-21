@@ -5,6 +5,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -53,8 +54,10 @@ public class Glider extends SlimefunItem {
 
     private static @NotNull ItemUseHandler onItemUse() {
         return event -> {
-            if (event.getClickedBlock().isPresent()) {
-                event.getPlayer().getInventory().getItemInMainHand().subtract();
+            if (event.getClickedBlock().isPresent() && !event.getPlayer().isInsideVehicle()) {
+                if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+                    event.getPlayer().getInventory().getItemInMainHand().subtract();
+                }
                 place(event.getClickedBlock().get().getRelative(event.getClickedFace()), event.getPlayer());
             }
         };
@@ -121,7 +124,7 @@ public class Glider extends SlimefunItem {
         componentGroup.getDisplays().values().forEach(pig::addPassenger);
         pig.addPassenger(forceArrowGroup.getParentDisplay());
         forceArrowGroup.getDisplays().values().forEach(pig::addPassenger);
-        //pig.addPassenger(player);
+        pig.addPassenger(player);
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         traverser.set("velocity", STARTING_VELOCITY); // must start off with some velocity to prevent NaN issues
