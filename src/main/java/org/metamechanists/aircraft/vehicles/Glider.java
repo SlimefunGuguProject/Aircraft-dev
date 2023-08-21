@@ -265,10 +265,10 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
         group.getDisplays().get("tail").setTransformationMatrix(modelTail().getMatrix(rotation));
 
-        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(controlSurfaces.aileron1).getMatrix(rotation));
-        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(controlSurfaces.aileron2).getMatrix(rotation));
-        group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(controlSurfaces.elevator1).getMatrix(rotation));
-        group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(controlSurfaces.elevator2).getMatrix(rotation));
+        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(0).getMatrix(rotation));
+        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(0).getMatrix(rotation));
+        group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(0).getMatrix(rotation));
+        group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(0).getMatrix(rotation));
     }
     private static void tickForceArrows(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
         for (final SpatialForce force : getForces(velocity, rotation)) {
