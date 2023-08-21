@@ -178,10 +178,10 @@ public class Glider extends SlimefunItem {
                 .add("wing_back_1", modelWingBack1())
                 .add("wing_back_2", modelWingBack2())
                 .add("tail", modelTail())
-                .add("aileron_1", modelAileron1(0))
-                .add("aileron_2", modelAileron2(0))
-                .add("elevator_1", modelElevator1(0))
-                .add("elevator_2", modelElevator2(0))
+//                .add("aileron_1", modelAileron1(0))
+//                .add("aileron_2", modelAileron2(0))
+//                .add("elevator_1", modelElevator1(0))
+//                .add("elevator_2", modelElevator2(0))
                 .buildAtBlockCenter(location);
     }
     private static DisplayGroup buildForceArrows(final Location location) {
@@ -265,10 +265,10 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
         group.getDisplays().get("tail").setTransformationMatrix(modelTail().getMatrix(rotation));
 
-        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(0).getMatrix(rotation));
-        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(0).getMatrix(rotation));
-        group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(0).getMatrix(rotation));
-        group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(0).getMatrix(rotation));
+//        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(0).getMatrix(rotation));
+//        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(0).getMatrix(rotation));
+//        group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(0).getMatrix(rotation));
+//        group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(0).getMatrix(rotation));
     }
     private static void tickForceArrows(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
         for (final SpatialForce force : getForces(velocity, rotation)) {
