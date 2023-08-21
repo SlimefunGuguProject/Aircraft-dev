@@ -70,7 +70,7 @@ public class Glider extends SlimefunItem {
         surfaces.addAll(modelWingFront2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         surfaces.addAll(modelWingBack1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         surfaces.addAll(modelWingBack2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelTail().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelRudder().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         return surfaces;
     }
 
@@ -104,23 +104,11 @@ public class Glider extends SlimefunItem {
                 .size(0.4F, 0.1F, 0.8F)
                 .location(-0.8F, 0.0F, -0.6F);
     }
-    private static ModelCuboid modelTail() {
+    private static ModelCuboid modelRudder() {
         return new ModelCuboid()
                 .material(Material.BLUE_CONCRETE)
                 .size(0.5F, 1.0F, 0.1F)
                 .location(-0.8F, 0.6F, 0.0F);
-    }
-    private static ModelCuboid modelAileron1() {
-        return new ModelCuboid()
-                .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.1F, 1.2F)
-                .location(0.9F, 0.0F, 0.6F);
-    }
-    private static ModelCuboid modelAileron2() {
-        return new ModelCuboid()
-                .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.1F, 1.2F)
-                .location(0.9F, 0.0F, -0.6F);
     }
 
     private static void place(final @NotNull Block block, final @NotNull Player player) {
@@ -155,9 +143,7 @@ public class Glider extends SlimefunItem {
                 .add("wing_front_2", modelWingFront2())
                 .add("wing_back_1", modelWingBack1())
                 .add("wing_back_2", modelWingBack2())
-                .add("tail", modelTail())
-                .add("aileron1", modelAileron1())
-                .add("aileron2", modelAileron2())
+                .add("rudder", modelRudder())
                 .buildAtBlockCenter(location);
     }
     private static DisplayGroup buildForceArrows(final Location location) {
@@ -233,15 +219,11 @@ public class Glider extends SlimefunItem {
     }
     private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d rotation) {
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
-
         group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
         group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
         group.getDisplays().get("wing_back_1").setTransformationMatrix(modelWingBack1().getMatrix(rotation));
         group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
-        group.getDisplays().get("tail").setTransformationMatrix(modelTail().getMatrix(rotation));
-
-        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1().getMatrix(rotation));
-        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2().getMatrix(rotation));
+        group.getDisplays().get("rudder").setTransformationMatrix(modelRudder().getMatrix(rotation));
     }
     private static void tickForceArrows(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
         for (final SpatialForce force : getForces(velocity, rotation)) {
