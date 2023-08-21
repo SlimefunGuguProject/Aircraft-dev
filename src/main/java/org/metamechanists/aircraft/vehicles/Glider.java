@@ -38,12 +38,12 @@ public class Glider extends SlimefunItem {
     private static final double MAX_CONTROL_SURFACE_ROTATION = Math.PI / 4;
     private static final double CONTROL_SURFACE_ROTATION_RATE = Math.PI / 16;
 
-    private static final Vector3d STARTING_VELOCITY = new Vector3d(1.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
+    private static final Vector3d STARTING_VELOCITY = new Vector3d(0.5, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
     private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
     private static final Vector3d STARTING_ROTATION = new Vector3d(Math.PI / 4, 0, 0); // roll, yaw, pitch
 
     private static final double MASS = 0.005;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.2; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 0.05; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
