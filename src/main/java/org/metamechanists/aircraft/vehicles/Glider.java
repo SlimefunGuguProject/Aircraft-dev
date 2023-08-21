@@ -114,7 +114,7 @@ public class Glider extends SlimefunItem {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.1F, 1.2F)
-                .location(0.3F, -(float) Math.cos(rotation), 0.6F)
+                .location(0.3F, (float)(-0.1 * Math.cos(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelAileron2(final double rotation) {
@@ -258,8 +258,8 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
         group.getDisplays().get("tail").setTransformationMatrix(modelTail().getMatrix(rotation));
 
-        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(Math.PI / 8).getMatrix(rotation));
-        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(Math.PI / 8).getMatrix(rotation));
+        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(Math.PI / 6).getMatrix(rotation));
+        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(Math.PI / 6).getMatrix(rotation));
         group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(0).getMatrix(rotation));
         group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(0).getMatrix(rotation));
     }
