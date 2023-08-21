@@ -70,7 +70,7 @@ public class Glider extends SlimefunItem {
         surfaces.addAll(modelWingFront2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         surfaces.addAll(modelWingBack1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         surfaces.addAll(modelWingBack2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelRudder().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelTail().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         return surfaces;
     }
 
@@ -104,11 +104,39 @@ public class Glider extends SlimefunItem {
                 .size(0.4F, 0.1F, 0.8F)
                 .location(-0.8F, 0.0F, -0.6F);
     }
-    private static ModelCuboid modelRudder() {
+    private static ModelCuboid modelTail() {
         return new ModelCuboid()
                 .material(Material.BLUE_CONCRETE)
                 .size(0.5F, 1.0F, 0.1F)
                 .location(-0.8F, 0.6F, 0.0F);
+    }
+    private static ModelCuboid modelAileron1(final double rotation) {
+        return new ModelCuboid()
+                .material(Material.ORANGE_CONCRETE)
+                .size(0.2F, 0.1F, 1.2F)
+                .location(0.3F, (float)(-0.05 * Math.cos(rotation)), 0.6F)
+                .rotation(new Vector3d(0, 0, rotation));
+    }
+    private static ModelCuboid modelAileron2(final double rotation) {
+        return new ModelCuboid()
+                .material(Material.ORANGE_CONCRETE)
+                .size(0.2F, 0.1F, 1.2F)
+                .location(0.3F, (float)(-0.05 * Math.cos(rotation)), -0.6F)
+                .rotation(new Vector3d(0, 0, rotation));
+    }
+    private static ModelCuboid modelElevator1(final double rotation) {
+        return new ModelCuboid()
+                .material(Material.ORANGE_CONCRETE)
+                .size(0.2F, 0.1F, 0.8F)
+                .location(-1.1F, (float)(-0.05 * Math.cos(rotation)), 0.6F)
+                .rotation(new Vector3d(0, 0, rotation));
+    }
+    private static ModelCuboid modelElevator2(final double rotation) {
+        return new ModelCuboid()
+                .material(Material.ORANGE_CONCRETE)
+                .size(0.2F, 0.1F, 0.8F)
+                .location(-1.1F, (float)(-0.05 * Math.cos(rotation)), -0.6F)
+                .rotation(new Vector3d(0, 0, rotation));
     }
 
     private static void place(final @NotNull Block block, final @NotNull Player player) {
@@ -143,7 +171,11 @@ public class Glider extends SlimefunItem {
                 .add("wing_front_2", modelWingFront2())
                 .add("wing_back_1", modelWingBack1())
                 .add("wing_back_2", modelWingBack2())
-                .add("rudder", modelRudder())
+                .add("tail", modelTail())
+                .add("aileron_1", modelAileron1(0))
+                .add("aileron_2", modelAileron2(0))
+                .add("elevator_1", modelElevator1(0))
+                .add("elevator_2", modelElevator2(0))
                 .buildAtBlockCenter(location);
     }
     private static DisplayGroup buildForceArrows(final Location location) {
@@ -223,7 +255,10 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
         group.getDisplays().get("wing_back_1").setTransformationMatrix(modelWingBack1().getMatrix(rotation));
         group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
-        group.getDisplays().get("rudder").setTransformationMatrix(modelRudder().getMatrix(rotation));
+        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(0).getMatrix(rotation));
+        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(0).getMatrix(rotation));
+        group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(0).getMatrix(rotation));
+        group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(0).getMatrix(rotation));
     }
     private static void tickForceArrows(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
         for (final SpatialForce force : getForces(velocity, rotation)) {
