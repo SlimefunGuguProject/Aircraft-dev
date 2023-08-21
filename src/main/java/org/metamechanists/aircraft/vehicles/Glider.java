@@ -115,13 +115,25 @@ public class Glider extends SlimefunItem {
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.1F, 1.2F)
                 .location(0.3F, 0.0F, 0.6F)
-                .rotation(rotation);
+                .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelAileron2() {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.1F, 1.2F)
                 .location(0.3F, 0.0F, -0.6F);
+    }
+    private static ModelCuboid modelElevator1() {
+        return new ModelCuboid()
+                .material(Material.ORANGE_CONCRETE)
+                .size(0.2F, 0.1F, 0.8F)
+                .location(-1.2F, 0.0F, 0.6F);
+    }
+    private static ModelCuboid modelElevator2() {
+        return new ModelCuboid()
+                .material(Material.ORANGE_CONCRETE)
+                .size(0.2F, 0.1F, 0.8F)
+                .location(-1.2F, 0.0F, -0.6F);
     }
 
     private static void place(final @NotNull Block block, final @NotNull Player player) {
@@ -159,6 +171,8 @@ public class Glider extends SlimefunItem {
                 .add("tail", modelTail())
                 .add("aileron_1", modelAileron1(Math.PI / 3))
                 .add("aileron_2", modelAileron2())
+                .add("elevator_1", modelElevator1())
+                .add("elevator_2", modelElevator2())
                 .buildAtBlockCenter(location);
     }
     private static DisplayGroup buildForceArrows(final Location location) {
