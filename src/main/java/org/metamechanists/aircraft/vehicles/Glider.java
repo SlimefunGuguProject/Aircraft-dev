@@ -43,7 +43,7 @@ public class Glider extends SlimefunItem {
     private static final Vector3d STARTING_ROTATION = new Vector3d(Math.PI / 4, 0, 0); // roll, yaw, pitch
 
     private static final double MASS = 0.005;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.2; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 0.05; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
