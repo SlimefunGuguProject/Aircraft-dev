@@ -110,18 +110,17 @@ public class Glider extends SlimefunItem {
                 .size(0.5F, 1.0F, 0.1F)
                 .location(-0.8F, 0.6F, 0.0F);
     }
-    private static ModelCuboid modelAileron1(final double rotation) {
+    private static ModelCuboid modelAileron1() {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.1F, 1.2F)
-                .location(0.3F, 0.0F, 0.6F)
-                .rotation(rotation);
+                .location(0.9F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelAileron2() {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.1F, 1.2F)
-                .location(0.3F, 0.0F, -0.6F);
+                .location(0.9F, 0.0F, -0.6F);
     }
 
     private static void place(final @NotNull Block block, final @NotNull Player player) {
@@ -157,7 +156,7 @@ public class Glider extends SlimefunItem {
                 .add("wing_back_1", modelWingBack1())
                 .add("wing_back_2", modelWingBack2())
                 .add("tail", modelTail())
-                .add("aileron_1", modelAileron1(Math.PI / 3))
+                .add("aileron_1", modelAileron1())
                 .add("aileron_2", modelAileron2())
                 .buildAtBlockCenter(location);
     }
@@ -241,7 +240,7 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
         group.getDisplays().get("tail").setTransformationMatrix(modelTail().getMatrix(rotation));
 
-        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(Math.PI / 3).getMatrix(rotation));
+        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1().getMatrix(rotation));
         group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2().getMatrix(rotation));
     }
     private static void tickForceArrows(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
