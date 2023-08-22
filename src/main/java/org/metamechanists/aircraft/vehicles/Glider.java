@@ -240,6 +240,7 @@ public class Glider extends SlimefunItem {
         final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(2000).mul(-1);
 
         // Euler integration
+        traverser.set("is_aircraft", true);
         traverser.set("velocity", velocity.add(resultantAcceleration));
         traverser.set("angular_velocity", angularVelocity.add(resultantAngularAcceleration));
         traverser.set("rotation", rotation.add(angularVelocity));
@@ -255,7 +256,7 @@ public class Glider extends SlimefunItem {
     private static void tickPig(final @NotNull Pig pig, final Vector3d velocity) {
         pig.setVelocity(Vector.fromJOML(velocity));
     }
-    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d rotation, final ControlSurfaces controlSurfaces) {
+    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d rotation, final @NotNull ControlSurfaces controlSurfaces) {
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
         group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
         group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
