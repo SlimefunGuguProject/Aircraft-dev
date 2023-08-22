@@ -249,6 +249,7 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
         group.getDisplays().get("wing_back_1").setTransformationMatrix(modelWingBack1().getMatrix(rotation));
         group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
+        group.getDisplays().get("tail").setTransformationMatrix(modelTail().getMatrix(rotation));
         group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(controlSurfaces.aileron1).getMatrix(rotation));
         group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(controlSurfaces.aileron2).getMatrix(rotation));
         group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(controlSurfaces.elevator1).getMatrix(rotation));
@@ -258,12 +259,16 @@ public class Glider extends SlimefunItem {
     private static @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation, final @NotNull ControlSurfaces controlSurfaces) {
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
+        forces.add(getThrustForce(rotation));
         forces.addAll(getDragForces(rotation, velocity, controlSurfaces));
         forces.addAll(getLiftForces(rotation, velocity, controlSurfaces));
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce() {
-        return new SpatialForce(new Vector3d(0, -10 * MASS, 0), new Vector3d(0, 0, 0), ForceType.WEIGHT);
+        return new SpatialForce(new Vector3d(0, -10 * MASS, 0), new Vector3d(0, 0, 0));
+    }
+    private static @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
+        return new SpatialForce(new Vector3d(100, 0, 0).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z), new Vector3d(0, 0, 0));
     }
     private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()
