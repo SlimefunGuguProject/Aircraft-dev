@@ -149,7 +149,6 @@ public class Glider extends SlimefunItem {
 
     private static void place(final @NotNull Block block, final @NotNull Player player) {
         final DisplayGroup componentGroup = buildAircraft(block.getLocation());
-        final DisplayGroup forceArrowGroup = buildForceArrows(block.getLocation());
 
         final Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
         pig.setInvulnerable(true);
@@ -158,8 +157,6 @@ public class Glider extends SlimefunItem {
 
         pig.addPassenger(componentGroup.getParentDisplay());
         componentGroup.getDisplays().values().forEach(pig::addPassenger);
-        pig.addPassenger(forceArrowGroup.getParentDisplay());
-        forceArrowGroup.getDisplays().values().forEach(pig::addPassenger);
         pig.addPassenger(player);
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
@@ -168,7 +165,6 @@ public class Glider extends SlimefunItem {
         traverser.set("rotation", STARTING_ROTATION); // roll, yaw, pitch
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
-        traverser.set("forceArrowGroupId", new DisplayGroupId(forceArrowGroup.getParentUUID()));
         traverser.set("controlSurfaces", new ControlSurfaces(0, 0, 0, 0));
         VehicleStorage.add(pig.getUniqueId());
     }
@@ -187,12 +183,6 @@ public class Glider extends SlimefunItem {
                 .add("elevator_2", modelElevator2(0))
                 .buildAtBlockCenter(location);
     }
-    private static DisplayGroup buildForceArrows(final Location location) {
-        final ModelBuilder forceArrowBuilder = new ModelBuilder();
-        getForces(STARTING_VELOCITY, STARTING_ROTATION).forEach(force -> forceArrowBuilder.add(force.stringHash(), force.getForceLine(STARTING_ROTATION)));
-        forceArrowBuilder.add("velocity", new SpatialForce(STARTING_VELOCITY, new Vector3d(), ForceType.VELOCITY).getForceLine(STARTING_ROTATION));
-        return forceArrowBuilder.buildAtBlockCenter(location);
-    }
 
     private static @NotNull Optional<Player> getPilot(final @NotNull Pig pig) {
         return pig.getPassengers().stream()
@@ -201,9 +191,8 @@ public class Glider extends SlimefunItem {
                 .findFirst();
     }
 
-    private static void remove(final @NotNull Pig pig, final @NotNull DisplayGroup componentGroup, final @NotNull DisplayGroup forceArrowGroup) {
+    private static void remove(final @NotNull Pig pig, final @NotNull DisplayGroup componentGroup) {
         componentGroup.remove();
-        forceArrowGroup.remove();
         VehicleStorage.remove(pig.getUniqueId());
         pig.getLocation().createExplosion(4);
         getPilot(pig).ifPresent(pilot -> {
@@ -219,17 +208,12 @@ public class Glider extends SlimefunItem {
         final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Vector3d rotation = traverser.getVector3d("rotation");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
-        final DisplayGroupId forceArrowGroupId = traverser.getDisplayGroupId("forceArrowGroupId");
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
-        if (velocity == null || angularVelocity == null || rotation == null
-                || componentGroupId == null || componentGroupId.get().isEmpty()
-                || forceArrowGroupId == null || forceArrowGroupId.get().isEmpty()) {
+        if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty()) {
             return;
         }
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
-        final DisplayGroup forceArrowGroup = forceArrowGroupId.get().get();
-
         final Set<SpatialForce> forces = getForces(velocity, rotation);
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 
@@ -251,10 +235,9 @@ public class Glider extends SlimefunItem {
 
         tickPig(pig, velocity);
         tickAircraftDisplays(componentGroup, rotation, controlSurfaces);
-        tickForceArrows(forceArrowGroup, velocity, rotation);
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
-            remove(pig, componentGroup, forceArrowGroup);
+            remove(pig, componentGroup);
         }
     }
     private static void tickPig(final @NotNull Pig pig, final Vector3d velocity) {
@@ -270,13 +253,6 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(controlSurfaces.aileron2).getMatrix(rotation));
         group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(controlSurfaces.elevator1).getMatrix(rotation));
         group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(controlSurfaces.elevator2).getMatrix(rotation));
-    }
-    private static void tickForceArrows(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
-        for (final SpatialForce force : getForces(velocity, rotation)) {
-            group.getDisplays().get(force.stringHash()).setTransformationMatrix(force.getForceLine(rotation).getMatrix(new Vector3d()));
-        }
-        group.getDisplays().get("velocity").setTransformationMatrix(
-                new SpatialForce(new Vector3d(velocity).div(100), new Vector3d(), ForceType.VELOCITY).getForceLine(rotation).getMatrix(new Vector3d()));
     }
 
     private static @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation) {
