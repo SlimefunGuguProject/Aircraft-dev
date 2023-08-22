@@ -35,7 +35,7 @@ public class Glider extends SlimefunItem {
     private static final double LIFT_COEFFICIENT_BODY = 0.60;
     private static final double LIFT_COEFFICIENT_WING = 0.60;
 
-    private static final double MAX_CONTROL_SURFACE_ROTATION = Math.PI / 4;
+    private static final double MAX_CONTROL_SURFACE_ROTATION = Math.PI / 3;
     private static final double CONTROL_SURFACE_ROTATION_RATE = Math.PI / 16;
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(1.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
@@ -117,29 +117,29 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelAileron1(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.1F, 1.2F)
-                .location(0.3F, (float)(-0.05 * Math.sin(rotation)), 0.6F)
+                .size(0.4F, 0.1F, 1.2F)
+                .location(0.2F, (float)(-0.2 * Math.sin(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelAileron2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.1F, 1.2F)
-                .location(0.3F, (float)(-0.05 * Math.sin(rotation)), -0.6F)
+                .size(0.4F, 0.1F, 1.2F)
+                .location(0.2F, (float)(-0.2 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelElevator1(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.1F, 0.8F)
-                .location(-1.1F, (float)(-0.05 * Math.sin(rotation)), 0.6F)
+                .size(0.4F, 0.1F, 0.8F)
+                .location(-1.2F, (float)(-0.2 * Math.sin(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelElevator2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.1F, 0.8F)
-                .location(-1.1F, (float)(-0.05 * Math.sin(rotation)), -0.6F)
+                .size(0.4F, 0.1F, 0.8F)
+                .location(-1.2F, (float)(-0.2 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
 
