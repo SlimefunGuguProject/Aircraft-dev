@@ -17,7 +17,6 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
-import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.models.ModelBuilder;
 import org.metamechanists.aircraft.utils.models.components.ModelCuboid;
@@ -165,6 +164,7 @@ public class Glider extends SlimefunItem {
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
         traverser.set("forceArrowGroupId", new DisplayGroupId(forceArrowGroup.getParentUUID()));
+        traverser.set("controlSurfaces", new ControlSurfaces(0, 0, 0, 0));
         VehicleStorage.add(pig.getUniqueId());
     }
     private static @NotNull DisplayGroup buildAircraft(final Location location) {
@@ -215,6 +215,7 @@ public class Glider extends SlimefunItem {
         final Vector3d rotation = traverser.getVector3d("rotation");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final DisplayGroupId forceArrowGroupId = traverser.getDisplayGroupId("forceArrowGroupId");
+        final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         if (velocity == null || angularVelocity == null || rotation == null
                 || componentGroupId == null || componentGroupId.get().isEmpty()
                 || forceArrowGroupId == null || forceArrowGroupId.get().isEmpty()) {
@@ -243,7 +244,7 @@ public class Glider extends SlimefunItem {
         traverser.set("rotation", rotation.add(angularVelocity));
 
         tickPig(pig, velocity);
-        tickAircraftDisplays(componentGroup, rotation);
+        tickAircraftDisplays(componentGroup, rotation, controlSurfaces);
         tickForceArrows(forceArrowGroup, velocity, rotation);
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
@@ -253,16 +254,16 @@ public class Glider extends SlimefunItem {
     private static void tickPig(final @NotNull Pig pig, final Vector3d velocity) {
         pig.setVelocity(Vector.fromJOML(velocity));
     }
-    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d rotation) {
+    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d rotation, final ControlSurfaces controlSurfaces) {
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
         group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
         group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
         group.getDisplays().get("wing_back_1").setTransformationMatrix(modelWingBack1().getMatrix(rotation));
         group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
-        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(0).getMatrix(rotation));
-        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(0).getMatrix(rotation));
-        group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(0).getMatrix(rotation));
-        group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(0).getMatrix(rotation));
+        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(controlSurfaces.aileron1).getMatrix(rotation));
+        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(controlSurfaces.aileron2).getMatrix(rotation));
+        group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(controlSurfaces.elevator1).getMatrix(rotation));
+        group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(controlSurfaces.elevator2).getMatrix(rotation));
     }
     private static void tickForceArrows(final @NotNull DisplayGroup group, final Vector3d velocity, final Vector3d rotation) {
         for (final SpatialForce force : getForces(velocity, rotation)) {
