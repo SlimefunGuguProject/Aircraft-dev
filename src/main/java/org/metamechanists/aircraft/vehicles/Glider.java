@@ -67,7 +67,7 @@ public class Glider extends SlimefunItem {
         };
     }
 
-    private static @NotNull Set<AircraftSurface> getSurfaces() {
+    private static @NotNull Set<AircraftSurface> getSurfaces(final @NotNull ControlSurfaces controlSurfaces) {
         final Set<AircraftSurface> surfaces = new HashSet<>();
         surfaces.addAll(modelMain().getSurfaces(DRAG_COEFFICIENT_BODY, LIFT_COEFFICIENT_BODY));
         surfaces.addAll(modelWingFront1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
@@ -75,10 +75,10 @@ public class Glider extends SlimefunItem {
         surfaces.addAll(modelWingBack1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         surfaces.addAll(modelWingBack2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         surfaces.addAll(modelTail().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelAileron1(0).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelAileron2(0).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelElevator1(0).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelElevator2(0).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelAileron1(controlSurfaces.aileron1).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelAileron2(controlSurfaces.aileron2).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelElevator1(controlSurfaces.elevator1).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelElevator2(controlSurfaces.elevator2).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         return surfaces;
     }
 
@@ -214,7 +214,7 @@ public class Glider extends SlimefunItem {
         }
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
-        final Set<SpatialForce> forces = getForces(velocity, rotation);
+        final Set<SpatialForce> forces = getForces(velocity, rotation, controlSurfaces);
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 
         // Newton's 2nd law to calculate resultant force and then acceleration
@@ -255,23 +255,23 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(controlSurfaces.elevator2).getMatrix(rotation));
     }
 
-    private static @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation) {
+    private static @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation, final @NotNull ControlSurfaces controlSurfaces) {
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
-        forces.addAll(getDragForces(rotation, velocity));
-        forces.addAll(getLiftForces(rotation, velocity));
+        forces.addAll(getDragForces(rotation, velocity, controlSurfaces));
+        forces.addAll(getLiftForces(rotation, velocity, controlSurfaces));
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce() {
         return new SpatialForce(new Vector3d(0, -10 * MASS, 0), new Vector3d(0, 0, 0), ForceType.WEIGHT);
     }
-    private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity) {
-        return getSurfaces().stream()
+    private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final @NotNull ControlSurfaces controlSurfaces) {
+        return getSurfaces(controlSurfaces).stream()
                 .map(aircraftSurface -> aircraftSurface.getDragForce(rotation, velocity))
                 .collect(Collectors.toSet());
     }
-    private static @NotNull Set<SpatialForce> getLiftForces(final Vector3d rotation, final Vector3d velocity) {
-        return getSurfaces().stream()
+    private static @NotNull Set<SpatialForce> getLiftForces(final Vector3d rotation, final Vector3d velocity, final @NotNull ControlSurfaces controlSurfaces) {
+        return getSurfaces(controlSurfaces).stream()
                 .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity))
                 .collect(Collectors.toSet());
     }
@@ -282,21 +282,18 @@ public class Glider extends SlimefunItem {
         controlSurfaces.setElevator2(Utils.clampToRange(controlSurfaces.elevator2 + CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
         traverser.set("controlSurfaces", controlSurfaces);
     }
-
     public static void onKeyS(final @NotNull PersistentDataTraverser traverser) {
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         controlSurfaces.setElevator1(Utils.clampToRange(controlSurfaces.elevator1 - CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
         controlSurfaces.setElevator2(Utils.clampToRange(controlSurfaces.elevator2 - CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
         traverser.set("controlSurfaces", controlSurfaces);
     }
-
     public static void onKeyA(final @NotNull PersistentDataTraverser traverser) {
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         controlSurfaces.setAileron1(Utils.clampToRange(controlSurfaces.aileron1 + CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
         controlSurfaces.setAileron2(Utils.clampToRange(controlSurfaces.aileron2 - CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
         traverser.set("controlSurfaces", controlSurfaces);
     }
-
     public static void onKeyD(final @NotNull PersistentDataTraverser traverser) {
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         controlSurfaces.setAileron1(Utils.clampToRange(controlSurfaces.aileron1 - CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
