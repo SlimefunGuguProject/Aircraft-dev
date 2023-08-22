@@ -21,7 +21,7 @@ public class AircraftSurface {
         this.relativeLocation = relativeLocation;
     }
 
-    public double getRelativeArea(final @NotNull Vector3d airflowVelocity) {
+    private double getRelativeArea(final @NotNull Vector3d airflowVelocity) {
         return new Vector3d(relativeNormal).dot(airflowVelocity) * area;
     }
 
@@ -31,12 +31,12 @@ public class AircraftSurface {
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         if (normal.angle(airflowVelocity) < Math.PI / 2) {
-            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.DRAG);
+            return new SpatialForce(new Vector3d(), relativeLocation);
         }
 
         // Check the airflow and normal are not in opposite directions - this causes NaN values
         if (normal.angle(airflowVelocity) < 0.001) {
-            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
+            return new SpatialForce(new Vector3d(), relativeLocation);
         }
 
         // D = 0.5 * Cd * ρ * A * V^2, where
@@ -55,7 +55,7 @@ public class AircraftSurface {
                         * AIR_DENSITY
                         * getRelativeArea(airflowVelocity)
                         * (aircraftSpeed * aircraftSpeed));
-        return new SpatialForce(force, relativeLocation, ForceType.DRAG);
+        return new SpatialForce(force, relativeLocation);
     }
 
     public SpatialForce getLiftForce(final @NotNull Vector3d aircraftRotation, final @NotNull Vector3d aircraftVelocity) {
@@ -64,12 +64,12 @@ public class AircraftSurface {
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         if (normal.angle(airflowVelocity) < Math.PI / 2) {
-            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
+            return new SpatialForce(new Vector3d(), relativeLocation);
         }
 
         // Check the airflow and normal are not in opposite directions - this causes NaN values
         if (normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
-            return new SpatialForce(new Vector3d(), relativeLocation, ForceType.LIFT);
+            return new SpatialForce(new Vector3d(), relativeLocation);
         }
 
         // L = 0.5 * Cl * ρ * A * V^2,
@@ -89,6 +89,6 @@ public class AircraftSurface {
                         * AIR_DENSITY
                         * getRelativeArea(airflowVelocity)
                         * (aircraftSpeed * aircraftSpeed));
-        return new SpatialForce(force, relativeLocation, ForceType.LIFT);
+        return new SpatialForce(force, relativeLocation);
     }
 }
