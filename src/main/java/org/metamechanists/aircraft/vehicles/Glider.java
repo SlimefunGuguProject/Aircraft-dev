@@ -154,6 +154,7 @@ public class Glider extends SlimefunItem {
         pig.setInvulnerable(true);
         pig.setGravity(false);
         pig.setInvisible(true);
+        pig.setSilent(false);
 
         pig.addPassenger(componentGroup.getParentDisplay());
         componentGroup.getDisplays().values().forEach(pig::addPassenger);
