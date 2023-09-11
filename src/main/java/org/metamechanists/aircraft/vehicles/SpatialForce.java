@@ -17,7 +17,7 @@ public record SpatialForce(ForceType type, Vector3d force, Vector3d relativeLoca
         builder.add(hash(), new ModelLine()
                 .from(from)
                 .to(to)
-                .thickness(0.2F)
+                .thickness(0.1F)
                 .material(type.getMaterial()));
     }
 
