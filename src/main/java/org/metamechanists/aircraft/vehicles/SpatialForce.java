@@ -1,21 +1,27 @@
 package org.metamechanists.aircraft.vehicles;
 
-import dev.sefiraat.sefilib.misc.ParticleUtils;
-import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.utils.models.ModelBuilder;
 import org.metamechanists.aircraft.utils.models.components.ModelLine;
 
 
-public record SpatialForce(Vector3d force, Vector3d relativeLocation) {
+public record SpatialForce(ForceType type, Vector3d force, Vector3d relativeLocation) {
     public Vector3d getTorqueVector() {
         return new Vector3d(force).cross(relativeLocation);
     }
-    public void visualise(final @NotNull Location pigLocation) {
-        final Location absoluteLocation = pigLocation.clone().add(Vector.fromJOML(relativeLocation));
-        ParticleUtils.drawLine(Particle.WATER_BUBBLE, absoluteLocation, absoluteLocation.clone().add(Vector.fromJOML(force)), 0.1);
+    public void visualise(final @NotNull ModelBuilder builder) {
+        final Vector3f from = new Vector3f((float) relativeLocation.x, (float) relativeLocation.y, (float) relativeLocation.z);
+        final Vector3f to = new Vector3f(from).add(new Vector3f((float) force.x, (float) force.y, (float) force.z));
+        builder.add(hash(), new ModelLine()
+                .from(from)
+                .to(to)
+                .thickness(0.2F)
+                .material(type.getMaterial()));
+    }
+
+    private @NotNull String hash() {
+        return relativeLocation.toString() + type.toString();
     }
 }

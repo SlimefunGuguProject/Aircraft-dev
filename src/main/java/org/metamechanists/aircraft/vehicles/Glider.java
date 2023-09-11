@@ -26,6 +26,7 @@ import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -218,10 +219,21 @@ public class Glider extends SlimefunItem {
         final Set<SpatialForce> forces = getForces(velocity, rotation, controlSurfaces);
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 
+        // Remove previous force visualisation
+        final DisplayGroupId oldForceGroupId = traverser.getDisplayGroupId("forceGroupId");
+        if (oldForceGroupId != null) {
+            oldForceGroupId.get().ifPresent(DisplayGroup::remove);
+        }
+
+        // visualise forces
+        final ModelBuilder builder = new ModelBuilder().rotation(rotation.x, rotation.y, rotation.z);
+        forces.forEach(force -> force.visualise(builder));
+        final DisplayGroupId forceGroupId = new DisplayGroupId(builder.buildAtLocation(pig.getLocation()).getParentUUID());
+        traverser.set("forceGroupId", forceGroupId);
+
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
-        forces.forEach(force -> force.visualise(pig.getLocation()));
         final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(2000);
 
         // Sum torque vectors to find resultant torque
@@ -267,10 +279,10 @@ public class Glider extends SlimefunItem {
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce() {
-        return new SpatialForce(new Vector3d(0, -10 * MASS, 0), new Vector3d(0, 0, 0));
+        return new SpatialForce(ForceType.WEIGHT, new Vector3d(0, -10 * MASS, 0), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
-        return new SpatialForce(new Vector3d(0.1, 0, 0).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z), new Vector3d(0, 0, 0));
+        return new SpatialForce(ForceType.THRUST, new Vector3d(0.1, 0, 0).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z), new Vector3d(0, 0, 0));
     }
     private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()
