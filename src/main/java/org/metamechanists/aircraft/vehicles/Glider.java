@@ -221,6 +221,7 @@ public class Glider extends SlimefunItem {
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
+        forces.forEach(force -> force.visualise(pig.getLocation()));
         final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(2000);
 
         // Sum torque vectors to find resultant torque
