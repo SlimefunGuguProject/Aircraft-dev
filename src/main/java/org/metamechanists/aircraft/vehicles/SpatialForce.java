@@ -16,6 +16,6 @@ public record SpatialForce(Vector3d force, Vector3d relativeLocation) {
     }
     public void visualise(final @NotNull Location pigLocation) {
         final Location absoluteLocation = pigLocation.clone().add(Vector.fromJOML(relativeLocation));
-        ParticleUtils.drawLine(Particle.ELECTRIC_SPARK, absoluteLocation, absoluteLocation.clone().add(Vector.fromJOML(force)), 0.1);
+        ParticleUtils.drawLine(Particle.WATER_BUBBLE, absoluteLocation, absoluteLocation.clone().add(Vector.fromJOML(force)), 0.1);
     }
 }
