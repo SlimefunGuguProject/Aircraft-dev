@@ -9,6 +9,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
@@ -231,6 +232,12 @@ public class Glider extends SlimefunItem {
             forceGroup.getDisplays().values().forEach(pig::addPassenger);
         } else {
             final Optional<DisplayGroup> forceGroup = displayGroupId.get();
+            if (forceGroup.isPresent()) {
+                for (final SpatialForce force : forces) {
+                    final Display display = forceGroup.get().getDisplays().get(force.hash());
+                    display.setTransformationMatrix(force.visualise().getMatrix(rotation));
+                }
+            }
             forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.hash()).setTransformationMatrix(force.visualise().getMatrix(rotation))));
         }
 
