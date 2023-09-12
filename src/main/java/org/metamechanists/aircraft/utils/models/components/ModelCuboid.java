@@ -116,25 +116,25 @@ public class ModelCuboid implements ModelComponent {
     public BlockDisplay build(@NotNull final Block block, @NotNull final Vector3d modelRotation) {
         return build(block.getLocation(), modelRotation);
     }
-    private @NotNull AircraftSurface getSurface(
+    private @NotNull AircraftSurface getSurface(final String side,
             final double dragCoefficient, final double liftCoefficient,
             final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight) {
         final double area = surfaceWidth * surfaceHeight;
         final Vector3d relativeLocation = startingLocation.rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z);
         final Vector3d normal = new Vector3d(relativeLocation).normalize();
-        return new AircraftSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
+        return new AircraftSurface(side, dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
     }
-    public Set<AircraftSurface> getSurfaces(final double dragCoefficient, final double liftCoefficient) {
+    public Set<AircraftSurface> getSurfaces(final String name, final double dragCoefficient, final double liftCoefficient) {
         final Set<AircraftSurface> surfaces = new HashSet<>();
 
-        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(0, 0, size.z / 2), size.x, size.y));
-        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(0, 0, -size.z / 2), size.x, size.y));
+        surfaces.add(getSurface(name + "front", dragCoefficient, liftCoefficient, new Vector3d(0, 0, size.z / 2), size.x, size.y));
+        surfaces.add(getSurface(name + "back", dragCoefficient, liftCoefficient, new Vector3d(0, 0, -size.z / 2), size.x, size.y));
 
-        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(0, size.y / 2, 0), size.x, size.z));
-        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(0, -size.y / 2, 0), size.x, size.z));
+        surfaces.add(getSurface(name + "top", dragCoefficient, liftCoefficient, new Vector3d(0, size.y / 2, 0), size.x, size.z));
+        surfaces.add(getSurface(name + "bottom", dragCoefficient, liftCoefficient, new Vector3d(0, -size.y / 2, 0), size.x, size.z));
 
-        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(size.x / 2, 0, 0), size.y, size.z));
-        surfaces.add(getSurface(dragCoefficient, liftCoefficient, new Vector3d(-size.x / 2, 0, 0), size.y, size.z));
+        surfaces.add(getSurface(name + "right", dragCoefficient, liftCoefficient, new Vector3d(size.x / 2, 0, 0), size.y, size.z));
+        surfaces.add(getSurface(name + "left", dragCoefficient, liftCoefficient, new Vector3d(-size.x / 2, 0, 0), size.y, size.z));
 
         return surfaces;
     }

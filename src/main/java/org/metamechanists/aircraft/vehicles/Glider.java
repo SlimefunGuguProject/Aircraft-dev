@@ -72,16 +72,16 @@ public class Glider extends SlimefunItem {
 
     private static @NotNull Set<AircraftSurface> getSurfaces(final @NotNull ControlSurfaces controlSurfaces) {
         final Set<AircraftSurface> surfaces = new HashSet<>();
-        surfaces.addAll(modelMain().getSurfaces(DRAG_COEFFICIENT_BODY, LIFT_COEFFICIENT_BODY));
-        surfaces.addAll(modelWingFront1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelWingFront2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelWingBack1().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelWingBack2().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelTail().getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelAileron1(controlSurfaces.aileron1).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelAileron2(controlSurfaces.aileron2).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelElevator1(controlSurfaces.elevator1).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelElevator2(controlSurfaces.elevator2).getSurfaces(DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelMain().getSurfaces("main", DRAG_COEFFICIENT_BODY, LIFT_COEFFICIENT_BODY));
+        surfaces.addAll(modelWingFront1().getSurfaces("wingFront1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingFront2().getSurfaces("wingFront2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingBack1().getSurfaces("wingBack1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelWingBack2().getSurfaces("wingBack2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelTail().getSurfaces("tail", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelAileron1(controlSurfaces.aileron1).getSurfaces("aileron1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelAileron2(controlSurfaces.aileron2).getSurfaces("aileron2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelElevator1(controlSurfaces.elevator1).getSurfaces("elevator1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelElevator2(controlSurfaces.elevator2).getSurfaces("elevator2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         return surfaces;
     }
 
@@ -225,7 +225,7 @@ public class Glider extends SlimefunItem {
         final DisplayGroupId displayGroupId = traverser.getDisplayGroupId("forceGroupId");
         if (displayGroupId == null) {
             final ModelBuilder builder = new ModelBuilder().rotation(rotation.x, rotation.y, rotation.z);
-            forces.forEach(force -> builder.add(force.hash(), force.visualise()));
+            forces.forEach(force -> builder.add(force.getId(), force.visualise()));
             final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation());
             traverser.set("forceGroupId", new DisplayGroupId(forceGroup.getParentUUID()));
             pig.addPassenger(forceGroup.getParentDisplay());
@@ -234,16 +234,16 @@ public class Glider extends SlimefunItem {
             final Optional<DisplayGroup> forceGroup = displayGroupId.get();
             if (forceGroup.isPresent()) {
                 for (final SpatialForce force : forces) {
-                    final Display display = forceGroup.get().getDisplays().get(force.hash());
+                    final Display display = forceGroup.get().getDisplays().get(force.getId());
                     display.setTransformationMatrix(force.visualise().getMatrix(rotation));
                 }
             }
-            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.hash()).setTransformationMatrix(force.visualise().getMatrix(rotation))));
+            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(rotation))));
         }
 
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
-        forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
+        forces.stream().map(SpatialForce::getForce).forEach(resultantForce::add);
         Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(2000);
 
         // Sum torque vectors to find resultant torque
@@ -294,10 +294,10 @@ public class Glider extends SlimefunItem {
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce(final @NotNull Vector3d rotation) {
-        return new SpatialForce(ForceType.WEIGHT, new Vector3d(0, -10 * MASS, 0).rotateX(-rotation.x).rotateY(-rotation.y).rotateZ(-rotation.z), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -10 * MASS, 0).rotateX(-rotation.x).rotateY(-rotation.y).rotateZ(-rotation.z), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce() {
-        return new SpatialForce(ForceType.THRUST, new Vector3d(0.1, 0, 0), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.THRUST, new Vector3d(0.1, 0, 0), new Vector3d(0, 0, 0));
     }
     private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()
