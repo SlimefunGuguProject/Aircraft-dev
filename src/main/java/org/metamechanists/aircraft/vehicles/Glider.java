@@ -220,12 +220,6 @@ public class Glider extends SlimefunItem {
         final Set<SpatialForce> forces = getForces(velocity, rotation, controlSurfaces);
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 
-        // Remove previous force visualisation
-        final DisplayGroupId oldForceGroupId = traverser.getDisplayGroupId("forceGroupId");
-        if (oldForceGroupId != null) {
-            oldForceGroupId.get().ifPresent(DisplayGroup::remove);
-        }
-
         // visualise forces
         final DisplayGroupId displayGroupId = traverser.getDisplayGroupId("forceGroupId");
         if (displayGroupId == null) {
