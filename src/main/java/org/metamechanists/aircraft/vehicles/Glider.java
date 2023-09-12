@@ -42,6 +42,8 @@ public class Glider extends SlimefunItem {
     private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
     private static final Vector3d STARTING_ROTATION = new Vector3d(0, 0, 0); // roll, yaw, pitch
 
+    private static final double MAX_VELOCITY = 50.0;
+
     private static final double MASS = 0.005;
     private static final double MOMENT_OF_INERTIA = MASS * 0.05; // silly approximation
 
@@ -205,7 +207,7 @@ public class Glider extends SlimefunItem {
 
     public static void tickAircraft(final @NotNull Pig pig) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
-        final Vector3d velocity = traverser.getVector3d("velocity");
+        Vector3d velocity = traverser.getVector3d("velocity");
         final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Vector3d rotation = traverser.getVector3d("rotation");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
@@ -227,18 +229,23 @@ public class Glider extends SlimefunItem {
         // visualise forces
         final ModelBuilder builder = new ModelBuilder().rotation(rotation.x, rotation.y, rotation.z);
         forces.forEach(force -> force.visualise(builder));
-        final DisplayGroupId forceGroupId = new DisplayGroupId(builder.buildAtLocation(pig.getLocation()).getParentUUID());
+        final DisplayGroupId forceGroupId = new DisplayGroupId(builder.buildAtBlockCenter(pig.getLocation()).getParentUUID());
         traverser.set("forceGroupId", forceGroupId);
 
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
-        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(2000);
+        Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(2000);
 
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
         final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(2000).mul(-1);
+
+        if (velocity.length() > MAX_VELOCITY) {
+            velocity = new Vector3d();
+            resultantAcceleration = new Vector3d();
+        }
 
         // Euler integration
         traverser.set("is_aircraft", true);
