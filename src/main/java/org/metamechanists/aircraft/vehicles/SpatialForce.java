@@ -11,17 +11,17 @@ public record SpatialForce(ForceType type, Vector3d force, Vector3d relativeLoca
     public Vector3d getTorqueVector() {
         return new Vector3d(force).cross(relativeLocation);
     }
-    public void visualise(final @NotNull ModelBuilder builder) {
+    public ModelLine visualise() {
         final Vector3f from = new Vector3f((float) relativeLocation.x, (float) relativeLocation.y, (float) relativeLocation.z);
         final Vector3f to = new Vector3f(from).add(new Vector3f((float) force.x, (float) force.y, (float) force.z).mul(20));
-        builder.add(hash(), new ModelLine()
+        return new ModelLine()
                 .from(from)
                 .to(to)
                 .thickness(0.1F)
-                .material(type.getMaterial()));
+                .material(type.getMaterial());
     }
 
-    private @NotNull String hash() {
+    public @NotNull String hash() {
         return relativeLocation.toString() + type.toString();
     }
 }

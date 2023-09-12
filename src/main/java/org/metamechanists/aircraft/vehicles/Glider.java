@@ -227,10 +227,18 @@ public class Glider extends SlimefunItem {
         }
 
         // visualise forces
-        final ModelBuilder builder = new ModelBuilder().rotation(rotation.x, rotation.y, rotation.z);
-        forces.forEach(force -> force.visualise(builder));
-        final DisplayGroupId forceGroupId = new DisplayGroupId(builder.buildAtBlockCenter(pig.getLocation()).getParentUUID());
-        traverser.set("forceGroupId", forceGroupId);
+        final DisplayGroupId displayGroupId = traverser.getDisplayGroupId("forceGroupId");
+        if (displayGroupId == null) {
+            final ModelBuilder builder = new ModelBuilder().rotation(rotation.x, rotation.y, rotation.z);
+            forces.forEach(force -> builder.add(force.hash(), force.visualise()));
+            final DisplayGroupId forceGroupId = new DisplayGroupId(builder.buildAtBlockCenter(pig.getLocation()).getParentUUID());
+            traverser.set("forceGroupId", forceGroupId);
+            pig.addPassenger(componentGroup.getParentDisplay());
+            componentGroup.getDisplays().values().forEach(pig::addPassenger);
+        } else {
+            final Optional<DisplayGroup> forceGroup = displayGroupId.get();
+            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.hash()).setTransformationMatrix(force.visualise().getMatrix(rotation))));
+        }
 
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
