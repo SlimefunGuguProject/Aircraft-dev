@@ -53,6 +53,9 @@ public class Utils {
 
     public Vector3d rotate(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
         //return new Vector3d(vector).rotateX((float) rotation.x).rotateY((float) rotation.y).rotateZ((float) rotation.z);
+        if (rotation.length() < 0.01) {
+            return new Vector3d();
+        }
         final Vector3d normalRotation = rotation.normalize();
         return new Vector3d(vector).rotateAxis(rotation.length(), normalRotation.x, normalRotation.y, normalRotation.z);
     }
@@ -67,9 +70,6 @@ public class Utils {
     }
 
     public Matrix4f rotate(final @NotNull Vector3d rotation) {
-        if (rotation.length() < 0.01) {
-            return new Matrix4f();
-        }
         //return new Matrix4f().rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z));
         return new Matrix4f().rotate((float) rotation.length(), (float) rotation.x, (float) rotation.y, (float) rotation.z);
     }
