@@ -48,7 +48,7 @@ public class AircraftSurface {
         // A = surface area facing airflow
         // V = aircraft velocity
         final double aircraftSpeed = aircraftVelocity.length();
-        final Vector3d dragDirection = new Vector3d(airflowVelocity).normalize();
+        final Vector3d dragDirection = new Vector3d(aircraftVelocity).normalize();
         //final Vector3d dragDirection = normal;
         final Vector3d force = dragDirection.mul(
                 Math.sin(normal.angle(airflowVelocity))
