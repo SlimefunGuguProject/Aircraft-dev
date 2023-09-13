@@ -250,7 +250,7 @@ public class Glider extends SlimefunItem {
                 }
                 forceGroup.get().getDisplays().get("velocity")
                         .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
-                forceGroup.get().getDisplays().get("torque")
+                forceGroup.get().getDisplays().get("angularVelocity")
                         .setTransformationMatrix(new SpatialForce("main", ForceType.ANGULAR_VELOCITY, angularVelocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
             }
             forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Vector3d()))));
