@@ -26,11 +26,11 @@ public class SpatialForce {
 
     public ModelLine visualise() {
         final Vector3f from = new Vector3f((float) relativeLocation.x, (float) relativeLocation.y, (float) relativeLocation.z);
-        final Vector3f to = new Vector3f(from).add(new Vector3f((float) force.x, (float) force.y, (float) force.z).mul(20));
+        final Vector3f to = new Vector3f(from).add(new Vector3f((float) force.x, (float) force.y, (float) force.z).mul(8));
         return new ModelLine()
                 .from(from)
                 .to(to)
-                .thickness(0.1F)
+                .thickness(0.04F)
                 .material(type.getMaterial());
     }
 
