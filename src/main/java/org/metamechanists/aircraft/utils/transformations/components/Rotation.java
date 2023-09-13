@@ -15,6 +15,6 @@ public class Rotation implements TransformationMatrixComponent {
 
     @Override
     public void apply(@NotNull final Matrix4f matrix) {
-        matrix.rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.z, (float) rotation.y));
+        matrix.rotateXYZ(new Vector3f((float) rotation.y, (float) rotation.x, (float) rotation.z));
     }
 }
