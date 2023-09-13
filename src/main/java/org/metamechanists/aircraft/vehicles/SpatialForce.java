@@ -21,11 +21,11 @@ public class SpatialForce {
         this.relativeLocation = relativeLocation;
     }
     
-    public Vector3d getTorqueVector() {
-        return new Vector3d(force).cross(relativeLocation);
+    public Vector3d getTorqueVector(final @NotNull Vector3d rotation) {
+        return new Vector3d(force).cross(new Vector3d(relativeLocation).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z));
     }
 
-    public ModelLine visualise(final @NotNull Vector3d rotation) {
+    public ModelLine visualise() {
         final Vector3f from = new Vector3f((float) relativeLocation.x, (float) relativeLocation.y, (float) relativeLocation.z);
 //                .rotateX((float) rotation.x)
 //                .rotateY((float) rotation.y)
