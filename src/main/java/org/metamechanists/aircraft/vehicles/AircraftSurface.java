@@ -24,7 +24,7 @@ public class AircraftSurface {
     }
 
     private double getRelativeArea(final @NotNull Vector3d airflowVelocity) {
-        return new Vector3d(relativeNormal).dot(airflowVelocity);// * area;
+        return new Vector3d(relativeNormal).dot(airflowVelocity) * 0.05;// * area;
     }
 
     public SpatialForce getDragForce(final @NotNull Vector3d aircraftRotation, final @NotNull Vector3d aircraftVelocity) {
