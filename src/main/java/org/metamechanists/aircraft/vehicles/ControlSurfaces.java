@@ -1,18 +1,14 @@
 package org.metamechanists.aircraft.vehicles;
 
-import lombok.Getter;
-import lombok.Setter;
-
-
-@Getter
-@Setter
 public class ControlSurfaces {
-    double aileron1;
-    double aileron2;
-    double elevator1;
-    double elevator2;
+    public ControlSurface aileron1;
+    public ControlSurface aileron2;
+    public ControlSurface elevator1;
+    public ControlSurface elevator2;
 
-    public ControlSurfaces(final double aileron1, final double aileron2, final double elevator1, final double elevator2) {
+    public ControlSurfaces() {}
+
+    public ControlSurfaces(final ControlSurface aileron1, final ControlSurface aileron2, final ControlSurface elevator1, final ControlSurface elevator2) {
         this.aileron1 = aileron1;
         this.aileron2 = aileron2;
         this.elevator1 = elevator1;

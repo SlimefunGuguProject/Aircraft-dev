@@ -17,6 +17,7 @@ import org.metamechanists.aircraft.utils.id.simple.BlockDisplayId;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.id.simple.InteractionId;
 import org.metamechanists.aircraft.utils.id.simple.TextDisplayId;
+import org.metamechanists.aircraft.vehicles.ControlSurface;
 import org.metamechanists.aircraft.vehicles.ControlSurfaces;
 
 import java.util.List;
@@ -118,11 +119,15 @@ public class PersistentDataTraverser {
     public void set(@NotNull final String key, @Nullable final CustomId value) {
         set(key, value == null ? null : value.toString());
     }
+    public void set(@NotNull final String key, @Nullable final ControlSurface value) {
+        set(key + "angle", value == null ? 0 : value.getAngle());
+        set(key + "modifiedLastTick", value != null && value.isModifiedLastTick());
+    }
     public void set(@NotNull final String key, @NotNull final ControlSurfaces value) {
-        set(key + "aileron1", value.getAileron1());
-        set(key + "aileron2", value.getAileron2());
-        set(key + "elevator1", value.getElevator1());
-        set(key + "elevator2", value.getElevator2());
+        set(key + "aileron1", value.aileron1);
+        set(key + "aileron2", value.aileron2);
+        set(key + "elevator1", value.elevator1);
+        set(key + "elevator2", value.elevator2);
     }
     public void set(@NotNull final String key, @NotNull final Map<String, ? extends CustomId> value) {
         set(key + "length", value.size());
@@ -205,12 +210,15 @@ public class PersistentDataTraverser {
         final String uuid = getString(key);
         return uuid == null ? null : new TextDisplayId(uuid);
     }
+    public @NotNull ControlSurface getControlSurface(@NotNull final String key) {
+        return new ControlSurface(getDouble(key + "angle"), getBoolean(key + "modifiedLastTick"));
+    }
     public @NotNull ControlSurfaces getControlSurfaces(@NotNull final String key) {
         return new ControlSurfaces(
-                getDouble(key + "aileron1"),
-                getDouble(key + "aileron2"),
-                getDouble(key + "elevator1"),
-                getDouble(key + "elevator2"));
+                getControlSurface(key + "aileron1"),
+                getControlSurface(key + "aileron2"),
+                getControlSurface(key + "elevator1"),
+                getControlSurface(key + "elevator2"));
     }
     public @Nullable List<UUID> getUuidList(@NotNull final String key) {
         final int size = getInt(key + "length");

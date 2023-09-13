@@ -18,7 +18,6 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
-import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.models.ModelBuilder;
 import org.metamechanists.aircraft.utils.models.components.ModelCuboid;
@@ -36,7 +35,7 @@ public class Glider extends SlimefunItem {
     private static final double LIFT_COEFFICIENT_BODY = 0.30;
     private static final double LIFT_COEFFICIENT_WING = 1.00;
 
-    private static final double MAX_CONTROL_SURFACE_ROTATION = Math.PI / 3;
+    public static final double MAX_CONTROL_SURFACE_ROTATION = Math.PI / 3;
     private static final double CONTROL_SURFACE_ROTATION_RATE = Math.PI / 48;
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
@@ -77,10 +76,10 @@ public class Glider extends SlimefunItem {
         surfaces.addAll(modelWingBack1().getSurfaces("wingBack1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         surfaces.addAll(modelWingBack2().getSurfaces("wingBack2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         surfaces.addAll(modelTail().getSurfaces("tail", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelAileron1(controlSurfaces.aileron1).getSurfaces("aileron1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelAileron2(controlSurfaces.aileron2).getSurfaces("aileron2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelElevator1(controlSurfaces.elevator1).getSurfaces("elevator1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelElevator2(controlSurfaces.elevator2).getSurfaces("elevator2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelAileron1(controlSurfaces.aileron1.getAngle()).getSurfaces("aileron1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelAileron2(controlSurfaces.aileron2.getAngle()).getSurfaces("aileron2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelElevator1(controlSurfaces.elevator1.getAngle()).getSurfaces("elevator1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+        surfaces.addAll(modelElevator2(controlSurfaces.elevator2.getAngle()).getSurfaces("elevator2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
         return surfaces;
     }
 
@@ -168,7 +167,8 @@ public class Glider extends SlimefunItem {
         traverser.set("rotation", STARTING_ROTATION); // roll, yaw, pitch
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
-        traverser.set("controlSurfaces", new ControlSurfaces(0, 0, 0, 0));
+        traverser.set("controlSurfaces", new ControlSurfaces());
+
         VehicleStorage.add(pig.getUniqueId());
     }
     private static @NotNull DisplayGroup buildAircraft(final Location location) {
@@ -258,11 +258,18 @@ public class Glider extends SlimefunItem {
             resultantAcceleration = new Vector3d();
         }
 
+        // Control surfaces
+        controlSurfaces.aileron1.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
+        controlSurfaces.aileron2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
+        controlSurfaces.elevator1.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
+        controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
+
         // Euler integration
         traverser.set("is_aircraft", true);
         traverser.set("velocity", velocity.add(resultantAcceleration));
         traverser.set("angular_velocity", angularVelocity.add(resultantAngularAcceleration));
         traverser.set("rotation", rotation.add(angularVelocity));
+        traverser.set("controlSurfaces", controlSurfaces);
 
         tickPig(pig, velocity);
         tickAircraftDisplays(componentGroup, rotation, controlSurfaces);
@@ -281,10 +288,10 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("wing_back_1").setTransformationMatrix(modelWingBack1().getMatrix(rotation));
         group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
         group.getDisplays().get("tail").setTransformationMatrix(modelTail().getMatrix(rotation));
-        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(controlSurfaces.aileron1).getMatrix(rotation));
-        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(controlSurfaces.aileron2).getMatrix(rotation));
-        group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(controlSurfaces.elevator1).getMatrix(rotation));
-        group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(controlSurfaces.elevator2).getMatrix(rotation));
+        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(controlSurfaces.aileron1.getAngle()).getMatrix(rotation));
+        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(controlSurfaces.aileron2.getAngle()).getMatrix(rotation));
+        group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(controlSurfaces.elevator1.getAngle()).getMatrix(rotation));
+        group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(controlSurfaces.elevator2.getAngle()).getMatrix(rotation));
     }
 
     private static @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation, final @NotNull ControlSurfaces controlSurfaces) {
@@ -314,26 +321,26 @@ public class Glider extends SlimefunItem {
 
     public static void onKeyW(final @NotNull PersistentDataTraverser traverser) {
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
-        controlSurfaces.setElevator1(Utils.clampToRange(controlSurfaces.elevator1 + CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
-        controlSurfaces.setElevator2(Utils.clampToRange(controlSurfaces.elevator2 + CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
+        controlSurfaces.elevator1.adjust(CONTROL_SURFACE_ROTATION_RATE);
+        controlSurfaces.elevator2.adjust(CONTROL_SURFACE_ROTATION_RATE);
         traverser.set("controlSurfaces", controlSurfaces);
     }
     public static void onKeyS(final @NotNull PersistentDataTraverser traverser) {
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
-        controlSurfaces.setElevator1(Utils.clampToRange(controlSurfaces.elevator1 - CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
-        controlSurfaces.setElevator2(Utils.clampToRange(controlSurfaces.elevator2 - CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
+        controlSurfaces.elevator1.adjust(-CONTROL_SURFACE_ROTATION_RATE);
+        controlSurfaces.elevator2.adjust(-CONTROL_SURFACE_ROTATION_RATE);
         traverser.set("controlSurfaces", controlSurfaces);
     }
     public static void onKeyA(final @NotNull PersistentDataTraverser traverser) {
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
-        controlSurfaces.setAileron1(Utils.clampToRange(controlSurfaces.aileron1 + CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
-        controlSurfaces.setAileron2(Utils.clampToRange(controlSurfaces.aileron2 - CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
+        controlSurfaces.aileron1.adjust(CONTROL_SURFACE_ROTATION_RATE);
+        controlSurfaces.aileron2.adjust(-CONTROL_SURFACE_ROTATION_RATE);
         traverser.set("controlSurfaces", controlSurfaces);
     }
     public static void onKeyD(final @NotNull PersistentDataTraverser traverser) {
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
-        controlSurfaces.setAileron1(Utils.clampToRange(controlSurfaces.aileron1 - CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
-        controlSurfaces.setAileron2(Utils.clampToRange(controlSurfaces.aileron2 + CONTROL_SURFACE_ROTATION_RATE, -MAX_CONTROL_SURFACE_ROTATION , MAX_CONTROL_SURFACE_ROTATION));
+        controlSurfaces.aileron1.adjust(-CONTROL_SURFACE_ROTATION_RATE);
+        controlSurfaces.aileron2.adjust(CONTROL_SURFACE_ROTATION_RATE);
         traverser.set("controlSurfaces", controlSurfaces);
     }
 }
