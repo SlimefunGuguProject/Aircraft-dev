@@ -52,14 +52,14 @@ public class Utils {
     }
 
     public Vector3d rotate(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
-        return new Vector3d(vector).rotateX((float) rotation.x).rotateY((float) rotation.y).rotateZ((float) rotation.z);  // new Vector3d(vector).rotateAxis(rotation.length(), rotation.x, rotation.y, rotation.z);
+        return new Vector3d(vector).rotateAxis(rotation.length(), rotation.x, rotation.y, rotation.z);
     }
 
     public Vector3f rotate(final @NotNull Vector3f vector, final @NotNull Vector3d rotation) {
-        return new Vector3f(vector).rotateX((float) rotation.x).rotateY((float) rotation.y).rotateZ((float) rotation.z); //new Vector3f(vector).rotateAxis((float) rotation.length(), (float) rotation.x, (float) rotation.y, (float) rotation.z);
+        return new Vector3f(vector).rotateAxis((float) rotation.length(), (float) rotation.x, (float) rotation.y, (float) rotation.z);
     }
 
     public Matrix4f rotate(final @NotNull Vector3d rotation) {
-        return new Matrix4f().rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z)); // new Matrix4f().rotate((float) rotation.length(), (float) rotation.x, (float) rotation.y, (float) rotation.z);
+        return new Matrix4f().rotate((float) rotation.length(), (float) rotation.x, (float) rotation.y, (float) rotation.z);
     }
 }
