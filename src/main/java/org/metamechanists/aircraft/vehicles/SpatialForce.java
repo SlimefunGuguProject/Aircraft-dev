@@ -32,7 +32,7 @@ public class SpatialForce {
                         .rotateX((float) -rotation.x)
                         .rotateY((float) -rotation.y)
                         .rotateZ((float) -rotation.z)
-                        .mul(8));
+                        .mul(25));
         return new ModelLine()
                 .from(from)
                 .to(to)
