@@ -37,9 +37,9 @@ public class AircraftSurface {
         }
 
         // Check the airflow and normal are not in opposite directions - this causes NaN values
-        if (normal.angle(airflowVelocity) < 0.001) {
-            return new SpatialForce(name, ForceType.DRAG, new Vector3d(), relativeLocation);
-        }
+//        if (normal.angle(airflowVelocity) < 0.001) {
+//            return new SpatialForce(name, ForceType.DRAG, new Vector3d(), relativeLocation);
+//        }
 
         // D = 0.5 * Cd * ρ * A * V^2, where
         // D = drag force
@@ -48,7 +48,7 @@ public class AircraftSurface {
         // A = surface area facing airflow
         // V = aircraft velocity
         final double aircraftSpeed = aircraftVelocity.length();
-        final Vector3d dragDirection = new Vector3d(aircraftVelocity).normalize();
+        final Vector3d dragDirection = new Vector3d(airflowVelocity).mul(-1).normalize();
         //final Vector3d dragDirection = normal;
         final Vector3d force = dragDirection.mul(
                 Math.sin(normal.angle(airflowVelocity))
@@ -70,9 +70,9 @@ public class AircraftSurface {
         }
 
         // Check the airflow and normal are not in opposite directions - this causes NaN values
-        if (normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
-            return new SpatialForce(name, ForceType.LIFT, new Vector3d(), relativeLocation);
-        }
+//        if (normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
+//            return new SpatialForce(name, ForceType.LIFT, new Vector3d(), relativeLocation);
+//        }
 
         // L = 0.5 * Cl * ρ * A * V^2,
         // L = lift force
@@ -82,7 +82,7 @@ public class AircraftSurface {
         // V = aircraft velocity
         final double aircraftSpeed = aircraftVelocity.length();
         final Vector3d perpendicularDirection = new Vector3d(normal).cross(airflowVelocity);
-        final Vector3d liftDirection = new Vector3d(perpendicularDirection).cross(airflowVelocity).normalize();
+        final Vector3d liftDirection = new Vector3d(normal).normalize();// new Vector3d(perpendicularDirection).cross(airflowVelocity).normalize();
 
         final Vector3d force = liftDirection.mul(
                 Math.sin(2.0*normal.angle(airflowVelocity))
