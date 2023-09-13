@@ -31,12 +31,12 @@ import java.util.stream.Collectors;
 
 
 public class Glider extends SlimefunItem {
-    private static final double DRAG_COEFFICIENT_BODY = 0.40;
-    private static final double DRAG_COEFFICIENT_WING = 0.40;
+    private static final double DRAG_COEFFICIENT_BODY = 0.60;
+    private static final double DRAG_COEFFICIENT_WING = 0.60;
     private static final double LIFT_COEFFICIENT_BODY = 0.30;
     private static final double LIFT_COEFFICIENT_WING = 2.00;
 
-    private static final double MAX_CONTROL_SURFACE_ROTATION = Math.PI / 6;
+    private static final double MAX_CONTROL_SURFACE_ROTATION = Math.PI / 4;
     private static final double CONTROL_SURFACE_ROTATION_RATE = Math.PI / 32;
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
@@ -297,7 +297,7 @@ public class Glider extends SlimefunItem {
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce() {
-        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -8.0 * MASS, 0), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -12.0 * MASS, 0), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
         return new SpatialForce("main", ForceType.THRUST, new Vector3d(1.5, 0, 0).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z), new Vector3d(0, 0, 0));
