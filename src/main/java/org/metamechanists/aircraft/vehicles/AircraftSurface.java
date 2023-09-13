@@ -37,9 +37,9 @@ public class AircraftSurface {
         }
 
         // Check the airflow and normal are not in opposite directions - this causes NaN values
-//        if (normal.angle(airflowVelocity) < 0.001) {
-//            return new SpatialForce(name, ForceType.DRAG, new Vector3d(), relativeLocation);
-//        }
+        if (normal.angle(airflowVelocity) < 0.001) {
+            return new SpatialForce(name, ForceType.DRAG, new Vector3d(), relativeLocation);
+        }
 
         // D = 0.5 * Cd * ρ * A * V^2, where
         // D = drag force
@@ -70,9 +70,9 @@ public class AircraftSurface {
         }
 
         // Check the airflow and normal are not in opposite directions - this causes NaN values
-//        if (normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
-//            return new SpatialForce(name, ForceType.LIFT, new Vector3d(), relativeLocation);
-//        }
+        if (normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
+            return new SpatialForce(name, ForceType.LIFT, new Vector3d(), relativeLocation);
+        }
 
         // L = 0.5 * Cl * ρ * A * V^2,
         // L = lift force
