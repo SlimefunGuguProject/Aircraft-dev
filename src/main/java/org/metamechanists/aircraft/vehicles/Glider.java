@@ -220,12 +220,23 @@ public class Glider extends SlimefunItem {
         final Set<SpatialForce> forces = getForces(velocity, rotation, controlSurfaces);
         final Set<Vector3d> torqueVectors = forces.stream().map(force -> force.getTorqueVector(rotation)).collect(Collectors.toSet());
 
+        // Newton's 2nd law to calculate resultant force and then acceleration
+        final Vector3d resultantForce = new Vector3d();
+        forces.stream().map(SpatialForce::getForce).forEach(resultantForce::add);
+        Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(2000);
+
+        // Sum torque vectors to find resultant torque
+        final Vector3d resultantTorque = new Vector3d();
+        torqueVectors.forEach(resultantTorque::add);
+        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(2000);
+
         // visualise forces
         final DisplayGroupId displayGroupId = traverser.getDisplayGroupId("forceGroupId");
         if (displayGroupId == null) {
             final ModelBuilder builder = new ModelBuilder();
             forces.forEach(force -> builder.add(force.getId(), force.visualise()));
             builder.add("velocity", new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise());
+            builder.add("torque", new SpatialForce("main", ForceType.TORQUE, velocity, new Vector3d()).visualise());
             final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation());
             traverser.set("forceGroupId", new DisplayGroupId(forceGroup.getParentUUID()));
             pig.addPassenger(forceGroup.getParentDisplay());
@@ -239,19 +250,11 @@ public class Glider extends SlimefunItem {
                 }
                 forceGroup.get().getDisplays().get("velocity")
                         .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
+                forceGroup.get().getDisplays().get("torque")
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.TORQUE, resultantTorque, new Vector3d()).visualise().getMatrix(new Vector3d()));
             }
             forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Vector3d()))));
         }
-
-        // Newton's 2nd law to calculate resultant force and then acceleration
-        final Vector3d resultantForce = new Vector3d();
-        forces.stream().map(SpatialForce::getForce).forEach(resultantForce::add);
-        Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(2000);
-
-        // Sum torque vectors to find resultant torque
-        final Vector3d resultantTorque = new Vector3d();
-        torqueVectors.forEach(resultantTorque::add);
-        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(2000);
 
         if (velocity.length() > MAX_VELOCITY) {
             velocity = new Vector3d();

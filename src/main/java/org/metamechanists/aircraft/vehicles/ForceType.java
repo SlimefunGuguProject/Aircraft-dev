@@ -6,6 +6,7 @@ import org.bukkit.Material;
 
 public enum ForceType {
     VELOCITY(Material.RED_CONCRETE), // for visualisation
+    TORQUE(Material.YELLOW_CONCRETE), // for visualisation
     WEIGHT(Material.ORANGE_CONCRETE),
     THRUST(Material.PURPLE_CONCRETE),
     LIFT(Material.LIME_CONCRETE),
