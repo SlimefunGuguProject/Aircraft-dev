@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.builders.BlockDisplayBuilder;
 import org.metamechanists.aircraft.utils.transformations.TransformationMatrixBuilder;
 import org.metamechanists.aircraft.vehicles.AircraftSurface;
@@ -100,20 +101,21 @@ public class ModelCuboid implements ModelComponent {
         return this;
     }
 
-    public Matrix4f getMatrix() {
+    public Matrix4f getMatrix(final Vector3d rotation) {
         return new TransformationMatrixBuilder()
                 .translate(location)
                 .rotate(rotation)
                 .scale(new Vector3f(size))
-                .buildForBlockDisplay();
+                .buildForBlockDisplay()
+                .mul(Utils.rotate(rotation));
     }
     @Override
-    public BlockDisplay build(@NotNull final Location origin) {
-        return main.transformation(getMatrix()).build(origin);
+    public BlockDisplay build(@NotNull final Location origin, final Vector3d rotation) {
+        return main.transformation(getMatrix(rotation)).build(origin);
     }
     @Override
-    public BlockDisplay build(@NotNull final Block block) {
-        return build(block.getLocation());
+    public BlockDisplay build(@NotNull final Block block, final Vector3d rotation) {
+        return build(block.getLocation(), rotation);
     }
     private @NotNull AircraftSurface getSurface(final String side,
             final double dragCoefficient, final double liftCoefficient,

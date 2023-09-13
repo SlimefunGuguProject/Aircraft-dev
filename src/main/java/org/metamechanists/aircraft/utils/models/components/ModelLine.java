@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.builders.BlockDisplayBuilder;
 import org.metamechanists.aircraft.utils.transformations.TransformationMatrixBuilder;
 import org.metamechanists.aircraft.utils.transformations.TransformationUtils;
@@ -94,21 +95,22 @@ public class ModelLine implements ModelComponent {
         return this;
     }
 
-    public Matrix4f getMatrix() {
+    public Matrix4f getMatrix(final Vector3d rotation) {
         final Vector3f midpoint = TransformationUtils.getMidpoint(from, to);
         return new TransformationMatrixBuilder()
                 .translate(midpoint)
                 .lookAlong(from, to)
                 .rotate(0, 0, roll)
                 .scale(new Vector3f(thickness, thickness, from.distance(to) + extraLength))
-                .buildForBlockDisplay();
+                .buildForBlockDisplay()
+                .mul(Utils.rotate(rotation));
     }
     @Override
-    public BlockDisplay build(@NotNull final Location origin) {
-        return main.transformation(getMatrix()).build(origin);
+    public BlockDisplay build(@NotNull final Location origin, final Vector3d rotation) {
+        return main.transformation(getMatrix(rotation)).build(origin);
     }
     @Override
-    public BlockDisplay build(@NotNull final Block block) {
-        return build(block.getLocation());
+    public BlockDisplay build(@NotNull final Block block, final Vector3d rotation) {
+        return build(block.getLocation(), rotation);
     }
 }

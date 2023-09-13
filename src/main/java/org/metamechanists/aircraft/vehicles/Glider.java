@@ -18,6 +18,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
+import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.models.ModelBuilder;
 import org.metamechanists.aircraft.utils.models.components.ModelCuboid;
@@ -173,7 +174,6 @@ public class Glider extends SlimefunItem {
     }
     private static @NotNull DisplayGroup buildAircraft(final Location location) {
         return new ModelBuilder()
-                .rotation(STARTING_ROTATION.x, STARTING_ROTATION.y, STARTING_ROTATION.z)
                 .add("main", modelMain())
                 .add("wing_front_1", modelWingFront1())
                 .add("wing_front_2", modelWingFront2())
@@ -246,14 +246,14 @@ public class Glider extends SlimefunItem {
             if (forceGroup.isPresent()) {
                 for (final SpatialForce force : forces) {
                     final Display display = forceGroup.get().getDisplays().get(force.getId());
-                    display.setTransformationMatrix(force.visualise().getMatrix(new Vector3d()));
+                    display.setTransformationMatrix(force.visualise().getMatrix(rotation));
                 }
                 forceGroup.get().getDisplays().get("velocity")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(rotation));
                 forceGroup.get().getDisplays().get("torque")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.TORQUE, resultantTorque, new Vector3d()).visualise().getMatrix(new Vector3d()));
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.TORQUE, resultantTorque, new Vector3d()).visualise().getMatrix(rotation));
             }
-            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Vector3d()))));
+            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(rotation))));
         }
 
         if (velocity.length() > MAX_VELOCITY) {
@@ -309,7 +309,7 @@ public class Glider extends SlimefunItem {
         return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -12.0 * MASS, 0), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
-        return new SpatialForce("main", ForceType.THRUST, new Vector3d(0.7, 0, 0).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.THRUST, Utils.rotate(new Vector3d(0.7, 0, 0), rotation), new Vector3d(0, 0, 0));
     }
     private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()

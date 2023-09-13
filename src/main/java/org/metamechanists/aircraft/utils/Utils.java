@@ -51,7 +51,11 @@ public class Utils {
         return Math.abs(a - b) < FLOATING_POINT_THRESHOLD;
     }
 
-    public void rotate(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
-        vector.rotateAxis(rotation.length(), rotation.x, rotation.y, rotation.z);
+    public Vector3d rotate(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
+        return new Vector3d(vector).rotateAxis(rotation.length(), rotation.x, rotation.y, rotation.z);
+    }
+
+    public Matrix4f rotate(final @NotNull Vector3d rotation) {
+        return new Matrix4f().rotate((float) rotation.length(), (float) rotation.x, (float) rotation.y, (float) rotation.z);
     }
 }
