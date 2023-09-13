@@ -102,8 +102,8 @@ public class ModelCuboid implements ModelComponent {
 
     public Matrix4f getMatrix(final Vector3d modelRotation) {
         return new TransformationMatrixBuilder()
-                .translate(location)
                 .rotate(modelRotation)
+                .translate(location)
                 .rotate(rotation)
                 .scale(new Vector3f(size))
                 .buildForBlockDisplay();
