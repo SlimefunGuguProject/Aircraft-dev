@@ -184,7 +184,7 @@ public class Glider extends SlimefunItem {
                 .add("aileron_2", modelAileron2(0))
                 .add("elevator_1", modelElevator1(0))
                 .add("elevator_2", modelElevator2(0))
-                .buildAtBlockCenter(location, STARTING_ROTATION);
+                .buildAtBlockCenter(location);
     }
 
     private static @NotNull Optional<Player> getPilot(final @NotNull Pig pig) {
@@ -237,7 +237,7 @@ public class Glider extends SlimefunItem {
             forces.forEach(force -> builder.add(force.getId(), force.visualise()));
             builder.add("velocity", new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise());
             builder.add("torque", new SpatialForce("main", ForceType.TORQUE, velocity, new Vector3d()).visualise());
-            final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation(), rotation);
+            final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation());
             traverser.set("forceGroupId", new DisplayGroupId(forceGroup.getParentUUID()));
             pig.addPassenger(forceGroup.getParentDisplay());
             forceGroup.getDisplays().values().forEach(pig::addPassenger);
