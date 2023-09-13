@@ -16,6 +16,9 @@ public class Rotation implements TransformationMatrixComponent {
 
     @Override
     public void apply(@NotNull final Matrix4f matrix) {
+        if (rotation.length() < 0.0001) {
+            return;
+        }
         matrix.rotate(new Quaternionf().fromAxisAngleRad(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z), (float) rotation.length()));
 //        matrix.rotateZ((float) rotation.z);
 //        matrix.rotateY((float) rotation.y);
