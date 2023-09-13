@@ -2,7 +2,6 @@ package org.metamechanists.aircraft.vehicles;
 
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
-import org.metamechanists.aircraft.utils.Utils;
 
 
 public class AircraftSurface {
@@ -29,8 +28,8 @@ public class AircraftSurface {
     }
 
     public SpatialForce getDragForce(final @NotNull Vector3d aircraftRotation, final @NotNull Vector3d aircraftVelocity) {
-        final Vector3d location = Utils.rotate(relativeLocation, aircraftRotation);
-        final Vector3d normal = Utils.rotate(relativeNormal, aircraftRotation);
+        final Vector3d location = new Vector3d(relativeLocation).rotateX(aircraftRotation.x).rotateY(aircraftRotation.y).rotateZ(aircraftRotation.z);
+        final Vector3d normal = new Vector3d(relativeNormal).rotateX(aircraftRotation.x).rotateY(aircraftRotation.y).rotateZ(aircraftRotation.z);
         final Vector3d airflowVelocity = new Vector3d(aircraftVelocity).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
@@ -63,8 +62,8 @@ public class AircraftSurface {
     }
 
     public SpatialForce getLiftForce(final @NotNull Vector3d aircraftRotation, final @NotNull Vector3d aircraftVelocity) {
-        final Vector3d location = Utils.rotate(relativeLocation, aircraftRotation);
-        final Vector3d normal = Utils.rotate(relativeNormal, aircraftRotation);
+        final Vector3d location = new Vector3d(relativeLocation).rotateX(aircraftRotation.x).rotateY(aircraftRotation.y).rotateZ(aircraftRotation.z);
+        final Vector3d normal = new Vector3d(relativeNormal).rotateX(aircraftRotation.x).rotateY(aircraftRotation.y).rotateZ(aircraftRotation.z);
         final Vector3d airflowVelocity = new Vector3d(aircraftVelocity).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
