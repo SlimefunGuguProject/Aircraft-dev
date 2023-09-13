@@ -82,7 +82,7 @@ public class AircraftSurface {
         // V = aircraft velocity
         final double aircraftSpeed = aircraftVelocity.length();
         final Vector3d perpendicularDirection = new Vector3d(normal).cross(airflowVelocity);
-        final Vector3d liftDirection = new Vector3d(normal).normalize();// new Vector3d(perpendicularDirection).cross(airflowVelocity).normalize();
+        final Vector3d liftDirection = new Vector3d(perpendicularDirection).normalize();// new Vector3d(perpendicularDirection).cross(airflowVelocity).normalize();
 
         final Vector3d force = liftDirection.mul(
                 Math.sin(2.0*normal.angle(airflowVelocity))
