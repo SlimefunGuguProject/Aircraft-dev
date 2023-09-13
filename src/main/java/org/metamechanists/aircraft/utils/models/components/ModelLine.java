@@ -97,12 +97,12 @@ public class ModelLine implements ModelComponent {
 
     public Matrix4f getMatrix(final Vector3d rotation) {
         final Vector3f midpoint = TransformationUtils.getMidpoint(from, to);
-        return new TransformationMatrixBuilder()
-                .translate(Utils.rotate(midpoint, rotation))
+        return Utils.rotate(rotation).mul(new TransformationMatrixBuilder()
+                .translate(midpoint)
                 .lookAlong(from, to)
                 .rotate(0, 0, roll)
                 .scale(new Vector3f(thickness, thickness, from.distance(to) + extraLength))
-                .buildForBlockDisplay();
+                .buildForBlockDisplay());
     }
     @Override
     public BlockDisplay build(@NotNull final Location origin, final Vector3d rotation) {

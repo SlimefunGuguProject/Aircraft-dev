@@ -237,7 +237,7 @@ public class Glider extends SlimefunItem {
             forces.forEach(force -> builder.add(force.getId(), force.visualise()));
             builder.add("velocity", new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise());
             builder.add("torque", new SpatialForce("main", ForceType.TORQUE, velocity, new Vector3d()).visualise());
-            final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation(), new Vector3d());
+            final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation(), rotation);
             traverser.set("forceGroupId", new DisplayGroupId(forceGroup.getParentUUID()));
             pig.addPassenger(forceGroup.getParentDisplay());
             forceGroup.getDisplays().values().forEach(pig::addPassenger);
@@ -246,14 +246,14 @@ public class Glider extends SlimefunItem {
             if (forceGroup.isPresent()) {
                 for (final SpatialForce force : forces) {
                     final Display display = forceGroup.get().getDisplays().get(force.getId());
-                    display.setTransformationMatrix(force.visualise().getMatrix(new Vector3d()));
+                    display.setTransformationMatrix(force.visualise().getMatrix(rotation));
                 }
                 forceGroup.get().getDisplays().get("velocity")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(rotation));
                 forceGroup.get().getDisplays().get("torque")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.TORQUE, resultantTorque, new Vector3d()).visualise().getMatrix(new Vector3d()));
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.TORQUE, resultantTorque, new Vector3d()).visualise().getMatrix(rotation));
             }
-            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Vector3d()))));
+            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(rotation))));
         }
 
         if (velocity.length() > MAX_VELOCITY) {
