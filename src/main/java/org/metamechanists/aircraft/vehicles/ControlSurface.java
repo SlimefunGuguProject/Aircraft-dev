@@ -17,7 +17,7 @@ public class ControlSurface {
 
     public void adjust(final double amount) {
         angle += Utils.clampToRange(angle + amount, -MAX_CONTROL_SURFACE_ROTATION, MAX_CONTROL_SURFACE_ROTATION);
-        modifiedLastTick = false;
+        modifiedLastTick = true;
     }
 
     public void moveTowardsCenter(final double amount) {
