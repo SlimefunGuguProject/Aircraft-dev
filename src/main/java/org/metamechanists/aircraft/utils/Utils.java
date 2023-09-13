@@ -3,10 +3,6 @@ package org.metamechanists.aircraft.utils;
 import lombok.experimental.UtilityClass;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
-import org.joml.Vector3d;
-import org.joml.Vector3f;
-
 
 @UtilityClass
 @SuppressWarnings({"unused", "WeakerAccess"})
@@ -49,9 +45,5 @@ public class Utils {
 
     public boolean equal(final float a, final float b) {
         return Math.abs(a - b) < FLOATING_POINT_THRESHOLD;
-    }
-
-    public void rotate(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
-        vector.rotateAxis(rotation.length(), rotation.x, rotation.y, rotation.z);
     }
 }
