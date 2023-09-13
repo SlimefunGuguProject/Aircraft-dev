@@ -22,7 +22,7 @@ public class ControlSurface {
 
     public void moveTowardsCenter(final double amount) {
         if (ticksUntilReturn > 0) {
-            ticksUntilReturn --;
+            ticksUntilReturn--;
             return;
         }
 

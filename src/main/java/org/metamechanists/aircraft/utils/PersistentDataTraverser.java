@@ -121,7 +121,7 @@ public class PersistentDataTraverser {
     }
     public void set(@NotNull final String key, @Nullable final ControlSurface value) {
         set(key + "angle", value == null ? 0 : value.getAngle());
-        set(key + "modifiedLastTick", value == null ? 0 : value.getTicksUntilReturn());
+        set(key + "ticksUntilReturn", value == null ? 0 : value.getTicksUntilReturn());
     }
     public void set(@NotNull final String key, @NotNull final ControlSurfaces value) {
         set(key + "aileron1", value.aileron1);
