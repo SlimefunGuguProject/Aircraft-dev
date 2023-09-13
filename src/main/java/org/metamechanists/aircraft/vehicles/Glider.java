@@ -34,7 +34,7 @@ public class Glider extends SlimefunItem {
     private static final double DRAG_COEFFICIENT_BODY = 0.30;
     private static final double DRAG_COEFFICIENT_WING = 0.30;
     private static final double LIFT_COEFFICIENT_BODY = 0.30;
-    private static final double LIFT_COEFFICIENT_WING = 4.00;
+    private static final double LIFT_COEFFICIENT_WING = 2.00;
 
     private static final double MAX_CONTROL_SURFACE_ROTATION = Math.PI / 6;
     private static final double CONTROL_SURFACE_ROTATION_RATE = Math.PI / 128;
@@ -46,7 +46,7 @@ public class Glider extends SlimefunItem {
     private static final double MAX_VELOCITY = 50.0;
 
     private static final double MASS = 10.0;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.2; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 0.001; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
