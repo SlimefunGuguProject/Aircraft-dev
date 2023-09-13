@@ -25,8 +25,11 @@ public class SpatialForce {
         return new Vector3d(force).cross(relativeLocation);
     }
 
-    public ModelLine visualise() {
-        final Vector3f from = new Vector3f((float) relativeLocation.x, (float) relativeLocation.y, (float) relativeLocation.z);
+    public ModelLine visualise(final @NotNull Vector3d rotation) {
+        final Vector3f from = new Vector3f((float) relativeLocation.x, (float) relativeLocation.y, (float) relativeLocation.z)
+                .rotateX((float) rotation.x)
+                .rotateY((float) rotation.y)
+                .rotateZ((float) rotation.z);
         final Vector3f to = new Vector3f(from).add(new Vector3f((float) force.x, (float) force.y, (float) force.z).mul(25));
         return new ModelLine()
                 .from(from)
