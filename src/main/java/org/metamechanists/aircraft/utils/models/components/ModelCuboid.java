@@ -102,11 +102,11 @@ public class ModelCuboid implements ModelComponent {
     }
 
     public Matrix4f getMatrix(final Vector3d rotation) {
-        return Utils.rotate(rotation).mul(new TransformationMatrixBuilder()
-                .translate(location)
+        return new TransformationMatrixBuilder()
+                .translate(Utils.rotate(location, rotation))
                 .rotate(rotation)
                 .scale(new Vector3f(size))
-                .buildForBlockDisplay());
+                .buildForBlockDisplay();
     }
     @Override
     public BlockDisplay build(@NotNull final Location origin, final Vector3d rotation) {
