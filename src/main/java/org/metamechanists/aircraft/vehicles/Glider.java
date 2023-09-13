@@ -46,7 +46,7 @@ public class Glider extends SlimefunItem {
     private static final double MAX_VELOCITY = 50.0;
 
     private static final double MASS = 0.01;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.2; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 2.0; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -95,25 +95,25 @@ public class Glider extends SlimefunItem {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .size(0.6F, 0.01F, 1.2F)
-                .location(0.7F, 0.0F, 0.6F);
+                .location(0.6F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingFront2() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .size(0.6F, 0.01F, 1.2F)
-                .location(0.7F, 0.0F, -0.6F);
+                .location(0.6F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelWingBack1() {
         return new ModelCuboid()
                 .material(Material.BLUE_CONCRETE)
                 .size(0.4F, 0.01F, 0.8F)
-                .location(-0.9F, 0.0F, 0.6F);
+                .location(-0.8F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingBack2() {
         return new ModelCuboid()
                 .material(Material.BLUE_CONCRETE)
                 .size(0.4F, 0.01F, 0.8F)
-                .location(-0.9F, 0.0F, -0.6F);
+                .location(-0.8F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelTail() {
         return new ModelCuboid()
@@ -125,28 +125,28 @@ public class Glider extends SlimefunItem {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.01F, 1.2F)
-                .location(0.3F, (float)(-0.2 * Math.sin(rotation)), 0.6F)
+                .location(0.2F, (float)(-0.2 * Math.sin(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelAileron2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.01F, 1.2F)
-                .location(0.3F, (float)(-0.2 * Math.sin(rotation)), -0.6F)
+                .location(0.2F, (float)(-0.2 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelElevator1(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.01F, 0.8F)
-                .location(-1.2F, (float)(-0.2 * Math.sin(rotation)), 0.6F)
+                .location(-1.1F, (float)(-0.2 * Math.sin(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelElevator2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.01F, 0.8F)
-                .location(-1.2F, (float)(-0.2 * Math.sin(rotation)), -0.6F)
+                .location(-1.1F, (float)(-0.2 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
 
