@@ -124,28 +124,28 @@ public class Glider extends SlimefunItem {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.01F, 1.2F)
-                .location(0.2F + (float)(0.6 * Math.sin(rotation)), (float)(-0.1 * Math.sin(rotation)), 0.6F)
+                .location(0.2F, (float)(-0.1 * Math.sin(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelAileron2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.01F, 1.2F)
-                .location(0.2F + (float)(0.6 * Math.sin(rotation)), (float)(-0.1 * Math.sin(rotation)), -0.6F)
+                .location(0.2F, (float)(-0.1 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelElevator1(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.01F, 0.8F)
-                .location(-1.1F + (float)(0.4 * Math.sin(rotation)), (float)(-0.1 * Math.sin(rotation)), 0.6F)
+                .location(-1.1F, (float)(-0.1 * Math.sin(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelElevator2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
                 .size(0.2F, 0.01F, 0.8F)
-                .location(-1.1F + (float)(0.4 * Math.sin(rotation)), (float)(-0.1 * Math.sin(rotation)), -0.6F)
+                .location(-1.1F, (float)(-0.1 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
 
