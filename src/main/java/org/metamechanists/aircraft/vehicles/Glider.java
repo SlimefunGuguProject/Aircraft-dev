@@ -224,7 +224,7 @@ public class Glider extends SlimefunItem {
         // visualise forces
         final DisplayGroupId displayGroupId = traverser.getDisplayGroupId("forceGroupId");
         if (displayGroupId == null) {
-            final ModelBuilder builder = new ModelBuilder().rotation(rotation.x, rotation.y, rotation.z);
+            final ModelBuilder builder = new ModelBuilder();
             forces.forEach(force -> builder.add(force.getId(), force.visualise(rotation)));
             builder.add("velocity", new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise(rotation));
             final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation());
@@ -297,7 +297,7 @@ public class Glider extends SlimefunItem {
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce(final @NotNull Vector3d rotation) {
-        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -10 * MASS, 0).rotateX(-rotation.x).rotateY(-rotation.y).rotateZ(-rotation.z), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -10 * MASS, 0), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce() {
         return new SpatialForce("main", ForceType.THRUST, new Vector3d(0.2, 0, 0), new Vector3d(0, 0, 0));
