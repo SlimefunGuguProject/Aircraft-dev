@@ -23,8 +23,8 @@ public class AircraftSurface {
         this.relativeLocation = relativeLocation;
     }
 
-    private double getRelativeArea(final @NotNull Vector3d airflowVelocity) {
-        return new Vector3d(relativeNormal).angleCos(airflowVelocity) * area;
+    private double getRelativeArea(final @NotNull Vector3d normal, final @NotNull Vector3d airflowVelocity) {
+        return new Vector3d(normal).angleCos(airflowVelocity) * area;
     }
 
     public SpatialForce getDragForce(final @NotNull Vector3d aircraftRotation, final @NotNull Vector3d aircraftVelocity) {
@@ -55,7 +55,7 @@ public class AircraftSurface {
                         * 0.5
                         * dragCoefficient
                         * AIR_DENSITY
-                        * getRelativeArea(airflowVelocity)
+                        * getRelativeArea(normal, airflowVelocity)
                         * (aircraftSpeed * aircraftSpeed));
         return new SpatialForce(name, ForceType.DRAG, force, relativeLocation);
     }
@@ -89,7 +89,7 @@ public class AircraftSurface {
                         * 0.5
                         * liftCoefficient
                         * AIR_DENSITY
-                        * getRelativeArea(airflowVelocity)
+                        * getRelativeArea(normal, airflowVelocity)
                         * (aircraftSpeed * aircraftSpeed));
         return new SpatialForce(name, ForceType.LIFT, force, relativeLocation);
     }
