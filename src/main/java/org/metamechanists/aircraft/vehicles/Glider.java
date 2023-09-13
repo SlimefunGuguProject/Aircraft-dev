@@ -225,8 +225,8 @@ public class Glider extends SlimefunItem {
         final DisplayGroupId displayGroupId = traverser.getDisplayGroupId("forceGroupId");
         if (displayGroupId == null) {
             final ModelBuilder builder = new ModelBuilder().rotation(rotation.x, rotation.y, rotation.z);
-            forces.forEach(force -> builder.add(force.getId(), force.visualise(rotation)));
-            builder.add("velocity", new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise(rotation));
+            forces.forEach(force -> builder.add(force.getId(), force.visualise()));
+            builder.add("velocity", new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise());
             final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation());
             traverser.set("forceGroupId", new DisplayGroupId(forceGroup.getParentUUID()));
             pig.addPassenger(forceGroup.getParentDisplay());
@@ -236,12 +236,12 @@ public class Glider extends SlimefunItem {
             if (forceGroup.isPresent()) {
                 for (final SpatialForce force : forces) {
                     final Display display = forceGroup.get().getDisplays().get(force.getId());
-                    display.setTransformationMatrix(force.visualise(rotation).getMatrix(rotation));
+                    display.setTransformationMatrix(force.visualise().getMatrix(new Vector3d()));
                 }
                 forceGroup.get().getDisplays().get("velocity")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise(rotation).getMatrix(rotation));
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
             }
-            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise(rotation).getMatrix(rotation))));
+            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Vector3d()))));
         }
 
         // Newton's 2nd law to calculate resultant force and then acceleration
