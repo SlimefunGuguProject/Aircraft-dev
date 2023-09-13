@@ -12,21 +12,21 @@ public class SpatialForce {
     private final ForceType type;
     @Getter
     private final Vector3d force;
-    private final Vector3d relativeLocation;
+    private final Vector3d absoluteLocation;
 
-    public SpatialForce(final String name, final ForceType type, final Vector3d force, final Vector3d relativeLocation) {
+    public SpatialForce(final String name, final ForceType type, final Vector3d force, final Vector3d absoluteLocation) {
         this.name = name;
         this.type = type;
         this.force = force;
-        this.relativeLocation = relativeLocation;
+        this.absoluteLocation = absoluteLocation;
     }
     
     public Vector3d getTorqueVector(final @NotNull Vector3d rotation) {
-        return new Vector3d(new Vector3d(relativeLocation).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z)).cross(force);
+        return new Vector3d(force).cross(absoluteLocation);
     }
 
     public ModelLine visualise() {
-        final Vector3f from = new Vector3f((float) relativeLocation.x, (float) relativeLocation.y, (float) relativeLocation.z);
+        final Vector3f from = new Vector3f((float) absoluteLocation.x, (float) absoluteLocation.y, (float) absoluteLocation.z);
 //                .rotateX((float) rotation.x)
 //                .rotateY((float) rotation.y)
 //                .rotateZ((float) rotation.z);
