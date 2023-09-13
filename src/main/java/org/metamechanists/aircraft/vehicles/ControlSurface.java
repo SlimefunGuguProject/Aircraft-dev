@@ -8,21 +8,21 @@ import static org.metamechanists.aircraft.vehicles.Glider.MAX_CONTROL_SURFACE_RO
 @Getter
 public class ControlSurface {
     private double angle;
-    private boolean modifiedLastTick;
+    private int ticksUntilReturn;
 
-    public ControlSurface(final double angle, final boolean modifiedLastTick) {
+    public ControlSurface(final double angle, final int ticksUntilReturn) {
         this.angle = angle;
-        this.modifiedLastTick = modifiedLastTick;
+        this.ticksUntilReturn = ticksUntilReturn;
     }
 
     public void adjust(final double amount) {
         angle = Utils.clampToRange(angle + amount, -MAX_CONTROL_SURFACE_ROTATION, MAX_CONTROL_SURFACE_ROTATION);
-        modifiedLastTick = true;
+        ticksUntilReturn = 3;
     }
 
     public void moveTowardsCenter(final double amount) {
-        if (modifiedLastTick) {
-            modifiedLastTick = false;
+        if (ticksUntilReturn > 0) {
+            ticksUntilReturn --;
             return;
         }
 

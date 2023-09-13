@@ -121,7 +121,7 @@ public class PersistentDataTraverser {
     }
     public void set(@NotNull final String key, @Nullable final ControlSurface value) {
         set(key + "angle", value == null ? 0 : value.getAngle());
-        set(key + "modifiedLastTick", value != null && value.isModifiedLastTick());
+        set(key + "modifiedLastTick", value == null ? 0 : value.getTicksUntilReturn());
     }
     public void set(@NotNull final String key, @NotNull final ControlSurfaces value) {
         set(key + "aileron1", value.aileron1);
@@ -211,7 +211,7 @@ public class PersistentDataTraverser {
         return uuid == null ? null : new TextDisplayId(uuid);
     }
     public @NotNull ControlSurface getControlSurface(@NotNull final String key) {
-        return new ControlSurface(getDouble(key + "angle"), getBoolean(key + "modifiedLastTick"));
+        return new ControlSurface(getDouble(key + "angle"), getInt(key + "ticksUntilReturn"));
     }
     public @NotNull ControlSurfaces getControlSurfaces(@NotNull final String key) {
         return new ControlSurfaces(
