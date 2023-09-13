@@ -208,7 +208,7 @@ public class Glider extends SlimefunItem {
     public static void tickAircraft(final @NotNull Pig pig) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         Vector3d velocity = traverser.getVector3d("velocity");
-        final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
+        final Vector3d angularVelocity = new Vector3d(1.0, 0.5, 0.2); //traverser.getVector3d("angularVelocity");
         final Vector3d rotation = traverser.getVector3d("rotation");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
@@ -236,7 +236,7 @@ public class Glider extends SlimefunItem {
             final ModelBuilder builder = new ModelBuilder();
             forces.forEach(force -> builder.add(force.getId(), force.visualise()));
             builder.add("velocity", new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise());
-            builder.add("torque", new SpatialForce("main", ForceType.TORQUE, velocity, new Vector3d()).visualise());
+            builder.add("angularVelocity", new SpatialForce("main", ForceType.TORQUE, angularVelocity, new Vector3d()).visualise());
             final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation(), new Vector3d());
             traverser.set("forceGroupId", new DisplayGroupId(forceGroup.getParentUUID()));
             pig.addPassenger(forceGroup.getParentDisplay());
@@ -250,8 +250,8 @@ public class Glider extends SlimefunItem {
                 }
                 forceGroup.get().getDisplays().get("velocity")
                         .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
-                forceGroup.get().getDisplays().get("torque")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.TORQUE, resultantTorque, new Vector3d()).visualise().getMatrix(new Vector3d()));
+                forceGroup.get().getDisplays().get("angularVelocity")
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.TORQUE, angularVelocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
             }
             forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Vector3d()))));
         }
