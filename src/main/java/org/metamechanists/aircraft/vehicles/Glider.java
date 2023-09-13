@@ -37,7 +37,7 @@ public class Glider extends SlimefunItem {
     private static final double LIFT_COEFFICIENT_WING = 2.00;
 
     private static final double MAX_CONTROL_SURFACE_ROTATION = Math.PI / 6;
-    private static final double CONTROL_SURFACE_ROTATION_RATE = Math.PI / 128;
+    private static final double CONTROL_SURFACE_ROTATION_RATE = Math.PI / 32;
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
     private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
@@ -46,7 +46,7 @@ public class Glider extends SlimefunItem {
     private static final double MAX_VELOCITY = 50.0;
 
     private static final double MASS = 0.1;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.1; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 0.03; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -297,7 +297,7 @@ public class Glider extends SlimefunItem {
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce() {
-        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -2.0 * MASS, 0), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -8.0 * MASS, 0), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
         return new SpatialForce("main", ForceType.THRUST, new Vector3d(0.8, 0, 0).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z), new Vector3d(0, 0, 0));
