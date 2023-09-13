@@ -26,9 +26,9 @@ public class ModelBuilder {
      * @param center The center location of the model
      * @return The display group containing all the components
      */
-    public DisplayGroup buildAtLocation(@NotNull final Location center) {
+    public DisplayGroup buildAtLocation(@NotNull final Location center, final Vector3d rotation) {
         final DisplayGroup group = new DisplayGroup(center.clone(), 0, 0);
-        components.forEach((name, component) -> group.addDisplay(name, component.build(center.clone())));
+        components.forEach((name, component) -> group.addDisplay(name, component.build(center.clone(), rotation)));
         return group;
     }
     /**
@@ -36,9 +36,9 @@ public class ModelBuilder {
      * @param blockLocation The block location of the model (this will be converted to the center of the block and used to build the model)
      * @return The display group containing all the components
      */
-    public DisplayGroup buildAtBlockCenter(@NotNull final Location blockLocation) {
+    public DisplayGroup buildAtBlockCenter(@NotNull final Location blockLocation, final Vector3d rotation) {
         final DisplayGroup group = new DisplayGroup(blockLocation.clone(), 0, 0);
-        components.forEach((name, component) -> group.addDisplay(name, component.build(blockLocation.clone().toCenterLocation())));
+        components.forEach((name, component) -> group.addDisplay(name, component.build(blockLocation.clone().toCenterLocation(), rotation)));
         return group;
     }
 }
