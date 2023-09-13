@@ -44,7 +44,7 @@ public class Glider extends SlimefunItem {
     private static final double MAX_VELOCITY = 50.0;
 
     private static final double MASS = 0.01;
-    private static final double MOMENT_OF_INERTIA = MASS * 2.0; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 1.0; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -129,8 +129,8 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelAileron2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.1F, 0.01F, 1.2F)
-                .location(0.2F, (float)(-0.1 * Math.sin(rotation)), -0.6F)
+                .size(0.2F, 0.01F, 1.2F)
+                .location(0.1F, (float)(-0.1 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelElevator1(final double rotation) {
