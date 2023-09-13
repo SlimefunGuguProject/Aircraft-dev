@@ -297,7 +297,7 @@ public class Glider extends SlimefunItem {
         return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -10 * MASS, 0).rotateX(-rotation.x).rotateY(-rotation.y).rotateZ(-rotation.z), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce() {
-        return new SpatialForce("main", ForceType.THRUST, new Vector3d(2.0, 0, 0), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.THRUST, new Vector3d(10.0, 0, 0), new Vector3d(0, 0, 0));
     }
     private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()
