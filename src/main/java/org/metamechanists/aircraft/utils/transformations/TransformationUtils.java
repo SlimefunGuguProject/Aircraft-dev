@@ -4,7 +4,9 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ public class TransformationUtils {
      * Takes an initial radius and rotates it around all three axes. The initial vector is (0, 0, radius)
      */
     public Vector3f rotatedRadius(final float radius, final float x, final float y, final float z) {
-        return new Vector3f(0, 0, radius).rotateX(x).rotateY(y).rotateZ(z);
+        return Utils.rotate(new Vector3f(0, 0, radius), new Vector3d(x, y, z));
     }
     /**
      * Takes an initial radius and rotates it around only the Y-axis (the most common rotation type)

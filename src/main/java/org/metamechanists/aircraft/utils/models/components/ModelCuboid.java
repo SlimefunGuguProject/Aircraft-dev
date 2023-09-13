@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.builders.BlockDisplayBuilder;
 import org.metamechanists.aircraft.utils.transformations.TransformationMatrixBuilder;
 import org.metamechanists.aircraft.vehicles.AircraftSurface;
@@ -120,7 +121,7 @@ public class ModelCuboid implements ModelComponent {
             final double dragCoefficient, final double liftCoefficient,
             final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight) {
         final double area = surfaceWidth * surfaceHeight;
-        final Vector3d relativeLocation = startingLocation.rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z);
+        final Vector3d relativeLocation = Utils.rotate(startingLocation, rotation);
         final Vector3d normal = new Vector3d(relativeLocation).normalize();
         return new AircraftSurface(side, dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
     }

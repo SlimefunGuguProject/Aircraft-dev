@@ -3,6 +3,9 @@ package org.metamechanists.aircraft.utils;
 import lombok.experimental.UtilityClass;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3d;
+import org.joml.Vector3f;
+
 
 @UtilityClass
 @SuppressWarnings({"unused", "WeakerAccess"})
@@ -45,5 +48,13 @@ public class Utils {
 
     public boolean equal(final float a, final float b) {
         return Math.abs(a - b) < FLOATING_POINT_THRESHOLD;
+    }
+
+    public Vector3d rotate(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
+        return new Vector3d(vector).rotateX((float) rotation.x).rotateY((float) rotation.y).rotateZ((float) rotation.z);
+    }
+
+    public Vector3f rotate(final @NotNull Vector3f vector, final @NotNull Vector3d rotation) {
+        return new Vector3f(vector).rotateX((float) rotation.x).rotateY((float) rotation.y).rotateZ((float) rotation.z);
     }
 }
