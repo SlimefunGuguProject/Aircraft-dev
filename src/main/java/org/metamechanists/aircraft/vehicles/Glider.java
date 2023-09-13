@@ -118,7 +118,7 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelTail() {
         return new ModelCuboid()
                 .material(Material.BLUE_CONCRETE)
-                .size(0.7F, 1.0F, 0.01F)
+                .size(0.4F, 1.0F, 0.01F)
                 .location(-1.1F, 0.6F, 0.0F);
     }
     private static ModelCuboid modelAileron1(final double rotation) {
@@ -138,15 +138,15 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelElevator1(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.4F, 0.01F, 0.8F)
-                .location(-1.3F, (float)(-0.2 * Math.sin(rotation)), 0.6F)
+                .size(0.2F, 0.01F, 0.8F)
+                .location(-1.2F, (float)(-0.2 * Math.sin(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelElevator2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.4F, 0.01F, 0.8F)
-                .location(-1.3F, (float)(-0.2 * Math.sin(rotation)), -0.6F)
+                .size(0.2F, 0.01F, 0.8F)
+                .location(-1.2F, (float)(-0.2 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
 
