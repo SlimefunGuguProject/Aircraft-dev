@@ -22,7 +22,7 @@ public class SpatialForce {
     }
     
     public Vector3d getTorqueVector(final @NotNull Vector3d rotation) {
-        return new Vector3d(force).cross(new Vector3d(relativeLocation).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z));
+        return new Vector3d(new Vector3d(relativeLocation).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z)).cross(force);
     }
 
     public ModelLine visualise() {
