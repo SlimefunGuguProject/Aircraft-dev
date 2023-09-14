@@ -3,7 +3,7 @@ package org.metamechanists.aircraft.vehicles;
 import lombok.Getter;
 import org.metamechanists.aircraft.utils.Utils;
 
-import static org.metamechanists.aircraft.vehicles.Glider.MAX_CONTROL_SURFACE_ROTATION;
+import static org.metamechanists.aircraft.vehicles.Vehicle.MAX_CONTROL_SURFACE_ROTATION;
 
 @Getter
 public class ControlSurface {

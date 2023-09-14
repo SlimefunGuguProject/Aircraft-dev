@@ -26,15 +26,15 @@ public final class WasdHandler  {
         }
 
         if (rightLeft < 0) {
-            Glider.onKeyD(traverser);
+            Vehicle.onKeyD(traverser);
         } else if (rightLeft > 0) {
-            Glider.onKeyA(traverser);
+            Vehicle.onKeyA(traverser);
         }
 
         if (forwardbackwards < 0) {
-            Glider.onKeyS(traverser);
+            Vehicle.onKeyS(traverser);
         } else if (forwardbackwards > 0) {
-            Glider.onKeyW(traverser);
+            Vehicle.onKeyW(traverser);
         }
     }
 

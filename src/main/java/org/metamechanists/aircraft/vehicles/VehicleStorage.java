@@ -24,6 +24,6 @@ public class VehicleStorage {
 
     public void tick() {
         groups = groups.stream().filter(id -> Bukkit.getEntity(id) != null).collect(Collectors.toSet());
-        groups.stream().map(Bukkit::getEntity).map(Pig.class::cast).forEach(Glider::tickAircraft);
+        groups.stream().map(Bukkit::getEntity).map(Pig.class::cast).forEach(Vehicle::tickAircraft);
     }
 }

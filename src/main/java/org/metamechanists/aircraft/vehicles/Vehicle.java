@@ -31,11 +31,13 @@ import java.util.stream.Collectors;
 import static java.lang.Math.PI;
 
 
-public class Glider extends SlimefunItem {
-    private static final double DRAG_COEFFICIENT_BODY = 1.00;
-    private static final double DRAG_COEFFICIENT_WING = 0.60;
-    private static final double LIFT_COEFFICIENT_BODY = 0.30;
-    private static final double LIFT_COEFFICIENT_WING = 1.20;
+public class Vehicle extends SlimefunItem {
+    private final VehicleDescription description;
+
+    private static final double dragCoefficient_BODY = 1.00;
+    private static final double dragCoefficient_WING = 0.60;
+    private static final double liftCoefficient_BODY = 0.30;
+    private static final double liftCoefficient_WING = 1.20;
 
     public static final double MAX_CONTROL_SURFACE_ROTATION = PI / 8;
     private static final double CONTROL_SURFACE_ROTATION_RATE = PI / 24;
@@ -46,7 +48,7 @@ public class Glider extends SlimefunItem {
     private static final double MAX_VELOCITY = 50.0;
 
     private static final double MASS = 0.006;
-    private static final double MOMENT_OF_INERTIA = MASS; // silly approximation
+    private static final double momentOfInertia = MASS; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -54,34 +56,37 @@ public class Glider extends SlimefunItem {
             "&4&ljustin don't hurt me",
             "&cpls");
 
-    public Glider(final ItemGroup itemGroup, final SlimefunItemStack item, final RecipeType recipeType, final ItemStack[] recipe) {
+    public Vehicle(final ItemGroup itemGroup, final SlimefunItemStack item, final RecipeType recipeType, final ItemStack[] recipe, final VehicleDescription description) {
         super(itemGroup, item, recipeType, recipe);
+        this.description = description;
         addItemHandler(onItemUse());
     }
 
     private static @NotNull ItemUseHandler onItemUse() {
         return event -> {
-            if (event.getClickedBlock().isPresent() && !event.getPlayer().isInsideVehicle()) {
-                if (event.getPlayer().getGameMode() != GameMode.CREATIVE) {
-                    event.getPlayer().getInventory().getItemInMainHand().subtract();
+            final Player player = event.getPlayer();
+            if (event.getClickedBlock().isPresent() && !player.isInsideVehicle()) {
+                if (player.getGameMode() != GameMode.CREATIVE) {
+                    player.getInventory().getItemInMainHand().subtract();
                 }
-                place(event.getClickedBlock().get().getRelative(event.getClickedFace()), event.getPlayer());
+                place(event.getClickedBlock().get().getRelative(event.getClickedFace()), player);
             }
         };
     }
 
     private static @NotNull Set<AircraftSurface> getSurfaces(final @NotNull ControlSurfaces controlSurfaces) {
         final Set<AircraftSurface> surfaces = new HashSet<>();
-        surfaces.addAll(modelMain().getSurfaces("main", DRAG_COEFFICIENT_BODY, LIFT_COEFFICIENT_BODY));
-        surfaces.addAll(modelWingFront1().getSurfaces("wingFront1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelWingFront2().getSurfaces("wingFront2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelWingBack1().getSurfaces("wingBack1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelWingBack2().getSurfaces("wingBack2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelTail().getSurfaces("tail", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelAileron1(controlSurfaces.aileron1.getAngle()).getSurfaces("aileron1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelAileron2(controlSurfaces.aileron2.getAngle()).getSurfaces("aileron2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelElevator1(controlSurfaces.elevator1.getAngle()).getSurfaces("elevator1", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
-        surfaces.addAll(modelElevator2(controlSurfaces.elevator2.getAngle()).getSurfaces("elevator2", DRAG_COEFFICIENT_WING, LIFT_COEFFICIENT_WING));
+
+        surfaces.addAll(modelMain().getSurfaces("main", dragCoefficient_BODY, liftCoefficient_BODY));
+        surfaces.addAll(modelWingFront1().getSurfaces("wingFront1", dragCoefficient_WING, liftCoefficient_WING));
+        surfaces.addAll(modelWingFront2().getSurfaces("wingFront2", dragCoefficient_WING, liftCoefficient_WING));
+        surfaces.addAll(modelWingBack1().getSurfaces("wingBack1", dragCoefficient_WING, liftCoefficient_WING));
+        surfaces.addAll(modelWingBack2().getSurfaces("wingBack2", dragCoefficient_WING, liftCoefficient_WING));
+        surfaces.addAll(modelTail().getSurfaces("tail", dragCoefficient_WING, liftCoefficient_WING));
+        surfaces.addAll(modelAileron1(controlSurfaces.aileron1.getAngle()).getSurfaces("aileron1", dragCoefficient_WING, liftCoefficient_WING));
+        surfaces.addAll(modelAileron2(controlSurfaces.aileron2.getAngle()).getSurfaces("aileron2", dragCoefficient_WING, liftCoefficient_WING));
+        surfaces.addAll(modelElevator1(controlSurfaces.elevator1.getAngle()).getSurfaces("elevator1", dragCoefficient_WING, liftCoefficient_WING));
+        surfaces.addAll(modelElevator2(controlSurfaces.elevator2.getAngle()).getSurfaces("elevator2", dragCoefficient_WING, liftCoefficient_WING));
         return surfaces;
     }
 
@@ -232,7 +237,7 @@ public class Glider extends SlimefunItem {
         torqueVectors.forEach(resultantTorque::add);
         final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotation.angle(), rotation.x, rotation.y, rotation.z);
         resultantTorque.rotate(negativeRotation);
-        final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(400);
+        final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(momentOfInertia).div(400);
         final Quaterniond resultantAngularAcceleration = new Quaterniond().fromAxisAngleRad(new Vector3d(resultantAngularAccelerationVector).normalize(), resultantAngularAccelerationVector.length()) ;
 
         if (velocity.length() > MAX_VELOCITY) {
