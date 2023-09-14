@@ -9,6 +9,7 @@ import org.bukkit.persistence.PersistentDataHolder;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
@@ -108,6 +109,20 @@ public class PersistentDataTraverser {
         set(key + "y", value.y);
         set(key + "z", value.z);
     }
+    public void set(@NotNull final String key, @Nullable final Quaterniond value) {
+        if (value == null) {
+            PersistentDataAPI.remove(persistentDataHolder, getKey(key + "x"));
+            PersistentDataAPI.remove(persistentDataHolder, getKey(key + "y"));
+            PersistentDataAPI.remove(persistentDataHolder, getKey(key + "z"));
+            PersistentDataAPI.remove(persistentDataHolder, getKey(key + "w"));
+            return;
+        }
+
+        set(key + "x", value.x);
+        set(key + "y", value.y);
+        set(key + "z", value.z);
+        set(key + "w", value.w);
+    }
     public void set(@NotNull final String key, @Nullable final UUID value) {
         if (value == null) {
             PersistentDataAPI.remove(persistentDataHolder, getKey(key));
@@ -185,6 +200,13 @@ public class PersistentDataTraverser {
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "x")),
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "y")),
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "z")));
+    }
+    public @Nullable Quaterniond getQuaterniond(@NotNull final String key) {
+        return new Quaterniond(
+                PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "x")),
+                PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "y")),
+                PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "z")),
+                PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "w")));
     }
     public @Nullable UUID getUuid(@NotNull final String key) {
         final String uuidString = getString(key);
