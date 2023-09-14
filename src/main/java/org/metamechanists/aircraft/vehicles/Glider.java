@@ -16,6 +16,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Quaterniond;
+import org.joml.Quaternionf;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
@@ -211,8 +213,8 @@ public class Glider extends SlimefunItem {
     public static void tickAircraft(final @NotNull Pig pig) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         Vector3d velocity = traverser.getVector3d("velocity");
-        final Vector3d angularVelocity = traverser.getVector3d("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
-        final Vector3d rotation = traverser.getVector3d("rotation");
+        final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
+        final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty()) {
@@ -221,7 +223,7 @@ public class Glider extends SlimefunItem {
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
         final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, controlSurfaces);
-        final Set<Vector3d> torqueVectors = forces.stream().map(force -> force.getTorqueVector(rotation)).collect(Collectors.toSet());
+        final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
@@ -231,7 +233,8 @@ public class Glider extends SlimefunItem {
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
-        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA);
+        final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(400);
+        final Quaterniond resultantAngularAcceleration = new Quaterniond().fromAxisAngleRad(resultantAngularAccelerationVector, resultantAngularAccelerationVector.length()) ;
 
         // visualise forces
         final DisplayGroupId displayGroupId = traverser.getDisplayGroupId("forceGroupId");
@@ -239,7 +242,7 @@ public class Glider extends SlimefunItem {
             final ModelBuilder builder = new ModelBuilder();
             forces.forEach(force -> builder.add(force.getId(), force.visualise()));
             builder.add("velocity", new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise());
-            builder.add("angularVelocity", new SpatialForce("main", ForceType.ANGULAR_VELOCITY, new Vector3d(rotation), new Vector3d()).visualise());
+//            builder.add("angularVelocity", new SpatialForce("main", ForceType.ANGULAR_VELOCITY, new Vector3d(rotation), new Vector3d()).visualise());
             final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation());
             traverser.set("forceGroupId", new DisplayGroupId(forceGroup.getParentUUID()));
             pig.addPassenger(forceGroup.getParentDisplay());
@@ -249,14 +252,14 @@ public class Glider extends SlimefunItem {
             if (forceGroup.isPresent()) {
                 for (final SpatialForce force : forces) {
                     final Display display = forceGroup.get().getDisplays().get(force.getId());
-                    display.setTransformationMatrix(force.visualise().getMatrix(new Vector3d()));
+                    display.setTransformationMatrix(force.visualise().getMatrix(new Quaterniond()));
                 }
                 forceGroup.get().getDisplays().get("velocity")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
-                forceGroup.get().getDisplays().get("angularVelocity")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.ANGULAR_VELOCITY, new Vector3d(rotation), new Vector3d()).visualise().getMatrix(new Vector3d()));
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Quaterniond()));
+//                forceGroup.get().getDisplays().get("angularVelocity")
+//                        .setTransformationMatrix(new SpatialForce("main", ForceType.ANGULAR_VELOCITY, rotation.angle, new Vector3d()).visualise().getMatrix(new Vector3d()));
             }
-            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Vector3d()))));
+            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Quaterniond()))));
         }
 
         if (velocity.length() > MAX_VELOCITY) {
@@ -271,26 +274,26 @@ public class Glider extends SlimefunItem {
         controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
 
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98);
-        angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(400)).mul(0.95);
+        angularVelocity.add(new Quaterniond(resultantAngularAcceleration));
         rotation.add(angularVelocity);
 
-//        if (rotation.x > PI) {
-//            rotation.x -= 2*PI;
-//        } else if (rotation.x < -PI) {
-//            rotation.x += 2*PI;
-//        }
-//
-//        if (rotation.y > PI) {
-//            rotation.y -= 2*PI;
-//        } else if (rotation.y < -PI) {
-//            rotation.y += 2*PI;
-//        }
-//
-//        if (rotation.z > PI) {
-//            rotation.z -= 2*PI;
-//        } else if (rotation.z < -PI) {
-//            rotation.z += 2*PI;
-//        }
+        if (rotation.x > 2*PI) {
+            rotation.x -= 2*PI;
+        } else if (rotation.x < -PI) {
+            rotation.x += 2*PI;
+        }
+
+        if (rotation.y > PI) {
+            rotation.y -= 2*PI;
+        } else if (rotation.y < -PI) {
+            rotation.y += 2*PI;
+        }
+
+        if (rotation.z > PI) {
+            rotation.z -= 2*PI;
+        } else if (rotation.z < -PI) {
+            rotation.z += 2*PI;
+        }
 
         // Euler integration
         traverser.set("is_aircraft", true);
@@ -309,7 +312,7 @@ public class Glider extends SlimefunItem {
     private static void tickPig(final @NotNull Pig pig, final Vector3d velocity) {
         pig.setVelocity(Vector.fromJOML(velocity));
     }
-    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d rotation, final @NotNull ControlSurfaces controlSurfaces) {
+    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Quaterniond rotation, final @NotNull ControlSurfaces controlSurfaces) {
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
         group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
         group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
@@ -322,7 +325,7 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(controlSurfaces.elevator2.getAngle()).getMatrix(rotation));
     }
 
-    private static @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation, final Vector3d angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
+    private static @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Quaterniond rotation, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
         forces.add(getThrustForce(rotation));
@@ -333,15 +336,15 @@ public class Glider extends SlimefunItem {
     private static @NotNull SpatialForce getWeightForce() {
         return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -0.5 * MASS, 0), new Vector3d(0, 0, 0));
     }
-    private static @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
-        return new SpatialForce("main", ForceType.THRUST, Utils.rotate(new Vector3d(0.1, 0, 0), rotation), new Vector3d(0, 0, 0));
+    private static @NotNull SpatialForce getThrustForce(final @NotNull Quaterniond rotation) {
+        return new SpatialForce("main", ForceType.THRUST, new Vector3d(0.1, 0, 0).rotate(rotation), new Vector3d(0, 0, 0));
     }
-    private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
+    private static Set<SpatialForce> getDragForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()
                 .map(aircraftSurface -> aircraftSurface.getDragForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
-    private static @NotNull Set<SpatialForce> getLiftForces(final Vector3d rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
+    private static @NotNull Set<SpatialForce> getLiftForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()
                 .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());

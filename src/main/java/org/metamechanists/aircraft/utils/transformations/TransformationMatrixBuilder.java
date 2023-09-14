@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
+import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.transformations.components.LookAlong;
@@ -60,6 +61,10 @@ public class TransformationMatrixBuilder {
      * The rotation takes a Vector3d instead of a Vector3f because most rotations are in terms of Math.PI, which is a double
      */
     public TransformationMatrixBuilder rotate(final @NotNull Vector3d rotation) {
+        components.addLast(new Rotation(new Quaterniond().rotateXYZ(rotation.x, rotation.y, rotation.z)));
+        return this;
+    }
+    public TransformationMatrixBuilder rotate(final @NotNull Quaterniond rotation) {
         components.addLast(new Rotation(rotation));
         return this;
     }
