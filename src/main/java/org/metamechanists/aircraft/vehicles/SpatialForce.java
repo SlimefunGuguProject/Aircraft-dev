@@ -21,7 +21,7 @@ public class SpatialForce {
         this.absoluteLocation = absoluteLocation;
     }
     
-    public Vector3d getTorqueVector() {
+    public Vector3d getTorqueVector(final @NotNull Vector3d rotation) {
         return new Vector3d(absoluteLocation).cross(force);
     }
 
