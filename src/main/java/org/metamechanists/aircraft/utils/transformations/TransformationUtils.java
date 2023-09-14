@@ -13,40 +13,6 @@ import java.util.List;
 
 @UtilityClass
 public class TransformationUtils {
-    private final List<BlockFace> AXIS = new ArrayList<>(List.of(
-            BlockFace.NORTH,
-            BlockFace.EAST,
-            BlockFace.SOUTH,
-            BlockFace.WEST
-    ));
-
-    /**
-     * Rounds yaw to a cardinal direction (ie: rounds to 0, pi/2, pi, 3pi/2, etc radians)
-     */
-    @SuppressWarnings("MagicNumber")
-    public double yawToCardinalDirection(final float yaw) {
-        return -Math.round(yaw / 90.0F) * (Math.PI/2);
-    }
-    /**
-     * Rounds yaw to the nearest {@link BlockFace}
-     */
-    @SuppressWarnings("MagicNumber")
-    public @NotNull BlockFace yawToFace(final float yaw) {
-        return AXIS.get(Math.round(yaw / 90.0F) & 0x3);
-    }
-
-    /**
-     * Takes an initial radius and rotates it around all three axes. The initial vector is (0, 0, radius)
-     */
-    public Vector3f rotatedRadius(final float radius, final float x, final float y, final float z) {
-        return Utils.rotate(new Vector3f(0, 0, radius), new Vector3d(x, y, z));
-    }
-    /**
-     * Takes an initial radius and rotates it around only the Y-axis (the most common rotation type)
-     */
-    public Vector3f rotatedRadius(final float radius, final double y) {
-        return new Vector3f(0, 0, radius).rotateY((float) y);
-    }
 
     public @NotNull Vector3f getDisplacement(final Location from, @NotNull final Location to) {
         return to.clone().subtract(from).toVector().toVector3f();

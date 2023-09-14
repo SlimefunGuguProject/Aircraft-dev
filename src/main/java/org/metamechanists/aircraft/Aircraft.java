@@ -14,7 +14,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
     @Getter
     private static Aircraft instance;
 
-    private void initializeListeners() {
+    private static void initializeListeners() {
         WasdHandler.addProtocolListener();
         //Bukkit.getPluginManager().registerEvents(new WasdHandler(), this);
     }
