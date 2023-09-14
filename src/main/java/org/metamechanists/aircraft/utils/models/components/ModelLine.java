@@ -95,9 +95,10 @@ public class ModelLine implements ModelComponent {
         return this;
     }
 
-    public Matrix4f getMatrix() {
+    public Matrix4f getMatrix(final Quaterniond modelRotation) {
         final Vector3f midpoint = TransformationUtils.getMidpoint(from, to);
         return new TransformationMatrixBuilder()
+                .rotate(modelRotation)
                 .translate(midpoint)
                 .lookAlong(from, to)
                 .rotate(0, 0, roll)
@@ -105,11 +106,11 @@ public class ModelLine implements ModelComponent {
                 .buildForBlockDisplay();
     }
     @Override
-    public BlockDisplay build(@NotNull final Location origin) {
-        return main.transformation(getMatrix()).build(origin);
+    public BlockDisplay build(@NotNull final Location origin, @NotNull final Quaterniond modelRotation) {
+        return main.transformation(getMatrix(modelRotation)).build(origin);
     }
     @Override
-    public BlockDisplay build(@NotNull final Block block) {
-        return build(block.getLocation());
+    public BlockDisplay build(@NotNull final Block block, @NotNull final Quaterniond modelRotation) {
+        return build(block.getLocation(), modelRotation);
     }
 }
