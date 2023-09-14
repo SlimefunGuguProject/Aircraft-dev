@@ -9,7 +9,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
@@ -236,32 +235,6 @@ public class Glider extends SlimefunItem {
         final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(400);
         final Quaterniond resultantAngularAcceleration = new Quaterniond().fromAxisAngleRad(new Vector3d(resultantAngularAccelerationVector).normalize(), resultantAngularAccelerationVector.length()) ;
 
-        // visualise forces
-        final DisplayGroupId displayGroupId = traverser.getDisplayGroupId("forceGroupId");
-        if (displayGroupId == null) {
-            final ModelBuilder builder = new ModelBuilder();
-            forces.forEach(force -> builder.add(force.getId(), force.visualise()));
-            builder.add("velocity", new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise());
-            builder.add("angularVelocity", new SpatialForce("main", ForceType.ANGULAR_VELOCITY, rotation.getEulerAnglesXYZ(new Vector3d()), new Vector3d()).visualise());
-            final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation());
-            traverser.set("forceGroupId", new DisplayGroupId(forceGroup.getParentUUID()));
-            pig.addPassenger(forceGroup.getParentDisplay());
-            forceGroup.getDisplays().values().forEach(pig::addPassenger);
-        } else {
-            final Optional<DisplayGroup> forceGroup = displayGroupId.get();
-            if (forceGroup.isPresent()) {
-                for (final SpatialForce force : forces) {
-                    final Display display = forceGroup.get().getDisplays().get(force.getId());
-                    display.setTransformationMatrix(force.visualise().getMatrix(new Vector3d()));
-                }
-                forceGroup.get().getDisplays().get("velocity")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
-                forceGroup.get().getDisplays().get("angularVelocity")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.ANGULAR_VELOCITY, rotation.getEulerAnglesXYZ(new Vector3d()), new Vector3d()).visualise().getMatrix(new Vector3d()));
-            }
-            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Vector3d()))));
-        }
-
         if (velocity.length() > MAX_VELOCITY) {
             velocity = new Vector3d();
             resultantAcceleration = new Vector3d();
@@ -316,10 +289,10 @@ public class Glider extends SlimefunItem {
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce() {
-        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -0.5 * MASS, 0), new Vector3d(0, 0, 0));
+        return new SpatialForce(new Vector3d(0, -0.5 * MASS, 0), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce(final @NotNull Quaterniond rotation) {
-        return new SpatialForce("main", ForceType.THRUST, new Vector3d(0.15, 0, 0).rotate(rotation), new Vector3d(0, 0, 0));
+        return new SpatialForce(new Vector3d(0.15, 0, 0).rotate(rotation), new Vector3d(0, 0, 0));
     }
     private static Set<SpatialForce> getDragForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()

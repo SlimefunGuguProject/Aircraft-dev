@@ -37,12 +37,12 @@ public class AircraftSurface {
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         if (normal.angle(airflowVelocity) < Math.PI / 2) {
-            return new SpatialForce(name, ForceType.LIFT, new Vector3d(), location);
+            return new SpatialForce(new Vector3d(), location);
         }
 
         // Check the airflow and normal are not in opposite directions - this causes NaN values
         if (normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
-            return new SpatialForce(name, ForceType.LIFT, new Vector3d(), location);
+            return new SpatialForce(new Vector3d(), location);
         }
 
         // L = 0.5 * Cl * ρ * A * V^2,
@@ -62,7 +62,7 @@ public class AircraftSurface {
                         * AIR_DENSITY
                         * getRelativeArea(normal, airflowVelocity)
                         * (aircraftSpeed * aircraftSpeed));
-        return new SpatialForce(name, ForceType.LIFT, force, location);
+        return new SpatialForce(force, location);
     }
 
     public SpatialForce getDragForce(final @NotNull Quaterniond rotation, final @NotNull Vector3d velocity, final @NotNull Quaterniond angularVelocity) {
@@ -73,12 +73,12 @@ public class AircraftSurface {
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         if (normal.angle(airflowVelocity) < Math.PI / 2) {
-            return new SpatialForce(name, ForceType.DRAG, new Vector3d(), location);
+            return new SpatialForce(new Vector3d(), location);
         }
 
         // Check the airflow and normal are not in opposite directions - this causes NaN values
         if (normal.angle(airflowVelocity) < 0.001) {
-            return new SpatialForce(name, ForceType.DRAG, new Vector3d(), location);
+            return new SpatialForce(new Vector3d(), location);
         }
 
         // D = 0.5 * Cd * ρ * A * V^2, where
@@ -97,6 +97,6 @@ public class AircraftSurface {
                         * AIR_DENSITY
                         * getRelativeArea(normal, airflowVelocity)
                         * (aircraftSpeed * aircraftSpeed));
-        return new SpatialForce(name, ForceType.DRAG, force, location);
+        return new SpatialForce(force, location);
     }
 }
