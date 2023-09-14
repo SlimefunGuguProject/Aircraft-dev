@@ -6,7 +6,7 @@ import org.metamechanists.aircraft.utils.Utils;
 
 
 public class AircraftSurface {
-    private static final double AIR_DENSITY = 4.0;
+    private static final double AIR_DENSITY = 1.2;
 
     private final String name;
     private final double liftCoefficient;
