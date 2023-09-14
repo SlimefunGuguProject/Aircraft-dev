@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.lang.Math.PI;
+
 
 public class Glider extends SlimefunItem {
     private static final double DRAG_COEFFICIENT_BODY = 1.00;
@@ -36,8 +38,8 @@ public class Glider extends SlimefunItem {
     private static final double LIFT_COEFFICIENT_BODY = 0.30;
     private static final double LIFT_COEFFICIENT_WING = 1.20;
 
-    public static final double MAX_CONTROL_SURFACE_ROTATION = Math.PI / 12;
-    private static final double CONTROL_SURFACE_ROTATION_RATE = Math.PI / 24;
+    public static final double MAX_CONTROL_SURFACE_ROTATION = PI / 12;
+    private static final double CONTROL_SURFACE_ROTATION_RATE = PI / 24;
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
     private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
@@ -268,11 +270,33 @@ public class Glider extends SlimefunItem {
         controlSurfaces.elevator1.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
         controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
 
+        velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98);
+        angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(400)).mul(0.95);
+        rotation.add(angularVelocity);
+
+        if (rotation.x > PI) {
+            rotation.x -= 2*PI;
+        } else if (rotation.x < -PI) {
+            rotation.x += 2*PI;
+        }
+
+        if (rotation.y > PI) {
+            rotation.y -= 2*PI;
+        } else if (rotation.y < -PI) {
+            rotation.y += 2*PI;
+        }
+
+        if (rotation.z > PI) {
+            rotation.z -= 2*PI;
+        } else if (rotation.z < -PI) {
+            rotation.z += 2*PI;
+        }
+
         // Euler integration
         traverser.set("is_aircraft", true);
-        traverser.set("velocity", velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98));
-        traverser.set("angularVelocity", angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(400)).mul(0.95));
-        traverser.set("rotation", rotation.add(angularVelocity));
+        traverser.set("velocity", velocity);
+        traverser.set("angularVelocity", angularVelocity);
+        traverser.set("rotation", rotation);
         traverser.set("controlSurfaces", controlSurfaces);
 
         tickPig(pig, velocity);
