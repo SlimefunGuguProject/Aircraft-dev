@@ -9,6 +9,8 @@ import org.metamechanists.aircraft.utils.models.ModelCuboid;
 import org.metamechanists.aircraft.vehicles.VehicleSurface;
 
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 
@@ -35,15 +37,16 @@ public class FixedComponent implements VehicleComponent {
         this.rotation = rotation;
     }
 
-    private ModelCuboid getCuboid() {
-        return new ModelCuboid().material(material).size(size).location(location);
-    }
-
     private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight) {
         final double area = surfaceWidth * surfaceHeight;
         final Vector3d relativeLocation = Utils.rotate(startingLocation, rotation);
         final Vector3d normal = new Vector3d(relativeLocation).normalize();
         return new VehicleSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -60,5 +63,10 @@ public class FixedComponent implements VehicleComponent {
         surfaces.add(getSurface(new Vector3d(-size.x / 2, 0, 0), size.y, size.z));
 
         return surfaces;
+    }
+
+    @Override
+    public ModelCuboid getCuboid() {
+        return new ModelCuboid().material(material).size(size).location(location);
     }
 }

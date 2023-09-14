@@ -165,20 +165,10 @@ public class Vehicle extends SlimefunItem {
 
         VehicleStorage.add(pig.getUniqueId());
     }
-    private static @NotNull DisplayGroup buildAircraft(final Location location) {
-        return new ModelBuilder()
-                .rotation(STARTING_ROTATION.x, STARTING_ROTATION.y, STARTING_ROTATION.z)
-                .add("main", modelMain())
-                .add("wing_front_1", modelWingFront1())
-                .add("wing_front_2", modelWingFront2())
-                .add("wing_back_1", modelWingBack1())
-                .add("wing_back_2", modelWingBack2())
-                .add("tail", modelTail())
-                .add("aileron_1", modelAileron1(0))
-                .add("aileron_2", modelAileron2(0))
-                .add("elevator_1", modelElevator1(0))
-                .add("elevator_2", modelElevator2(0))
-                .buildAtBlockCenter(location);
+    private @NotNull DisplayGroup buildAircraft(final Location location) {
+        final ModelBuilder builder = new ModelBuilder().rotation(STARTING_ROTATION.x, STARTING_ROTATION.y, STARTING_ROTATION.z);
+        description.getCuboids(new ControlSurfaces()).forEach(builder::add);
+        return builder.buildAtBlockCenter(location);
     }
 
     private static @NotNull Optional<Player> getPilot(final @NotNull Pig pig) {

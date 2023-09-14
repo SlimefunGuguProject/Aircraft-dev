@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicles.components;
 
 import org.joml.Vector3d;
+import org.metamechanists.aircraft.utils.models.ModelCuboid;
 import org.metamechanists.aircraft.vehicles.VehicleSurface;
 
 import java.util.Set;
@@ -20,7 +21,17 @@ public class HingeComponent implements VehicleComponent {
     }
 
     @Override
+    public String getName() {
+        return fixedComponent.getName();
+    }
+
+    @Override
     public Set<VehicleSurface> getSurfaces() {
         return fixedComponent.getSurfaces();
+    }
+
+    @Override
+    public ModelCuboid getCuboid() {
+        return fixedComponent.getCuboid();
     }
 }
