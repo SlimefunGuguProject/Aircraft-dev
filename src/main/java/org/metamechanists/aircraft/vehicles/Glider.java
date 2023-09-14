@@ -93,13 +93,13 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelWingFront1() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.01F, 1.1F)
+                .size(0.6F, 0.01F, 1.12F)
                 .location(0.6F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingFront2() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.01F, 1.1F)
+                .size(0.6F, 0.01F, 1.12F)
                 .location(0.6F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelWingBack1() {
@@ -118,19 +118,19 @@ public class Glider extends SlimefunItem {
         return new ModelCuboid()
                 .material(Material.BLUE_CONCRETE)
                 .size(0.4F, 0.8F, 0.01F)
-                .location(-1.1F, 0.0F, 0.0F);
+                .location(-1.1F, 0.4F, 0.0F);
     }
     private static ModelCuboid modelAileron1(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 1.1F)
+                .size(0.2F, 0.01F, 1.12F)
                 .location(0.2F, (float)(-0.1 * Math.sin(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelAileron2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 1.1F)
+                .size(0.2F, 0.01F, 1.12F)
                 .location(0.2F, (float)(-0.1 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
