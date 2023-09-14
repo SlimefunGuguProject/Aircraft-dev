@@ -271,8 +271,8 @@ public class Glider extends SlimefunItem {
         // Euler integration
         traverser.set("is_aircraft", true);
         traverser.set("velocity", velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98));
-        traverser.set("angularVelocity", angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(20).mul(0.95)));
-        traverser.set("rotation", rotation.add(new Vector3d(angularVelocity).div(20)));
+        traverser.set("angularVelocity", angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(400)).mul(0.95));
+        traverser.set("rotation", rotation.add(angularVelocity));
         traverser.set("controlSurfaces", controlSurfaces);
 
         tickPig(pig, velocity);
