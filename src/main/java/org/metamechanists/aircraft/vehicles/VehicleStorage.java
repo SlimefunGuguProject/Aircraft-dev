@@ -29,7 +29,12 @@ public class VehicleStorage {
         pigs.stream()
                 .map(Bukkit::getEntity)
                 .map(Pig.class::cast)
-                .map(group -> new PersistentDataTraverser(group).getString("name"))
-                .forEach(Aircraft::getVehicle);
+                .filter(pig -> new PersistentDataTraverser(pig).getString("name") != null)
+                .forEach(VehicleStorage::tick);
+    }
+
+    private void tick(final Pig pig) {
+        final String name = new PersistentDataTraverser(pig).getString("name");
+        Aircraft.getVehicle(name).tickAircraft(pig);
     }
 }
