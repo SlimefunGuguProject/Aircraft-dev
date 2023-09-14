@@ -237,7 +237,7 @@ public class Glider extends SlimefunItem {
             final ModelBuilder builder = new ModelBuilder();
             forces.forEach(force -> builder.add(force.getId(), force.visualise()));
             builder.add("velocity", new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise());
-            builder.add("angularVelocity", new SpatialForce("main", ForceType.ANGULAR_VELOCITY, angularVelocity, new Vector3d()).visualise());
+            builder.add("angularVelocity", new SpatialForce("main", ForceType.ANGULAR_VELOCITY, new Vector3d(angularVelocity).mul(1000), new Vector3d()).visualise());
             final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation());
             traverser.set("forceGroupId", new DisplayGroupId(forceGroup.getParentUUID()));
             pig.addPassenger(forceGroup.getParentDisplay());
@@ -252,7 +252,7 @@ public class Glider extends SlimefunItem {
                 forceGroup.get().getDisplays().get("velocity")
                         .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
                 forceGroup.get().getDisplays().get("angularVelocity")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.ANGULAR_VELOCITY, angularVelocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.ANGULAR_VELOCITY, new Vector3d(angularVelocity).mul(1000), new Vector3d()).visualise().getMatrix(new Vector3d()));
             }
             forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Vector3d()))));
         }
