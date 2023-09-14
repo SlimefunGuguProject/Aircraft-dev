@@ -44,7 +44,7 @@ public class Glider extends SlimefunItem {
     private static final Vector3d STARTING_ROTATION = new Vector3d(0, 0, 0); // roll, yaw, pitch
     private static final double MAX_VELOCITY = 50.0;
 
-    private static final double MASS = 1.0;
+    private static final double MASS = 10.0;
     private static final double MOMENT_OF_INERTIA = MASS; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
@@ -224,7 +224,7 @@ public class Glider extends SlimefunItem {
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::getForce).forEach(resultantForce::add);
-        Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS).div(2000);
+        Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS);
 
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
@@ -237,7 +237,7 @@ public class Glider extends SlimefunItem {
             final ModelBuilder builder = new ModelBuilder();
             forces.forEach(force -> builder.add(force.getId(), force.visualise()));
             builder.add("velocity", new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise());
-            builder.add("angularVelocity", new SpatialForce("main", ForceType.ANGULAR_VELOCITY, new Vector3d(angularVelocity).mul(1000), new Vector3d()).visualise());
+            builder.add("angularVelocity", new SpatialForce("main", ForceType.ANGULAR_VELOCITY, new Vector3d(angularVelocity).mul(2), new Vector3d()).visualise());
             final DisplayGroup forceGroup = builder.buildAtBlockCenter(pig.getLocation());
             traverser.set("forceGroupId", new DisplayGroupId(forceGroup.getParentUUID()));
             pig.addPassenger(forceGroup.getParentDisplay());
@@ -252,7 +252,7 @@ public class Glider extends SlimefunItem {
                 forceGroup.get().getDisplays().get("velocity")
                         .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
                 forceGroup.get().getDisplays().get("angularVelocity")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.ANGULAR_VELOCITY, new Vector3d(angularVelocity).mul(1000), new Vector3d()).visualise().getMatrix(new Vector3d()));
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.ANGULAR_VELOCITY, new Vector3d(angularVelocity).mul(2), new Vector3d()).visualise().getMatrix(new Vector3d()));
             }
             forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Vector3d()))));
         }
@@ -307,7 +307,7 @@ public class Glider extends SlimefunItem {
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce() {
-        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -12.0 * MASS, 0), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -3.0 * MASS, 0), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
         return new SpatialForce("main", ForceType.THRUST, Utils.rotate(new Vector3d(0.7, 0, 0), rotation), new Vector3d(0, 0, 0));
