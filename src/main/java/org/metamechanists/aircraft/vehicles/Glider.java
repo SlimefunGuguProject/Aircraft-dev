@@ -154,7 +154,7 @@ public class Glider extends SlimefunItem {
     private static void place(final @NotNull Block block, final @NotNull Player player) {
         final DisplayGroup componentGroup = buildAircraft(block.getLocation());
 
-        final Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.HORSE);
+        final Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
         pig.setInvulnerable(true);
         pig.setGravity(false);
         pig.setInvisible(true);
