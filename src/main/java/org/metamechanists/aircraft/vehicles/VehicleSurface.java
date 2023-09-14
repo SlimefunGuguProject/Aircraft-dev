@@ -5,7 +5,7 @@ import org.joml.Quaterniond;
 import org.joml.Vector3d;
 
 
-public class AircraftSurface {
+public class VehicleSurface {
     private static final double AIR_DENSITY = 1.0;
 
     private final double liftCoefficient;
@@ -14,7 +14,7 @@ public class AircraftSurface {
     private final Vector3d relativeNormal;
     private final Vector3d relativeLocation;
 
-    public AircraftSurface(final double dragCoefficient, final double liftCoefficient, final double area, final Vector3d relativeNormal, final Vector3d relativeLocation) {
+    public VehicleSurface(final double dragCoefficient, final double liftCoefficient, final double area, final Vector3d relativeNormal, final Vector3d relativeLocation) {
         this.dragCoefficient = dragCoefficient;
         this.liftCoefficient = liftCoefficient;
         this.area = area;

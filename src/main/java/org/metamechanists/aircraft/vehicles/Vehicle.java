@@ -74,22 +74,6 @@ public class Vehicle extends SlimefunItem {
         };
     }
 
-    private static @NotNull Set<AircraftSurface> getSurfaces(final @NotNull ControlSurfaces controlSurfaces) {
-        final Set<AircraftSurface> surfaces = new HashSet<>();
-
-        surfaces.addAll(modelMain().getSurfaces("main", dragCoefficient_BODY, liftCoefficient_BODY));
-        surfaces.addAll(modelWingFront1().getSurfaces("wingFront1", dragCoefficient_WING, liftCoefficient_WING));
-        surfaces.addAll(modelWingFront2().getSurfaces("wingFront2", dragCoefficient_WING, liftCoefficient_WING));
-        surfaces.addAll(modelWingBack1().getSurfaces("wingBack1", dragCoefficient_WING, liftCoefficient_WING));
-        surfaces.addAll(modelWingBack2().getSurfaces("wingBack2", dragCoefficient_WING, liftCoefficient_WING));
-        surfaces.addAll(modelTail().getSurfaces("tail", dragCoefficient_WING, liftCoefficient_WING));
-        surfaces.addAll(modelAileron1(controlSurfaces.aileron1.getAngle()).getSurfaces("aileron1", dragCoefficient_WING, liftCoefficient_WING));
-        surfaces.addAll(modelAileron2(controlSurfaces.aileron2.getAngle()).getSurfaces("aileron2", dragCoefficient_WING, liftCoefficient_WING));
-        surfaces.addAll(modelElevator1(controlSurfaces.elevator1.getAngle()).getSurfaces("elevator1", dragCoefficient_WING, liftCoefficient_WING));
-        surfaces.addAll(modelElevator2(controlSurfaces.elevator2.getAngle()).getSurfaces("elevator2", dragCoefficient_WING, liftCoefficient_WING));
-        return surfaces;
-    }
-
     private static ModelCuboid modelMain() {
         return new ModelCuboid()
                 .material(Material.WHITE_CONCRETE)
@@ -212,7 +196,7 @@ public class Vehicle extends SlimefunItem {
         pig.remove();
     }
 
-    public static void tickAircraft(final @NotNull Pig pig) {
+    public void tickAircraft(final @NotNull Pig pig) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         Vector3d velocity = traverser.getVector3d("velocity");
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
@@ -285,7 +269,7 @@ public class Vehicle extends SlimefunItem {
         group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(controlSurfaces.elevator2.getAngle()).getMatrix(rotation));
     }
 
-    private static @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Quaterniond rotation, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
+    private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Quaterniond rotation, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
         forces.add(getThrustForce(rotation));
@@ -299,14 +283,14 @@ public class Vehicle extends SlimefunItem {
     private static @NotNull SpatialForce getThrustForce(final @NotNull Quaterniond rotation) {
         return new SpatialForce(new Vector3d(0.15, 0, 0).rotate(rotation), new Vector3d(0, 0, 0));
     }
-    private static Set<SpatialForce> getDragForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
-        return getSurfaces(controlSurfaces).stream()
-                .map(aircraftSurface -> aircraftSurface.getDragForce(rotation, velocity, angularVelocity))
+    private Set<SpatialForce> getDragForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
+        return description.getSurfaces(controlSurfaces).stream()
+                .map(vehicleSurface -> vehicleSurface.getDragForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
-    private static @NotNull Set<SpatialForce> getLiftForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
-        return getSurfaces(controlSurfaces).stream()
-                .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity, angularVelocity))
+    private @NotNull Set<SpatialForce> getLiftForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
+        return description.getSurfaces(controlSurfaces).stream()
+                .map(vehicleSurface -> vehicleSurface.getLiftForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
 

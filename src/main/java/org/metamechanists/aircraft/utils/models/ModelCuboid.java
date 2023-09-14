@@ -11,13 +11,8 @@ import org.joml.Matrix4f;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
-import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.builders.BlockDisplayBuilder;
 import org.metamechanists.aircraft.utils.transformations.TransformationMatrixBuilder;
-import org.metamechanists.aircraft.vehicles.AircraftSurface;
-
-import java.util.HashSet;
-import java.util.Set;
 
 
 @SuppressWarnings("unused")
@@ -36,6 +31,13 @@ public class ModelCuboid {
         return this;
     }
     /**
+     * @param location The center of the cuboid
+     */
+    public ModelCuboid location(@NotNull final Vector3d location) {
+        this.location = new Vector3f((float) location.x, (float) location.y, (float) location.z);
+        return this;
+    }
+    /**
      * Sets the center of the cuboid
      */
     public ModelCuboid location(final float x, final float y, final float z) {
@@ -47,6 +49,13 @@ public class ModelCuboid {
      */
     public ModelCuboid size(@NotNull final Vector3f size) {
         this.size = size;
+        return this;
+    }
+    /**
+     * @param size The size of the cuboid (ie: the distance from one side to the other) on each axis
+     */
+    public ModelCuboid size(@NotNull final Vector3d size) {
+        this.size = new Vector3f((float) size.x, (float) size.y, (float) size.z);
         return this;
     }
     /**
@@ -124,27 +133,5 @@ public class ModelCuboid {
     }
     public BlockDisplay build(@NotNull final Block block, @NotNull final Vector3d modelRotation) {
         return build(block.getLocation(), modelRotation);
-    }
-    private @NotNull AircraftSurface getSurface(final String side,
-            final double dragCoefficient, final double liftCoefficient,
-            final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight) {
-        final double area = surfaceWidth * surfaceHeight;
-        final Vector3d relativeLocation = Utils.rotate(startingLocation, rotation);
-        final Vector3d normal = new Vector3d(relativeLocation).normalize();
-        return new AircraftSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
-    }
-    public Set<AircraftSurface> getSurfaces(final String name, final double dragCoefficient, final double liftCoefficient) {
-        final Set<AircraftSurface> surfaces = new HashSet<>();
-
-        surfaces.add(getSurface(name + "front", dragCoefficient, liftCoefficient, new Vector3d(0, 0, size.z / 2), size.x, size.y));
-        surfaces.add(getSurface(name + "back", dragCoefficient, liftCoefficient, new Vector3d(0, 0, -size.z / 2), size.x, size.y));
-
-        surfaces.add(getSurface(name + "top", dragCoefficient, liftCoefficient, new Vector3d(0, size.y / 2, 0), size.x, size.z));
-        surfaces.add(getSurface(name + "bottom", dragCoefficient, liftCoefficient, new Vector3d(0, -size.y / 2, 0), size.x, size.z));
-
-        surfaces.add(getSurface(name + "right", dragCoefficient, liftCoefficient, new Vector3d(size.x / 2, 0, 0), size.y, size.z));
-        surfaces.add(getSurface(name + "left", dragCoefficient, liftCoefficient, new Vector3d(-size.x / 2, 0, 0), size.y, size.z));
-
-        return surfaces;
     }
 }

@@ -1,6 +1,9 @@
 package org.metamechanists.aircraft.vehicles.components;
 
 import org.joml.Vector3d;
+import org.metamechanists.aircraft.vehicles.VehicleSurface;
+
+import java.util.Set;
 
 
 public class HingeComponent implements VehicleComponent {
@@ -14,5 +17,10 @@ public class HingeComponent implements VehicleComponent {
         this.rotationAxis = rotationAxis;
         this.rotationRate = rotationRate;
         this.rotationMax = rotationMax;
+    }
+
+    @Override
+    public Set<VehicleSurface> getSurfaces() {
+        return fixedComponent.getSurfaces();
     }
 }
