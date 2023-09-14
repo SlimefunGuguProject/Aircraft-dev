@@ -3,6 +3,8 @@ package org.metamechanists.aircraft.vehicles;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Pig;
+import org.metamechanists.aircraft.items.groups.Aircraft;
+import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -12,18 +14,22 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class VehicleStorage {
-    private Set<UUID> groups = new HashSet<>();
+    private Set<UUID> pigs = new HashSet<>();
 
     public void add(final UUID pigId) {
-        groups.add(pigId);
+        pigs.add(pigId);
     }
 
     public void remove(final UUID pigId) {
-        groups.remove(pigId);
+        pigs.remove(pigId);
     }
 
     public void tick() {
-        groups = groups.stream().filter(id -> Bukkit.getEntity(id) != null).collect(Collectors.toSet());
-        groups.stream().map(Bukkit::getEntity).map(Pig.class::cast).forEach(Vehicle::tickAircraft);
+        pigs = pigs.stream().filter(id -> Bukkit.getEntity(id) != null).collect(Collectors.toSet());
+        pigs.stream()
+                .map(Bukkit::getEntity)
+                .map(Pig.class::cast)
+                .map(group -> new PersistentDataTraverser(group).getString("name"))
+                .forEach(Aircraft::getVehicle);
     }
 }

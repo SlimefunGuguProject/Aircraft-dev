@@ -32,6 +32,7 @@ import static java.lang.Math.PI;
 
 
 public class Vehicle extends SlimefunItem {
+    private final String name;
     private final VehicleDescription description;
 
     private static final double dragCoefficient_BODY = 1.00;
@@ -51,18 +52,19 @@ public class Vehicle extends SlimefunItem {
     private static final double momentOfInertia = MASS; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
-            "ACR_GLIDER",
+            "ACR_TEST_AIRCRAFT",
             Material.FEATHER,
             "&4&ljustin don't hurt me",
             "&cpls");
 
-    public Vehicle(final ItemGroup itemGroup, final SlimefunItemStack item, final RecipeType recipeType, final ItemStack[] recipe, final VehicleDescription description) {
+    public Vehicle(final ItemGroup itemGroup, final SlimefunItemStack item, final RecipeType recipeType, final ItemStack[] recipe, final String name, final VehicleDescription description) {
         super(itemGroup, item, recipeType, recipe);
+        this.name = name;
         this.description = description;
         addItemHandler(onItemUse());
     }
 
-    private static @NotNull ItemUseHandler onItemUse() {
+    private @NotNull ItemUseHandler onItemUse() {
         return event -> {
             final Player player = event.getPlayer();
             if (event.getClickedBlock().isPresent() && !player.isInsideVehicle()) {
@@ -139,7 +141,7 @@ public class Vehicle extends SlimefunItem {
                 .rotation(new Vector3d(0, 0, rotation));
     }
 
-    private static void place(final @NotNull Block block, final @NotNull Player player) {
+    private void place(final @NotNull Block block, final @NotNull Player player) {
         final DisplayGroup componentGroup = buildAircraft(block.getLocation());
 
         final Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
@@ -153,6 +155,7 @@ public class Vehicle extends SlimefunItem {
         pig.addPassenger(player);
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
+        traverser.set("name", name);
         traverser.set("velocity", STARTING_VELOCITY); // must start off with some velocity to prevent NaN issues
         traverser.set("angularVelocity", STARTING_ANGULAR_VELOCITY); // roll, yaw, pitch
         traverser.set("rotation", STARTING_ROTATION); // roll, yaw, pitch
