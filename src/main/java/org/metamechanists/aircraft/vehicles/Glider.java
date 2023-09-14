@@ -211,8 +211,8 @@ public class Glider extends SlimefunItem {
     public static void tickAircraft(final @NotNull Pig pig) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         Vector3d velocity = traverser.getVector3d("velocity");
-        final Quaterniond angularVelocity = new Quaterniond().rotateX(0.1); //traverser.getQuaterniond("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
+        final Quaterniond angularVelocity = new Quaterniond().fromAxisAngleRad(new Vector3d(1, 0, 0), 0.05); //traverser.getQuaterniond("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty()) {
@@ -273,7 +273,6 @@ public class Glider extends SlimefunItem {
 
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98);
         angularVelocity.mul(resultantAngularAcceleration).rotateAxis(-angularVelocity.angle()*0.05, angularVelocity.x, angularVelocity.y, angularVelocity.z);
-        angularVelocity.mul(new Quaterniond(rotation).rotateAxis(rotation.angle(), new Vector3d(rotation.x, rotation.y, rotation.z)));
         rotation.mul(angularVelocity);
 
         // Euler integration
