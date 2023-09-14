@@ -211,7 +211,7 @@ public class Glider extends SlimefunItem {
     public static void tickAircraft(final @NotNull Pig pig) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         Vector3d velocity = traverser.getVector3d("velocity");
-        final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
+        final Quaterniond angularVelocity = new Quaterniond().rotateX(0.1); //traverser.getQuaterniond("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
@@ -290,7 +290,7 @@ public class Glider extends SlimefunItem {
         }
     }
     private static void tickPig(final @NotNull Pig pig, final Vector3d velocity) {
-        pig.setVelocity(Vector.fromJOML(velocity));
+        //pig.setVelocity(Vector.fromJOML(velocity));
     }
     private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Quaterniond rotation, final @NotNull ControlSurfaces controlSurfaces) {
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
