@@ -93,13 +93,13 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelWingFront1() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.01F, 1.2F)
+                .size(0.6F, 0.01F, 1.0F)
                 .location(0.6F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingFront2() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.01F, 1.2F)
+                .size(0.6F, 0.01F, 1.0F)
                 .location(0.6F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelWingBack1() {
@@ -123,14 +123,14 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelAileron1(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 1.2F)
+                .size(0.2F, 0.01F, 1.0F)
                 .location(0.2F, (float)(-0.1 * Math.sin(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelAileron2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 1.2F)
+                .size(0.2F, 0.01F, 1.0F)
                 .location(0.2F, (float)(-0.1 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
@@ -307,10 +307,10 @@ public class Glider extends SlimefunItem {
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce() {
-        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -9.81 * MASS, 0), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -2.0 * MASS, 0), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
-        return new SpatialForce("main", ForceType.THRUST, Utils.rotate(new Vector3d(70, 0, 0), rotation), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.THRUST, Utils.rotate(new Vector3d(30, 0, 0), rotation), new Vector3d(0, 0, 0));
     }
     private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()
