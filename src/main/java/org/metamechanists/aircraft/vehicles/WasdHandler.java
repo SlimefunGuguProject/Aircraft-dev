@@ -29,7 +29,9 @@ public final class WasdHandler  {
             Glider.onKeyD(traverser);
         } else if (rightLeft > 0) {
             Glider.onKeyA(traverser);
-        } else if (forwardbackwards < 0) {
+        }
+
+        if (forwardbackwards < 0) {
             Glider.onKeyS(traverser);
         } else if (forwardbackwards > 0) {
             Glider.onKeyW(traverser);
