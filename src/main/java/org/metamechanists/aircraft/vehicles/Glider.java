@@ -212,7 +212,7 @@ public class Glider extends SlimefunItem {
     public static void tickAircraft(final @NotNull Pig pig) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         Vector3d velocity = traverser.getVector3d("velocity");
-        final Quaterniond angularVelocity = new Quaterniond().fromAxisAngleRad(traverser.getVector3d("angularVelocity").normalize(), traverser.getVector3d("angularVelocity").length()); //new Vector3d(0.05, 0.05, 0.0);
+        final Vector3d angularVelocity = traverser.getVector3d("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
         final Quaterniond rotationq = new Quaterniond().fromAxisAngleRad(traverser.getVector3d("rotation").normalize(), traverser.getVector3d("rotation").length()) ;
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
@@ -221,7 +221,7 @@ public class Glider extends SlimefunItem {
         }
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
-        final Set<SpatialForce> forces = getForces(velocity, rotationq.getEulerAnglesXYZ(new Vector3d()), angularVelocity.getEulerAnglesXYZ(new Vector3d()), controlSurfaces);
+        final Set<SpatialForce> forces = getForces(velocity, rotationq.getEulerAnglesXYZ(new Vector3d()), angularVelocity, controlSurfaces);
         final Set<Vector3d> torqueVectors = forces.stream().map(force -> force.getTorqueVector(rotationq.getEulerAnglesXYZ(new Vector3d()))).collect(Collectors.toSet());
 
         // Newton's 2nd law to calculate resultant force and then acceleration
@@ -272,12 +272,14 @@ public class Glider extends SlimefunItem {
         controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
 
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98);
+        angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(400)).mul(0.95);
+        final Vector3d rotation = rotationq.getEulerAnglesXYZ(new Vector3d()).add(new Vector3d(angularVelocity));
 
         // Euler integration
         traverser.set("is_aircraft", true);
         traverser.set("velocity", velocity);
-        traverser.set("angularVelocity", angularVelocity.getEulerAnglesXYZ(new Vector3d()).add(resultantAngularAcceleration.div(400)));
-        traverser.set("rotation", rotationq.add(angularVelocity).getEulerAnglesXYZ(new Vector3d()));
+        traverser.set("angularVelocity", angularVelocity);
+        traverser.set("rotation", rotation);
         traverser.set("controlSurfaces", controlSurfaces);
 
         tickPig(pig, velocity);
