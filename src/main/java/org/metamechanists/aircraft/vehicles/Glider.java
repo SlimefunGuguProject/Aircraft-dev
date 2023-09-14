@@ -273,7 +273,7 @@ public class Glider extends SlimefunItem {
 
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98);
         angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(400)).mul(0.95);
-        final Vector3d rotation = rotationq.add(new Quaterniond().fromAxisAngleRad(new Vector3d(angularVelocity).normalize(), angularVelocity.length())).getEulerAnglesXYZ(new Vector3d());
+        final Vector3d rotation = rotationq.mul(new Quaterniond().fromAxisAngleRad(new Vector3d(angularVelocity).normalize(), angularVelocity.length())).getEulerAnglesXYZ(new Vector3d());
 
         // Euler integration
         traverser.set("is_aircraft", true);
