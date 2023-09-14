@@ -212,7 +212,8 @@ public class Glider extends SlimefunItem {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         Vector3d velocity = traverser.getVector3d("velocity");
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
-        final Quaterniond angularVelocity = new Quaterniond().fromAxisAngleRad(new Vector3d(1, 0, 0), 0.05); //traverser.getQuaterniond("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
+        final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotation.angle(), rotation.x, rotation.y, rotation.z);
+        final Quaterniond angularVelocity = new Quaterniond().fromAxisAngleRad(new Vector3d(1, 0, 0).rotate(negativeRotation), 0.05); //traverser.getQuaterniond("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty()) {
