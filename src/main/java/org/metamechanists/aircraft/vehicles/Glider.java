@@ -207,7 +207,7 @@ public class Glider extends SlimefunItem {
     }
 
     public static void tickAircraft(final @NotNull Pig pig) {
-        final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
+        final PersistentDataTraverser traverser = new PersistentDataTraverser(pig); // TODO ENERGY LOSS ENERGY LOSS ENERGY LOSS
         Vector3d velocity = traverser.getVector3d("velocity");
         final Vector3d angularVelocity = traverser.getVector3d("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
         final Vector3d rotation = traverser.getVector3d("rotation");
@@ -270,8 +270,8 @@ public class Glider extends SlimefunItem {
 
         // Euler integration
         traverser.set("is_aircraft", true);
-        traverser.set("velocity", velocity.add(new Vector3d(resultantAcceleration).div(400)));
-        traverser.set("angularVelocity", angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(20)));
+        traverser.set("velocity", velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.95));
+        traverser.set("angularVelocity", angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(20).mul(0.95)));
         traverser.set("rotation", rotation.add(new Vector3d(angularVelocity).div(20)));
         traverser.set("controlSurfaces", controlSurfaces);
 
