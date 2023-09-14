@@ -218,7 +218,7 @@ public class Glider extends SlimefunItem {
         }
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
-        final Set<SpatialForce> forces = getForces(velocity, rotation, controlSurfaces);
+        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, controlSurfaces);
         final Set<Vector3d> torqueVectors = forces.stream().map(force -> force.getTorqueVector(rotation)).collect(Collectors.toSet());
 
         // Newton's 2nd law to calculate resultant force and then acceleration
@@ -298,12 +298,12 @@ public class Glider extends SlimefunItem {
         group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(controlSurfaces.elevator2.getAngle()).getMatrix(rotation));
     }
 
-    private static @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation, final @NotNull ControlSurfaces controlSurfaces) {
+    private static @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation, final Vector3d angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
         forces.add(getThrustForce(rotation));
-        forces.addAll(getDragForces(rotation, velocity, controlSurfaces));
-        forces.addAll(getLiftForces(rotation, velocity, controlSurfaces));
+        forces.addAll(getDragForces(rotation, velocity, angularVelocity, controlSurfaces));
+        forces.addAll(getLiftForces(rotation, velocity, angularVelocity, controlSurfaces));
         return forces;
     }
     private static @NotNull SpatialForce getWeightForce() {
@@ -312,14 +312,14 @@ public class Glider extends SlimefunItem {
     private static @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
         return new SpatialForce("main", ForceType.THRUST, Utils.rotate(new Vector3d(50, 0, 0), rotation), new Vector3d(0, 0, 0));
     }
-    private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final @NotNull ControlSurfaces controlSurfaces) {
+    private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()
-                .map(aircraftSurface -> aircraftSurface.getDragForce(rotation, velocity))
+                .map(aircraftSurface -> aircraftSurface.getDragForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
-    private static @NotNull Set<SpatialForce> getLiftForces(final Vector3d rotation, final Vector3d velocity, final @NotNull ControlSurfaces controlSurfaces) {
+    private static @NotNull Set<SpatialForce> getLiftForces(final Vector3d rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()
-                .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity))
+                .map(aircraftSurface -> aircraftSurface.getLiftForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
 
