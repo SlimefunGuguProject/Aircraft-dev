@@ -20,7 +20,7 @@ import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.models.ModelBuilder;
-import org.metamechanists.aircraft.utils.models.components.ModelCuboid;
+import org.metamechanists.aircraft.utils.models.ModelCuboid;
 import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
 
 import java.util.HashSet;
@@ -211,8 +211,7 @@ public class Glider extends SlimefunItem {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         Vector3d velocity = traverser.getVector3d("velocity");
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
-        final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotation.angle(), rotation.x, rotation.y, rotation.z);
-        final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");// new Quaterniond().fromAxisAngleRad(new Vector3d(1, 0, 0).rotate(negativeRotation), 0.05);
+        final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty()) {
@@ -231,6 +230,7 @@ public class Glider extends SlimefunItem {
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
+        final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotation.angle(), rotation.x, rotation.y, rotation.z);
         resultantTorque.rotate(negativeRotation);
         final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(400);
         final Quaterniond resultantAngularAcceleration = new Quaterniond().fromAxisAngleRad(new Vector3d(resultantAngularAccelerationVector).normalize(), resultantAngularAccelerationVector.length()) ;

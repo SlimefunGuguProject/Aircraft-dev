@@ -1,4 +1,4 @@
-package org.metamechanists.aircraft.utils.models.components;
+package org.metamechanists.aircraft.utils.models;
 
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -21,7 +21,7 @@ import java.util.Set;
 
 
 @SuppressWarnings("unused")
-public class ModelCuboid implements ModelComponent {
+public class ModelCuboid {
     private final BlockDisplayBuilder main = new BlockDisplayBuilder();
 
     private Vector3f location = new Vector3f();
@@ -118,11 +118,10 @@ public class ModelCuboid implements ModelComponent {
                 .scale(new Vector3f(size))
                 .buildForBlockDisplay();
     }
-    @Override
+
     public BlockDisplay build(@NotNull final Location origin, @NotNull final Vector3d modelRotation) {
         return main.transformation(getMatrix(modelRotation)).build(origin);
     }
-    @Override
     public BlockDisplay build(@NotNull final Block block, @NotNull final Vector3d modelRotation) {
         return build(block.getLocation(), modelRotation);
     }
