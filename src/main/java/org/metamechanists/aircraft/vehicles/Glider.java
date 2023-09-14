@@ -43,7 +43,7 @@ public class Glider extends SlimefunItem {
     private static final double CONTROL_SURFACE_ROTATION_RATE = PI / 24;
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
-    private static final Vector3d STARTING_ANGULAR_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // roll, yaw, pitch
+    private static final Quaterniond STARTING_ANGULAR_VELOCITY = new Quaterniond(); // roll, yaw, pitch
     private static final Quaterniond STARTING_ROTATION = new Quaterniond(); // roll, yaw, pitch
     private static final double MAX_VELOCITY = 50.0;
 
@@ -212,7 +212,7 @@ public class Glider extends SlimefunItem {
     public static void tickAircraft(final @NotNull Pig pig) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         Vector3d velocity = traverser.getVector3d("velocity");
-        final Vector3d angularVelocity = traverser.getVector3d("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
+        final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
@@ -221,7 +221,7 @@ public class Glider extends SlimefunItem {
         }
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
-        final Set<SpatialForce> forces = getForces(velocity, rotation.getEulerAnglesXYZ(new Vector3d()), angularVelocity, controlSurfaces);
+        final Set<SpatialForce> forces = getForces(velocity, rotation.getEulerAnglesXYZ(new Vector3d()), angularVelocity.getEulerAnglesXYZ(new Vector3d()), controlSurfaces);
         final Set<Vector3d> torqueVectors = forces.stream().map(force -> force.getTorqueVector(rotation.getEulerAnglesXYZ(new Vector3d()))).collect(Collectors.toSet());
 
         // Newton's 2nd law to calculate resultant force and then acceleration
@@ -232,7 +232,8 @@ public class Glider extends SlimefunItem {
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
-        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA);
+        final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(400);
+        final Quaterniond resultantAngularAcceleration = new Quaterniond().fromAxisAngleRad(new Vector3d(resultantAngularAccelerationVector).normalize(), resultantAngularAccelerationVector.length()) ;
 
         // visualise forces
         final DisplayGroupId displayGroupId = traverser.getDisplayGroupId("forceGroupId");
@@ -272,8 +273,8 @@ public class Glider extends SlimefunItem {
         controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
 
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98);
-        angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(400)).mul(0.95);
-        rotation.mul(new Quaterniond().fromAxisAngleRad(new Vector3d(angularVelocity).normalize(), angularVelocity.length()));
+        angularVelocity.add(resultantAngularAcceleration);
+        rotation.mul(angularVelocity);
 
         // Euler integration
         traverser.set("is_aircraft", true);
