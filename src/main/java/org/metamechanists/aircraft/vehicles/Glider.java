@@ -222,7 +222,7 @@ public class Glider extends SlimefunItem {
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
         final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, controlSurfaces);
-        final Set<Vector3d> torqueVectors = forces.stream().map(force -> force.getTorqueVector(rotation.getEulerAnglesXYZ(new Vector3d()))).collect(Collectors.toSet());
+        final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
@@ -251,14 +251,14 @@ public class Glider extends SlimefunItem {
             if (forceGroup.isPresent()) {
                 for (final SpatialForce force : forces) {
                     final Display display = forceGroup.get().getDisplays().get(force.getId());
-                    display.setTransformationMatrix(force.visualise().getMatrix(new Vector3d()));
+                    display.setTransformationMatrix(force.visualise().getMatrix(new Quaterniond()));
                 }
                 forceGroup.get().getDisplays().get("velocity")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Vector3d()));
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.VELOCITY, velocity, new Vector3d()).visualise().getMatrix(new Quaterniond()));
                 forceGroup.get().getDisplays().get("angularVelocity")
-                        .setTransformationMatrix(new SpatialForce("main", ForceType.ANGULAR_VELOCITY, rotation.getEulerAnglesXYZ(new Vector3d()), new Vector3d()).visualise().getMatrix(new Vector3d()));
+                        .setTransformationMatrix(new SpatialForce("main", ForceType.ANGULAR_VELOCITY, rotation.getEulerAnglesXYZ(new Vector3d()), new Vector3d()).visualise().getMatrix(new Quaterniond()));
             }
-            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Vector3d()))));
+            forceGroup.ifPresent(displayGroup -> forces.forEach(force -> displayGroup.getDisplays().get(force.getId()).setTransformationMatrix(force.visualise().getMatrix(new Quaterniond()))));
         }
 
         if (velocity.length() > MAX_VELOCITY) {
@@ -284,7 +284,7 @@ public class Glider extends SlimefunItem {
         traverser.set("controlSurfaces", controlSurfaces);
 
         tickPig(pig, velocity);
-        tickAircraftDisplays(componentGroup, rotation.getEulerAnglesXYZ(new Vector3d()), controlSurfaces);
+        tickAircraftDisplays(componentGroup, rotation, controlSurfaces);
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup);
@@ -293,7 +293,7 @@ public class Glider extends SlimefunItem {
     private static void tickPig(final @NotNull Pig pig, final Vector3d velocity) {
         pig.setVelocity(Vector.fromJOML(velocity));
     }
-    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Vector3d rotation, final @NotNull ControlSurfaces controlSurfaces) {
+    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Quaterniond rotation, final @NotNull ControlSurfaces controlSurfaces) {
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
         group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
         group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
