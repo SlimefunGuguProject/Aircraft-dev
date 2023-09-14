@@ -46,7 +46,7 @@ public class Glider extends SlimefunItem {
     private static final Quaterniond STARTING_ROTATION = new Quaterniond().rotateY(PI/2); // roll, yaw, pitch
     private static final double MAX_VELOCITY = 50.0;
 
-    private static final double MASS = 0.005;
+    private static final double MASS = 0.002;
     private static final double MOMENT_OF_INERTIA = MASS; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
@@ -274,7 +274,7 @@ public class Glider extends SlimefunItem {
         controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
 
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98);
-        angularVelocity.mul(resultantAngularAcceleration).rotateAxis(-angularVelocity.angle()*0.05, angularVelocity.x, angularVelocity.y, angularVelocity.z);
+        angularVelocity.mul(resultantAngularAcceleration).rotateAxis(-angularVelocity.angle()*0.1, angularVelocity.x, angularVelocity.y, angularVelocity.z);
         rotation.mul(angularVelocity);
 
         // Euler integration
