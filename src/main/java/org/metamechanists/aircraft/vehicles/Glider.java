@@ -45,7 +45,7 @@ public class Glider extends SlimefunItem {
     private static final double MAX_VELOCITY = 50.0;
 
     private static final double MASS = 0.01;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.00002; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 20.0; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
