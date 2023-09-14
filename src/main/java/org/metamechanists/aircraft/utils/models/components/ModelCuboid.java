@@ -103,21 +103,20 @@ public class ModelCuboid implements ModelComponent {
         return this;
     }
 
-    public Matrix4f getMatrix(final Quaterniond modelRotation) {
+    public Matrix4f getMatrix() {
         return new TransformationMatrixBuilder()
-                .rotate(modelRotation)
                 .translate(location)
                 .rotate(rotation)
                 .scale(new Vector3f(size))
                 .buildForBlockDisplay();
     }
     @Override
-    public BlockDisplay build(@NotNull final Location origin, @NotNull final Quaterniond modelRotation) {
-        return main.transformation(getMatrix(modelRotation)).build(origin);
+    public BlockDisplay build(@NotNull final Location origin) {
+        return main.transformation(getMatrix()).build(origin);
     }
     @Override
-    public BlockDisplay build(@NotNull final Block block, @NotNull final Quaterniond modelRotation) {
-        return build(block.getLocation(), modelRotation);
+    public BlockDisplay build(@NotNull final Block block) {
+        return build(block.getLocation());
     }
     private @NotNull AircraftSurface getSurface(final String side,
             final double dragCoefficient, final double liftCoefficient,

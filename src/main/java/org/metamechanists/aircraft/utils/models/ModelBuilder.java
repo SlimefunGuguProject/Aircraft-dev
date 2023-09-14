@@ -2,7 +2,6 @@ package org.metamechanists.aircraft.utils.models;
 
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.models.components.ModelComponent;
 import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
@@ -16,15 +15,9 @@ import java.util.Map;
  */
 public class ModelBuilder {
     private final Map<String, ModelComponent> components = new HashMap<>();
-    private Quaterniond rotation = new Quaterniond();
 
     public ModelBuilder add(@NotNull final String name, @NotNull final ModelComponent component) {
         components.put(name, component);
-        return this;
-    }
-
-    public ModelBuilder rotation(final double x, final double y, final double z) {
-        this.rotation = new Quaterniond().rotateXYZ(x, y, z);
         return this;
     }
 
@@ -35,7 +28,7 @@ public class ModelBuilder {
      */
     public DisplayGroup buildAtLocation(@NotNull final Location center) {
         final DisplayGroup group = new DisplayGroup(center.clone(), 0, 0);
-        components.forEach((name, component) -> group.addDisplay(name, component.build(center.clone(), rotation)));
+        components.forEach((name, component) -> group.addDisplay(name, component.build(center.clone())));
         return group;
     }
     /**
@@ -45,7 +38,7 @@ public class ModelBuilder {
      */
     public DisplayGroup buildAtBlockCenter(@NotNull final Location blockLocation) {
         final DisplayGroup group = new DisplayGroup(blockLocation.clone(), 0, 0);
-        components.forEach((name, component) -> group.addDisplay(name, component.build(blockLocation.clone().toCenterLocation(), rotation)));
+        components.forEach((name, component) -> group.addDisplay(name, component.build(blockLocation.clone().toCenterLocation())));
         return group;
     }
 }
