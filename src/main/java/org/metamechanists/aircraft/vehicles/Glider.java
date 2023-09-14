@@ -46,7 +46,7 @@ public class Glider extends SlimefunItem {
     private static final Quaterniond STARTING_ROTATION = new Quaterniond().rotateY(PI/2); // roll, yaw, pitch
     private static final double MAX_VELOCITY = 50.0;
 
-    private static final double MASS = 0.004;
+    private static final double MASS = 0.006;
     private static final double MOMENT_OF_INERTIA = MASS; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
@@ -95,13 +95,13 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelWingFront1() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.01F, 1.4F)
+                .size(0.6F, 0.01F, 1.3F)
                 .location(0.7F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingFront2() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.01F, 1.4F)
+                .size(0.6F, 0.01F, 1.3F)
                 .location(0.7F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelWingBack1() {
@@ -125,14 +125,14 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelAileron1(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 1.4F)
+                .size(0.2F, 0.01F, 1.3F)
                 .location(0.3F, (float)(-0.1 * Math.sin(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelAileron2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 1.4F)
+                .size(0.2F, 0.01F, 1.3F)
                 .location(0.3F, (float)(-0.1 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
