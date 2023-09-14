@@ -273,7 +273,7 @@ public class Glider extends SlimefunItem {
         controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
 
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98);
-        angularVelocity.add(resultantAngularAcceleration);
+        angularVelocity.mul(resultantAngularAcceleration);
         rotation.mul(angularVelocity);
 
         // Euler integration
