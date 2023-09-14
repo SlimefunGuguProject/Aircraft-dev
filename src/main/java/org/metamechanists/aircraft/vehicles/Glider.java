@@ -213,7 +213,7 @@ public class Glider extends SlimefunItem {
         Vector3d velocity = traverser.getVector3d("velocity");
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotation.angle(), rotation.x, rotation.y, rotation.z);
-        final Quaterniond angularVelocity = new Quaterniond().fromAxisAngleRad(new Vector3d(1, 0, 0).rotate(negativeRotation), 0.05); //traverser.getQuaterniond("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
+        final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");// new Quaterniond().fromAxisAngleRad(new Vector3d(1, 0, 0).rotate(negativeRotation), 0.05);
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty()) {
@@ -232,6 +232,7 @@ public class Glider extends SlimefunItem {
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
+        resultantTorque.rotate(negativeRotation);
         final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(400);
         final Quaterniond resultantAngularAcceleration = new Quaterniond().fromAxisAngleRad(new Vector3d(resultantAngularAccelerationVector).normalize(), resultantAngularAccelerationVector.length()) ;
 
@@ -291,7 +292,7 @@ public class Glider extends SlimefunItem {
         }
     }
     private static void tickPig(final @NotNull Pig pig, final Vector3d velocity) {
-        //pig.setVelocity(Vector.fromJOML(velocity));
+        pig.setVelocity(Vector.fromJOML(velocity));
     }
     private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Quaterniond rotation, final @NotNull ControlSurfaces controlSurfaces) {
         group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
