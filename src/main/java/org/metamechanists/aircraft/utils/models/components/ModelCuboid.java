@@ -8,7 +8,6 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.BlockDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
-import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.Utils;
@@ -102,7 +101,7 @@ public class ModelCuboid implements ModelComponent {
         return this;
     }
 
-    public Matrix4f getMatrix(final Quaterniond modelRotation) {
+    public Matrix4f getMatrix(final Vector3d modelRotation) {
         return new TransformationMatrixBuilder()
                 .rotate(modelRotation)
                 .translate(location)
@@ -111,11 +110,11 @@ public class ModelCuboid implements ModelComponent {
                 .buildForBlockDisplay();
     }
     @Override
-    public BlockDisplay build(@NotNull final Location origin, @NotNull final Quaterniond modelRotation) {
+    public BlockDisplay build(@NotNull final Location origin, @NotNull final Vector3d modelRotation) {
         return main.transformation(getMatrix(modelRotation)).build(origin);
     }
     @Override
-    public BlockDisplay build(@NotNull final Block block, @NotNull final Quaterniond modelRotation) {
+    public BlockDisplay build(@NotNull final Block block, @NotNull final Vector3d modelRotation) {
         return build(block.getLocation(), modelRotation);
     }
     private @NotNull AircraftSurface getSurface(final String side,
