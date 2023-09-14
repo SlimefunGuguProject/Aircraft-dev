@@ -56,7 +56,7 @@ public class Utils {
         if (rotation.length() < 0.0001) {
             return vector;
         }
-        return new Vector3d(vector).rotate(new Quaterniond().fromAxisAngleRad(new Vector3d(rotation.x, rotation.y, rotation.z), (float) rotation.length()));
+        return new Vector3d(vector).rotate(new Quaterniond().fromAxisAngleRad(rotation.x, rotation.y, rotation.z, (float) rotation.length()));
         //return new Vector3d(vector).rotateX((float) rotation.x).rotateY((float) rotation.y).rotateZ((float) rotation.z);
     }
 
@@ -64,7 +64,7 @@ public class Utils {
         if (rotation.length() < 0.0001) {
             return vector;
         }
-        return new Vector3f(vector).rotate(new Quaternionf().fromAxisAngleRad(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z), (float) rotation.length()));
+        return new Vector3f(vector).rotate(new Quaternionf().fromAxisAngleRad((float) rotation.x, (float) rotation.y, (float) rotation.z, (float) rotation.length()));
         //return new Vector3f(vector).rotateX((float) rotation.x).rotateY((float) rotation.y).rotateZ((float) rotation.z);
     }
 }
