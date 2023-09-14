@@ -45,7 +45,7 @@ public class Glider extends SlimefunItem {
     private static final double MAX_VELOCITY = 50.0;
 
     private static final double MASS = 10.0;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.0005; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 0.0001; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -93,13 +93,13 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelWingFront1() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.01F, 1.2F)
+                .size(0.6F, 0.01F, 1.4F)
                 .location(0.6F, 0.0F, 0.6F);
     }
     private static ModelCuboid modelWingFront2() {
         return new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.01F, 1.2F)
+                .size(0.6F, 0.01F, 1.4F)
                 .location(0.6F, 0.0F, -0.6F);
     }
     private static ModelCuboid modelWingBack1() {
@@ -123,14 +123,14 @@ public class Glider extends SlimefunItem {
     private static ModelCuboid modelAileron1(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 1.2F)
+                .size(0.2F, 0.01F, 1.4F)
                 .location(0.2F, (float)(-0.1 * Math.sin(rotation)), 0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
     private static ModelCuboid modelAileron2(final double rotation) {
         return new ModelCuboid()
                 .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 1.2F)
+                .size(0.2F, 0.01F, 1.4F)
                 .location(0.2F, (float)(-0.1 * Math.sin(rotation)), -0.6F)
                 .rotation(new Vector3d(0, 0, rotation));
     }
@@ -271,7 +271,7 @@ public class Glider extends SlimefunItem {
         // Euler integration
         traverser.set("is_aircraft", true);
         traverser.set("velocity", velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98));
-        traverser.set("angularVelocity", angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(20).mul(0.98)));
+        traverser.set("angularVelocity", angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(20).mul(0.95)));
         traverser.set("rotation", rotation.add(new Vector3d(angularVelocity).div(20)));
         traverser.set("controlSurfaces", controlSurfaces);
 
