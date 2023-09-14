@@ -43,7 +43,7 @@ public class Glider extends SlimefunItem {
 
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.00001, 0.0); // must start off with some velocity to prevent NaN issues
     private static final Quaterniond STARTING_ANGULAR_VELOCITY = new Quaterniond(); // roll, yaw, pitch
-    private static final Quaterniond STARTING_ROTATION = new Quaterniond(); // roll, yaw, pitch
+    private static final Quaterniond STARTING_ROTATION = new Quaterniond().rotateY(PI/2); // roll, yaw, pitch
     private static final double MAX_VELOCITY = 50.0;
 
     private static final double MASS = 0.01;
