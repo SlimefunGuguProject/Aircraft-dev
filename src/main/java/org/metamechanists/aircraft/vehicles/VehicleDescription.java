@@ -25,16 +25,22 @@ public class VehicleDescription {
     private final double angularVelocityDampening;
     private final Map<String, VehicleComponent> components = new HashMap<>();
 
+    private static @NotNull Vector3d getVector3d(@NotNull final YamlTraverser traverser, final String name) {
+        final List<Double> rotationList = traverser.get(name);
+        return new Vector3d(rotationList.get(0), rotationList.get(1), rotationList.get(2));
+    }
+    private static @NotNull Vector3f getVector3f(@NotNull final YamlTraverser traverser, final String name) {
+        final Vector3d as3d = getVector3d(traverser, name);
+        return new Vector3f((float) as3d.x, (float) as3d.y, (float) as3d.z);
+    }
+
     @SuppressWarnings("DataFlowIssue")
     private static @NotNull VehicleComponent getComponentFromTraverser(final @NotNull YamlTraverser component, final @NotNull Map<String, ComponentGroup> groups) {
         final ComponentGroup group = groups.get(component.get("group"));
         final Material material = Material.valueOf(component.get("material"));
-        final List<Float> sizeList = component.get("size");
-        final Vector3f size = new Vector3f(sizeList.get(0), sizeList.get(1), sizeList.get(2));
-        final List<Float> locationList = component.get("location");
-        final Vector3f location = new Vector3f(locationList.get(0), locationList.get(1), locationList.get(2));
-        final List<Double> rotationList = component.get("rotation");
-        final Vector3d rotation = new Vector3d(rotationList.get(0), rotationList.get(1), rotationList.get(2));
+        final Vector3f size = getVector3f(component, "size");
+        final Vector3f location = getVector3f(component, "location");
+        final Vector3d rotation = getVector3d(component, "rotation");
         final FixedComponent fixedComponent = new FixedComponent(component.name(), group.density, group.dragCoefficient, group.liftCoefficient, material, size, location, rotation);
 
         if (component.get("control_surface", false)) {
