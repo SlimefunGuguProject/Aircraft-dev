@@ -45,7 +45,7 @@ public class Glider extends SlimefunItem {
     private static final double MAX_VELOCITY = 50.0;
 
     private static final double MASS = 10.0;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.5; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS * 0.0005; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -271,7 +271,7 @@ public class Glider extends SlimefunItem {
         // Euler integration
         traverser.set("is_aircraft", true);
         traverser.set("velocity", velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.995));
-        traverser.set("angularVelocity", angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(20).mul(0.995)));
+        traverser.set("angularVelocity", angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(20).mul(0.98)));
         traverser.set("rotation", rotation.add(new Vector3d(angularVelocity).div(20)));
         traverser.set("controlSurfaces", controlSurfaces);
 
