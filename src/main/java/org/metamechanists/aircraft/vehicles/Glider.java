@@ -274,23 +274,11 @@ public class Glider extends SlimefunItem {
         angularVelocity.add(new Vector3d(resultantAngularAcceleration).div(400)).mul(0.95);
         rotation.add(angularVelocity);
 
-//        if (rotation.x > PI) {
-//            rotation.x -= 2*PI;
-//        } else if (rotation.x < -PI) {
-//            rotation.x += 2*PI;
-//        }
-//
-//        if (rotation.y > PI) {
-//            rotation.y -= 2*PI;
-//        } else if (rotation.y < -PI) {
-//            rotation.y += 2*PI;
-//        }
-//
-//        if (rotation.z > PI) {
-//            rotation.z -= 2*PI;
-//        } else if (rotation.z < -PI) {
-//            rotation.z += 2*PI;
-//        }
+        final double angle = resultantAngularAcceleration.length();
+        if (angle > PI) {
+            resultantAngularAcceleration.normalize();
+            resultantAngularAcceleration.mul(angle % (2 * PI));
+        }
 
         // Euler integration
         traverser.set("is_aircraft", true);
