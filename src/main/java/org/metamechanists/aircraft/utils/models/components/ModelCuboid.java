@@ -8,6 +8,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.BlockDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
+import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.Utils;
@@ -102,6 +103,14 @@ public class ModelCuboid implements ModelComponent {
     }
 
     public Matrix4f getMatrix(final Vector3d modelRotation) {
+        return new TransformationMatrixBuilder()
+                .rotate(modelRotation)
+                .translate(location)
+                .rotate(rotation)
+                .scale(new Vector3f(size))
+                .buildForBlockDisplay();
+    }
+    public Matrix4f getMatrix(final Quaterniond modelRotation) {
         return new TransformationMatrixBuilder()
                 .rotate(modelRotation)
                 .translate(location)
