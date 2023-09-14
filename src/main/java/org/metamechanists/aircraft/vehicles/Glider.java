@@ -44,8 +44,8 @@ public class Glider extends SlimefunItem {
     private static final Vector3d STARTING_ROTATION = new Vector3d(0, 0, 0); // roll, yaw, pitch
     private static final double MAX_VELOCITY = 50.0;
 
-    private static final double MASS = 0.01;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.4; // silly approximation
+    private static final double MASS = 1.0;
+    private static final double MOMENT_OF_INERTIA = MASS; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -229,7 +229,7 @@ public class Glider extends SlimefunItem {
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
-        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA).div(2000);
+        final Vector3d resultantAngularAcceleration = new Vector3d(resultantTorque).div(MOMENT_OF_INERTIA);
 
         // visualise forces
         final DisplayGroupId displayGroupId = traverser.getDisplayGroupId("forceGroupId");
