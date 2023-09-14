@@ -19,7 +19,7 @@ public class Rotation implements TransformationMatrixComponent {
         if (rotation.length() < 0.0001) {
             return;
         }
-        matrix.rotate(new Quaternionf().fromAxisAngleRad((float) rotation.x, (float) rotation.y, (float) rotation.z, (float) rotation.length()));
+        matrix.rotate(new Quaternionf().rotateXYZ((float) rotation.x, (float) rotation.y, (float) rotation.z));
 //        matrix.rotateZ((float) rotation.z);
 //        matrix.rotateY((float) rotation.y);
 //        matrix.rotateX((float) rotation.x);
