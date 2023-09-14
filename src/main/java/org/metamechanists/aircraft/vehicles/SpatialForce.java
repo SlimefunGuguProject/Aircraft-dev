@@ -30,7 +30,7 @@ public class SpatialForce {
 //                .rotateX((float) rotation.x)
 //                .rotateY((float) rotation.y)
 //                .rotateZ((float) rotation.z);
-        final Vector3f to = new Vector3f(from).add(new Vector3f((float) force.x, (float) force.y, (float) force.z).mul(8));
+        final Vector3f to = new Vector3f(from).add(new Vector3f((float) force.x, (float) force.y, (float) force.z).mul(64));
         return new ModelLine()
                 .from(from)
                 .to(to)
