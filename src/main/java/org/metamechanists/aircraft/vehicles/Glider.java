@@ -211,7 +211,7 @@ public class Glider extends SlimefunItem {
     public static void tickAircraft(final @NotNull Pig pig) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         Vector3d velocity = traverser.getVector3d("velocity");
-        final Vector3d angularVelocity = new Vector3d(0.05, 0.005, 0.0); //traverser.getVector3d("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
+        final Vector3d angularVelocity = new Vector3d(0.05, 0.005, 0.1); //traverser.getVector3d("angularVelocity"); //new Vector3d(0.05, 0.05, 0.0);
         final Vector3d rotation = traverser.getVector3d("rotation");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
