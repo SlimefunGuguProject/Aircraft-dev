@@ -222,8 +222,8 @@ public class Glider extends SlimefunItem {
         }
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
-        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, controlSurfaces);
-        final Set<Vector3d> torqueVectors = forces.stream().map(force -> force.getTorqueVector(rotation)).collect(Collectors.toSet());
+        final Set<SpatialForce> forces = getForces(velocity, rotationq.getEulerAnglesXYZ(new Vector3d()), angularVelocity, controlSurfaces);
+        final Set<Vector3d> torqueVectors = forces.stream().map(force -> force.getTorqueVector(rotationq.getEulerAnglesXYZ(new Vector3d()))).collect(Collectors.toSet());
 
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
