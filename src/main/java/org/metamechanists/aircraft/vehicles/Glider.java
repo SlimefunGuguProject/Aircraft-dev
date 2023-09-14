@@ -19,7 +19,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
-import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.models.ModelBuilder;
 import org.metamechanists.aircraft.utils.models.components.ModelCuboid;
@@ -48,7 +47,7 @@ public class Glider extends SlimefunItem {
     private static final double MAX_VELOCITY = 50.0;
 
     private static final double MASS = 0.01;
-    private static final double MOMENT_OF_INERTIA = MASS * 0.6; // silly approximation
+    private static final double MOMENT_OF_INERTIA = MASS; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_GLIDER",
@@ -273,7 +272,7 @@ public class Glider extends SlimefunItem {
         controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
 
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98);
-        angularVelocity.mul(resultantAngularAcceleration);
+        angularVelocity.mul(resultantAngularAcceleration).mul(0.96);
         rotation.mul(angularVelocity);
 
         // Euler integration
