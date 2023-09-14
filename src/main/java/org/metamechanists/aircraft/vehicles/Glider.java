@@ -273,7 +273,7 @@ public class Glider extends SlimefunItem {
         controlSurfaces.elevator1.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
         controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
 
-        velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.98);
+        velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.95);
         angularVelocity.mul(resultantAngularAcceleration).rotateAxis(-angularVelocity.angle()*0.1, angularVelocity.x, angularVelocity.y, angularVelocity.z);
         rotation.mul(angularVelocity);
 
@@ -319,7 +319,7 @@ public class Glider extends SlimefunItem {
         return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -0.5 * MASS, 0), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce(final @NotNull Quaterniond rotation) {
-        return new SpatialForce("main", ForceType.THRUST, new Vector3d(0.1, 0, 0).rotate(rotation), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.THRUST, new Vector3d(0.15, 0, 0).rotate(rotation), new Vector3d(0, 0, 0));
     }
     private static Set<SpatialForce> getDragForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()
