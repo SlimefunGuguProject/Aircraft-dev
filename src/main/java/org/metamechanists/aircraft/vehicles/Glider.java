@@ -44,7 +44,7 @@ public class Glider extends SlimefunItem {
     private static final Vector3d STARTING_ROTATION = new Vector3d(0, 0, 0); // roll, yaw, pitch
     private static final double MAX_VELOCITY = 50.0;
 
-    private static final double MASS = 1.0;
+    private static final double MASS = 0.1;
     private static final double MOMENT_OF_INERTIA = MASS * 0.01; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
@@ -310,7 +310,7 @@ public class Glider extends SlimefunItem {
         return new SpatialForce("main", ForceType.WEIGHT, new Vector3d(0, -0.5 * MASS, 0), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
-        return new SpatialForce("main", ForceType.THRUST, Utils.rotate(new Vector3d(3, 0, 0), rotation), new Vector3d(0, 0, 0));
+        return new SpatialForce("main", ForceType.THRUST, Utils.rotate(new Vector3d(0.3, 0, 0), rotation), new Vector3d(0, 0, 0));
     }
     private static Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
         return getSurfaces(controlSurfaces).stream()
