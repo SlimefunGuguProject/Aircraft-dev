@@ -7,10 +7,10 @@ import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.models.ModelCuboid;
 import org.metamechanists.aircraft.vehicles.components.FixedComponent;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
-import org.metamechanists.aircraft.vehicles.components.VehicleComponent;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,7 +23,8 @@ public class VehicleDescription {
     private final double mass;
     private final double momentOfInertia;
     private final double velocityDampening;
-    private final Map<String, VehicleComponent> components = new HashMap<>();
+    private final Set<FixedComponent> fixedComponents = new HashSet<>();
+    private final Set<HingeComponent> hingeComponents = new HashSet<>();
 
     private static @NotNull Vector3d getVector3d(@NotNull final YamlTraverser traverser, final String name) {
         final List<Double> rotationList = traverser.get(name);
@@ -35,19 +36,21 @@ public class VehicleDescription {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    private static @NotNull VehicleComponent getComponentFromTraverser(final @NotNull YamlTraverser component, final @NotNull Map<String, ComponentGroup> groups) {
-        final ComponentGroup group = groups.get(component.get("group"));
-        final Material material = Material.valueOf(component.get("material"));
-        final Vector3f size = getVector3f(component, "size");
-        final Vector3f location = getVector3f(component, "location");
-        final Vector3d rotation = getVector3d(component, "rotation");
-        final FixedComponent fixedComponent = new FixedComponent(component.name(), group.density, group.dragCoefficient, group.liftCoefficient, material, size, location, rotation);
+    private void processComponentFromTraverser(final @NotNull YamlTraverser componentTraverser, final @NotNull Map<String, ComponentGroup> groups) {
+        final ComponentGroup group = groups.get(componentTraverser.get("group"));
+        final Material material = Material.valueOf(componentTraverser.get("material"));
+        final Vector3f size = getVector3f(componentTraverser, "size");
+        final Vector3f location = getVector3f(componentTraverser, "location");
+        final Vector3d rotation = getVector3d(componentTraverser, "rotation");
+        final FixedComponent fixedComponent = new FixedComponent(componentTraverser.name(), group.density, group.dragCoefficient, group.liftCoefficient, material, size, location, rotation);
 
-        if (component.get("control_surface", false)) {
-            return new HingeComponent(fixedComponent, component.get("rotationAxis"), component.get("rotationRate"), component.get("rotationMax"), component.get("keyUp"), component.get("keyDown"));
+        if (componentTraverser.get("control_surface", false)) {
+            hingeComponents.add(new HingeComponent(fixedComponent,
+                    componentTraverser.get("rotationAxis"), componentTraverser.get("rotationRate"), componentTraverser.get("rotationMax"),
+                    componentTraverser.get("keyUp"), componentTraverser.get("keyDown")));
         }
 
-        return fixedComponent;
+        fixedComponents.add(fixedComponent);
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -62,16 +65,32 @@ public class VehicleDescription {
             groups.put(group.name(), new ComponentGroup(group.get("density"), group.get("dragCoefficient"), group.get("liftCoefficient")));
         }
 
-        for (final YamlTraverser component : traverser.getSection("components").getSections()) {
-            components.put(component.name(), getComponentFromTraverser(component, groups));
+        for (final YamlTraverser componentTraverser : traverser.getSection("components").getSections()) {
+            processComponentFromTraverser(componentTraverser, groups);
         }
     }
 
-    public Set<VehicleSurface> getSurfaces(final ControlSurfaces controlSurfaces) {
-        return components.values().stream().flatMap(component -> component.getSurfaces().stream()).collect(Collectors.toSet());
+    @SuppressWarnings("SimplifyForEach")
+    public Set<VehicleSurface> getSurfaces(final Map<String, ControlSurfaceOrientation> orientations) {
+        final Set<VehicleSurface> surfaces = new HashSet<>();
+        fixedComponents.forEach(component -> surfaces.addAll(component.getSurfaces()));
+        hingeComponents.forEach(component -> surfaces.addAll(component.getSurfaces(orientations)));
+        return surfaces;
     }
 
-    public Map<String, ModelCuboid> getCuboids(final ControlSurfaces controlSurfaces) {
-        return components.values().stream().collect(Collectors.toMap(VehicleComponent::getName, VehicleComponent::getCuboid, (a, b) -> b));
+    @SuppressWarnings("SimplifyForEach")
+    public Map<String, ModelCuboid> getCuboids(final Map<String, ControlSurfaceOrientation> orientations) {
+        final Map<String, ModelCuboid> surfaces = new HashMap<>();
+        fixedComponents.forEach(component -> surfaces.put(component.getName(), component.getCuboid()));
+        hingeComponents.forEach(component -> surfaces.put(component.getName(), component.getCuboid(orientations)));
+        return surfaces;
+    }
+
+    public void adjustHingeComponents(final Map<String, ControlSurfaceOrientation> orientations, final char key) {
+        hingeComponents.forEach(component -> component.useKey(orientations, key));
+    }
+
+    public Map<String, ControlSurfaceOrientation> initializeOrientations() {
+        return hingeComponents.stream().collect(Collectors.toMap(HingeComponent::getName, component -> new ControlSurfaceOrientation(), (name, orientation) -> orientation));
     }
 }

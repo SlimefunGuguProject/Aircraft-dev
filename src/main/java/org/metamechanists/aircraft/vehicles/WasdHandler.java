@@ -32,15 +32,15 @@ public final class WasdHandler  {
         }
 
         if (rightLeft < 0) {
-            vehicle.onKeyD(traverser);
+            vehicle.onKey(traverser, 'd');
         } else if (rightLeft > 0) {
-            vehicle.onKeyA(traverser);
+            vehicle.onKey(traverser, 'a');
         }
 
         if (forwardbackwards < 0) {
-            vehicle.onKeyS(traverser);
+            vehicle.onKey(traverser, 's');
         } else if (forwardbackwards > 0) {
-            vehicle.onKeyW(traverser);
+            vehicle.onKey(traverser, 'w');
         }
     }
 

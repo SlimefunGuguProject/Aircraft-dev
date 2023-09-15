@@ -18,9 +18,9 @@ import org.metamechanists.aircraft.utils.id.simple.BlockDisplayId;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.id.simple.InteractionId;
 import org.metamechanists.aircraft.utils.id.simple.TextDisplayId;
-import org.metamechanists.aircraft.vehicles.ControlSurface;
-import org.metamechanists.aircraft.vehicles.ControlSurfaces;
+import org.metamechanists.aircraft.vehicles.ControlSurfaceOrientation;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -134,24 +134,9 @@ public class PersistentDataTraverser {
     public void set(@NotNull final String key, @Nullable final CustomId value) {
         set(key, value == null ? null : value.toString());
     }
-    public void set(@NotNull final String key, @Nullable final ControlSurface value) {
+    public void set(@NotNull final String key, @Nullable final ControlSurfaceOrientation value) {
         set(key + "angle", value == null ? 0 : value.getAngle());
         set(key + "ticksUntilReturn", value == null ? 0 : value.getTicksUntilReturn());
-    }
-    public void set(@NotNull final String key, @NotNull final ControlSurfaces value) {
-        set(key + "aileron1", value.aileron1);
-        set(key + "aileron2", value.aileron2);
-        set(key + "elevator1", value.elevator1);
-        set(key + "elevator2", value.elevator2);
-    }
-    public void set(@NotNull final String key, @NotNull final Map<String, ? extends CustomId> value) {
-        set(key + "length", value.size());
-        int i = 0;
-        for (final Entry<String, ? extends CustomId> pair : value.entrySet()) {
-            set(key + i + "key", pair.getKey());
-            set(key + i + "value", pair.getValue().toString());
-            i++;
-        }
     }
     public void set(@NotNull final String key, @NotNull final List<UUID> value) {
         set(key + "length", value.size());
@@ -167,6 +152,16 @@ public class PersistentDataTraverser {
         int i = 0;
         for (final CustomId uuid : value) {
             set(key + i, uuid.toString());
+            i++;
+        }
+    }
+    public void setControlSurfaceOrientations(@NotNull final String key, @NotNull final Map<String, ControlSurfaceOrientation> value) {
+        set(key + "length", value.size());
+        int i = 0;
+        for (final Entry<String, ControlSurfaceOrientation> pair : value.entrySet()) {
+            set(key + i + "key", pair.getKey());
+            set(key + i + "value_angle", pair.getValue().getAngle());
+            set(key + i + "value_ticksUntilReturn", pair.getValue().getTicksUntilReturn());
             i++;
         }
     }
@@ -232,16 +227,6 @@ public class PersistentDataTraverser {
         final String uuid = getString(key);
         return uuid == null ? null : new TextDisplayId(uuid);
     }
-    public @NotNull ControlSurface getControlSurface(@NotNull final String key) {
-        return new ControlSurface(getDouble(key + "angle"), getInt(key + "ticksUntilReturn"));
-    }
-    public @NotNull ControlSurfaces getControlSurfaces(@NotNull final String key) {
-        return new ControlSurfaces(
-                getControlSurface(key + "aileron1"),
-                getControlSurface(key + "aileron2"),
-                getControlSurface(key + "elevator1"),
-                getControlSurface(key + "elevator2"));
-    }
     public @Nullable List<UUID> getUuidList(@NotNull final String key) {
         final int size = getInt(key + "length");
         if (size == 0) {
@@ -263,5 +248,18 @@ public class PersistentDataTraverser {
                 .map(UUID::fromString)
                 .map(InteractionId::new)
                 .collect(Collectors.toList());
+    }
+    public @Nullable Map<String, ControlSurfaceOrientation> getControlSurfaceOrientations(@NotNull final String key) {
+        final int size = getInt(key + "length");
+        if (size == 0) {
+            return null;
+        }
+        final Map<String, ControlSurfaceOrientation> controlSurfaceOrientations = new HashMap<>();
+        IntStream.range(0, size).forEach(i -> {
+            final String name = getString(key + i + "key");
+            final ControlSurfaceOrientation orientation = new ControlSurfaceOrientation(getDouble(key + i + "value_angle"), getInt(key + i + "value_ticksUntilReturn"));
+            controlSurfaceOrientations.put(name, orientation);
+        });
+        return controlSurfaceOrientations;
     }
 }

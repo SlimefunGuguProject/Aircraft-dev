@@ -1,5 +1,6 @@
 package org.metamechanists.aircraft.vehicles.components;
 
+import lombok.Getter;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
@@ -9,12 +10,11 @@ import org.metamechanists.aircraft.utils.models.ModelCuboid;
 import org.metamechanists.aircraft.vehicles.VehicleSurface;
 
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 
-public class FixedComponent implements VehicleComponent {
+public class FixedComponent {
+    @Getter
     private final String name;
     private final double density;
     private final double dragCoefficient;
@@ -37,36 +37,39 @@ public class FixedComponent implements VehicleComponent {
         this.rotation = rotation;
     }
 
-    private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight) {
+    private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight, final Vector3d rotation) {
         final double area = surfaceWidth * surfaceHeight;
         final Vector3d relativeLocation = Utils.rotate(startingLocation, rotation);
         final Vector3d normal = new Vector3d(relativeLocation).normalize();
         return new VehicleSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
     }
 
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public Set<VehicleSurface> getSurfaces() {
+    public Set<VehicleSurface> getSurfaces(final Vector3d rotation) {
+        final Vector3d resultantRotation = new Vector3d(this.rotation).add(rotation); // TODO check if this correctly composites on top of fixed rotation
         final Set<VehicleSurface> surfaces = new HashSet<>();
 
-        surfaces.add(getSurface(new Vector3d(0, 0, size.z / 2), size.x, size.y));
-        surfaces.add(getSurface(new Vector3d(0, 0, -size.z / 2), size.x, size.y));
+        surfaces.add(getSurface(new Vector3d(0, 0, size.z / 2), size.x, size.y, resultantRotation));
+        surfaces.add(getSurface(new Vector3d(0, 0, -size.z / 2), size.x, size.y, resultantRotation));
 
-        surfaces.add(getSurface(new Vector3d(0, size.y / 2, 0), size.x, size.z));
-        surfaces.add(getSurface(new Vector3d(0, -size.y / 2, 0), size.x, size.z));
+        surfaces.add(getSurface(new Vector3d(0, size.y / 2, 0), size.x, size.z, resultantRotation));
+        surfaces.add(getSurface(new Vector3d(0, -size.y / 2, 0), size.x, size.z, resultantRotation));
 
-        surfaces.add(getSurface(new Vector3d(size.x / 2, 0, 0), size.y, size.z));
-        surfaces.add(getSurface(new Vector3d(-size.x / 2, 0, 0), size.y, size.z));
+        surfaces.add(getSurface(new Vector3d(size.x / 2, 0, 0), size.y, size.z, resultantRotation));
+        surfaces.add(getSurface(new Vector3d(-size.x / 2, 0, 0), size.y, size.z, resultantRotation));
 
         return surfaces;
     }
 
-    @Override
+    public Set<VehicleSurface> getSurfaces() {
+        return getSurfaces(new Vector3d());
+    }
+
+    public ModelCuboid getCuboid(final Vector3d rotation) {
+        final Vector3d resultantRotation = new Vector3d(this.rotation).add(rotation); // TODO check if this correctly composites on top of fixed rotation
+        return new ModelCuboid().material(material).size(size).location(location).rotation(resultantRotation);
+    }
+
     public ModelCuboid getCuboid() {
-        return new ModelCuboid().material(material).size(size).location(location);
+        return new ModelCuboid().material(material).size(size).location(location).rotation(new Vector3d());
     }
 }

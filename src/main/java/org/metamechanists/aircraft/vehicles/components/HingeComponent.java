@@ -1,13 +1,17 @@
 package org.metamechanists.aircraft.vehicles.components;
 
+import org.jetbrains.annotations.NotNull;
+import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.models.ModelCuboid;
+import org.metamechanists.aircraft.vehicles.ControlSurfaceOrientation;
 import org.metamechanists.aircraft.vehicles.VehicleSurface;
 
+import java.util.Map;
 import java.util.Set;
 
 
-public class HingeComponent implements VehicleComponent {
+public class HingeComponent {
     private final FixedComponent fixedComponent;
     private final Vector3d rotationAxis;
     private final double rotationRate;
@@ -24,18 +28,27 @@ public class HingeComponent implements VehicleComponent {
         this.keyDown = keyDown;
     }
 
-    @Override
+    public void useKey(final Map<String, ControlSurfaceOrientation> orientations, final char key) {
+        if (key == keyUp) {
+            orientations.get(fixedComponent.getName()).adjust(rotationRate);
+        } else if (key == keyDown) {
+            orientations.get(fixedComponent.getName()).adjust(-rotationRate);
+        }
+    }
+
     public String getName() {
         return fixedComponent.getName();
     }
 
-    @Override
-    public Set<VehicleSurface> getSurfaces() {
-        return fixedComponent.getSurfaces();
+    private Vector3d getRotation(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+        return new Quaterniond().fromAxisAngleRad(rotationAxis, orientations.get(fixedComponent.getName()).getAngle()).getEulerAnglesXYZ(new Vector3d());
     }
 
-    @Override
-    public ModelCuboid getCuboid() {
-        return fixedComponent.getCuboid();
+    public Set<VehicleSurface> getSurfaces(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+        return fixedComponent.getSurfaces(getRotation(orientations));
+    }
+
+    public ModelCuboid getCuboid(final Map<String, ControlSurfaceOrientation> orientations) {
+        return fixedComponent.getCuboid(getRotation(orientations));
     }
 }

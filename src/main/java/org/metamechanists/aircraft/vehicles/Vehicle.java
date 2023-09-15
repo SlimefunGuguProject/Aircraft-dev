@@ -23,6 +23,7 @@ import org.metamechanists.aircraft.utils.models.ModelBuilder;
 import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -90,13 +91,13 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", STARTING_ROTATION);
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
-        traverser.set("controlSurfaces", new ControlSurfaces());
+        traverser.setControlSurfaceOrientations("controlSurfaces", description.initializeOrientations());
 
         VehicleStorage.add(pig.getUniqueId());
     }
     private @NotNull DisplayGroup buildAircraft(final Location location) {
         final ModelBuilder builder = new ModelBuilder().rotation(STARTING_ROTATION.x, STARTING_ROTATION.y, STARTING_ROTATION.z);
-        description.getCuboids(new ControlSurfaces()).forEach(builder::add);
+        description.getCuboids(description.initializeOrientations()).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
 
@@ -124,7 +125,7 @@ public class Vehicle extends SlimefunItem {
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
-        final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
+        final Map<String, ControlSurfaceOrientation> controlSurfaces = traverser.getControlSurfaceOrientations("controlSurfaces");
         if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty()) {
             return;
         }
@@ -151,11 +152,7 @@ public class Vehicle extends SlimefunItem {
             resultantAcceleration = new Vector3d();
         }
 
-        // Control surfaces
-        controlSurfaces.aileron1.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
-        controlSurfaces.aileron2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
-        controlSurfaces.elevator1.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
-        controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
+        controlSurfaces.values().forEach(surface -> surface.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE));
 
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.95);
 
@@ -173,7 +170,7 @@ public class Vehicle extends SlimefunItem {
         traverser.set("velocity", velocity);
         traverser.set("angularVelocity", angularVelocity);
         traverser.set("rotation", rotation);
-        traverser.set("controlSurfaces", controlSurfaces);
+        traverser.setControlSurfaceOrientations("controlSurfaces", controlSurfaces);
 
         pig.setVelocity(Vector.fromJOML(velocity));
         description.getCuboids(controlSurfaces).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
@@ -183,7 +180,7 @@ public class Vehicle extends SlimefunItem {
         }
     }
 
-    private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Quaterniond rotation, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
+    private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Quaterniond rotation, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> controlSurfaces) {
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
         forces.add(getThrustForce(rotation));
@@ -197,39 +194,20 @@ public class Vehicle extends SlimefunItem {
     private static @NotNull SpatialForce getThrustForce(final @NotNull Quaterniond rotation) {
         return new SpatialForce(new Vector3d(0.15, 0, 0).rotate(rotation), new Vector3d(0, 0, 0));
     }
-    private Set<SpatialForce> getDragForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
+    private Set<SpatialForce> getDragForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> controlSurfaces) {
         return description.getSurfaces(controlSurfaces).stream()
                 .map(vehicleSurface -> vehicleSurface.getDragForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
-    private @NotNull Set<SpatialForce> getLiftForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
+    private @NotNull Set<SpatialForce> getLiftForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> controlSurfaces) {
         return description.getSurfaces(controlSurfaces).stream()
                 .map(vehicleSurface -> vehicleSurface.getLiftForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
 
-    public void onKeyW(final @NotNull PersistentDataTraverser traverser) {
-        final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
-        controlSurfaces.elevator1.adjust(CONTROL_SURFACE_ROTATION_RATE);
-        controlSurfaces.elevator2.adjust(CONTROL_SURFACE_ROTATION_RATE);
-        traverser.set("controlSurfaces", controlSurfaces);
-    }
-    public void onKeyS(final @NotNull PersistentDataTraverser traverser) {
-        final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
-        controlSurfaces.elevator1.adjust(-CONTROL_SURFACE_ROTATION_RATE);
-        controlSurfaces.elevator2.adjust(-CONTROL_SURFACE_ROTATION_RATE);
-        traverser.set("controlSurfaces", controlSurfaces);
-    }
-    public void onKeyA(final @NotNull PersistentDataTraverser traverser) {
-        final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
-        controlSurfaces.aileron1.adjust(CONTROL_SURFACE_ROTATION_RATE);
-        controlSurfaces.aileron2.adjust(-CONTROL_SURFACE_ROTATION_RATE);
-        traverser.set("controlSurfaces", controlSurfaces);
-    }
-    public void onKeyD(final @NotNull PersistentDataTraverser traverser) {
-        final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
-        controlSurfaces.aileron1.adjust(-CONTROL_SURFACE_ROTATION_RATE);
-        controlSurfaces.aileron2.adjust(CONTROL_SURFACE_ROTATION_RATE);
-        traverser.set("controlSurfaces", controlSurfaces);
+    public void onKey(final @NotNull PersistentDataTraverser traverser, final char key) {
+        final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("controlSurfaces");
+        description.adjustHingeComponents(orientations, key);
+        traverser.setControlSurfaceOrientations("controlSurfaces", orientations);
     }
 }
