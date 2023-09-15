@@ -22,6 +22,7 @@ public class ModelCuboid {
     private Vector3f location = new Vector3f();
     private Vector3f size = new Vector3f();
     private Vector3d rotation = new Vector3d();
+    private Vector3d secondRotation = new Vector3d();
 
     /**
      * @param location The center of the cuboid
@@ -74,6 +75,13 @@ public class ModelCuboid {
     /**
      * @param rotation The rotation of the cuboid in radians
      */
+    public ModelCuboid secondRotation(@NotNull final Vector3d secondRotation) {
+        this.secondRotation = secondRotation;
+        return this;
+    }
+    /**
+     * @param rotation The rotation of the cuboid in radians
+     */
     public ModelCuboid rotation(@NotNull final Vector3d rotation) {
         this.rotation = rotation;
         return this;
@@ -116,6 +124,7 @@ public class ModelCuboid {
                 .rotate(modelRotation)
                 .translate(location)
                 .rotate(rotation)
+                .rotate(secondRotation)
                 .scale(new Vector3f(size))
                 .buildForBlockDisplay();
     }
@@ -124,6 +133,7 @@ public class ModelCuboid {
                 .rotate(modelRotation)
                 .translate(location)
                 .rotate(rotation)
+                .rotate(secondRotation)
                 .scale(new Vector3f(size))
                 .buildForBlockDisplay();
     }
