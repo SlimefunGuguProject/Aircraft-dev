@@ -149,8 +149,8 @@ public class Vehicle extends SlimefunItem {
         description.moveHingeComponentsToCenter(orientations);
 
         resultantAcceleration.div(400);
+        velocity.add(new Vector3d(resultantAcceleration));
         description.applyVelocityDampening(velocity);
-        velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.95);
 
         if (resultantAngularAcceleration.angle() != 0) {
             angularVelocity.mul(resultantAngularAcceleration);
