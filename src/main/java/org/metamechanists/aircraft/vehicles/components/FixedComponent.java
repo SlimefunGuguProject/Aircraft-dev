@@ -65,10 +65,10 @@ public class FixedComponent {
     }
 
     public ModelCuboid getCuboid(final Vector3d rotation) {
-        return new ModelCuboid().material(material).size(size).location(location).rotation(new Vector3d(this.rotation).add(rotation));
+        return new ModelCuboid().material(material).size(size).location(location).rotation(rotation);
     }
 
     public ModelCuboid getCuboid() {
-        return getCuboid(new Vector3d());
+        return getCuboid(rotation);
     }
 }
