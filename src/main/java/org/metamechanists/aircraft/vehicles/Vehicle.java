@@ -119,13 +119,13 @@ public class Vehicle extends SlimefunItem {
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
-        final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
-        if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty() || orientations == null) {
+        final Map<String, ControlSurfaceOrientation> controlSurfaces = traverser.getControlSurfaceOrientations("controlSurfaces");
+        if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty() || controlSurfaces == null) {
             return;
         }
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
-        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
+        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, controlSurfaces);
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 
         // Newton's 2nd law to calculate resultant force and then acceleration
@@ -146,7 +146,7 @@ public class Vehicle extends SlimefunItem {
             resultantAcceleration = new Vector3d();
         }
 
-        description.moveHingeComponentsToCenter(orientations);
+        description.moveHingeComponentsToCenter(controlSurfaces);
 
         resultantAcceleration.div(400);
         description.applyVelocityDampening(velocity);
@@ -164,10 +164,10 @@ public class Vehicle extends SlimefunItem {
         traverser.set("velocity", velocity);
         traverser.set("angularVelocity", angularVelocity);
         traverser.set("rotation", rotation);
-        traverser.setControlSurfaceOrientations("orientations", orientations);
+        traverser.setControlSurfaceOrientations("controlSurfaces", controlSurfaces);
 
         pig.setVelocity(Vector.fromJOML(velocity));
-        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
+        description.getCuboids(controlSurfaces).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup);
