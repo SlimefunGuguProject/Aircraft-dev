@@ -45,7 +45,7 @@ public class FixedComponent {
     }
 
     public Set<VehicleSurface> getSurfaces(final Vector3d rotation) {
-        final Vector3d resultantRotation = new Vector3d(this.rotation).add(rotation);
+        final Vector3d resultantRotation = new Vector3d(this.rotation).add(new Vector3d(rotation).rotateX(this.rotation.x).rotateY(this.rotation.y).rotateZ(this.rotation.z));
         final Set<VehicleSurface> surfaces = new HashSet<>();
 
         surfaces.add(getSurface(new Vector3d(0, 0, size.z / 2), size.x, size.y, resultantRotation));
