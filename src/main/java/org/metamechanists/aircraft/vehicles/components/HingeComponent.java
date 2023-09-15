@@ -54,10 +54,10 @@ public class HingeComponent {
     }
 
     public Set<VehicleSurface> getSurfaces(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
-        return fixedComponent.getSurfaces(getRotation(orientations), new Vector3d());
+        return fixedComponent.getSurfaces(getRotation(orientations), getTranslation(orientations));
     }
 
     public ModelCuboid getCuboid(final Map<String, ControlSurfaceOrientation> orientations) {
-        return fixedComponent.getCuboid(getRotation(orientations), new Vector3d());
+        return fixedComponent.getCuboid(getRotation(orientations), getTranslation(orientations));
     }
 }
