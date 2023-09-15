@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.PI;
+import static java.lang.Math.toRadians;
 
 
 public class Vehicle extends SlimefunItem {
@@ -80,7 +81,7 @@ public class Vehicle extends SlimefunItem {
         traverser.set("name", name);
         traverser.set("velocity", new Vector3d());
         traverser.set("angularVelocity", new Quaterniond());
-        traverser.set("rotation", new Quaterniond().rotateY(player.getEyeLocation().getYaw()));
+        traverser.set("rotation", new Quaterniond().rotateY(toRadians(player.getEyeLocation().getYaw())));
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
         traverser.setControlSurfaceOrientations("orientations", description.initializeOrientations());
