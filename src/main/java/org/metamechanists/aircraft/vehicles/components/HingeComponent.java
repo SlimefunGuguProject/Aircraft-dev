@@ -11,6 +11,7 @@ import org.metamechanists.aircraft.vehicles.VehicleSurface;
 import java.util.Map;
 import java.util.Set;
 
+import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 
@@ -50,7 +51,8 @@ public class HingeComponent {
     }
 
     private Vector3d getTranslation(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
-        return new Vector3d(0.0, fixedComponent.getSize().x / 2.0, 0.0).mul(sin(orientations.get(fixedComponent.getName()).getAngle()));
+        return new Vector3d(0.0, -fixedComponent.getSize().x / 2.0, 0.0).mul(sin(orientations.get(fixedComponent.getName()).getAngle()))
+                .add(new Vector3d(-fixedComponent.getSize().x / 2.0, 0.0, 0.0).mul(cos(orientations.get(fixedComponent.getName()).getAngle())));
     }
 
     public Set<VehicleSurface> getSurfaces(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
