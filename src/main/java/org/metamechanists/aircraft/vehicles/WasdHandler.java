@@ -21,7 +21,7 @@ public final class WasdHandler  {
         }
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(player.getVehicle());
-        if (!traverser.getBoolean("is_aircraft")) {
+        if (traverser.getString("name") == null) {
             return;
         }
 
