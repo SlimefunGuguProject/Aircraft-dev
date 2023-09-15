@@ -35,16 +35,10 @@ public class Vehicle extends SlimefunItem {
     private final String name;
     private final VehicleDescription description;
 
-    public static final double MAX_CONTROL_SURFACE_ROTATION = PI / 8;
-    private static final double CONTROL_SURFACE_ROTATION_RATE = PI / 24;
-
     private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.0, 0.0);
     private static final Quaterniond STARTING_ANGULAR_VELOCITY = new Quaterniond();
     private static final Quaterniond STARTING_ROTATION = new Quaterniond().rotateY(PI/2);
     private static final double MAX_VELOCITY = 50.0;
-
-    private static final double MASS = 0.006;
-    private static final double momentOfInertia = MASS; // silly approximation
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_TEST_AIRCRAFT",
@@ -125,26 +119,26 @@ public class Vehicle extends SlimefunItem {
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
-        final Map<String, ControlSurfaceOrientation> controlSurfaces = traverser.getControlSurfaceOrientations("controlSurfaces");
-        if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty()) {
+        final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
+        if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty() || orientations == null) {
             return;
         }
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
-        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, controlSurfaces);
+        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 
         // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::getForce).forEach(resultantForce::add);
-        Vector3d resultantAcceleration = new Vector3d(resultantForce).div(MASS);
+        Vector3d resultantAcceleration = new Vector3d(resultantForce).div(description.getMass());
 
         // Sum torque vectors to find resultant torque
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
         final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotation.angle(), rotation.x, rotation.y, rotation.z);
         resultantTorque.rotate(negativeRotation);
-        final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(momentOfInertia).div(400);
+        final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(400);
         final Quaterniond resultantAngularAcceleration = new Quaterniond().fromAxisAngleRad(new Vector3d(resultantAngularAccelerationVector).normalize(), resultantAngularAccelerationVector.length()) ;
 
         if (velocity.length() > MAX_VELOCITY) {
@@ -152,17 +146,17 @@ public class Vehicle extends SlimefunItem {
             resultantAcceleration = new Vector3d();
         }
 
-        controlSurfaces.values().forEach(surface -> surface.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE));
+        description.moveHingeComponentsToCenter(orientations);
 
+        resultantAcceleration.div(400);
+        description.applyVelocityDampening(velocity);
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.95);
 
         if (resultantAngularAcceleration.angle() != 0) {
             angularVelocity.mul(resultantAngularAcceleration);
         }
 
-        if (angularVelocity.angle() != 0) {
-            angularVelocity.rotateAxis(-angularVelocity.angle()*0.1, angularVelocity.x, angularVelocity.y, angularVelocity.z);
-        }
+        description.applyAngularVelocityDampening(angularVelocity);
 
         rotation.mul(angularVelocity);
 
@@ -170,10 +164,10 @@ public class Vehicle extends SlimefunItem {
         traverser.set("velocity", velocity);
         traverser.set("angularVelocity", angularVelocity);
         traverser.set("rotation", rotation);
-        traverser.setControlSurfaceOrientations("controlSurfaces", controlSurfaces);
+        traverser.setControlSurfaceOrientations("orientations", orientations);
 
         pig.setVelocity(Vector.fromJOML(velocity));
-        description.getCuboids(controlSurfaces).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
+        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup);
@@ -188,8 +182,8 @@ public class Vehicle extends SlimefunItem {
         forces.addAll(getLiftForces(rotation, velocity, angularVelocity, controlSurfaces));
         return forces;
     }
-    private static @NotNull SpatialForce getWeightForce() {
-        return new SpatialForce(new Vector3d(0, -0.5 * MASS, 0), new Vector3d(0, 0, 0));
+    private @NotNull SpatialForce getWeightForce() {
+        return new SpatialForce(new Vector3d(0, -0.5 * description.getMass(), 0), new Vector3d(0, 0, 0));
     }
     private static @NotNull SpatialForce getThrustForce(final @NotNull Quaterniond rotation) {
         return new SpatialForce(new Vector3d(0.15, 0, 0).rotate(rotation), new Vector3d(0, 0, 0));

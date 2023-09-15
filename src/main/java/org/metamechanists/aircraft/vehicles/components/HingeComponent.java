@@ -34,10 +34,14 @@ public class HingeComponent {
 
     public void useKey(final Map<String, ControlSurfaceOrientation> orientations, final char key) {
         if (key == keyUp) {
-            orientations.get(fixedComponent.getName()).adjust(rotationRate);
+            orientations.get(fixedComponent.getName()).adjust(rotationRate, rotationMax);
         } else if (key == keyDown) {
-            orientations.get(fixedComponent.getName()).adjust(-rotationRate);
+            orientations.get(fixedComponent.getName()).adjust(-rotationRate, rotationMax);
         }
+    }
+
+    public void moveTowardsCenter(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+        orientations.get(fixedComponent.getName()).moveTowardsCenter(rotationRate);
     }
 
     public String getName() {

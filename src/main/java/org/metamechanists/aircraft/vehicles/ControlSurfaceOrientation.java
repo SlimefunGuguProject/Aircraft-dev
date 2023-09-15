@@ -1,10 +1,7 @@
 package org.metamechanists.aircraft.vehicles;
 
 import lombok.Getter;
-import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.Utils;
-
-import static org.metamechanists.aircraft.vehicles.Vehicle.MAX_CONTROL_SURFACE_ROTATION;
 
 @Getter
 public class ControlSurfaceOrientation {
@@ -18,23 +15,23 @@ public class ControlSurfaceOrientation {
         this.ticksUntilReturn = ticksUntilReturn;
     }
 
-    public void adjust(final double amount) {
-        angle = Utils.clampToRange(angle + amount, -MAX_CONTROL_SURFACE_ROTATION, MAX_CONTROL_SURFACE_ROTATION);
+    public void adjust(final double rotationRate, final double rotationMax) {
+        angle = Utils.clampToRange(angle + rotationRate, -rotationMax, rotationMax);
         ticksUntilReturn = 1;
     }
 
-    public void moveTowardsCenter(final double amount) {
+    public void moveTowardsCenter(final double rotationRate) {
         if (ticksUntilReturn > 0) {
             ticksUntilReturn--;
             return;
         }
 
-        if (Math.abs(angle) < amount) {
+        if (Math.abs(angle) < rotationRate) {
             angle = 0;
         } else if (angle > 0) {
-            angle -= amount;
+            angle -= rotationRate;
         } else if (angle < 0) {
-            angle += amount;
+            angle += rotationRate;
         }
     }
 }

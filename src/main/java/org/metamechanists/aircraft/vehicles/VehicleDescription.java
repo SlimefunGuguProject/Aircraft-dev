@@ -1,7 +1,9 @@
 package org.metamechanists.aircraft.vehicles;
 
+import lombok.Getter;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.models.ModelCuboid;
@@ -20,10 +22,14 @@ import java.util.stream.Collectors;
 public class VehicleDescription {
     private record ComponentGroup(double density, double dragCoefficient, double liftCoefficient) {}
 
+    @Getter
     private final double mass;
+    @Getter
     private final double momentOfInertia;
     private final double velocityDampening;
+    private final double angularVelocityDampening;
     private final Set<FixedComponent> fixedComponents = new HashSet<>();
+    @Getter
     private final Set<HingeComponent> hingeComponents = new HashSet<>();
 
     private static @NotNull Vector3d getVector3d(@NotNull final YamlTraverser traverser, final String name) {
@@ -61,7 +67,7 @@ public class VehicleDescription {
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia");
         velocityDampening = traverser.get("velocityDampening");
-        double angularVelocityDampening = traverser.get("angularVelocityDampening");
+        angularVelocityDampening = traverser.get("angularVelocityDampening");
 
         final Map<String, ComponentGroup> groups = new HashMap<>();
         for (final YamlTraverser group : traverser.getSection("groups").getSections()) {
@@ -93,7 +99,21 @@ public class VehicleDescription {
         hingeComponents.forEach(component -> component.useKey(orientations, key));
     }
 
+    public void moveHingeComponentsToCenter(final Map<String, ControlSurfaceOrientation> orientations) {
+        hingeComponents.forEach(component -> component.moveTowardsCenter(orientations));
+    }
+
     public Map<String, ControlSurfaceOrientation> initializeOrientations() {
         return hingeComponents.stream().collect(Collectors.toMap(HingeComponent::getName, component -> new ControlSurfaceOrientation(), (name, orientation) -> orientation));
+    }
+
+    public void applyVelocityDampening(final @NotNull Vector3d velocity) {
+        velocity.mul(1.0 - velocityDampening);
+    }
+
+    public void applyAngularVelocityDampening(final @NotNull Quaterniond angularVelocity) {
+        if (angularVelocity.angle() != 0) {
+            angularVelocity.rotateAxis(-angularVelocity.angle()*angularVelocityDampening, angularVelocity.x, angularVelocity.y, angularVelocity.z);
+        }
     }
 }
