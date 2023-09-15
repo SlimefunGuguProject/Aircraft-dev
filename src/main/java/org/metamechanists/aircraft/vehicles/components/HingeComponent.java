@@ -50,7 +50,7 @@ public class HingeComponent {
     }
 
     private Vector3d getTranslation(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
-        return new Vector3d(0.0, fixedComponent.getSize().y, 0.0).mul(sin(orientations.get(fixedComponent.getName()).getAngle()));
+        return new Vector3d(0.0, fixedComponent.getSize().x / 2.0, 0.0).mul(sin(orientations.get(fixedComponent.getName()).getAngle()));
     }
 
     public Set<VehicleSurface> getSurfaces(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
