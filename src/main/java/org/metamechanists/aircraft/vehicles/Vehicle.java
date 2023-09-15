@@ -142,12 +142,11 @@ public class Vehicle extends SlimefunItem {
         final DisplayGroup componentGroup = componentGroupId.get().get();
         final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
 
-        final Vector3d acceleration = getAcceleration(forces);
         if (velocity.length() > MAX_VELOCITY) {
             velocity.set(0, 0, 0);
         }
         description.applyVelocityDampening(velocity);
-        velocity.add(new Vector3d(acceleration));
+        velocity.add(getAcceleration(forces));
 
         final Quaterniond angularAcceleration = getAngularAcceleration(forces, rotation);
         if (angularAcceleration.angle() != 0) {
@@ -162,6 +161,7 @@ public class Vehicle extends SlimefunItem {
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
         pig.setVelocity(Vector.fromJOML(velocity));
+        description.moveHingeComponentsToCenter(orientations);
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
