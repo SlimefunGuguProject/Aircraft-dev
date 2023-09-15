@@ -33,8 +33,8 @@ public class VehicleSurface {
         final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
-        // Also check the airflow and normal are not in opposite directions - this causes NaN values
-        if (normal.angle(airflowVelocity) < Math.PI / 2 || normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
+        // Also check that 1) airflow is not zero 2) airflow and normal are not in opposite directions - these cause NaN values
+        if (airflowVelocity.length() < 0.000001 || normal.angle(airflowVelocity) < Math.PI / 2 || normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
             return new SpatialForce(new Vector3d(), location);
         }
 
@@ -64,8 +64,8 @@ public class VehicleSurface {
         final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
-        // Also check the airflow and normal are not in opposite directions - this causes NaN values
-        if (normal.angle(airflowVelocity) < Math.PI / 2 || normal.angle(airflowVelocity) < 0.001) {
+        // Also check that 1) airflow is not zero 2) airflow and normal are not in opposite directions - these cause NaN values
+        if (airflowVelocity.length() < 0.000001 || normal.angle(airflowVelocity) < Math.PI / 2 || normal.angle(airflowVelocity) < 0.001) {
             return new SpatialForce(new Vector3d(), location);
         }
 

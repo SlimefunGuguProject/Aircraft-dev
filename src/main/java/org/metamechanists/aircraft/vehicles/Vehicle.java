@@ -37,9 +37,9 @@ public class Vehicle extends SlimefunItem {
     public static final double MAX_CONTROL_SURFACE_ROTATION = PI / 8;
     private static final double CONTROL_SURFACE_ROTATION_RATE = PI / 24;
 
-    private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.0, 0.0); // must start off with some velocity to prevent NaN issues
-    private static final Quaterniond STARTING_ANGULAR_VELOCITY = new Quaterniond(); // roll, yaw, pitch
-    private static final Quaterniond STARTING_ROTATION = new Quaterniond().rotateY(PI/2); // roll, yaw, pitch
+    private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.0, 0.0);
+    private static final Quaterniond STARTING_ANGULAR_VELOCITY = new Quaterniond();
+    private static final Quaterniond STARTING_ROTATION = new Quaterniond().rotateY(PI/2);
     private static final double MAX_VELOCITY = 50.0;
 
     private static final double MASS = 0.006;
@@ -85,9 +85,9 @@ public class Vehicle extends SlimefunItem {
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         traverser.set("name", name);
-        traverser.set("velocity", STARTING_VELOCITY); // must start off with some velocity to prevent NaN issues
-        traverser.set("angularVelocity", STARTING_ANGULAR_VELOCITY); // roll, yaw, pitch
-        traverser.set("rotation", STARTING_ROTATION); // roll, yaw, pitch
+        traverser.set("velocity", STARTING_VELOCITY);
+        traverser.set("angularVelocity", STARTING_ANGULAR_VELOCITY);
+        traverser.set("rotation", STARTING_ROTATION);
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
         traverser.set("controlSurfaces", new ControlSurfaces());
