@@ -35,11 +35,6 @@ public class Vehicle extends SlimefunItem {
     private final String name;
     private final VehicleDescription description;
 
-    private static final double dragCoefficient_BODY = 1.00;
-    private static final double dragCoefficient_WING = 0.60;
-    private static final double liftCoefficient_BODY = 0.30;
-    private static final double liftCoefficient_WING = 1.20;
-
     public static final double MAX_CONTROL_SURFACE_ROTATION = PI / 8;
     private static final double CONTROL_SURFACE_ROTATION_RATE = PI / 24;
 
@@ -74,71 +69,6 @@ public class Vehicle extends SlimefunItem {
                 place(event.getClickedBlock().get().getRelative(event.getClickedFace()), player);
             }
         };
-    }
-
-    private static ModelCuboid modelMain() {
-        return new ModelCuboid()
-                .material(Material.WHITE_CONCRETE)
-                .size(2.0F, 0.4F, 0.4F)
-                .location(-0.1F, 0, 0);
-    }
-    private static ModelCuboid modelWingFront1() {
-        return new ModelCuboid()
-                .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.01F, 1.3F)
-                .location(0.7F, 0.0F, 0.6F);
-    }
-    private static ModelCuboid modelWingFront2() {
-        return new ModelCuboid()
-                .material(Material.GRAY_CONCRETE)
-                .size(0.6F, 0.01F, 1.3F)
-                .location(0.7F, 0.0F, -0.6F);
-    }
-    private static ModelCuboid modelWingBack1() {
-        return new ModelCuboid()
-                .material(Material.BLUE_CONCRETE)
-                .size(0.4F, 0.01F, 0.8F)
-                .location(-0.6F, 0.0F, 0.6F);
-    }
-    private static ModelCuboid modelWingBack2() {
-        return new ModelCuboid()
-                .material(Material.BLUE_CONCRETE)
-                .size(0.4F, 0.01F, 0.8F)
-                .location(-0.6F, 0.0F, -0.6F);
-    }
-    private static ModelCuboid modelTail() {
-        return new ModelCuboid()
-                .material(Material.BLUE_CONCRETE)
-                .size(0.4F, 0.8F, 0.01F)
-                .location(-1.1F, 0.4F, 0.0F);
-    }
-    private static ModelCuboid modelAileron1(final double rotation) {
-        return new ModelCuboid()
-                .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 1.3F)
-                .location(0.3F, (float)(-0.1 * Math.sin(rotation)), 0.6F)
-                .rotation(new Vector3d(0, 0, rotation));
-    }
-    private static ModelCuboid modelAileron2(final double rotation) {
-        return new ModelCuboid()
-                .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 1.3F)
-                .location(0.3F, (float)(-0.1 * Math.sin(rotation)), -0.6F)
-                .rotation(new Vector3d(0, 0, rotation));
-    }
-    private static ModelCuboid modelElevator1(final double rotation) {
-        return new ModelCuboid()
-                .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 0.8F)
-                .location(-0.9F, (float)(-0.1 * Math.sin(rotation)), 0.6F)
-                .rotation(new Vector3d(0, 0, rotation));
-    }
-    private static ModelCuboid modelElevator2(final double rotation) {
-        return new ModelCuboid()
-                .material(Material.ORANGE_CONCRETE)
-                .size(0.2F, 0.01F, 0.8F)
-                .location(-0.9F, (float)(-0.1 * Math.sin(rotation)), -0.6F)
-                .rotation(new Vector3d(0, 0, rotation));
     }
 
     private void place(final @NotNull Block block, final @NotNull Player player) {
@@ -249,17 +179,8 @@ public class Vehicle extends SlimefunItem {
     private static void tickPig(final @NotNull Pig pig, final Vector3d velocity) {
         pig.setVelocity(Vector.fromJOML(velocity));
     }
-    private static void tickAircraftDisplays(final @NotNull DisplayGroup group, final Quaterniond rotation, final @NotNull ControlSurfaces controlSurfaces) {
-        group.getDisplays().get("main").setTransformationMatrix(modelMain().getMatrix(rotation));
-        group.getDisplays().get("wing_front_1").setTransformationMatrix(modelWingFront1().getMatrix(rotation));
-        group.getDisplays().get("wing_front_2").setTransformationMatrix(modelWingFront2().getMatrix(rotation));
-        group.getDisplays().get("wing_back_1").setTransformationMatrix(modelWingBack1().getMatrix(rotation));
-        group.getDisplays().get("wing_back_2").setTransformationMatrix(modelWingBack2().getMatrix(rotation));
-        group.getDisplays().get("tail").setTransformationMatrix(modelTail().getMatrix(rotation));
-        group.getDisplays().get("aileron_1").setTransformationMatrix(modelAileron1(controlSurfaces.aileron1.getAngle()).getMatrix(rotation));
-        group.getDisplays().get("aileron_2").setTransformationMatrix(modelAileron2(controlSurfaces.aileron2.getAngle()).getMatrix(rotation));
-        group.getDisplays().get("elevator_1").setTransformationMatrix(modelElevator1(controlSurfaces.elevator1.getAngle()).getMatrix(rotation));
-        group.getDisplays().get("elevator_2").setTransformationMatrix(modelElevator2(controlSurfaces.elevator2.getAngle()).getMatrix(rotation));
+    private void tickAircraftDisplays(final @NotNull DisplayGroup group, final Quaterniond rotation, final @NotNull ControlSurfaces controlSurfaces) {
+        description.getCuboids(controlSurfaces).forEach((cuboidName, cuboid) -> group.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
     }
 
     private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Quaterniond rotation, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
