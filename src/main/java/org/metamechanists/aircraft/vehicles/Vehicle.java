@@ -162,7 +162,7 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
-        getPilot(pig).ifPresent(pilot -> pilot.setBodyYaw(0));
+        getPilot(pig).ifPresent(pilot -> PlayerLookHandler.adjustRotation(pilot, 0.1, 0.1));
 
         pig.setVelocity(Vector.fromJOML(velocity));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
