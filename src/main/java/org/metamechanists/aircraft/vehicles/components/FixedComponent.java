@@ -4,8 +4,11 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix3d;
+import org.joml.Matrix4d;
+import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.joml.Vector4d;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.models.ModelCuboid;
 import org.metamechanists.aircraft.vehicles.VehicleSurface;
@@ -41,7 +44,9 @@ public class FixedComponent {
 
     private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight, final @NotNull Vector3d rotation, final @NotNull Vector3d translation) {
         final double area = surfaceWidth * surfaceHeight;
-        final Vector3d relativeLocation = startingLocation.mul(new Matrix3d().rotateXYZ(rotation.x, rotation.y, rotation.z).rotateXYZ(this.rotation.x, this.rotation.y, this.rotation.z));
+        final Matrix4d rotationMatrix = new Matrix4d().rotateXYZ(rotation.x, rotation.y, rotation.z).rotateXYZ(this.rotation.x, this.rotation.y, this.rotation.z);
+        final Vector4d relativeLocation4 = new Vector4d(startingLocation, 1.0).mul(rotationMatrix);
+        final Vector3d relativeLocation = new Vector3d(relativeLocation4.x, relativeLocation4.y, relativeLocation4.z);
         final Vector3d normal = new Vector3d(relativeLocation).normalize();
         return new VehicleSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
     }
