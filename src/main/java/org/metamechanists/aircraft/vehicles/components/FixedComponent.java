@@ -45,7 +45,7 @@ public class FixedComponent {
     }
 
     public Set<VehicleSurface> getSurfaces(final Vector3d rotation) {
-        final Vector3d resultantRotation = new Vector3d(this.rotation).add(rotation); // TODO check if this correctly composites on top of fixed rotation
+        final Vector3d resultantRotation = new Vector3d(this.rotation).add(rotation);
         final Set<VehicleSurface> surfaces = new HashSet<>();
 
         surfaces.add(getSurface(new Vector3d(0, 0, size.z / 2), size.x, size.y, resultantRotation));
@@ -65,7 +65,7 @@ public class FixedComponent {
     }
 
     public ModelCuboid getCuboid(final Vector3d rotation) {
-        final Vector3d resultantRotation = new Vector3d(this.rotation).add(rotation); // TODO check if this correctly composites on top of fixed rotation
+        final Vector3d resultantRotation = new Vector3d(this.rotation).add(rotation);
         return new ModelCuboid().material(material).size(size).location(location).rotation(resultantRotation);
     }
 
