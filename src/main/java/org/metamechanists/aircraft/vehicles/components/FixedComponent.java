@@ -39,23 +39,22 @@ public class FixedComponent {
 
     private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight, final Vector3d rotation) {
         final double area = surfaceWidth * surfaceHeight;
-        final Vector3d relativeLocation = Utils.rotate(startingLocation, rotation);
+        final Vector3d relativeLocation = Utils.rotate(Utils.rotate(startingLocation, this.rotation), rotation);
         final Vector3d normal = new Vector3d(relativeLocation).normalize();
         return new VehicleSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
     }
 
     public Set<VehicleSurface> getSurfaces(final Vector3d rotation) {
-        final Vector3d resultantRotation = new Vector3d(this.rotation).add(new Vector3d(rotation).rotateX(this.rotation.x).rotateY(this.rotation.y).rotateZ(this.rotation.z));
         final Set<VehicleSurface> surfaces = new HashSet<>();
 
-        surfaces.add(getSurface(new Vector3d(0, 0, size.z / 2), size.x, size.y, resultantRotation));
-        surfaces.add(getSurface(new Vector3d(0, 0, -size.z / 2), size.x, size.y, resultantRotation));
+        surfaces.add(getSurface(new Vector3d(0, 0, size.z / 2), size.x, size.y, rotation));
+        surfaces.add(getSurface(new Vector3d(0, 0, -size.z / 2), size.x, size.y, rotation));
 
-        surfaces.add(getSurface(new Vector3d(0, size.y / 2, 0), size.x, size.z, resultantRotation));
-        surfaces.add(getSurface(new Vector3d(0, -size.y / 2, 0), size.x, size.z, resultantRotation));
+        surfaces.add(getSurface(new Vector3d(0, size.y / 2, 0), size.x, size.z, rotation));
+        surfaces.add(getSurface(new Vector3d(0, -size.y / 2, 0), size.x, size.z, rotation));
 
-        surfaces.add(getSurface(new Vector3d(size.x / 2, 0, 0), size.y, size.z, resultantRotation));
-        surfaces.add(getSurface(new Vector3d(-size.x / 2, 0, 0), size.y, size.z, resultantRotation));
+        surfaces.add(getSurface(new Vector3d(size.x / 2, 0, 0), size.y, size.z, rotation));
+        surfaces.add(getSurface(new Vector3d(-size.x / 2, 0, 0), size.y, size.z, rotation));
 
         return surfaces;
     }
