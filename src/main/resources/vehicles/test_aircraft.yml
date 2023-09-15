@@ -63,7 +63,7 @@ components:
     location: [0.3, 0.0, 0.6]
     rotation: [0.0, -0.4, 0.0]
     controlSurface: true
-    rotationAxis: [0.0, 0.0, 1.0]
+    rotationAxis: [0.0, 1.0, 0.0]
     rotationRate: 0.1308
     rotationMax: 0.392
     keyUp: a
@@ -75,7 +75,7 @@ components:
     location: [0.3, 0.0, -0.6]
     rotation: [0.0, 0.4, 0.0]
     controlSurface: true
-    rotationAxis: [0.0, 0.0, 1.0]
+    rotationAxis: [0.0, 1.0, 0.0]
     rotationRate: 0.1308
     rotationMax: 0.392
     keyUp: d
