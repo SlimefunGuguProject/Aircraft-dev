@@ -46,7 +46,7 @@ public class VehicleDescription {
 
         if (componentTraverser.get("controlSurface", false)) {
             hingeComponents.add(new HingeComponent(fixedComponent,
-                    componentTraverser.get("rotationAxis"), componentTraverser.get("rotationRate"), componentTraverser.get("rotationMax"),
+                    getVector3d(componentTraverser, "rotationAxis"), componentTraverser.get("rotationRate"), componentTraverser.get("rotationMax"),
                     componentTraverser.get("keyUp"), componentTraverser.get("keyDown")));
         }
 
