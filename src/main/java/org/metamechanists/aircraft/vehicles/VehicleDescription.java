@@ -34,6 +34,9 @@ public class VehicleDescription {
         final Vector3d as3d = getVector3d(traverser, name);
         return new Vector3f((float) as3d.x, (float) as3d.y, (float) as3d.z);
     }
+    private static char getChar(@NotNull final YamlTraverser traverser, final String name) {
+        return ((CharSequence) traverser.get(name)).charAt(0);
+    }
 
     @SuppressWarnings("DataFlowIssue")
     private void processComponentFromTraverser(final @NotNull YamlTraverser componentTraverser, final @NotNull Map<String, ComponentGroup> groups) {
@@ -47,7 +50,7 @@ public class VehicleDescription {
         if (componentTraverser.get("controlSurface", false)) {
             hingeComponents.add(new HingeComponent(fixedComponent,
                     getVector3d(componentTraverser, "rotationAxis"), componentTraverser.get("rotationRate"), componentTraverser.get("rotationMax"),
-                    componentTraverser.get("keyUp"), componentTraverser.get("keyDown")));
+                    getChar(componentTraverser, "keyUp"), getChar(componentTraverser, "keyDown")));
         }
 
         fixedComponents.add(fixedComponent);
