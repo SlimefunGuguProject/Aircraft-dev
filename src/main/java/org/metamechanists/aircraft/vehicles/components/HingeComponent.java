@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicles.components;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
+import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.models.ModelCuboid;
 import org.metamechanists.aircraft.vehicles.ControlSurfaceOrientation;
 import org.metamechanists.aircraft.vehicles.VehicleSurface;
@@ -41,7 +42,7 @@ public class HingeComponent {
     }
 
     private Vector3d getRotation(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
-        final Vector3d relativeRotationAxis = new Vector3d(rotationAxis).rotateX(fixedComponent.getRotation().x).rotateY(fixedComponent.getRotation().y).rotateZ(fixedComponent.getRotation().z);
+        final Vector3d relativeRotationAxis = Utils.rotate(new Vector3d(rotationAxis), fixedComponent.getRotation());
         return new Quaterniond().fromAxisAngleRad(relativeRotationAxis, orientations.get(fixedComponent.getName()).getAngle()).getEulerAnglesXYZ(new Vector3d());
     }
 
