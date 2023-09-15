@@ -85,7 +85,7 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", STARTING_ROTATION);
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
-        traverser.setControlSurfaceOrientations("controlSurfaces", description.initializeOrientations());
+        traverser.setControlSurfaceOrientations("orientations", description.initializeOrientations());
 
         VehicleStorage.add(pig.getUniqueId());
     }
@@ -119,13 +119,13 @@ public class Vehicle extends SlimefunItem {
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
-        final Map<String, ControlSurfaceOrientation> controlSurfaces = traverser.getControlSurfaceOrientations("controlSurfaces");
-        if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty() || controlSurfaces == null) {
+        final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
+        if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty() || orientations == null) {
             return;
         }
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
-        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, controlSurfaces);
+        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 
         // Newton's 2nd law to calculate resultant force and then acceleration
@@ -146,7 +146,7 @@ public class Vehicle extends SlimefunItem {
             resultantAcceleration = new Vector3d();
         }
 
-        description.moveHingeComponentsToCenter(controlSurfaces);
+        description.moveHingeComponentsToCenter(orientations);
 
         resultantAcceleration.div(400);
         description.applyVelocityDampening(velocity);
@@ -164,22 +164,22 @@ public class Vehicle extends SlimefunItem {
         traverser.set("velocity", velocity);
         traverser.set("angularVelocity", angularVelocity);
         traverser.set("rotation", rotation);
-        traverser.setControlSurfaceOrientations("controlSurfaces", controlSurfaces);
+        traverser.setControlSurfaceOrientations("orientations", orientations);
 
         pig.setVelocity(Vector.fromJOML(velocity));
-        description.getCuboids(controlSurfaces).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
+        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup);
         }
     }
 
-    private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Quaterniond rotation, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> controlSurfaces) {
+    private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Quaterniond rotation, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
         forces.add(getThrustForce(rotation));
-        forces.addAll(getDragForces(rotation, velocity, angularVelocity, controlSurfaces));
-        forces.addAll(getLiftForces(rotation, velocity, angularVelocity, controlSurfaces));
+        forces.addAll(getDragForces(rotation, velocity, angularVelocity, orientations));
+        forces.addAll(getLiftForces(rotation, velocity, angularVelocity, orientations));
         return forces;
     }
     private @NotNull SpatialForce getWeightForce() {
@@ -188,20 +188,20 @@ public class Vehicle extends SlimefunItem {
     private static @NotNull SpatialForce getThrustForce(final @NotNull Quaterniond rotation) {
         return new SpatialForce(new Vector3d(0.15, 0, 0).rotate(rotation), new Vector3d(0, 0, 0));
     }
-    private Set<SpatialForce> getDragForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> controlSurfaces) {
-        return description.getSurfaces(controlSurfaces).stream()
+    private Set<SpatialForce> getDragForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+        return description.getSurfaces(orientations).stream()
                 .map(vehicleSurface -> vehicleSurface.getDragForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
-    private @NotNull Set<SpatialForce> getLiftForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> controlSurfaces) {
-        return description.getSurfaces(controlSurfaces).stream()
+    private @NotNull Set<SpatialForce> getLiftForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+        return description.getSurfaces(orientations).stream()
                 .map(vehicleSurface -> vehicleSurface.getLiftForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
 
     public void onKey(final @NotNull PersistentDataTraverser traverser, final char key) {
-        final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("controlSurfaces");
+        final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         description.adjustHingeComponents(orientations, key);
-        traverser.setControlSurfaceOrientations("controlSurfaces", orientations);
+        traverser.setControlSurfaceOrientations("orientations", orientations);
     }
 }
