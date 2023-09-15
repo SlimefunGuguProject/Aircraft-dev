@@ -28,7 +28,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static java.lang.Math.PI;
 import static java.lang.Math.toRadians;
 
 
@@ -36,7 +35,6 @@ public class Vehicle extends SlimefunItem {
     private final String name;
     private final VehicleDescription description;
 
-    private static final Quaterniond STARTING_ROTATION = new Quaterniond().rotateY(PI/2);
     private static final double MAX_VELOCITY = 50.0;
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
@@ -89,7 +87,7 @@ public class Vehicle extends SlimefunItem {
         VehicleStorage.add(pig.getUniqueId());
     }
     private @NotNull DisplayGroup buildAircraft(final Location location) {
-        final ModelBuilder builder = new ModelBuilder().rotation(STARTING_ROTATION.x, STARTING_ROTATION.y, STARTING_ROTATION.z);
+        final ModelBuilder builder = new ModelBuilder();
         description.getCuboids(description.initializeOrientations()).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
@@ -112,6 +110,18 @@ public class Vehicle extends SlimefunItem {
         pig.remove();
     }
 
+    private Quaterniond getAngularAcceleration(final @NotNull Set<SpatialForce> forces, final @NotNull Quaterniond rotation) {
+        final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
+        final Vector3d resultantTorque = new Vector3d();
+        torqueVectors.forEach(resultantTorque::add);
+
+        final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotation.angle(), rotation.x, rotation.y, rotation.z);
+        resultantTorque.rotate(negativeRotation);
+
+        final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(400);
+        return new Quaterniond().fromAxisAngleRad(new Vector3d(resultantAngularAccelerationVector).normalize(), resultantAngularAccelerationVector.length()) ;
+    }
+
     public void tickAircraft(final @NotNull Pig pig) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         Vector3d velocity = traverser.getVector3d("velocity");
@@ -125,41 +135,26 @@ public class Vehicle extends SlimefunItem {
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
         final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
-        final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
 
-        // Newton's 2nd law to calculate resultant force and then acceleration
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::getForce).forEach(resultantForce::add);
-        Vector3d resultantAcceleration = new Vector3d(resultantForce).div(description.getMass());
-
-        // Sum torque vectors to find resultant torque
-        final Vector3d resultantTorque = new Vector3d();
-        torqueVectors.forEach(resultantTorque::add);
-        final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotation.angle(), rotation.x, rotation.y, rotation.z);
-        resultantTorque.rotate(negativeRotation);
-        final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(400);
-        final Quaterniond resultantAngularAcceleration = new Quaterniond().fromAxisAngleRad(new Vector3d(resultantAngularAccelerationVector).normalize(), resultantAngularAccelerationVector.length()) ;
-
-        if (velocity.length() > MAX_VELOCITY) {
-            velocity = new Vector3d();
-            resultantAcceleration = new Vector3d();
-        }
-
-        description.moveHingeComponentsToCenter(orientations);
-
+        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(description.getMass());
         resultantAcceleration.div(400);
         velocity.add(new Vector3d(resultantAcceleration));
         description.applyVelocityDampening(velocity);
 
-        if (resultantAngularAcceleration.angle() != 0) {
-            angularVelocity.mul(resultantAngularAcceleration);
-        }
-
         description.applyAngularVelocityDampening(angularVelocity);
-
         rotation.mul(angularVelocity);
 
-        // Euler integration
+        if (velocity.length() > MAX_VELOCITY) {
+            velocity = new Vector3d();
+        }
+
+        final Quaterniond angularAcceleration = getAngularAcceleration(forces, rotation);
+        if (angularAcceleration.angle() != 0) {
+            angularVelocity.mul(angularAcceleration);
+        }
+
         traverser.set("velocity", velocity);
         traverser.set("angularVelocity", angularVelocity);
         traverser.set("rotation", rotation);
