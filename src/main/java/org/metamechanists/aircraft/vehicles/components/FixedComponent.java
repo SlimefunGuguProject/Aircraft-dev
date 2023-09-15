@@ -22,6 +22,7 @@ public class FixedComponent {
     private final Material material;
     private final Vector3f size;
     private final Vector3f location;
+    @Getter
     private final Vector3d rotation;
 
     public FixedComponent(final String name,
@@ -37,9 +38,9 @@ public class FixedComponent {
         this.rotation = rotation;
     }
 
-    private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight, final Vector3d rotation) {
+    private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight, final @NotNull Vector3d rotation) {
         final double area = surfaceWidth * surfaceHeight;
-        final Vector3d relativeLocation = Utils.rotate(startingLocation, this.rotation).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z);
+        final Vector3d relativeLocation = Utils.rotate(Utils.rotate(startingLocation, this.rotation), rotation);
         final Vector3d normal = new Vector3d(relativeLocation).normalize();
         return new VehicleSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
     }
