@@ -155,13 +155,14 @@ public class Vehicle extends SlimefunItem {
         description.applyAngularVelocityDampening(angularVelocity);
         rotation.mul(angularVelocity);
 
+        description.moveHingeComponentsToCenter(orientations);
+
         traverser.set("velocity", velocity);
         traverser.set("angularVelocity", angularVelocity);
         traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
         pig.setVelocity(Vector.fromJOML(velocity));
-        description.moveHingeComponentsToCenter(orientations);
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
