@@ -11,6 +11,8 @@ import org.metamechanists.aircraft.vehicles.VehicleSurface;
 import java.util.Map;
 import java.util.Set;
 
+import static java.lang.Math.sin;
+
 
 public class HingeComponent {
     private final FixedComponent fixedComponent;
@@ -45,6 +47,10 @@ public class HingeComponent {
         return new Quaterniond()
                 .fromAxisAngleRad(new Vector3d(rotationAxis), orientations.get(fixedComponent.getName()).getAngle())
                 .getEulerAnglesXYZ(new Vector3d());
+    }
+
+    private Vector3d getTranslation(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+        return new Vector3d(fixedComponent.getSize().x, 0.0, 0.0).mul(sin(orientations.get(fixedComponent.getName()).getAngle()));
     }
 
     public Set<VehicleSurface> getSurfaces(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {

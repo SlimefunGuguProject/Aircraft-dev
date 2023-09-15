@@ -25,6 +25,7 @@ public class FixedComponent {
     private final double dragCoefficient;
     private final double liftCoefficient;
     private final Material material;
+    @Getter
     private final Vector3f size;
     private final Vector3f location;
     @Getter
