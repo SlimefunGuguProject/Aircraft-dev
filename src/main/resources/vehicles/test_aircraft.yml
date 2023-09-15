@@ -30,13 +30,13 @@ components:
     material: GRAY_CONCRETE
     size: [0.6, 0.01, 1.3]
     location: [0.7, 0.0, 0.6]
-    rotation: [0.0, -0.4, 0.0]
+    rotation: [0.0, -1.4, 0.0]
   WingFront2:
     group: wing
     material: GRAY_CONCRETE
     size: [0.6, 0.01, 1.3]
     location: [0.7, 0.0, -0.6]
-    rotation: [0.0, 0.4, 0.0]
+    rotation: [0.0, 1.4, 0.0]
   WingBack1:
     group: wing
     material: BLUE_CONCRETE
@@ -61,7 +61,7 @@ components:
     material: ORANGE_CONCRETE
     size: [0.2, 0.01, 1.3]
     location: [0.3, 0.0, 0.6]
-    rotation: [0.0, -0.4, 0.0]
+    rotation: [0.0, -1.4, 0.0]
     controlSurface: true
     rotationAxis: [0.0, 0.0, 1.0]
     rotationRate: 0.1308
@@ -73,7 +73,7 @@ components:
     material: ORANGE_CONCRETE
     size: [0.2, 0.01, 1.3]
     location: [0.3, 0.0, -0.6]
-    rotation: [0.0, 0.4, 0.0]
+    rotation: [0.0, 1.4, 0.0]
     controlSurface: true
     rotationAxis: [0.0, 0.0, 1.0]
     rotationRate: 0.1308
