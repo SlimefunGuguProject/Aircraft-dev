@@ -45,7 +45,7 @@ public class FixedComponent {
 
     private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight, final @NotNull Vector3d rotation, final @NotNull Vector3d translation) {
         final double area = surfaceWidth * surfaceHeight;
-        final Matrix4f rotationMatrix = new TransformationMatrixBuilder().rotate(rotation).rotate(this.rotation).buildForItemDisplay();
+        final Matrix4f rotationMatrix = new TransformationMatrixBuilder().rotate(this.rotation).rotate(rotation).buildForItemDisplay();
         //final Matrix4d rotationMatrix = new Matrix4d().rotateXYZ(rotation.x, rotation.y, rotation.z).rotateXYZ(this.rotation.x, this.rotation.y, this.rotation.z);
         final Vector4d relativeLocation4 = new Vector4d(startingLocation, 1.0).mul(rotationMatrix);
         final Vector3d relativeLocation = new Vector3d(relativeLocation4.x, relativeLocation4.y, relativeLocation4.z);
