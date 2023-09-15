@@ -52,11 +52,15 @@ public class Utils {
         return Math.abs(a - b) < FLOATING_POINT_THRESHOLD;
     }
 
-    public Vector3d rotate(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
+    public Quaterniond getRotation(final @NotNull Vector3d rotation) {
         if (rotation.length() < 0.0001) {
-            return vector;
+            return new Quaterniond();
         }
-        return new Vector3d(vector).rotate(new Quaterniond().fromAxisAngleRad(rotation.x, rotation.y, rotation.z, (float) rotation.length()));
+        return new Quaterniond().fromAxisAngleRad(rotation.x, rotation.y, rotation.z, (float) rotation.length());
+    }
+
+    public Vector3d rotate(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
+        return new Vector3d(vector).rotate(getRotation(rotation));
         //return new Vector3d(vector).rotateX((float) rotation.x).rotateY((float) rotation.y).rotateZ((float) rotation.z);
     }
 
