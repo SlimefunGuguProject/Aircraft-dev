@@ -110,6 +110,12 @@ public class Vehicle extends SlimefunItem {
         pig.remove();
     }
 
+    private Vector3d getAcceleration(final @NotNull Set<SpatialForce> forces) {
+        final Vector3d resultantForce = new Vector3d();
+        forces.stream().map(SpatialForce::getForce).forEach(resultantForce::add);
+        return new Vector3d(resultantForce).div(description.getMass()).div(400);
+    }
+
     private Quaterniond getAngularAcceleration(final @NotNull Set<SpatialForce> forces, final @NotNull Quaterniond rotation) {
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
         final Vector3d resultantTorque = new Vector3d();
@@ -124,7 +130,7 @@ public class Vehicle extends SlimefunItem {
 
     public void tickAircraft(final @NotNull Pig pig) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
-        Vector3d velocity = traverser.getVector3d("velocity");
+        final Vector3d velocity = traverser.getVector3d("velocity");
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
@@ -136,24 +142,19 @@ public class Vehicle extends SlimefunItem {
         final DisplayGroup componentGroup = componentGroupId.get().get();
         final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
 
-        final Vector3d resultantForce = new Vector3d();
-        forces.stream().map(SpatialForce::getForce).forEach(resultantForce::add);
-        final Vector3d resultantAcceleration = new Vector3d(resultantForce).div(description.getMass());
-        resultantAcceleration.div(400);
-        velocity.add(new Vector3d(resultantAcceleration));
-        description.applyVelocityDampening(velocity);
-
-        description.applyAngularVelocityDampening(angularVelocity);
-        rotation.mul(angularVelocity);
-
+        final Vector3d acceleration = getAcceleration(forces);
         if (velocity.length() > MAX_VELOCITY) {
-            velocity = new Vector3d();
+            velocity.set(0, 0, 0);
         }
+        description.applyVelocityDampening(velocity);
+        velocity.add(new Vector3d(acceleration));
 
         final Quaterniond angularAcceleration = getAngularAcceleration(forces, rotation);
         if (angularAcceleration.angle() != 0) {
             angularVelocity.mul(angularAcceleration);
         }
+        description.applyAngularVelocityDampening(angularVelocity);
+        rotation.mul(angularVelocity);
 
         traverser.set("velocity", velocity);
         traverser.set("angularVelocity", angularVelocity);
