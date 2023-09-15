@@ -35,8 +35,6 @@ public class Vehicle extends SlimefunItem {
     private final String name;
     private final VehicleDescription description;
 
-    private static final Vector3d STARTING_VELOCITY = new Vector3d(0.0, 0.0, 0.0);
-    private static final Quaterniond STARTING_ANGULAR_VELOCITY = new Quaterniond();
     private static final Quaterniond STARTING_ROTATION = new Quaterniond().rotateY(PI/2);
     private static final double MAX_VELOCITY = 50.0;
 
@@ -80,9 +78,9 @@ public class Vehicle extends SlimefunItem {
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         traverser.set("name", name);
-        traverser.set("velocity", STARTING_VELOCITY);
-        traverser.set("angularVelocity", STARTING_ANGULAR_VELOCITY);
-        traverser.set("rotation", STARTING_ROTATION);
+        traverser.set("velocity", new Vector3d());
+        traverser.set("angularVelocity", new Quaterniond());
+        traverser.set("rotation", new Quaterniond().rotateY(player.getEyeLocation().getYaw()));
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
         traverser.setControlSurfaceOrientations("orientations", description.initializeOrientations());
