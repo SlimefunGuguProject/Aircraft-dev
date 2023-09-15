@@ -158,11 +158,11 @@ public class Vehicle extends SlimefunItem {
         controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
 
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.95);
+
         if (resultantAngularAcceleration.angle() != 0) {
             angularVelocity.mul(resultantAngularAcceleration);
         }
 
-        // Prevent NaN issues
         if (angularVelocity.angle() != 0) {
             angularVelocity.rotateAxis(-angularVelocity.angle()*0.1, angularVelocity.x, angularVelocity.y, angularVelocity.z);
         }
@@ -175,18 +175,12 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", rotation);
         traverser.set("controlSurfaces", controlSurfaces);
 
-        tickPig(pig, velocity);
-        tickAircraftDisplays(componentGroup, rotation, controlSurfaces);
+        pig.setVelocity(Vector.fromJOML(velocity));
+        description.getCuboids(controlSurfaces).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup);
         }
-    }
-    private static void tickPig(final @NotNull Pig pig, final Vector3d velocity) {
-        pig.setVelocity(Vector.fromJOML(velocity));
-    }
-    private void tickAircraftDisplays(final @NotNull DisplayGroup group, final Quaterniond rotation, final @NotNull ControlSurfaces controlSurfaces) {
-        description.getCuboids(controlSurfaces).forEach((cuboidName, cuboid) -> group.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
     }
 
     private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Quaterniond rotation, final Quaterniond angularVelocity, final @NotNull ControlSurfaces controlSurfaces) {
@@ -214,25 +208,25 @@ public class Vehicle extends SlimefunItem {
                 .collect(Collectors.toSet());
     }
 
-    public static void onKeyW(final @NotNull PersistentDataTraverser traverser) {
+    public void onKeyW(final @NotNull PersistentDataTraverser traverser) {
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         controlSurfaces.elevator1.adjust(CONTROL_SURFACE_ROTATION_RATE);
         controlSurfaces.elevator2.adjust(CONTROL_SURFACE_ROTATION_RATE);
         traverser.set("controlSurfaces", controlSurfaces);
     }
-    public static void onKeyS(final @NotNull PersistentDataTraverser traverser) {
+    public void onKeyS(final @NotNull PersistentDataTraverser traverser) {
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         controlSurfaces.elevator1.adjust(-CONTROL_SURFACE_ROTATION_RATE);
         controlSurfaces.elevator2.adjust(-CONTROL_SURFACE_ROTATION_RATE);
         traverser.set("controlSurfaces", controlSurfaces);
     }
-    public static void onKeyA(final @NotNull PersistentDataTraverser traverser) {
+    public void onKeyA(final @NotNull PersistentDataTraverser traverser) {
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         controlSurfaces.aileron1.adjust(CONTROL_SURFACE_ROTATION_RATE);
         controlSurfaces.aileron2.adjust(-CONTROL_SURFACE_ROTATION_RATE);
         traverser.set("controlSurfaces", controlSurfaces);
     }
-    public static void onKeyD(final @NotNull PersistentDataTraverser traverser) {
+    public void onKeyD(final @NotNull PersistentDataTraverser traverser) {
         final ControlSurfaces controlSurfaces = traverser.getControlSurfaces("controlSurfaces");
         controlSurfaces.aileron1.adjust(-CONTROL_SURFACE_ROTATION_RATE);
         controlSurfaces.aileron2.adjust(CONTROL_SURFACE_ROTATION_RATE);

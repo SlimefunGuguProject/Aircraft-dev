@@ -66,6 +66,8 @@ components:
     rotationAxis: [0.0, 0.0, 1.0]
     rotationRate: 0.1308
     rotationMax: 0.392
+    keyUp: d
+    keyDown: a
   Aileron2:
     group: controlSurface
     material: ORANGE_CONCRETE
@@ -76,6 +78,8 @@ components:
     rotationAxis: [0.0, 0.0, 1.0]
     rotationRate: 0.1308
     rotationMax: 0.392
+    keyUp: a
+    keyDown: d
   Elevator1:
     group: controlSurface
     material: ORANGE_CONCRETE
@@ -86,6 +90,8 @@ components:
     rotationAxis: [0.0, 0.0, 1.0]
     rotationRate: 0.1308
     rotationMax: 0.392
+    keyUp: s
+    keyDown: w
   Elevator2:
     group: controlSurface
     material: ORANGE_CONCRETE
@@ -96,3 +102,5 @@ components:
     rotationAxis: [0.0, 0.0, 1.0]
     rotationRate: 0.1308
     rotationMax: 0.392
+    keyUp: s
+    keyDown: w

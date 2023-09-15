@@ -44,7 +44,7 @@ public class VehicleDescription {
         final FixedComponent fixedComponent = new FixedComponent(component.name(), group.density, group.dragCoefficient, group.liftCoefficient, material, size, location, rotation);
 
         if (component.get("control_surface", false)) {
-            return new HingeComponent(fixedComponent, component.get("rotationAxis"), component.get("rotationRate"), component.get("rotationMax"));
+            return new HingeComponent(fixedComponent, component.get("rotationAxis"), component.get("rotationRate"), component.get("rotationMax"), component.get("keyUp"), component.get("keyDown"));
         }
 
         return fixedComponent;

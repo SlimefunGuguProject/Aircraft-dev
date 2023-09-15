@@ -12,12 +12,16 @@ public class HingeComponent implements VehicleComponent {
     private final Vector3d rotationAxis;
     private final double rotationRate;
     private final double rotationMax;
+    private final char keyUp;
+    private final char keyDown;
 
-    public HingeComponent(final FixedComponent fixedComponent, final Vector3d rotationAxis, final double rotationRate, final double rotationMax) {
+    public HingeComponent(final FixedComponent fixedComponent, final Vector3d rotationAxis, final double rotationRate, final double rotationMax, final char keyUp, final char keyDown) {
         this.fixedComponent = fixedComponent;
         this.rotationAxis = rotationAxis;
         this.rotationRate = rotationRate;
         this.rotationMax = rotationMax;
+        this.keyUp = keyUp;
+        this.keyDown = keyDown;
     }
 
     @Override

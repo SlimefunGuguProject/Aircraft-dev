@@ -21,20 +21,26 @@ public final class WasdHandler  {
         }
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(player.getVehicle());
-        if (traverser.getString("name") == null) {
+        final String name = traverser.getString("name");
+        if (name == null) {
+            return;
+        }
+
+        final Vehicle vehicle = org.metamechanists.aircraft.items.groups.Aircraft.getVehicle(name);
+        if (vehicle == null) {
             return;
         }
 
         if (rightLeft < 0) {
-            Vehicle.onKeyD(traverser);
+            vehicle.onKeyD(traverser);
         } else if (rightLeft > 0) {
-            Vehicle.onKeyA(traverser);
+            vehicle.onKeyA(traverser);
         }
 
         if (forwardbackwards < 0) {
-            Vehicle.onKeyS(traverser);
+            vehicle.onKeyS(traverser);
         } else if (forwardbackwards > 0) {
-            Vehicle.onKeyW(traverser);
+            vehicle.onKeyW(traverser);
         }
     }
 
