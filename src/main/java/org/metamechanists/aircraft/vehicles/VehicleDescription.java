@@ -44,7 +44,7 @@ public class VehicleDescription {
         final Vector3d rotation = getVector3d(componentTraverser, "rotation");
         final FixedComponent fixedComponent = new FixedComponent(componentTraverser.name(), group.density, group.dragCoefficient, group.liftCoefficient, material, size, location, rotation);
 
-        if (componentTraverser.get("control_surface", false)) {
+        if (componentTraverser.get("controlSurface", false)) {
             hingeComponents.add(new HingeComponent(fixedComponent,
                     componentTraverser.get("rotationAxis"), componentTraverser.get("rotationRate"), componentTraverser.get("rotationMax"),
                     componentTraverser.get("keyUp"), componentTraverser.get("keyDown")));
