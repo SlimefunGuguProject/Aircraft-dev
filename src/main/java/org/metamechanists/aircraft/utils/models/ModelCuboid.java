@@ -20,6 +20,7 @@ public class ModelCuboid {
     private final BlockDisplayBuilder main = new BlockDisplayBuilder();
 
     private Vector3f location = new Vector3f();
+    private Vector3f secondLocation = new Vector3f();
     private Vector3f size = new Vector3f();
     private Vector3d rotation = new Vector3d();
     private Vector3d secondRotation = new Vector3d();
@@ -43,6 +44,11 @@ public class ModelCuboid {
      */
     public ModelCuboid location(final float x, final float y, final float z) {
         return location(new Vector3f(x, y, z));
+    }
+
+    public ModelCuboid secondLocation(@NotNull final Vector3d location) {
+        this.secondLocation = new Vector3f((float) location.x, (float) location.y, (float) location.z);
+        return this;
     }
 
     /**
@@ -134,6 +140,7 @@ public class ModelCuboid {
                 .translate(location)
                 .rotate(rotation)
                 .rotate(secondRotation)
+                .translate(secondLocation)
                 .scale(new Vector3f(size))
                 .buildForBlockDisplay();
     }

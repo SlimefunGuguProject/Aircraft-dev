@@ -42,17 +42,16 @@ public class HingeComponent {
     }
 
     private Vector3d getRotation(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
-        return new Quaterniond().fromAxisAngleRad(
-                        new Vector3d(rotationAxis),
-                        orientations.get(fixedComponent.getName()).getAngle())
+        return new Quaterniond()
+                .fromAxisAngleRad(new Vector3d(rotationAxis), orientations.get(fixedComponent.getName()).getAngle())
                 .getEulerAnglesXYZ(new Vector3d());
     }
 
     public Set<VehicleSurface> getSurfaces(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
-        return fixedComponent.getSurfaces(getRotation(orientations));
+        return fixedComponent.getSurfaces(getRotation(orientations), new Vector3d());
     }
 
     public ModelCuboid getCuboid(final Map<String, ControlSurfaceOrientation> orientations) {
-        return fixedComponent.getCuboid(getRotation(orientations));
+        return fixedComponent.getCuboid(getRotation(orientations), new Vector3d());
     }
 }
