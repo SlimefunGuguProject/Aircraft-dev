@@ -43,7 +43,7 @@ public class HingeComponent {
 
     private Vector3d getRotation(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return new Quaterniond().fromAxisAngleRad(rotationAxis, orientations.get(fixedComponent.getName()).getAngle())
-                .mul(Utils.getRotation(fixedComponent.getRotation()))
+                //.mul(Utils.getRotation(fixedComponent.getRotation()))
                 .getEulerAnglesXYZ(new Vector3d());
     }
 
