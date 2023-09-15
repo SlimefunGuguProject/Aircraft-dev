@@ -158,7 +158,9 @@ public class Vehicle extends SlimefunItem {
         controlSurfaces.elevator2.moveTowardsCenter(CONTROL_SURFACE_ROTATION_RATE);
 
         velocity.add(new Vector3d(resultantAcceleration).div(400)).mul(0.95);
-        angularVelocity.mul(resultantAngularAcceleration);
+        if (resultantAngularAcceleration.angle() != 0) {
+            angularVelocity.mul(resultantAngularAcceleration);
+        }
 
         // Prevent NaN issues
         if (angularVelocity.angle() != 0) {
