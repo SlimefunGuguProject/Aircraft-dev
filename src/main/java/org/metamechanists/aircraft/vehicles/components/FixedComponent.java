@@ -40,7 +40,7 @@ public class FixedComponent {
 
     private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight, final @NotNull Vector3d rotation) {
         final double area = surfaceWidth * surfaceHeight;
-        final Vector3d relativeLocation = Utils.rotate(Utils.rotate(startingLocation, this.rotation), rotation);
+        final Vector3d relativeLocation = Utils.rotate(startingLocation, rotation);
         final Vector3d normal = new Vector3d(relativeLocation).normalize();
         return new VehicleSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
     }
@@ -61,15 +61,14 @@ public class FixedComponent {
     }
 
     public Set<VehicleSurface> getSurfaces() {
-        return getSurfaces(new Vector3d());
+        return getSurfaces(rotation);
     }
 
     public ModelCuboid getCuboid(final Vector3d rotation) {
-        final Vector3d resultantRotation = new Vector3d(this.rotation).add(rotation);
-        return new ModelCuboid().material(material).size(size).location(location).rotation(resultantRotation);
+        return new ModelCuboid().material(material).size(size).location(location).rotation(rotation);
     }
 
     public ModelCuboid getCuboid() {
-        return new ModelCuboid().material(material).size(size).location(location).rotation(new Vector3d());
+        return getCuboid(rotation);
     }
 }
