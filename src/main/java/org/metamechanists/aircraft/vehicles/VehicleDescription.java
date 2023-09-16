@@ -1,15 +1,20 @@
 package org.metamechanists.aircraft.vehicles;
 
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
+import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.models.ModelComponent;
 import org.metamechanists.aircraft.utils.models.ModelCuboid;
+import org.metamechanists.aircraft.utils.models.ModelText;
 import org.metamechanists.aircraft.vehicles.components.FixedComponent;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
+import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashMap;
@@ -97,8 +102,14 @@ public class VehicleDescription {
     }
     public Map<String, ModelComponent> getHud() {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
-        hudComponents.put("hud_1", new ModelCuboid().material(Material.LIME_CONCRETE).size(new Vector3d(0.5, 0.5, 0.5)).location(new Vector3d(0, 1, 2)));
+        hudComponents.put("altitude", new ModelText());
         return hudComponents;
+    }
+    public void updateHud(final Quaterniond rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
+        final Map<String, ModelComponent> hudComponents = getHud();
+        final TextDisplay altitudeText = (TextDisplay) hudGroup.getDisplays().get("altitude");
+        altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
+        altitudeText.setTransformationMatrix(hudComponents.get("altitude").getMatrix(rotation));
     }
 
     public void adjustHingeComponents(final Map<String, ControlSurfaceOrientation> orientations, final char key) {
