@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
@@ -20,6 +21,7 @@ public class ModelText implements ModelComponent {
     private final TextDisplayBuilder main = new TextDisplayBuilder();
 
     private Vector3f location = new Vector3f();
+    private Vector3f facing = new Vector3f(0, 0, 1);
     private Vector3f secondLocation = new Vector3f();
     private Vector3f size = new Vector3f();
     private Vector3d rotation = new Vector3d();
@@ -44,6 +46,22 @@ public class ModelText implements ModelComponent {
      */
     public ModelText location(final float x, final float y, final float z) {
         return location(new Vector3f(x, y, z));
+    }
+
+    /**
+     * Sets the orientation of the text (default is south AKA positive Z)
+     * The player will only see the text when looking at it from this orientation
+     */
+    public ModelText facing(final @NotNull Vector3f facing) {
+        this.facing = facing;
+        return this;
+    }
+    /**
+     * Sets the orientation of the text (default is south AKA positive Z)
+     * The player will only see the text when looking at it from this orientation
+     */
+    public ModelText facing(final @NotNull BlockFace face) {
+        return facing(face.getDirection().toVector3f());
     }
 
     public ModelText secondLocation(@NotNull final Vector3d location) {
@@ -129,6 +147,7 @@ public class ModelText implements ModelComponent {
     public Matrix4f getMatrix(final Vector3d modelRotation) {
         return new TransformationMatrixBuilder()
                 .rotate(modelRotation)
+                .lookAlong(facing)
                 .translate(location)
                 .rotate(rotation)
                 .rotate(secondRotation)
@@ -140,6 +159,7 @@ public class ModelText implements ModelComponent {
     public Matrix4f getMatrix(final Quaterniond modelRotation) {
         return new TransformationMatrixBuilder()
                 .rotate(modelRotation)
+                .lookAlong(facing)
                 .translate(location)
                 .rotate(rotation)
                 .rotate(secondRotation)
