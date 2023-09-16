@@ -100,7 +100,6 @@ public class Vehicle extends SlimefunItem {
     }
 
     private static void remove(final @NotNull Pig pig, final @NotNull DisplayGroup componentGroup) {
-        getPilot(pig).ifPresent(PlayerLookHandler::removePlayer);
         componentGroup.remove();
         VehicleStorage.remove(pig.getUniqueId());
         pig.getLocation().createExplosion(4);
@@ -162,8 +161,6 @@ public class Vehicle extends SlimefunItem {
         traverser.set("angularVelocity", angularVelocity);
         traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
-
-        getPilot(pig).ifPresent(pilot -> PlayerLookHandler.adjustRotation(pilot, 0.1, 0.1));
 
         pig.setVelocity(Vector.fromJOML(velocity));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
