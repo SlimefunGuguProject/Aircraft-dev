@@ -22,7 +22,6 @@ public class PlayerLookHandler {
         packet.getIntegers().write(0, player.getEntityId());
         packet.getBytes()
                 .write(0, degreeToByte(0));
-        packet.getBooleans().write(0, false);
         manager.broadcastServerPacket(packet);
     }
 }
