@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.items.Groups;
+import org.metamechanists.aircraft.vehicles.PlayerLookHandler;
 import org.metamechanists.aircraft.vehicles.VehicleTicker;
 import org.metamechanists.aircraft.vehicles.WasdHandler;
 
@@ -16,6 +17,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
 
     private static void initializeListeners() {
         WasdHandler.addProtocolListener();
+        PlayerLookHandler.addProtocolListener();
     }
 
     private void initializeRunnables() {
