@@ -18,7 +18,7 @@ public class PlayerLookHandler {
 
     public void adjustRotation(final @NotNull Player player, final double deltaYaw, final double deltaPitch) {
         final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-        final PacketContainer packet = new PacketContainer(Server.ENTITY_HEAD_ROTATION);
+        final PacketContainer packet = new PacketContainer(Server.ENTITY_LOOK);
         packet.getIntegers().write(0, player.getEntityId());
         packet.getBytes()
                 .write(0, degreeToByte(player.getLocation().getYaw() + toDegrees(deltaYaw)))
