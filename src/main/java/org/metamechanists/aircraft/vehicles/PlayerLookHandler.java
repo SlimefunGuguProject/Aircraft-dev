@@ -18,11 +18,10 @@ public class PlayerLookHandler {
 
     public void adjustRotation(final @NotNull Player player, final double deltaYaw, final double deltaPitch) {
         final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-        final PacketContainer packet = new PacketContainer(Server.ENTITY_LOOK);
+        final PacketContainer packet = new PacketContainer(Server.ENTITY_HEAD_ROTATION);
         packet.getIntegers().write(0, player.getEntityId());
         packet.getBytes()
-                .write(0, degreeToByte(0))
-                .write(1, degreeToByte(0));
+                .write(0, degreeToByte(0));
         packet.getBooleans().write(0, false);
         manager.broadcastServerPacket(packet);
     }
