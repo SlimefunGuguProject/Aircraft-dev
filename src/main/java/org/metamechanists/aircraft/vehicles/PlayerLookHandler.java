@@ -21,8 +21,8 @@ public class PlayerLookHandler {
         final PacketContainer packet = new PacketContainer(Server.ENTITY_LOOK);
         packet.getIntegers().write(0, player.getEntityId());
         packet.getBytes()
-                .write(0, degreeToByte(player.getLocation().getYaw() + toDegrees(deltaYaw)))
-                .write(1, degreeToByte(player.getLocation().getPitch() + toDegrees(deltaPitch)));
+                .write(0, degreeToByte(0))
+                .write(1, degreeToByte(0));
         packet.getBooleans().write(0, false);
         manager.broadcastServerPacket(packet);
     }
