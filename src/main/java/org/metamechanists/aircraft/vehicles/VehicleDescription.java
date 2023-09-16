@@ -95,7 +95,7 @@ public class VehicleDescription {
         hingeComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid(orientations)));
         return cuboids;
     }
-    public Map<String, ModelComponent> getHud(final Map<String, ControlSurfaceOrientation> orientations) {
+    public Map<String, ModelComponent> getHud() {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
         hudComponents.put("hud_1", new ModelCuboid().material(Material.LIME_CONCRETE).size(new Vector3d(0.5, 0.5, 0.5)).location(new Vector3d(0, 1, 2)));
         return hudComponents;

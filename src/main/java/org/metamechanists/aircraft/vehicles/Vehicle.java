@@ -97,7 +97,7 @@ public class Vehicle extends SlimefunItem {
     }
     private @NotNull DisplayGroup buildHud(final Location location) {
         final ModelBuilder builder = new ModelBuilder();
-        description.getHud(description.initializeOrientations()).forEach(builder::add);
+        description.getHud().forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
 
@@ -178,7 +178,7 @@ public class Vehicle extends SlimefunItem {
 
         pig.setVelocity(Vector.fromJOML(velocity));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
-        description.getHud(orientations).forEach((hudPartName, component) -> componentGroup.getDisplays().get(hudPartName).setTransformationMatrix(component.getMatrix(rotation)));
+        description.getHud().forEach((hudPartName, component) -> componentGroup.getDisplays().get(hudPartName).setTransformationMatrix(component.getMatrix(rotation)));
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup, hudGroup);
