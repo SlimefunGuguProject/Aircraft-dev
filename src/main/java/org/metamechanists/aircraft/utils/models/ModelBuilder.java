@@ -13,10 +13,10 @@ import java.util.Map;
  * Builder class that allows you to construct a model using components
  */
 public class ModelBuilder {
-    private final Map<String, ModelCuboid> components = new HashMap<>();
+    private final Map<String, ModelComponent> components = new HashMap<>();
     private Vector3d rotation = new Vector3d();
 
-    public ModelBuilder add(@NotNull final String name, @NotNull final ModelCuboid component) {
+    public ModelBuilder add(@NotNull final String name, @NotNull final ModelComponent component) {
         components.put(name, component);
         return this;
     }

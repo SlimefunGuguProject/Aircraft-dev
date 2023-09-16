@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.utils.models.ModelComponent;
 import org.metamechanists.aircraft.utils.models.ModelCuboid;
 import org.metamechanists.aircraft.vehicles.components.FixedComponent;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
@@ -89,10 +90,15 @@ public class VehicleDescription {
 
     @SuppressWarnings("SimplifyForEach")
     public Map<String, ModelCuboid> getCuboids(final Map<String, ControlSurfaceOrientation> orientations) {
-        final Map<String, ModelCuboid> surfaces = new HashMap<>();
-        fixedComponents.forEach(component -> surfaces.put(component.getName(), component.getCuboid()));
-        hingeComponents.forEach(component -> surfaces.put(component.getName(), component.getCuboid(orientations)));
-        return surfaces;
+        final Map<String, ModelCuboid> cuboids = new HashMap<>();
+        fixedComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid()));
+        hingeComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid(orientations)));
+        return cuboids;
+    }
+    public Map<String, ModelComponent> getHud(final Map<String, ControlSurfaceOrientation> orientations) {
+        final Map<String, ModelComponent> hudComponents = new HashMap<>();
+        hudComponents.put("hud_1", new ModelCuboid().material(Material.LIME_CONCRETE).size(new Vector3d(0.5, 0.5, 0.5)).location(new Vector3d(0, 1, 2)));
+        return hudComponents;
     }
 
     public void adjustHingeComponents(final Map<String, ControlSurfaceOrientation> orientations, final char key) {

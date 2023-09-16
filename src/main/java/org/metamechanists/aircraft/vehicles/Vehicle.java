@@ -63,7 +63,8 @@ public class Vehicle extends SlimefunItem {
     }
 
     private void place(final @NotNull Block block, final @NotNull Player player) {
-        final DisplayGroup componentGroup = buildAircraft(block.getLocation());
+        final DisplayGroup componentGroup = buildComponents(block.getLocation());
+        final DisplayGroup hudGroup = buildHud(block.getLocation());
 
         final Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
         pig.setInvulnerable(true);
@@ -72,7 +73,9 @@ public class Vehicle extends SlimefunItem {
         pig.setSilent(true);
 
         pig.addPassenger(componentGroup.getParentDisplay());
+        pig.addPassenger(hudGroup.getParentDisplay());
         componentGroup.getDisplays().values().forEach(pig::addPassenger);
+        hudGroup.getDisplays().values().forEach(pig::addPassenger);
         pig.addPassenger(player);
 
         final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
@@ -82,13 +85,19 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", new Quaterniond().rotateY(toRadians(-90.0-player.getEyeLocation().getYaw())));
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
+        traverser.set("hudGroupId", new DisplayGroupId(hudGroup.getParentUUID()));
         traverser.setControlSurfaceOrientations("orientations", description.initializeOrientations());
 
         VehicleStorage.add(pig.getUniqueId());
     }
-    private @NotNull DisplayGroup buildAircraft(final Location location) {
+    private @NotNull DisplayGroup buildComponents(final Location location) {
         final ModelBuilder builder = new ModelBuilder();
         description.getCuboids(description.initializeOrientations()).forEach(builder::add);
+        return builder.buildAtBlockCenter(location);
+    }
+    private @NotNull DisplayGroup buildHud(final Location location) {
+        final ModelBuilder builder = new ModelBuilder();
+        description.getHud(description.initializeOrientations()).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
 
@@ -99,8 +108,9 @@ public class Vehicle extends SlimefunItem {
                 .findFirst();
     }
 
-    private static void remove(final @NotNull Pig pig, final @NotNull DisplayGroup componentGroup) {
+    private static void remove(final @NotNull Pig pig, final @NotNull DisplayGroup componentGroup, final @NotNull DisplayGroup hudGroup) {
         componentGroup.remove();
+        hudGroup.remove();
         VehicleStorage.remove(pig.getUniqueId());
         pig.getLocation().createExplosion(4);
         getPilot(pig).ifPresent(pilot -> {
@@ -133,13 +143,17 @@ public class Vehicle extends SlimefunItem {
         final Vector3d velocity = traverser.getVector3d("velocity");
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
-        final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
-        if (velocity == null || angularVelocity == null || rotation == null || componentGroupId == null || componentGroupId.get().isEmpty() || orientations == null) {
+        final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
+        final DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
+        if (velocity == null || angularVelocity == null || rotation == null || orientations == null
+                || componentGroupId == null || componentGroupId.get().isEmpty()
+                || hudGroupId == null || hudGroupId.get().isEmpty()) {
             return;
         }
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
+        final DisplayGroup hudGroup = hudGroupId.get().get();
         final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
 
         if (velocity.length() > MAX_VELOCITY) {
@@ -164,9 +178,10 @@ public class Vehicle extends SlimefunItem {
 
         pig.setVelocity(Vector.fromJOML(velocity));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
+        description.getHud(orientations).forEach((hudPartName, component) -> componentGroup.getDisplays().get(hudPartName).setTransformationMatrix(component.getMatrix(rotation)));
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
-            remove(pig, componentGroup);
+            remove(pig, componentGroup, hudGroup);
         }
     }
 

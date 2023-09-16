@@ -3,23 +3,21 @@ package org.metamechanists.aircraft.utils.models;
 import lombok.Getter;
 import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.BlockDisplay;
+import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
-import org.metamechanists.aircraft.utils.builders.BlockDisplayBuilder;
+import org.metamechanists.aircraft.utils.builders.TextDisplayBuilder;
 import org.metamechanists.aircraft.utils.transformations.TransformationMatrixBuilder;
 
 
 @SuppressWarnings("unused")
 @Getter
-public class ModelCuboid implements ModelComponent {
-    private final BlockDisplayBuilder main = new BlockDisplayBuilder();
+public class ModelText implements ModelComponent {
+    private final TextDisplayBuilder main = new TextDisplayBuilder();
 
     private Vector3f location = new Vector3f();
     private Vector3f secondLocation = new Vector3f();
@@ -30,25 +28,25 @@ public class ModelCuboid implements ModelComponent {
     /**
      * @param location The center of the cuboid
      */
-    public ModelCuboid location(@NotNull final Vector3f location) {
+    public ModelText location(@NotNull final Vector3f location) {
         this.location = location;
         return this;
     }
     /**
      * @param location The center of the cuboid
      */
-    public ModelCuboid location(@NotNull final Vector3d location) {
+    public ModelText location(@NotNull final Vector3d location) {
         this.location = new Vector3f((float) location.x, (float) location.y, (float) location.z);
         return this;
     }
     /**
      * Sets the center of the cuboid
      */
-    public ModelCuboid location(final float x, final float y, final float z) {
+    public ModelText location(final float x, final float y, final float z) {
         return location(new Vector3f(x, y, z));
     }
 
-    public ModelCuboid secondLocation(@NotNull final Vector3d location) {
+    public ModelText secondLocation(@NotNull final Vector3d location) {
         this.secondLocation = new Vector3f((float) location.x, (float) location.y, (float) location.z);
         return this;
     }
@@ -56,73 +54,73 @@ public class ModelCuboid implements ModelComponent {
     /**
      * @param size The size of the cuboid (ie: the distance from one side to the other) on each axis
      */
-    public ModelCuboid size(@NotNull final Vector3f size) {
+    public ModelText size(@NotNull final Vector3f size) {
         this.size = size;
         return this;
     }
     /**
      * @param size The size of the cuboid (ie: the distance from one side to the other) on each axis
      */
-    public ModelCuboid size(@NotNull final Vector3d size) {
+    public ModelText size(@NotNull final Vector3d size) {
         this.size = new Vector3f((float) size.x, (float) size.y, (float) size.z);
         return this;
     }
     /**
      * Sets the size of the cuboid (ie: the distance from one side to the other) on each axis
      */
-    public ModelCuboid size(final float x, final float y, final float z) {
+    public ModelText size(final float x, final float y, final float z) {
         return size(new Vector3f(x, y, z));
     }
     /**
      * @param size The size of the cuboid (ie: the distance from one side to the other) on all three axes - this forms a cube
      */
-    public ModelCuboid size(final float size) {
+    public ModelText size(final float size) {
         return size(new Vector3f(size));
     }
 
     /**
      * @param rotation The rotation of the cuboid in radians
      */
-    public ModelCuboid secondRotation(@NotNull final Vector3d secondRotation) {
+    public ModelText secondRotation(@NotNull final Vector3d secondRotation) {
         this.secondRotation = secondRotation;
         return this;
     }
     /**
      * @param rotation The rotation of the cuboid in radians
      */
-    public ModelCuboid rotation(@NotNull final Vector3d rotation) {
+    public ModelText rotation(@NotNull final Vector3d rotation) {
         this.rotation = rotation;
         return this;
     }
     /**
      * Sets the rotation of the cuboid in radians
      */
-    public ModelCuboid rotation(final double x, final double y, final double z) {
+    public ModelText rotation(final double x, final double y, final double z) {
         return rotation(new Vector3d(x, y, z));
     }
     /**
      * @param rotationY The rotation of the cuboid around the Y axis in radians
      */
-    public ModelCuboid rotation(final double rotationY) {
+    public ModelText rotation(final double rotationY) {
         return rotation(new Vector3d(0, rotationY, 0));
     }
 
-    public ModelCuboid material(@NotNull final Material material) {
-        main.material(material);
-        return this;
-    }
     /**
-     * Overrides material
+     * @param color The background of the text (default is transparent)
      */
-    public ModelCuboid block(@NotNull final BlockData block) {
-        main.blockData(block);
+    public ModelText background(@NotNull final Color color) {
+        main.backgroundColor(color);
         return this;
     }
-    public ModelCuboid brightness(final int blockBrightness) {
+    public ModelText text(@NotNull final String text) {
+        main.text(text);
+        return this;
+    }
+    public ModelText brightness(final int blockBrightness) {
         main.brightness(blockBrightness);
         return this;
     }
-    public ModelCuboid glow(@NotNull final Color color) {
+    public ModelText glow(@NotNull final Color color) {
         main.glow(color);
         return this;
     }
@@ -151,11 +149,11 @@ public class ModelCuboid implements ModelComponent {
     }
 
     @Override
-    public BlockDisplay build(@NotNull final Location origin, @NotNull final Vector3d modelRotation) {
+    public TextDisplay build(@NotNull final Location origin, @NotNull final Vector3d modelRotation) {
         return main.transformation(getMatrix(modelRotation)).build(origin);
     }
     @Override
-    public BlockDisplay build(@NotNull final Block block, @NotNull final Vector3d modelRotation) {
+    public TextDisplay build(@NotNull final Block block, @NotNull final Vector3d modelRotation) {
         return build(block.getLocation(), modelRotation);
     }
 }
