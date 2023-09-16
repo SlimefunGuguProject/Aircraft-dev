@@ -100,6 +100,7 @@ public class Vehicle extends SlimefunItem {
     }
 
     private static void remove(final @NotNull Pig pig, final @NotNull DisplayGroup componentGroup) {
+        getPilot(pig).ifPresent(PlayerLookHandler::removePlayer);
         componentGroup.remove();
         VehicleStorage.remove(pig.getUniqueId());
         pig.getLocation().createExplosion(4);
