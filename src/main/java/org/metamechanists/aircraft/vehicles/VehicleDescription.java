@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.TextDisplay;
+import org.bukkit.entity.TextDisplay.TextAlignment;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
@@ -105,7 +106,7 @@ public class VehicleDescription {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
         hudComponents.put("altitude", new ModelText()
                 .size(new Vector3d(0.5, 0.5, 0.5))
-                .location(new Vector3d(0, 1, 2))
+                .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
         return hudComponents;
     }
@@ -113,6 +114,7 @@ public class VehicleDescription {
         final Map<String, ModelComponent> hudComponents = getHud();
         final TextDisplay altitudeText = (TextDisplay) hudGroup.getDisplays().get("altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
+        altitudeText.setAlignment(TextAlignment.CENTER);
         altitudeText.setTransformationMatrix(hudComponents.get("altitude").getMatrix(rotation));
     }
 
