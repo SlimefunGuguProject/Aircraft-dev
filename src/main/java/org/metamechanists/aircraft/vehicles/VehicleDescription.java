@@ -105,8 +105,8 @@ public class VehicleDescription {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
         hudComponents.put("altitude", new ModelText()
                 .size(new Vector3d(0.5, 0.5, 0.5))
-                .location(new Vector3d(1, 2, 0))
-                .facing(BlockFace.EAST));
+                .location(new Vector3d(0, 1, 2))
+                .facing(BlockFace.WEST));
         return hudComponents;
     }
     public void updateHud(final Quaterniond rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
