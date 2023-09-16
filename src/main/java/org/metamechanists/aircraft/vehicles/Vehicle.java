@@ -178,7 +178,7 @@ public class Vehicle extends SlimefunItem {
 
         pig.setVelocity(Vector.fromJOML(velocity));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
-        description.getHud().forEach((hudPartName, component) -> componentGroup.getDisplays().get(hudPartName).setTransformationMatrix(component.getMatrix(rotation)));
+        description.getHud().forEach((hudPartName, component) -> hudGroup.getDisplays().get(hudPartName).setTransformationMatrix(component.getMatrix(rotation)));
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup, hudGroup);
