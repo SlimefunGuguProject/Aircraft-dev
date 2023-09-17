@@ -113,10 +113,18 @@ public class VehicleDescription {
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
 
+        hudComponents.put("horizon_aircraft", new ModelText()
+                .text("< ==== [    ] ==== >")
+                .background(Color.fromARGB(255, 255, 255, 255))
+                .brightness(Utils.BRIGHTNESS_ON)
+                .size(new Vector3d(1.0, 1.0, 1.0))
+                .location(new Vector3d(0, 1, -2))
+                .facing(BlockFace.WEST));
+
         final Vector3d lookingAt = new Vector3d(1, 0, 0).rotate(rotation);
         final Vector3d lookingAtWithoutY = new Vector3d(lookingAt.x, 0, lookingAt.z);
-        final double angle = lookingAt.angle(lookingAtWithoutY);
-        final Vector3d horizonOffset = new Vector3d(0, lookingAt.y < 0 ? angle : -angle, 0);
+        final double adjustment = 2 * lookingAt.angle(lookingAtWithoutY);
+        final Vector3d horizonOffset = new Vector3d(0, lookingAt.y < 0 ? adjustment : -adjustment, 0);
         hudComponents.put("horizon_center", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
