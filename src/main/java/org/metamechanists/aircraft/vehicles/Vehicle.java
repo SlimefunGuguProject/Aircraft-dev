@@ -183,8 +183,8 @@ public class Vehicle extends SlimefunItem {
 
         getPilot(pig).ifPresent(pilot -> {
             final Location location = pilot.getLocation();
-            location.setPitch(pilot.getEyeLocation().getPitch() + 20);
-            location.setYaw(pilot.getEyeLocation().getYaw() + 20);
+            location.setPitch(pilot.getEyeLocation().getPitch() + 0.1F);
+            location.setYaw(pilot.getEyeLocation().getYaw() + 0.1F);
             pilot.teleport(location, TeleportFlag.EntityState.RETAIN_OPEN_INVENTORY, TeleportFlag.EntityState.RETAIN_VEHICLE, TeleportFlag.EntityState.RETAIN_PASSENGERS, TeleportFlag.Relative.YAW, TeleportFlag.Relative.PITCH);
         });
 
