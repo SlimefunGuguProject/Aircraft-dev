@@ -28,6 +28,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.lang.Math.PI;
+
 
 public class VehicleDescription {
     private record ComponentGroup(double density, double dragCoefficient, double liftCoefficient) {}
@@ -114,10 +116,10 @@ public class VehicleDescription {
                 .facing(BlockFace.WEST));
 
         hudComponents.put("horizon_aircraft", new ModelText()
-                .text("< ==== [    ] ==== >")
-                .background(Color.fromARGB(255, 255, 255, 255))
+                .text(Component.text("< ==== [    ] ==== >").color(TextColor.color(0, 255, 255)))
+                .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .size(new Vector3d(1.0, 1.0, 1.0))
+                .size(new Vector3d(1.5, 1.5, 1.5))
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
 
@@ -132,8 +134,8 @@ public class VehicleDescription {
                 .facing(BlockFace.WEST)
                 .size(new Vector3d(0.3, 0.3, 0.6))
                 .location(new Vector3d(horizonOffset).add(new Vector3d(0, 1, -2))));
-        final double verticalSpacing = 0.15;
-        final int bars = 41;
+        final int bars = 61;
+        final double verticalSpacing = (PI / 2) / (bars / 2);
         for (int i = 0; i < bars; i++) {
             if (i == 7) {
                 continue;
