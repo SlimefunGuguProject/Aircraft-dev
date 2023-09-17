@@ -135,7 +135,7 @@ public class VehicleDescription {
                 .facing(BlockFace.WEST)
                 .size(new Vector3d(0.3, 0.3, 0.6))
                 .location(new Vector3d(horizonOffset).add(new Vector3d(0, 1, -2)))
-                .rotation(rollAdjustment));
+                .rotation(new Vector3d(0, 0, PI / 6)));
         final int bars = 61;
         final double verticalSpacing = (PI / 1.14) / (bars / 2);
         for (int i = 0; i < bars; i++) {
