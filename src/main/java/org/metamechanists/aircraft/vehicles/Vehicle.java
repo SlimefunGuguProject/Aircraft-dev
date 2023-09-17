@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
+import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.models.ModelBuilder;
 import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
@@ -127,7 +128,7 @@ public class Vehicle extends SlimefunItem {
         return new Vector3d(resultantForce).div(description.getMass()).div(400);
     }
 
-    private Quaterniond getAngularAcceleration(final @NotNull Set<SpatialForce> forces, final @NotNull Quaterniond rotation) {
+    private Vector3d getAngularAcceleration(final @NotNull Set<SpatialForce> forces, final @NotNull Quaterniond rotation) {
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
@@ -135,8 +136,7 @@ public class Vehicle extends SlimefunItem {
         final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotation.angle(), rotation.x, rotation.y, rotation.z);
         resultantTorque.rotate(negativeRotation);
 
-        final Vector3d resultantAngularAccelerationVector = new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(400);
-        return new Quaterniond().fromAxisAngleRad(new Vector3d(resultantAngularAccelerationVector).normalize(), resultantAngularAccelerationVector.length()) ;
+        return new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(400);
     }
 
     public void tickAircraft(final @NotNull Horse horse) {
@@ -163,10 +163,8 @@ public class Vehicle extends SlimefunItem {
         description.applyVelocityDampening(velocity);
         velocity.add(getAcceleration(forces));
 
-        final Quaterniond angularAcceleration = getAngularAcceleration(forces, rotation);
-        if (angularAcceleration.angle() != 0) {
-            angularVelocity.mul(angularAcceleration);
-        }
+        angularVelocity.mul(Utils.getRotation(getAngularAcceleration(forces, rotation)));
+
         description.applyAngularVelocityDampening(angularVelocity);
         rotation.mul(angularVelocity);
 
