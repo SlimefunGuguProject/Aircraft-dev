@@ -63,7 +63,7 @@ public final class KeyboardHandler {
         manager.addPacketListener(new PacketAdapter(
                 Aircraft.getInstance(),
                 ListenerPriority.NORMAL,
-                Client.CLIENT_COMMAND) {
+                Client.ENTITY_ACTION) {
             @Override
             public void onPacketReceiving(final PacketEvent event) {
                 final PacketContainer packet = event.getPacket();
