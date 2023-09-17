@@ -106,10 +106,10 @@ public class VehicleDescription {
         hingeComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid(orientations)));
         return cuboids;
     }
-    public Map<String, ModelComponent> getHud(final @NotNull Vector3d rotation) {
+    public Map<String, ModelComponent> getHud(final @NotNull Quaterniond rotation) {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
 
-        final Vector3d rollAdjustment = new Vector3d(0, 0, rotation.x);
+        final Vector3d rollAdjustment = new Vector3d(0, 0, rotation.getEulerAnglesYXZ(new Vector3d()).x);
         hudComponents.put("horizon_altitude", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
@@ -126,7 +126,8 @@ public class VehicleDescription {
                 .rotation(rollAdjustment)
                 .facing(BlockFace.WEST));
 
-        final Vector3d lookingAt = Utils.rotate(new Vector3d(1, 0, 0), rotation);
+
+        final Vector3d lookingAt = new Vector3d(1, 0, 0).rotate(rotation);
         final Vector3d lookingAtWithoutY = new Vector3d(lookingAt.x, 0, lookingAt.z);
         final double adjustment = 2 * lookingAt.angle(lookingAtWithoutY);
         final Vector3d horizonOffset = new Vector3d(0, lookingAt.y < 0 ? adjustment : -adjustment, 0);
@@ -153,7 +154,7 @@ public class VehicleDescription {
         }
         return hudComponents;
     }
-    public void updateHud(final Vector3d rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
+    public void updateHud(final Quaterniond rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
         final Map<String, ModelComponent> hudComponents = getHud(rotation);
         hudComponents.forEach((name, component) -> hudGroup.getDisplays().get(name).setTransformationMatrix(hudComponents.get(name).getMatrix(rotation)));
 
@@ -178,9 +179,9 @@ public class VehicleDescription {
         velocity.mul(1.0 - velocityDampening);
     }
 
-    public void applyAngularVelocityDampening(final @NotNull Vector3d angularVelocity) {
-        if (angularVelocity.length() != 0) {
-            angularVelocity.mul(1.0 - angularVelocityDampening);
+    public void applyAngularVelocityDampening(final @NotNull Quaterniond angularVelocity) {
+        if (angularVelocity.angle() != 0) {
+            angularVelocity.rotateAxis(-angularVelocity.angle()*angularVelocityDampening, angularVelocity.x, angularVelocity.y, angularVelocity.z);
         }
     }
 }
