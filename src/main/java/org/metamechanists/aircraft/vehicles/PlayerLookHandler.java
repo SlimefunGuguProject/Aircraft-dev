@@ -28,7 +28,7 @@ public class PlayerLookHandler {
         packet.getDoubles().writeSafely(1, location.getY());
         packet.getDoubles().writeSafely(2, location.getZ());
         packet.getBytes().writeSafely(0, degreeToByte(yaw));
-        packet.getBytes().writeSafely(0, degreeToByte(pitch));
+        packet.getBytes().writeSafely(1, degreeToByte(pitch));
         packet.getBooleans().writeSafely(0, false);
         MANAGER.sendServerPacket(player, packet);
     }

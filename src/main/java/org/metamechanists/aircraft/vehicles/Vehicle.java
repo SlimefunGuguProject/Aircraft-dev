@@ -180,7 +180,7 @@ public class Vehicle extends SlimefunItem {
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
         description.updateHud(rotation, pig.getLocation().getBlockY(), hudGroup);
 
-        getPilot(pig).ifPresent(pilot -> PlayerLookHandler.sendPitchPacket(pilot, 0.3));
+        getPilot(pig).ifPresent(pilot -> PlayerLookHandler.sendPitchPacket(pilot, 45));
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup, hudGroup);
