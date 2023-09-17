@@ -10,7 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Pig;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -66,19 +66,19 @@ public class Vehicle extends SlimefunItem {
         final DisplayGroup componentGroup = buildComponents(block.getLocation());
         final DisplayGroup hudGroup = buildHud(block.getLocation());
 
-        final Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
-        pig.setInvulnerable(true);
-        pig.setGravity(false);
-        pig.setInvisible(true);
-        pig.setSilent(true);
+        final Horse horse = (Horse) block.getWorld().spawnEntity(block.getLocation(), EntityType.HORSE);
+        horse.setInvulnerable(true);
+        horse.setGravity(false);
+        horse.setInvisible(true);
+        horse.setSilent(true);
 
-        pig.addPassenger(componentGroup.getParentDisplay());
-        pig.addPassenger(hudGroup.getParentDisplay());
-        componentGroup.getDisplays().values().forEach(pig::addPassenger);
-        hudGroup.getDisplays().values().forEach(pig::addPassenger);
-        pig.addPassenger(player);
+        horse.addPassenger(componentGroup.getParentDisplay());
+        horse.addPassenger(hudGroup.getParentDisplay());
+        componentGroup.getDisplays().values().forEach(horse::addPassenger);
+        hudGroup.getDisplays().values().forEach(horse::addPassenger);
+        horse.addPassenger(player);
 
-        final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
+        final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         traverser.set("name", name);
         traverser.set("velocity", new Vector3d());
         traverser.set("angularVelocity", new Quaterniond());
@@ -88,7 +88,7 @@ public class Vehicle extends SlimefunItem {
         traverser.set("hudGroupId", new DisplayGroupId(hudGroup.getParentUUID()));
         traverser.setControlSurfaceOrientations("orientations", description.initializeOrientations());
 
-        VehicleStorage.add(pig.getUniqueId());
+        VehicleStorage.add(horse.getUniqueId());
     }
     private @NotNull DisplayGroup buildComponents(final Location location) {
         final ModelBuilder builder = new ModelBuilder();
@@ -101,23 +101,23 @@ public class Vehicle extends SlimefunItem {
         return builder.buildAtBlockCenter(location);
     }
 
-    private static @NotNull Optional<Player> getPilot(final @NotNull Pig pig) {
-        return pig.getPassengers().stream()
+    private static @NotNull Optional<Player> getPilot(final @NotNull Horse horse) {
+        return horse.getPassengers().stream()
                 .filter(entity -> entity instanceof Player)
                 .map(Player.class::cast)
                 .findFirst();
     }
 
-    private static void remove(final @NotNull Pig pig, final @NotNull DisplayGroup componentGroup, final @NotNull DisplayGroup hudGroup) {
+    private static void remove(final @NotNull Horse horse, final @NotNull DisplayGroup componentGroup, final @NotNull DisplayGroup hudGroup) {
         componentGroup.remove();
         hudGroup.remove();
-        VehicleStorage.remove(pig.getUniqueId());
-        pig.getLocation().createExplosion(4);
-        getPilot(pig).ifPresent(pilot -> {
+        VehicleStorage.remove(horse.getUniqueId());
+        horse.getLocation().createExplosion(4);
+        getPilot(horse).ifPresent(pilot -> {
             pilot.eject();
             componentGroup.getParentDisplay().removePassenger(pilot);
         });
-        pig.remove();
+        horse.remove();
     }
 
     private Vector3d getAcceleration(final @NotNull Set<SpatialForce> forces) {
@@ -138,8 +138,8 @@ public class Vehicle extends SlimefunItem {
         return new Quaterniond().fromAxisAngleRad(new Vector3d(resultantAngularAccelerationVector).normalize(), resultantAngularAccelerationVector.length()) ;
     }
 
-    public void tickAircraft(final @NotNull Pig pig) {
-        final PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
+    public void tickAircraft(final @NotNull Horse horse) {
+        final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         final Vector3d velocity = traverser.getVector3d("velocity");
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
@@ -176,14 +176,14 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
-        pig.setVelocity(Vector.fromJOML(velocity));
+        horse.setVelocity(Vector.fromJOML(velocity));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
-        description.updateHud(rotation, pig.getLocation().getBlockY(), hudGroup);
+        description.updateHud(rotation, horse.getLocation().getBlockY(), hudGroup);
 
-        getPilot(pig).ifPresent(pilot -> {});
+        getPilot(horse).ifPresent(pilot -> {});
 
-        if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
-            remove(pig, componentGroup, hudGroup);
+        if (horse.wouldCollideUsing(horse.getBoundingBox().expand(0.1, -0.1, 0.1))) {
+            remove(horse, componentGroup, hudGroup);
         }
     }
 
