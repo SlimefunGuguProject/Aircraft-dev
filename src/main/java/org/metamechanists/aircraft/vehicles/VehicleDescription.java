@@ -105,7 +105,7 @@ public class VehicleDescription {
     public Map<String, ModelComponent> getHud() {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
         hudComponents.put("altitude", new ModelText()
-                .size(new Vector3d(0.5, 0.5, 0.5))
+                .size(new Vector3d(1.0, 1.0, 1.0))
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
         return hudComponents;
@@ -114,7 +114,7 @@ public class VehicleDescription {
         final Map<String, ModelComponent> hudComponents = getHud();
         final TextDisplay altitudeText = (TextDisplay) hudGroup.getDisplays().get("altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
-        altitudeText.setAlignment(TextAlignment.LEFT);
+        altitudeText.setAlignment(TextAlignment.CENTER);
         altitudeText.setTransformationMatrix(hudComponents.get("altitude").getMatrix(rotation));
     }
 
