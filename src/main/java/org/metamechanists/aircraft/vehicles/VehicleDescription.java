@@ -115,7 +115,7 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .size(new Vector3d(0.7, 0.7, 0.7))
                 .location(new Vector3d(0, 1, -2))
-                .rotation(rollAdjustment)
+                .secondRotation(rollAdjustment)
                 .facing(BlockFace.WEST));
         hudComponents.put("horizon_aircraft", new ModelText()
                 .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
@@ -123,7 +123,7 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .size(new Vector3d(0.7, 0.7, 0.7))
                 .location(new Vector3d(0, 1, -2))
-                .rotation(rollAdjustment)
+                .secondRotation(rollAdjustment)
                 .facing(BlockFace.WEST));
 
 
