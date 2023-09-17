@@ -113,7 +113,8 @@ public class VehicleDescription {
         final Vector3d lookingAtForwardWithoutY = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z);
 
         final Vector3d lookingAtUp = new Vector3d(0, 1, 0).rotate(rotation);
-        final Vector3d rollAdjustment = new Vector3d(0, 0, Math.atan2(lookingAtUp.z, lookingAtUp.y));
+        final double roll = lookingAtUp.angle(new Vector3d(0, 1, 0));
+        final Vector3d rollAdjustment = new Vector3d(0, 0, lookingAtUp.y > 0 ? roll : -roll);
         hudComponents.put("horizon_altitude", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
