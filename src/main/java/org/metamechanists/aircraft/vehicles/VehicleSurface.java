@@ -1,8 +1,8 @@
 package org.metamechanists.aircraft.vehicles;
 
 import org.jetbrains.annotations.NotNull;
-import org.joml.Quaterniond;
 import org.joml.Vector3d;
+import org.metamechanists.aircraft.utils.Utils;
 
 
 public class VehicleSurface {
@@ -26,11 +26,10 @@ public class VehicleSurface {
         return new Vector3d(normal).angleCos(airflowVelocity) * area;
     }
 
-    public SpatialForce getLiftForce(final @NotNull Quaterniond rotation, final @NotNull Vector3d velocity, final @NotNull Quaterniond angularVelocity) {
-        final Vector3d location = new Vector3d(relativeLocation).rotate(rotation);
-        final Vector3d normal = new Vector3d(relativeNormal).rotate(rotation);
-        final Vector3d angularVelocityVector = angularVelocity.getEulerAnglesXYZ(new Vector3d()).mul(relativeLocation.length());
-        final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
+    public SpatialForce getLiftForce(final @NotNull Vector3d rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
+        final Vector3d location = Utils.rotate(new Vector3d(relativeLocation), rotation);
+        final Vector3d normal = Utils.rotate(new Vector3d(relativeNormal), rotation);
+        final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocity).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         // Also check that 1) airflow is not zero 2) airflow and normal are not in opposite directions - these cause NaN values
@@ -57,11 +56,10 @@ public class VehicleSurface {
         return new SpatialForce(force, location);
     }
 
-    public SpatialForce getDragForce(final @NotNull Quaterniond rotation, final @NotNull Vector3d velocity, final @NotNull Quaterniond angularVelocity) {
-        final Vector3d location = new Vector3d(relativeLocation).rotate(rotation);
-        final Vector3d normal = new Vector3d(relativeNormal).rotate(rotation);
-        final Vector3d angularVelocityVector = angularVelocity.getEulerAnglesXYZ(new Vector3d()).mul(relativeLocation.length());
-        final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
+    public SpatialForce getDragForce(final @NotNull Vector3d rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
+        final Vector3d location = Utils.rotate(new Vector3d(relativeLocation), rotation);
+        final Vector3d normal = Utils.rotate(new Vector3d(relativeNormal), rotation);
+        final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocity).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         // Also check that 1) airflow is not zero 2) airflow and normal are not in opposite directions - these cause NaN values
