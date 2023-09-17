@@ -105,19 +105,37 @@ public class VehicleDescription {
     }
     public Map<String, ModelComponent> getHud() {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
-        hudComponents.put("altitude", new ModelText()
+        hudComponents.put("horizon_altitude", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .size(new Vector3d(1.0, 1.0, 1.0))
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
+        hudComponents.put("horizon_1", new ModelCuboid()
+                .material(Material.CYAN_CONCRETE)
+                .size(new Vector3d(1.0, 0.15, 0.15))
+                .location(new Vector3d(0, 1, -2)));
+        final double verticalSpacing = 0.3;
+        final int bars = 15;
+        for (int i = 0; i < bars; i++) {
+            hudComponents.put("horizon" + i, new ModelCuboid()
+                    .material(Material.LIME_CONCRETE)
+                    .size(new Vector3d(1.0, 0.1, 0.1))
+                    .location(new Vector3d(0, 1 - (bars * verticalSpacing / 2.0) + (bars * verticalSpacing * i), -2)));
+        }
         return hudComponents;
     }
     public void updateHud(final Quaterniond rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
         final Map<String, ModelComponent> hudComponents = getHud();
-        final TextDisplay altitudeText = (TextDisplay) hudGroup.getDisplays().get("altitude");
+
+        final TextDisplay altitudeText = (TextDisplay) hudGroup.getDisplays().get("horizon_altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
         altitudeText.setAlignment(TextAlignment.CENTER);
-        altitudeText.setTransformationMatrix(hudComponents.get("altitude").getMatrix(rotation));
+        altitudeText.setTransformationMatrix(hudComponents.get("horizon_altitude").getMatrix(rotation));
+
+        final int bars = 15;
+        for (int i = 0; i < bars; i++) {
+            hudGroup.getDisplays().get("horizon" + i).setTransformationMatrix(hudComponents.get("horizon" + i).getMatrix(rotation));
+        }
     }
 
     public void adjustHingeComponents(final Map<String, ControlSurfaceOrientation> orientations, final char key) {
