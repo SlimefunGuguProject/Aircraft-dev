@@ -104,7 +104,7 @@ public class VehicleDescription {
         hingeComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid(orientations)));
         return cuboids;
     }
-    public Map<String, ModelComponent> getHud(final Quaterniond rotation) {
+    public Map<String, ModelComponent> getHud(final @NotNull Quaterniond rotation) {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
         hudComponents.put("horizon_altitude", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
@@ -112,13 +112,15 @@ public class VehicleDescription {
                 .size(new Vector3d(1.0, 1.0, 1.0))
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
+
+        final Vector3d horizonOffset = new Vector3d(0, rotation.x, 0);
         hudComponents.put("horizon_center", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .facing(BlockFace.WEST)
                 .size(new Vector3d(0.3, 0.3, 0.6))
-                .location(new Vector3d(0, 1 + rotation.y, -2)));
+                .location(new Vector3d(horizonOffset).add(new Vector3d(0, 1 + rotation.y, -2))));
         final double verticalSpacing = 0.15;
         final int bars = 15;
         for (int i = 0; i < bars; i++) {
@@ -131,7 +133,7 @@ public class VehicleDescription {
                     .brightness(Utils.BRIGHTNESS_ON)
                     .facing(BlockFace.WEST)
                     .size(new Vector3d(0.2, 0.2, 0.4))
-                    .location(new Vector3d(0, 1 + rotation.y - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), -2)));
+                    .location(new Vector3d(horizonOffset).add(new Vector3d(0, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), -2))));
         }
         return hudComponents;
     }
