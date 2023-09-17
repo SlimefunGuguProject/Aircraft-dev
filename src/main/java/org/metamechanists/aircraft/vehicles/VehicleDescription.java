@@ -111,7 +111,7 @@ public class VehicleDescription {
         hudComponents.put("horizon_altitude", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .size(new Vector3d(1.0, 1.0, 1.0))
+                .size(new Vector3d(0.7, 0.7, 0.7))
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
 
@@ -119,7 +119,7 @@ public class VehicleDescription {
                 .text(Component.text("< = [   ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .size(new Vector3d(1.0, 1.0, 1.0))
+                .size(new Vector3d(0.7, 0.7, 0.7))
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
 
@@ -135,7 +135,7 @@ public class VehicleDescription {
                 .size(new Vector3d(0.3, 0.3, 0.6))
                 .location(new Vector3d(horizonOffset).add(new Vector3d(0, 1, -2))));
         final int bars = 61;
-        final double verticalSpacing = (PI / 2) / (bars / 2);
+        final double verticalSpacing = PI / (bars / 2);
         for (int i = 0; i < bars; i++) {
             if (i == 7) {
                 continue;
