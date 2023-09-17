@@ -166,7 +166,7 @@ public class Vehicle extends SlimefunItem {
         final Vector3d angularAcceleration = getAngularAcceleration(forces, rotation);
         angularVelocity.add(angularAcceleration);
         description.applyAngularVelocityDampening(angularVelocity);
-        rotation.mul(angularVelocity);
+        rotation.add(angularVelocity);
 
         description.moveHingeComponentsToCenter(orientations);
 
