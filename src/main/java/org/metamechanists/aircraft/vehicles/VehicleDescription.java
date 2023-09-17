@@ -112,7 +112,7 @@ public class VehicleDescription {
         final Vector3d lookingAtForward = new Vector3d(1, 0, 0).rotate(rotation);
         final Vector3d lookingAtForwardWithoutY = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z);
 
-        final Vector3d lookingAtUp = new Vector3d(1, 0, 0).rotate(rotation);
+        final Vector3d lookingAtUp = new Vector3d(0, 1, 0).rotate(rotation);
         final Vector3d lookingAtUpWithoutY = new Vector3d(lookingAtUp.x, 0, lookingAtUp.z);
 
         final Vector3d rollAdjustment = new Vector3d(0, 0, Math.atan2(lookingAtUpWithoutY.y, lookingAtUpWithoutY.x));
