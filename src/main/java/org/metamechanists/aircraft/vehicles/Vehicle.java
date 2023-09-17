@@ -182,6 +182,8 @@ public class Vehicle extends SlimefunItem {
 
         getPilot(pig).ifPresent(pilot -> PlayerLookHandler.changePlayerCamera(pilot, pig));
 
+        pig.setRotation(0.0F, 90.0F);
+
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup, hudGroup);
         }
