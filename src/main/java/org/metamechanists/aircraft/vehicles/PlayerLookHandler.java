@@ -63,6 +63,7 @@ public class PlayerLookHandler {
         headRotationPacket.getIntegers().writeSafely(0, entityId);
         headRotationPacket.getBytes().writeSafely(0, degreeToByte(yaw));
 
+        MANAGER.sendServerPacket(player, teleportPacket);
         MANAGER.sendServerPacket(player, relativeEntityMoveLookPacket);
         MANAGER.sendServerPacket(player, entityLookPacket);
         MANAGER.sendServerPacket(player, headRotationPacket);
