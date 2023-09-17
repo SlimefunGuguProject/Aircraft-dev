@@ -5,19 +5,12 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 public class PlayerLookHandler {
     private static final ProtocolManager MANAGER = ProtocolLibrary.getProtocolManager();
-    private static final double DEGRESS_TO_RADIAN = Math.PI / 180;
-
-    public static void changePlayerCamera(Player player, Entity entity) {
-        final PacketContainer cameraPacket = MANAGER.createPacket(PacketType.Play.Server.CAMERA);
-        cameraPacket.getIntegers().writeSafely(0, entity.getEntityId());
-        MANAGER.sendServerPacket(player, cameraPacket);
-    }
+    private static final double DEGREES_TO_RADIAN = Math.PI / 180;
 
     public static void sendYawPacket(Player player, double delta) {
         final Location eyeLocation = player.getEyeLocation();
@@ -47,14 +40,10 @@ public class PlayerLookHandler {
     }
 
     private static Vector getVectorForLookAtPacket(Location location, double pitch, double yaw) {
-        double f = Math.cos(-yaw * DEGRESS_TO_RADIAN - Math.PI);
-        double f1 = Math.sin(-yaw * DEGRESS_TO_RADIAN - Math.PI);
-        double f2 = -Math.cos(-pitch * DEGRESS_TO_RADIAN);
-        double f3 = Math.sin(-pitch * DEGRESS_TO_RADIAN);
+        double f = Math.cos(-yaw * DEGREES_TO_RADIAN - Math.PI);
+        double f1 = Math.sin(-yaw * DEGREES_TO_RADIAN - Math.PI);
+        double f2 = -Math.cos(-pitch * DEGREES_TO_RADIAN);
+        double f3 = Math.sin(-pitch * DEGREES_TO_RADIAN);
         return new Vector(f1 * f2, f3, f * f2).multiply(100000).add(location.toVector());
-    }
-
-    private static byte degreeToByte(final double degree) {
-        return (byte) (degree * 256.0F / 360.0F);
     }
 }
