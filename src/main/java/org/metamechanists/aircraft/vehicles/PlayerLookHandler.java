@@ -7,9 +7,11 @@ import com.comphenix.protocol.events.PacketContainer;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.util.Vector;
 
 public class PlayerLookHandler {
     private static final ProtocolManager MANAGER = ProtocolLibrary.getProtocolManager();
+    private static final double DEGRESS_TO_RADIAN = Math.PI / 180;
 
     public static void changePlayerCamera(Player player, Entity entity) {
         final PacketContainer cameraPacket = MANAGER.createPacket(PacketType.Play.Server.CAMERA);
@@ -35,7 +37,7 @@ public class PlayerLookHandler {
     private static void sendRotationPacket(Player player, double yaw, double pitch) {
         final int entityId = player.getEntityId();
         final Location location = player.getLocation();
-        final PacketContainer teleportPacket = MANAGER.createPacket(PacketType.Play.Server.ENTITY_TELEPORT);
+        /*final PacketContainer teleportPacket = MANAGER.createPacket(PacketType.Play.Server.ENTITY_TELEPORT);
         teleportPacket.getIntegers().writeSafely(0, entityId);
         teleportPacket.getDoubles().writeSafely(0, location.getX());
         teleportPacket.getDoubles().writeSafely(1, location.getY());
@@ -66,7 +68,24 @@ public class PlayerLookHandler {
         MANAGER.sendServerPacket(player, teleportPacket);
         MANAGER.sendServerPacket(player, relativeEntityMoveLookPacket);
         MANAGER.sendServerPacket(player, entityLookPacket);
-        MANAGER.sendServerPacket(player, headRotationPacket);
+        MANAGER.sendServerPacket(player, headRotationPacket);*/
+
+        final PacketContainer lookAtPacket = MANAGER.createPacket(PacketType.Play.Server.LOOK_AT);
+        final Vector coordinates = getVectorForRotation(pitch, yaw).multiply(100000).add(location.toVector());
+        lookAtPacket.getIntegers().writeSafely(0, 1);
+        lookAtPacket.getDoubles().writeSafely(0, coordinates.getX());
+        lookAtPacket.getDoubles().writeSafely(1, coordinates.getY());
+        lookAtPacket.getDoubles().writeSafely(2, coordinates.getZ());
+        lookAtPacket.getBooleans().writeSafely(0, false);
+        MANAGER.sendServerPacket(player, lookAtPacket);
+    }
+
+    private static Vector getVectorForRotation(double pitch, double yaw) {
+        double f = Math.cos(-yaw * DEGRESS_TO_RADIAN - Math.PI);
+        double f1 = Math.sin(-yaw * DEGRESS_TO_RADIAN - Math.PI);
+        double f2 = -Math.cos(-pitch * DEGRESS_TO_RADIAN);
+        double f3 = Math.sin(-pitch * DEGRESS_TO_RADIAN);
+        return new Vector(f1 * f2, f3, f * f2);
     }
 
     private static byte degreeToByte(final double degree) {
