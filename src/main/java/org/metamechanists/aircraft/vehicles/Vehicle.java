@@ -143,7 +143,7 @@ public class Vehicle extends SlimefunItem {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         final Vector3d velocity = traverser.getVector3d("velocity");
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
-        final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
+        Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
@@ -165,7 +165,7 @@ public class Vehicle extends SlimefunItem {
 
         angularVelocity.mul(Utils.getRotation(getAngularAcceleration(forces, rotation)));
 
-        description.applyAngularVelocityDampening(angularVelocity);
+        angularVelocity = description.applyAngularVelocityDampening(angularVelocity.getEulerAnglesXYZ(new Vector3d()));
         rotation.mul(angularVelocity);
 
         description.moveHingeComponentsToCenter(orientations);

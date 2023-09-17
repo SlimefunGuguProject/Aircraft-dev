@@ -182,9 +182,7 @@ public class VehicleDescription {
         velocity.mul(1.0 - velocityDampening);
     }
 
-    public void applyAngularVelocityDampening(final @NotNull Quaterniond angularVelocity) {
-        if (angularVelocity.angle() != 0) {
-            angularVelocity.rotateAxis(-angularVelocity.angle()*angularVelocityDampening, angularVelocity.x, angularVelocity.y, angularVelocity.z);
-        }
+    public Quaterniond applyAngularVelocityDampening(final @NotNull Vector3d angularVelocity) {
+        return Utils.getRotation(angularVelocity.mul(1.0 - angularVelocityDampening));
     }
 }
