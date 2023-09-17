@@ -115,7 +115,7 @@ public class VehicleDescription {
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
 
-        final Vector3d rollAdjustment = new Vector3d(-rotation.getEulerAnglesYXZ(new Vector3d()).x, 0, 0);
+        final Vector3d rollAdjustment = new Vector3d(0, 0, -rotation.getEulerAnglesYXZ(new Vector3d()).x);
         hudComponents.put("horizon_aircraft", new ModelText()
                 .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
