@@ -153,7 +153,7 @@ public class ModelText implements ModelComponent {
                 .rotate(secondRotation)
                 .translate(secondLocation)
                 .scale(new Vector3f(size))
-                .buildForBlockDisplay();
+                .buildForTextDisplay();
     }
     @Override
     public Matrix4f getMatrix(final Quaterniond modelRotation) {
@@ -165,7 +165,7 @@ public class ModelText implements ModelComponent {
                 .rotate(secondRotation)
                 .translate(secondLocation)
                 .scale(new Vector3f(size))
-                .buildForBlockDisplay();
+                .buildForTextDisplay();
     }
 
     @Override

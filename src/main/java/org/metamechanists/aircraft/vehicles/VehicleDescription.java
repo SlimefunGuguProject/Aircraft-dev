@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicles;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.TextDisplay;
@@ -105,6 +106,7 @@ public class VehicleDescription {
     public Map<String, ModelComponent> getHud() {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
         hudComponents.put("altitude", new ModelText()
+                .background(Color.fromARGB(0, 0, 0, 0))
                 .size(new Vector3d(1.0, 1.0, 1.0))
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
