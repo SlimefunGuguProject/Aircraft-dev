@@ -104,7 +104,7 @@ public class VehicleDescription {
         hingeComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid(orientations)));
         return cuboids;
     }
-    public Map<String, ModelComponent> getHud(final @NotNull Quaterniond rotationQuaternion) {
+    public Map<String, ModelComponent> getHud(final @NotNull Quaterniond rotation) {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
         hudComponents.put("horizon_altitude", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
@@ -113,8 +113,7 @@ public class VehicleDescription {
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
 
-        final Vector3d rotation = rotationQuaternion.getEulerAnglesYXZ(new Vector3d());
-        final Vector3d lookingAt = new Vector3d(1, 0, 0).rotateX(rotation.x).rotateY(rotation.y).rotateZ(rotation.z);
+        final Vector3d lookingAt = new Vector3d(1, 0, 0).rotate(rotation);
         final Vector3d lookingAtWithoutY = new Vector3d(lookingAt.x, 0, lookingAt.y);
         final Vector3d horizonOffset = new Vector3d(0, lookingAt.angle(lookingAtWithoutY) * 2, 0);
         hudComponents.put("horizon_center", new ModelText()
