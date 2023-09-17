@@ -182,7 +182,7 @@ public class VehicleDescription {
         velocity.mul(1.0 - velocityDampening);
     }
 
-    public void applyAngularVelocityDampening(final @NotNull Vector3d angularVelocity) {
-        angularVelocity.mul(1.0 - angularVelocityDampening);
+    public Vector3d applyAngularVelocityDampening(final @NotNull Vector3d angularVelocity) {
+        return angularVelocity.mul(1.0 - angularVelocityDampening);
     }
 }
