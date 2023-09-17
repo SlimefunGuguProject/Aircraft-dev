@@ -104,7 +104,7 @@ public class VehicleDescription {
         hingeComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid(orientations)));
         return cuboids;
     }
-    public Map<String, ModelComponent> getHud() {
+    public Map<String, ModelComponent> getHud(final Quaterniond rotation) {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
         hudComponents.put("horizon_altitude", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
@@ -118,7 +118,7 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .facing(BlockFace.WEST)
                 .size(new Vector3d(0.3, 0.3, 0.6))
-                .location(new Vector3d(0, 1, -2)));
+                .location(new Vector3d(0, 1 + rotation.y, -2)));
         final double verticalSpacing = 0.15;
         final int bars = 15;
         for (int i = 0; i < bars; i++) {
@@ -131,12 +131,12 @@ public class VehicleDescription {
                     .brightness(Utils.BRIGHTNESS_ON)
                     .facing(BlockFace.WEST)
                     .size(new Vector3d(0.2, 0.2, 0.4))
-                    .location(new Vector3d(0, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), -2)));
+                    .location(new Vector3d(0, 1 + rotation.y - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), -2)));
         }
         return hudComponents;
     }
     public void updateHud(final Quaterniond rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
-        final Map<String, ModelComponent> hudComponents = getHud();
+        final Map<String, ModelComponent> hudComponents = getHud(rotation);
         hudComponents.forEach((name, component) -> hudGroup.getDisplays().get(name).setTransformationMatrix(hudComponents.get(name).getMatrix(rotation)));
 
         final TextDisplay altitudeText = (TextDisplay) hudGroup.getDisplays().get("horizon_altitude");

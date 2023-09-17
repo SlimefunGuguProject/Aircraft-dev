@@ -71,6 +71,7 @@ public class Vehicle extends SlimefunItem {
         horse.setGravity(false);
         horse.setInvisible(true);
         horse.setSilent(true);
+        horse.setTamed(true);
 
         horse.addPassenger(componentGroup.getParentDisplay());
         horse.addPassenger(hudGroup.getParentDisplay());
