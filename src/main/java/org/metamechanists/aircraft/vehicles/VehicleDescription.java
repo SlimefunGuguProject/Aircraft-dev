@@ -112,15 +112,15 @@ public class VehicleDescription {
                 .facing(BlockFace.WEST));
         hudComponents.put("horizon_center", new ModelCuboid()
                 .material(Material.CYAN_CONCRETE)
-                .size(new Vector3d(1.0, 0.15, 0.15))
+                .size(new Vector3d(1.0, 0.03, 0.03))
                 .location(new Vector3d(0, 1, -2)));
-        final double verticalSpacing = 0.3;
+        final double verticalSpacing = 0.1;
         final int bars = 15;
         for (int i = 0; i < bars; i++) {
             hudComponents.put("horizon" + i, new ModelCuboid()
                     .material(Material.LIME_CONCRETE)
-                    .size(new Vector3d(1.0, 0.1, 0.1))
-                    .location(new Vector3d(0, 1 - (bars * verticalSpacing / 2.0) + (verticalSpacing * i), -2)));
+                    .size(new Vector3d(1.0, 0.02, 0.02))
+                    .location(new Vector3d(0, 1 - (((double) bars / 2) * verticalSpacing) + (verticalSpacing * i), -2)));
         }
         return hudComponents;
     }
