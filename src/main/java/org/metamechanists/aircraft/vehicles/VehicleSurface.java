@@ -26,10 +26,10 @@ public class VehicleSurface {
         return new Vector3d(normal).angleCos(airflowVelocity) * area;
     }
 
-    public SpatialForce getLiftForce(final @NotNull Quaterniond rotation, final @NotNull Vector3d velocity, final @NotNull Quaterniond angularVelocity) {
+    public SpatialForce getLiftForce(final @NotNull Quaterniond rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
         final Vector3d location = new Vector3d(relativeLocation).rotate(rotation);
         final Vector3d normal = new Vector3d(relativeNormal).rotate(rotation);
-        final Vector3d angularVelocityVector = angularVelocity.getEulerAnglesXYZ(new Vector3d()).mul(relativeLocation.length());
+        final Vector3d angularVelocityVector = angularVelocity.mul(relativeLocation.length());
         final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
@@ -57,10 +57,10 @@ public class VehicleSurface {
         return new SpatialForce(force, location);
     }
 
-    public SpatialForce getDragForce(final @NotNull Quaterniond rotation, final @NotNull Vector3d velocity, final @NotNull Quaterniond angularVelocity) {
+    public SpatialForce getDragForce(final @NotNull Quaterniond rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
         final Vector3d location = new Vector3d(relativeLocation).rotate(rotation);
         final Vector3d normal = new Vector3d(relativeNormal).rotate(rotation);
-        final Vector3d angularVelocityVector = angularVelocity.getEulerAnglesXYZ(new Vector3d()).mul(relativeLocation.length());
+        final Vector3d angularVelocityVector = angularVelocity.mul(relativeLocation.length());
         final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it

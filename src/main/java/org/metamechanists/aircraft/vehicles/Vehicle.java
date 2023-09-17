@@ -155,7 +155,7 @@ public class Vehicle extends SlimefunItem {
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
         final DisplayGroup hudGroup = hudGroupId.get().get();
-        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
+        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity.getEulerAnglesXYZ(new Vector3d()), orientations);
 
         if (velocity.length() > MAX_VELOCITY) {
             velocity.set(0, 0, 0);
@@ -186,7 +186,7 @@ public class Vehicle extends SlimefunItem {
         }
     }
 
-    private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Quaterniond rotation, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Quaterniond rotation, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         final Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
         forces.add(getThrustForce(rotation));
@@ -200,12 +200,12 @@ public class Vehicle extends SlimefunItem {
     private static @NotNull SpatialForce getThrustForce(final @NotNull Quaterniond rotation) {
         return new SpatialForce(new Vector3d(0.15, 0, 0).rotate(rotation), new Vector3d(0, 0, 0));
     }
-    private Set<SpatialForce> getDragForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    private Set<SpatialForce> getDragForces(final Quaterniond rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return description.getSurfaces(orientations).stream()
                 .map(vehicleSurface -> vehicleSurface.getDragForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
-    private @NotNull Set<SpatialForce> getLiftForces(final Quaterniond rotation, final Vector3d velocity, final Quaterniond angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    private @NotNull Set<SpatialForce> getLiftForces(final Quaterniond rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return description.getSurfaces(orientations).stream()
                 .map(vehicleSurface -> vehicleSurface.getLiftForce(rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
