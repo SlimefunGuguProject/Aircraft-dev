@@ -29,6 +29,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.PI;
+import static java.lang.Math.abs;
 
 
 public class VehicleDescription {
@@ -109,7 +110,8 @@ public class VehicleDescription {
     public Map<String, ModelComponent> getHud(final @NotNull Quaterniond rotation) {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
 
-        final Vector3d rollAdjustment = new Vector3d(0, 0, rotation.getEulerAnglesYXZ(new Vector3d()).x);
+        final double roll = rotation.getEulerAnglesYXZ(new Vector3d()).x;
+        final Vector3d rollAdjustment = new Vector3d(0, 0, (abs(roll) > PI/2) ? -roll : roll);
         hudComponents.put("horizon_altitude", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
