@@ -184,7 +184,8 @@ public class Vehicle extends SlimefunItem {
         getPilot(pig).ifPresent(pilot -> {
             final Location location = pilot.getLocation();
             location.setPitch(pilot.getEyeLocation().getPitch() + 20);
-            pilot.teleport(location, TeleportFlag.Relative.PITCH);
+            location.setYaw(pilot.getEyeLocation().getYaw() + 20);
+            pilot.teleport(location, TeleportFlag.EntityState.RETAIN_OPEN_INVENTORY, TeleportFlag.EntityState.RETAIN_VEHICLE, TeleportFlag.EntityState.RETAIN_PASSENGERS, TeleportFlag.Relative.YAW, TeleportFlag.Relative.PITCH);
         });
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
