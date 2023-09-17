@@ -181,12 +181,7 @@ public class Vehicle extends SlimefunItem {
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
         description.updateHud(rotation, pig.getLocation().getBlockY(), hudGroup);
 
-        getPilot(pig).ifPresent(pilot -> {
-            final Location location = pilot.getLocation();
-            location.setPitch(pilot.getEyeLocation().getPitch() + 0.1F);
-            location.setYaw(pilot.getEyeLocation().getYaw() + 0.1F);
-            pilot.teleport(location, TeleportFlag.EntityState.RETAIN_OPEN_INVENTORY, TeleportFlag.EntityState.RETAIN_VEHICLE, TeleportFlag.EntityState.RETAIN_PASSENGERS, TeleportFlag.Relative.YAW, TeleportFlag.Relative.PITCH);
-        });
+        getPilot(pig).ifPresent(pilot -> {});
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup, hudGroup);
