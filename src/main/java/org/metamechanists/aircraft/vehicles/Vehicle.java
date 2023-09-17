@@ -64,7 +64,7 @@ public class Vehicle extends SlimefunItem {
 
     private void place(final @NotNull Block block, final @NotNull Player player) {
         final DisplayGroup componentGroup = buildComponents(block.getLocation());
-        final DisplayGroup hudGroup = buildHud(block.getLocation());
+        final DisplayGroup hudGroup = buildHud(block.getLocation(), new Quaterniond());
 
         final Horse horse = (Horse) block.getWorld().spawnEntity(block.getLocation(), EntityType.HORSE);
         horse.setInvulnerable(true);
@@ -96,9 +96,9 @@ public class Vehicle extends SlimefunItem {
         description.getCuboids(description.initializeOrientations()).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
-    private @NotNull DisplayGroup buildHud(final Location location) {
+    private @NotNull DisplayGroup buildHud(final Location location, final Quaterniond rotation) {
         final ModelBuilder builder = new ModelBuilder();
-        description.getHud().forEach(builder::add);
+        description.getHud(rotation).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
 
