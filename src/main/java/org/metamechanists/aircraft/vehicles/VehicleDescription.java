@@ -114,7 +114,7 @@ public class VehicleDescription {
         final Map<String, ModelComponent> hudComponents = getHud();
         final TextDisplay altitudeText = (TextDisplay) hudGroup.getDisplays().get("altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
-        altitudeText.setAlignment(TextAlignment.CENTER);
+        altitudeText.setAlignment(TextAlignment.RIGHT);
         altitudeText.setTransformationMatrix(hudComponents.get("altitude").getMatrix(rotation));
     }
 
