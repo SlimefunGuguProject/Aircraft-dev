@@ -115,7 +115,7 @@ public class VehicleDescription {
 
         final Vector3d lookingAt = new Vector3d(1, 0, 0).rotate(rotation);
         final Vector3d lookingAtWithoutY = new Vector3d(lookingAt.x, 0, lookingAt.z);
-        final Vector3d horizonOffset = new Vector3d(0, lookingAt.angle(lookingAtWithoutY) * 2, 0);
+        final Vector3d horizonOffset = new Vector3d(0, lookingAt.angle(lookingAtWithoutY), 0);
         hudComponents.put("horizon_center", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
@@ -124,7 +124,7 @@ public class VehicleDescription {
                 .size(new Vector3d(0.3, 0.3, 0.6))
                 .location(new Vector3d(horizonOffset).add(new Vector3d(0, 1, -2))));
         final double verticalSpacing = 0.15;
-        final int bars = 15;
+        final int bars = 41;
         for (int i = 0; i < bars; i++) {
             if (i == 7) {
                 continue;
