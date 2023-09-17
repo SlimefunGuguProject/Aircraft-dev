@@ -116,7 +116,7 @@ public class VehicleDescription {
                 .facing(BlockFace.WEST));
 
         hudComponents.put("horizon_aircraft", new ModelText()
-                .text(Component.text("< = [     ] = >").color(TextColor.color(255, 255, 255)))
+                .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .size(new Vector3d(0.7, 0.7, 0.7))
@@ -135,9 +135,9 @@ public class VehicleDescription {
                 .facing(BlockFace.WEST)
                 .size(new Vector3d(0.3, 0.3, 0.6))
                 .location(new Vector3d(horizonOffset).add(new Vector3d(0, 1, -2)))
-                .secondRotation(rollAdjustment));
+                .rotation(rollAdjustment));
         final int bars = 61;
-        final double verticalSpacing = (PI / 1.1) / (bars / 2);
+        final double verticalSpacing = (PI / 1.14) / (bars / 2);
         for (int i = 0; i < bars; i++) {
             if (i == 7) {
                 continue;
