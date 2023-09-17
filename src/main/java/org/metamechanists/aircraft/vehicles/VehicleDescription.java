@@ -109,9 +109,9 @@ public class VehicleDescription {
     public Map<String, ModelComponent> getHud(final @NotNull Quaterniond rotation) {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
 
-        final Vector3d lookingAtUp = new Vector3d(0, 1, 0).rotate(rotation);
-        final Vector3d lookingAtUpWithoutX = new Vector3d(lookingAtUp.x, lookingAtUp.y, 0);
-        final double roll = lookingAtUp.angle(lookingAtUpWithoutX);
+        final Vector3d lookingAtUp = new Vector3d(0, 0, 1).rotate(rotation);
+        final Vector3d lookingAtUpWithoutZ = new Vector3d(lookingAtUp.x, lookingAtUp.y, 0);
+        final double roll = lookingAtUp.angle(lookingAtUpWithoutZ);
         final Vector3d rollAdjustment = new Vector3d(0, 0, roll);
         hudComponents.put("horizon_altitude", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
