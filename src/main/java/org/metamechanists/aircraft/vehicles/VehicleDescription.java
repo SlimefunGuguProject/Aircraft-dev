@@ -110,7 +110,8 @@ public class VehicleDescription {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
 
         final double roll = rotation.getEulerAnglesYXZ(new Vector3d()).x;
-        final Vector3d rollAdjustment = new Vector3d(0, 0, (Math.abs(roll) > PI/2) ? -roll : roll);
+        final double pitch = rotation.getEulerAnglesYXZ(new Vector3d()).z;
+        final Vector3d rollAdjustment = new Vector3d(0, 0, (pitch < 0) ? -roll : roll);
         hudComponents.put("horizon_altitude", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
