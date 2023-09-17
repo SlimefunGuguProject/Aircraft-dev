@@ -1,5 +1,6 @@
 package org.metamechanists.aircraft.utils.builders;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Display.Billboard;
@@ -11,7 +12,8 @@ import org.joml.Matrix4f;
 
 @SuppressWarnings("unused")
 public class TextDisplayBuilder implements DisplayBuilder {
-    private String text;
+    private String textString;
+    private Component textComponent;
     private Matrix4f transformation;
     private Integer brightness;
     private Color glowColor;
@@ -23,8 +25,11 @@ public class TextDisplayBuilder implements DisplayBuilder {
     @Override
     public TextDisplay build(@NotNull final Location location) {
         return location.getWorld().spawn(location, TextDisplay.class, display -> {
-            if (text != null) {
-                display.setText(text);
+            if (textString != null) {
+                display.setText(textString);
+            }
+            if (textComponent != null) {
+                display.text(textComponent);
             }
             if (transformation != null) {
                 display.setTransformationMatrix(transformation);
@@ -53,8 +58,12 @@ public class TextDisplayBuilder implements DisplayBuilder {
         });
     }
 
-    public TextDisplayBuilder text(final String text) {
-        this.text = text;
+    public TextDisplayBuilder text(final String textString) {
+        this.textString = textString;
+        return this;
+    }
+    public TextDisplayBuilder text(final Component textComponent) {
+        this.textComponent = textComponent;
         return this;
     }
     public TextDisplayBuilder transformation(final Matrix4f transformation) {

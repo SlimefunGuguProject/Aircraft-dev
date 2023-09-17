@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.utils.models;
 
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -131,6 +132,10 @@ public class ModelText implements ModelComponent {
         return this;
     }
     public ModelText text(@NotNull final String text) {
+        main.text(text);
+        return this;
+    }
+    public ModelText text(@NotNull final Component text) {
         main.text(text);
         return this;
     }
