@@ -123,6 +123,7 @@ public class VehicleDescription {
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
 
+        final Vector3d rollAdjustment = new Vector3d(-rotation.getEulerAnglesYXZ(new Vector3d()).x, 0, 0);
         final Vector3d lookingAt = new Vector3d(1, 0, 0).rotate(rotation);
         final Vector3d lookingAtWithoutY = new Vector3d(lookingAt.x, 0, lookingAt.z);
         final double adjustment = 2 * lookingAt.angle(lookingAtWithoutY);
@@ -133,9 +134,10 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .facing(BlockFace.WEST)
                 .size(new Vector3d(0.3, 0.3, 0.6))
-                .location(new Vector3d(horizonOffset).add(new Vector3d(0, 1, -2))));
+                .location(new Vector3d(horizonOffset).add(new Vector3d(0, 1, -2)))
+                .secondRotation(rollAdjustment));
         final int bars = 61;
-        final double verticalSpacing = (PI / 1.2) / (bars / 2);
+        final double verticalSpacing = (PI / 1.1) / (bars / 2);
         for (int i = 0; i < bars; i++) {
             if (i == 7) {
                 continue;
