@@ -113,9 +113,11 @@ public class VehicleDescription {
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
         hudComponents.put("horizon_center", new ModelText()
-                .text(Component.text("------------").color(TextColor.color(0, 255, 255)))
+                .background(Color.fromARGB(0, 0, 0, 0))
+                .text(Component.text("------------------------").color(TextColor.color(0, 255, 255)))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .size(new Vector3d(0.03, 0.03, 0.6))
+                .facing(BlockFace.WEST)
+                .size(new Vector3d(0.15, 0.15, 0.6))
                 .location(new Vector3d(2, 1, 0)));
         final double verticalSpacing = 0.15;
         final int bars = 15;
@@ -124,9 +126,11 @@ public class VehicleDescription {
                 continue;
             }
             hudComponents.put("horizon" + i, new ModelText()
-                    .text(Component.text("----------").color(TextColor.color(0, 180, 255)))
+                    .background(Color.fromARGB(0, 0, 0, 0))
+                    .text(Component.text("--------------------").color(TextColor.color(0, 180, 255)))
                     .brightness(Utils.BRIGHTNESS_ON)
-                    .size(new Vector3d(0.02, 0.02, 0.4))
+                    .facing(BlockFace.WEST)
+                    .size(new Vector3d(0.1, 0.1, 0.4))
                     .location(new Vector3d(2, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0)));
         }
         return hudComponents;
