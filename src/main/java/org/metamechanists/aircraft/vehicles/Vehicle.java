@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
+import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.models.ModelBuilder;
 import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
@@ -82,7 +83,7 @@ public class Vehicle extends SlimefunItem {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         traverser.set("name", name);
         traverser.set("velocity", new Vector3d());
-        traverser.set("angularVelocity", new Quaterniond());
+        traverser.set("angularVelocity", new Vector3d());
         traverser.set("rotation", new Quaterniond().rotateY(toRadians(-90.0-player.getEyeLocation().getYaw())));
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
@@ -143,7 +144,7 @@ public class Vehicle extends SlimefunItem {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         final Vector3d velocity = traverser.getVector3d("velocity");
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
-        final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
+        Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
@@ -155,7 +156,7 @@ public class Vehicle extends SlimefunItem {
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
         final DisplayGroup hudGroup = hudGroupId.get().get();
-        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
+        final Set<SpatialForce> forces = getForces(velocity, rotation, Utils.getRotation(angularVelocity), orientations);
 
         if (velocity.length() > MAX_VELOCITY) {
             velocity.set(0, 0, 0);
@@ -165,10 +166,10 @@ public class Vehicle extends SlimefunItem {
 
         final Quaterniond angularAcceleration = getAngularAcceleration(forces, rotation);
         if (angularAcceleration.angle() != 0) {
-            angularVelocity.mul(angularAcceleration);
+            angularVelocity = Utils.getRotation(angularVelocity).mul(angularAcceleration).getEulerAnglesXYZ(new Vector3d());
         }
-        description.applyAngularVelocityDampening(angularVelocity);
-        rotation.mul(angularVelocity);
+        description.applyAngularVelocityDampening(Utils.getRotation(angularVelocity));
+        rotation.mul(Utils.getRotation(angularVelocity));
 
         description.moveHingeComponentsToCenter(orientations);
 
