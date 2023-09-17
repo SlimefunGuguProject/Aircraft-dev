@@ -5,6 +5,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import io.papermc.paper.entity.TeleportFlag;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -180,7 +181,11 @@ public class Vehicle extends SlimefunItem {
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
         description.updateHud(rotation, pig.getLocation().getBlockY(), hudGroup);
 
-        getPilot(pig).ifPresent(pilot -> PlayerLookHandler.sendYawPitchPacket(pilot, 1, 1));
+        getPilot(pig).ifPresent(pilot -> {
+            final Location location = pilot.getLocation();
+            location.setPitch(pilot.getEyeLocation().getPitch() + 20);
+            pilot.teleport(location, TeleportFlag.Relative.PITCH);
+        });
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
             remove(pig, componentGroup, hudGroup);
