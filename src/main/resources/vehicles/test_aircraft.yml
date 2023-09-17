@@ -90,7 +90,7 @@ components:
     rotationAxis: [0.0, 0.0, 1.0]
     rotationRate: 0.1308
     rotationMax: 0.392
-    keyUp: w
+    keyUp: e
     keyDown: s
   Elevator2:
     group: controlSurface
@@ -102,5 +102,5 @@ components:
     rotationAxis: [0.0, 0.0, 1.0]
     rotationRate: 0.1308
     rotationMax: 0.392
-    keyUp: w
+    keyUp: e
     keyDown: s

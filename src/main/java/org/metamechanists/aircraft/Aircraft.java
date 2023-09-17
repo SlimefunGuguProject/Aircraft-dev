@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.items.Groups;
 import org.metamechanists.aircraft.vehicles.VehicleTicker;
-import org.metamechanists.aircraft.vehicles.WasdHandler;
+import org.metamechanists.aircraft.vehicles.KeyboardHandler;
 
 
 public final class Aircraft extends JavaPlugin implements SlimefunAddon {
@@ -15,7 +15,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
     private static Aircraft instance;
 
     private static void initializeListeners() {
-        WasdHandler.addProtocolListener();
+        KeyboardHandler.addProtocolListener();
     }
 
     private void initializeRunnables() {
