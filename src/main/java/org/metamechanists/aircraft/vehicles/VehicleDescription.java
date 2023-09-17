@@ -109,10 +109,13 @@ public class VehicleDescription {
     public Map<String, ModelComponent> getHud(final @NotNull Quaterniond rotation) {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
 
-        final Vector3d lookingAt = new Vector3d(1, 0, 0).rotate(rotation);
-        final Vector3d lookingAtWithoutY = new Vector3d(lookingAt.x, 0, lookingAt.z);
+        final Vector3d lookingAtForward = new Vector3d(1, 0, 0).rotate(rotation);
+        final Vector3d lookingAtForwardWithoutY = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z);
 
-        final Vector3d rollAdjustment = new Vector3d(0, 0, Math.atan2(lookingAt.y, lookingAt.x));
+        final Vector3d lookingAtUp = new Vector3d(1, 0, 0).rotate(rotation);
+        final Vector3d lookingAtUpWithoutY = new Vector3d(lookingAtUp.x, 0, lookingAtUp.z);
+
+        final Vector3d rollAdjustment = new Vector3d(0, 0, Math.atan2(lookingAtUpWithoutY.y, lookingAtUpWithoutY.x));
         hudComponents.put("horizon_altitude", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
@@ -129,8 +132,8 @@ public class VehicleDescription {
                 .secondRotation(rollAdjustment)
                 .facing(BlockFace.WEST));
 
-        final double adjustment = 2 * lookingAt.angle(lookingAtWithoutY);
-        final Vector3d horizonOffset = new Vector3d(0, lookingAt.y < 0 ? adjustment : -adjustment, 0);
+        final double adjustment = 2 * lookingAtForward.angle(lookingAtForwardWithoutY);
+        final Vector3d horizonOffset = new Vector3d(0, lookingAtForward.y < 0 ? adjustment : -adjustment, 0);
         hudComponents.put("horizon_center", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
