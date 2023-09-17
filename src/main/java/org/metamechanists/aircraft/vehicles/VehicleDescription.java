@@ -135,7 +135,7 @@ public class VehicleDescription {
                 .size(new Vector3d(0.3, 0.3, 0.6))
                 .location(new Vector3d(horizonOffset).add(new Vector3d(0, 1, -2))));
         final int bars = 61;
-        final double verticalSpacing = PI / (bars / 2);
+        final double verticalSpacing = (PI / 1.2) / (bars / 2);
         for (int i = 0; i < bars; i++) {
             if (i == 7) {
                 continue;
