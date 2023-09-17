@@ -110,7 +110,7 @@ public class VehicleDescription {
                 .size(new Vector3d(1.0, 1.0, 1.0))
                 .location(new Vector3d(0, 1, -2))
                 .facing(BlockFace.WEST));
-        hudComponents.put("horizon_1", new ModelCuboid()
+        hudComponents.put("horizon_center", new ModelCuboid()
                 .material(Material.CYAN_CONCRETE)
                 .size(new Vector3d(1.0, 0.15, 0.15))
                 .location(new Vector3d(0, 1, -2)));
@@ -120,22 +120,17 @@ public class VehicleDescription {
             hudComponents.put("horizon" + i, new ModelCuboid()
                     .material(Material.LIME_CONCRETE)
                     .size(new Vector3d(1.0, 0.1, 0.1))
-                    .location(new Vector3d(0, 1 - (bars * verticalSpacing / 2.0) + (bars * verticalSpacing * i), -2)));
+                    .location(new Vector3d(0, 1 - (bars * verticalSpacing / 2.0) + (verticalSpacing * i), -2)));
         }
         return hudComponents;
     }
     public void updateHud(final Quaterniond rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
         final Map<String, ModelComponent> hudComponents = getHud();
+        hudComponents.forEach((name, component) -> hudGroup.getDisplays().get(name).setTransformationMatrix(hudComponents.get(name).getMatrix(rotation)));
 
         final TextDisplay altitudeText = (TextDisplay) hudGroup.getDisplays().get("horizon_altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
         altitudeText.setAlignment(TextAlignment.CENTER);
-        altitudeText.setTransformationMatrix(hudComponents.get("horizon_altitude").getMatrix(rotation));
-
-        final int bars = 15;
-        for (int i = 0; i < bars; i++) {
-            hudGroup.getDisplays().get("horizon" + i).setTransformationMatrix(hudComponents.get("horizon" + i).getMatrix(rotation));
-        }
     }
 
     public void adjustHingeComponents(final Map<String, ControlSurfaceOrientation> orientations, final char key) {
