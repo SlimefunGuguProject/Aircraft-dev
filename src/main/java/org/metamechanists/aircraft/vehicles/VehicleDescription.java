@@ -114,7 +114,7 @@ public class VehicleDescription {
                 .facing(BlockFace.WEST));
 
         final Vector3d lookingAt = new Vector3d(1, 0, 0).rotate(rotation);
-        final Vector3d lookingAtWithoutY = new Vector3d(lookingAt.x, 0, lookingAt.y);
+        final Vector3d lookingAtWithoutY = new Vector3d(lookingAt.x, 0, lookingAt.z);
         final Vector3d horizonOffset = new Vector3d(0, lookingAt.angle(lookingAtWithoutY) * 2, 0);
         hudComponents.put("horizon_center", new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
