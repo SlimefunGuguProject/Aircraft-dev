@@ -147,11 +147,11 @@ public class VehicleDescription {
                 .translate(new Vector3f(horizonOffset).add(new Vector3f(1, 1, 0)))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.3F, 0.3F, 0.001F))
-                .translate(0.15F, 0.15F, 0));
+                .translate(0.3F, 0.3F, 0));
         final int bars = 61;
         final float verticalSpacing = (float) ((PI / 1.14) / (bars / 2));
         for (int i = 0; i < bars; i++) {
-            if (i == 7) {
+            if (i == bars / 2) {
                 continue;
             }
             hudComponents.put("horizon" + i, new ModelAdvancedText()
@@ -162,7 +162,7 @@ public class VehicleDescription {
                     .translate(new Vector3f(horizonOffset).add(new Vector3f(1, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0)))
                     .facing(BlockFace.WEST)
                     .scale(new Vector3f(0.2F, 0.2F, 0.001F))
-                    .translate(0.1F, 0.1F, 0));
+                    .translate(0.2F, 0.2F, 0));
         }
         return hudComponents;
     }
