@@ -153,10 +153,12 @@ public class Vehicle extends SlimefunItem {
             return;
         }
 
+        final Vector3d angularVelocityVector = angularVelocity.getEulerAnglesXYZ(new Vector3d());
+
         final DisplayGroup componentGroup = componentGroupId.get().get();
         final DisplayGroup hudGroup = hudGroupId.get().get();
         hudGroup.getParentDisplay().setInteractionWidth(0.0F);
-        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity.getEulerAnglesXYZ(new Vector3d()), orientations);
+        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocityVector, orientations);
 
         if (velocity.length() > MAX_VELOCITY) {
             velocity.set(0, 0, 0);
@@ -164,9 +166,9 @@ public class Vehicle extends SlimefunItem {
         description.applyVelocityDampening(velocity);
         velocity.add(getAcceleration(forces));
 
-        angularVelocity = Utils.getRotation(angularVelocity.getEulerAnglesXYZ(new Vector3d())).mul(Utils.getRotation(getAngularAcceleration(forces, rotation)));
+        angularVelocity = Utils.getRotation(angularVelocityVector).mul(Utils.getRotation(getAngularAcceleration(forces, rotation)));
         angularVelocity = Utils.getRotation(description.applyAngularVelocityDampening(angularVelocity.getEulerAnglesXYZ(new Vector3d())));
-        rotation.mul(Utils.getRotation(angularVelocity.getEulerAnglesXYZ(new Vector3d())));
+        rotation.mul(Utils.getRotation(angularVelocityVector));
 
         description.moveHingeComponentsToCenter(orientations);
 
