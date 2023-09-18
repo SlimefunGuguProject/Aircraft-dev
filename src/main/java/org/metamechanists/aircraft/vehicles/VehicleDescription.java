@@ -113,8 +113,9 @@ public class VehicleDescription {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
 
         final Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
-        double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
-        pitch = lookingAtForward.y < 0 ? pitch : -pitch;
+        //double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
+        //pitch = lookingAtForward.y < 0 ? pitch : -pitch;
+        final double pitch = Math.atan2(lookingAtForward.y, lookingAtForward.z);
 
         final Vector3d lookingAtSide = Utils.rotateByEulerAngles(new Vector3d(0, 0, 1), rotation);
         double yaw = lookingAtSide.angle(new Vector3d(lookingAtSide.x, 0, lookingAtSide.z));
