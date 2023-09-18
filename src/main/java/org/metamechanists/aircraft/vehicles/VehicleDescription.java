@@ -113,7 +113,10 @@ public class VehicleDescription {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
 
         final Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
-        final Vector3d lookingAtForwardWithoutY = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z);
+        final double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
+
+        final Vector3d lookingAtSide = Utils.rotateByEulerAngles(new Vector3d(0, 0, 1), rotation);
+        final double yaw = lookingAtSide.angle(new Vector3d(lookingAtSide.x, 0, lookingAtSide.z));
 
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
@@ -121,7 +124,7 @@ public class VehicleDescription {
                 .rotate(rotation)
                 .translate(new Vector3f(2, 1, 0))
                 .rotateBackwards(rotation)
-                .rotate(Utils.getRotationEulerAngles(rotation).mul(new Quaterniond().rotateX(rotation.x).invert()).getEulerAnglesXYZ(new Vector3d()))
+                .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
@@ -134,7 +137,7 @@ public class VehicleDescription {
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
 
-        final float adjustment = (float) (2 * lookingAtForward.angle(lookingAtForwardWithoutY));
+        final float adjustment = (float) (2 * pitch);
         final Vector3f horizonOffset = new Vector3f(0, lookingAtForward.y < 0 ? adjustment : -adjustment, 0);
         hudComponents.put("horizon_center", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
