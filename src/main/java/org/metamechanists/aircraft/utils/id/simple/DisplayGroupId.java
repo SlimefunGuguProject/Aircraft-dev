@@ -1,7 +1,7 @@
 package org.metamechanists.aircraft.utils.id.simple;
 
 import org.metamechanists.aircraft.utils.id.CustomId;
-import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
+import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 
 import java.util.Optional;
 import java.util.UUID;

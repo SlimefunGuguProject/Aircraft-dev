@@ -37,6 +37,10 @@
                             <pattern>org.metamechanists.metalib</pattern>
                             <shadedPattern>org.metamechanists.aircraft.metalib</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>org.metamechanists.displaymodellib</pattern>
+                            <shadedPattern>org.metamechanists.aircraft.displaymodellib</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
@@ -92,6 +96,13 @@
             <groupId>org.metamechanists</groupId>
             <artifactId>MetaLib</artifactId>
             <version>46</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.metamechanists</groupId>
+            <artifactId>DisplayModelLib</artifactId>
+            <version>9</version>
             <scope>compile</scope>
         </dependency>
 

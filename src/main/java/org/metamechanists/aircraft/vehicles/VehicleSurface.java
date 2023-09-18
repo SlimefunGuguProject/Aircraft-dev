@@ -1,7 +1,6 @@
 package org.metamechanists.aircraft.vehicles;
 
 import org.jetbrains.annotations.NotNull;
-import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.Utils;
 

@@ -7,9 +7,9 @@ import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector4d;
-import org.metamechanists.aircraft.utils.models.ModelCuboid;
-import org.metamechanists.aircraft.utils.transformations.TransformationMatrixBuilder;
 import org.metamechanists.aircraft.vehicles.VehicleSurface;
+import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
+import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -41,7 +41,8 @@ public class FixedComponent {
         this.rotation = rotation;
     }
 
-    private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation, final double surfaceWidth, final double surfaceHeight, final @NotNull Vector3d rotation, final @NotNull Vector3d translation) {
+    private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation,
+                                               final double surfaceWidth, final double surfaceHeight, final @NotNull Vector3d rotation, final @NotNull Vector3d translation) {
         final double area = surfaceWidth * surfaceHeight;
         final Matrix4f rotationMatrix = new TransformationMatrixBuilder().rotate(this.rotation).rotate(rotation).buildForItemDisplay();
         final Vector4d relativeLocation4 = new Vector4d(startingLocation, 1.0).mul(rotationMatrix);
@@ -69,11 +70,17 @@ public class FixedComponent {
         return getSurfaces(new Vector3d(), new Vector3d());
     }
 
-    public ModelCuboid getCuboid(final Vector3d rotation, final Vector3d translation) {
-        return new ModelCuboid().material(material).size(size).location(location).rotation(this.rotation).secondRotation(rotation).secondLocation(translation);
+    public ModelAdvancedCuboid getCuboid(final Vector3d rotation, final @NotNull Vector3d translation) {
+        return new ModelAdvancedCuboid()
+                .material(material)
+                .translate(location)
+                .rotate(this.rotation)
+                .rotate(rotation)
+                .translate(new Vector3f((float) translation.x, (float) translation.y, (float) translation.z))
+                .scale(size);
     }
 
-    public ModelCuboid getCuboid() {
+    public ModelAdvancedCuboid getCuboid() {
         return getCuboid(new Vector3d(), new Vector3d());
     }
 }

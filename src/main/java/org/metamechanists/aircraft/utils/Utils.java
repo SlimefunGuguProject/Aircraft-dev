@@ -3,8 +3,11 @@ package org.metamechanists.aircraft.utils;
 import lombok.experimental.UtilityClass;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
+import org.joml.Vector3f;
+import org.metamechanists.displaymodellib.models.components.ModelComponent;
 
 
 @UtilityClass
@@ -62,6 +65,10 @@ public class Utils {
             return new Quaterniond();
         }
         return new Quaterniond().identity().rotateXYZ(rotation.x, rotation.y, rotation.z);
+    }
+
+    public Matrix4f getRotatedMatrix(final @NotNull ModelComponent component, final @NotNull Vector3d rotation) {
+        return component.getMatrix().mul(new Matrix4f().rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z)));
     }
 
     public Vector3d rotateByEulerAngles(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {

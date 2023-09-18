@@ -20,8 +20,8 @@ import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
-import org.metamechanists.aircraft.utils.models.ModelBuilder;
-import org.metamechanists.metalib.sefilib.entity.display.DisplayGroup;
+import org.metamechanists.displaymodellib.models.ModelBuilder;
+import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -173,7 +173,7 @@ public class Vehicle extends SlimefunItem {
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
         horse.setVelocity(Vector.fromJOML(velocity));
-        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
+        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(Utils.getRotatedMatrix(cuboid, rotation)));
         description.updateHud(rotation, horse.getLocation().getBlockY(), hudGroup);
 
         getPilot(horse).ifPresent(pilot -> {});

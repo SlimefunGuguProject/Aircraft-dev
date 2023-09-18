@@ -3,10 +3,9 @@ package org.metamechanists.aircraft.vehicles.components;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
-import org.metamechanists.aircraft.utils.Utils;
-import org.metamechanists.aircraft.utils.models.ModelCuboid;
 import org.metamechanists.aircraft.vehicles.ControlSurfaceOrientation;
 import org.metamechanists.aircraft.vehicles.VehicleSurface;
+import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 
 import java.util.Map;
 import java.util.Set;
@@ -62,7 +61,7 @@ public class HingeComponent {
         return fixedComponent.getSurfaces(getRotation(orientations), getTranslation(orientations));
     }
 
-    public ModelCuboid getCuboid(final Map<String, ControlSurfaceOrientation> orientations) {
+    public ModelAdvancedCuboid getCuboid(final Map<String, ControlSurfaceOrientation> orientations) {
         return fixedComponent.getCuboid(getRotation(orientations), getTranslation(orientations));
     }
 }
