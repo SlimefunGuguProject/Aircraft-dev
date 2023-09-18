@@ -126,6 +126,7 @@ public class VehicleDescription {
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
+                .alignment(TextAlignment.CENTER)
                 .rotate(rotation)
                 .translate(new Vector3f(2, 1, 0))
                 .rotateBackwards(rotation)
@@ -136,9 +137,11 @@ public class VehicleDescription {
                 .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-//                .rotate(rotation)
-//                .rotateBackwards(rotation)
+                .alignment(TextAlignment.CENTER)
+                .rotate(rotation)
                 .translate(new Vector3f(2, 1, 0))
+                .rotateBackwards(rotation)
+                .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
 
@@ -148,6 +151,7 @@ public class VehicleDescription {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
                 .brightness(Utils.BRIGHTNESS_ON)
+                .alignment(TextAlignment.CENTER)
                 .rotate(rotation)
                 .translate(new Vector3f(horizonOffset).add(new Vector3f(2, 1, 0)))
                 .facing(BlockFace.WEST)
@@ -162,6 +166,7 @@ public class VehicleDescription {
                     .background(Color.fromARGB(0, 0, 0, 0))
                     .text(Component.text("--------------").color(TextColor.color(0, 180, 255)))
                     .brightness(Utils.BRIGHTNESS_ON)
+                    .alignment(TextAlignment.CENTER)
                     .rotate(rotation)
                     .translate(new Vector3f(horizonOffset).add(new Vector3f(2, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0)))
                     .facing(BlockFace.WEST)
@@ -177,7 +182,6 @@ public class VehicleDescription {
 
         final TextDisplay altitudeText = (TextDisplay) displays.get("horizon_altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
-        altitudeText.setAlignment(TextAlignment.CENTER);
     }
 
     public void adjustHingeComponents(final Map<String, ControlSurfaceOrientation> orientations, final char key) {
