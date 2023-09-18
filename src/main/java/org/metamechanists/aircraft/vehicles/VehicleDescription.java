@@ -120,13 +120,10 @@ public class VehicleDescription {
         double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
         yaw = lookingAtForward.z > 0 ? -yaw : yaw;
 
-        Bukkit.broadcastMessage("Oh no " + lookingAtForward);
-        Bukkit.broadcastMessage("Yaw " + yaw);
-
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .alignment(TextAlignment.CENTER)
+                .alignment(TextAlignment.LEFT)
                 .rotate(rotation)
                 .translate(new Vector3f(2, 1, 0))
                 .rotateBackwards(rotation)
@@ -137,7 +134,7 @@ public class VehicleDescription {
                 .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .alignment(TextAlignment.CENTER)
+                .alignment(TextAlignment.LEFT)
                 .rotate(rotation)
                 .translate(new Vector3f(2, 1, 0))
                 .rotateBackwards(rotation)
@@ -151,7 +148,7 @@ public class VehicleDescription {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .alignment(TextAlignment.CENTER)
+                .alignment(TextAlignment.LEFT)
                 .rotate(rotation)
                 .translate(new Vector3f(horizonOffset).add(new Vector3f(2, 1, 0)))
                 .facing(BlockFace.WEST)
@@ -166,7 +163,7 @@ public class VehicleDescription {
                     .background(Color.fromARGB(0, 0, 0, 0))
                     .text(Component.text("--------------").color(TextColor.color(0, 180, 255)))
                     .brightness(Utils.BRIGHTNESS_ON)
-                    .alignment(TextAlignment.CENTER)
+                    .alignment(TextAlignment.LEFT)
                     .rotate(rotation)
                     .translate(new Vector3f(horizonOffset).add(new Vector3f(2, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0)))
                     .facing(BlockFace.WEST)
