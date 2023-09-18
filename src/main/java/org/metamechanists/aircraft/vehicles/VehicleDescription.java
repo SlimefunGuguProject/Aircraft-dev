@@ -6,10 +6,10 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.entity.TextDisplay.TextAlignment;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.Utils;
@@ -118,7 +118,7 @@ public class VehicleDescription {
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .translate(new Vector3f(0, 1, -2))
+                .translate(new Vector3f(2, 1, 0))
                 .rotate(rollAdjustment)
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
@@ -126,7 +126,7 @@ public class VehicleDescription {
                 .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .translate(new Vector3f(0, 1, -2))
+                .translate(new Vector3f(2, 1, 0))
                 .rotate(rollAdjustment)
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
@@ -137,7 +137,7 @@ public class VehicleDescription {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .translate(new Vector3f(horizonOffset).add(new Vector3f(0, 1, -2)))
+                .translate(new Vector3f(horizonOffset).add(new Vector3f(2, 1, 0)))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.3F, 0.3F, 0.6F)));
         final int bars = 61;
@@ -159,9 +159,10 @@ public class VehicleDescription {
 
     public void updateHud(final Vector3d rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
         final Map<String, ModelComponent> hudComponents = getHud(rotation);
-        hudComponents.forEach((name, component) -> hudGroup.getDisplays().get(name).setTransformationMatrix(Utils.getRotatedMatrix(hudComponents.get(name), rotation)));
+        final Map<String, Display> displays = hudGroup.getDisplays();
+        hudComponents.forEach((name, component) -> displays.get(name).setTransformationMatrix(Utils.getRotatedMatrix(hudComponents.get(name), rotation)));
 
-        final TextDisplay altitudeText = (TextDisplay) hudGroup.getDisplays().get("horizon_altitude");
+        final TextDisplay altitudeText = (TextDisplay) displays.get("horizon_altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
         altitudeText.setAlignment(TextAlignment.CENTER);
     }
