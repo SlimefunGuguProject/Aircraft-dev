@@ -115,18 +115,18 @@ public class VehicleDescription {
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .rotate(rotation)
+//                .rotate(rotation)
+//                .rotateBackwards(rotation)
                 .translate(new Vector3f(2, 1, 0))
-                .rotateBackwards(rotation)
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
                 .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .rotate(rotation)
+//                .rotate(rotation)
+//                .rotateBackwards(rotation)
                 .translate(new Vector3f(2, 1, 0))
-                .rotateBackwards(rotation)
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
 
