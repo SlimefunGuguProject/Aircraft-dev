@@ -106,12 +106,12 @@ public class VehicleDescription {
         hingeComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid(orientations)));
         return cuboids;
     }
-    public Map<String, ModelComponent> getHud(final @NotNull Quaterniond rotation) {
+    public Map<String, ModelComponent> getHud(final @NotNull Vector3d rotation) {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
 
-        final Vector3d lookingAtForward = new Vector3d(1, 0, 0).rotate(rotation);
+        final Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
         final Vector3d lookingAtForwardWithoutY = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z);
-        final Vector3d lookingAtUp = new Vector3d(0, 0, 1).rotate(rotation);
+        final Vector3d lookingAtUp = Utils.rotateByEulerAngles(new Vector3d(0, 0, 1), rotation);
 
         final double roll = new Vector3d(0, 1, 0).angle(lookingAtUp);
         final Vector3d rollAdjustment = new Vector3d(0, 0, lookingAtUp.z > 0 ? roll : -roll);
@@ -157,7 +157,7 @@ public class VehicleDescription {
         }
         return hudComponents;
     }
-    public void updateHud(final Quaterniond rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
+    public void updateHud(final Vector3d rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
         final Map<String, ModelComponent> hudComponents = getHud(rotation);
         hudComponents.forEach((name, component) -> hudGroup.getDisplays().get(name).setTransformationMatrix(hudComponents.get(name).getMatrix(rotation)));
 

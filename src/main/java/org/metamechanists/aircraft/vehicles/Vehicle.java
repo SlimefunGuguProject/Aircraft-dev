@@ -65,7 +65,7 @@ public class Vehicle extends SlimefunItem {
 
     private void place(final @NotNull Block block, final @NotNull Player player) {
         final DisplayGroup componentGroup = buildComponents(block.getLocation());
-        final DisplayGroup hudGroup = buildHud(block.getLocation(), new Quaterniond());
+        final DisplayGroup hudGroup = buildHud(block.getLocation(), new Vector3d());
 
         final Horse horse = (Horse) block.getWorld().spawnEntity(block.getLocation(), EntityType.HORSE);
         horse.setInvulnerable(true);
@@ -97,7 +97,7 @@ public class Vehicle extends SlimefunItem {
         description.getCuboids(description.initializeOrientations()).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
-    private @NotNull DisplayGroup buildHud(final Location location, final Quaterniond rotation) {
+    private @NotNull DisplayGroup buildHud(final Location location, final Vector3d rotation) {
         final ModelBuilder builder = new ModelBuilder();
         description.getHud(rotation).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
@@ -177,10 +177,9 @@ public class Vehicle extends SlimefunItem {
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
         horse.setVelocity(Vector.fromJOML(velocity));
-        Quaterniond finalRotation = Utils.getRotationEulerAngles(rotation);
         Vector3d finalRotation1 = rotation;
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(finalRotation1)));
-        description.updateHud(finalRotation, horse.getLocation().getBlockY(), hudGroup);
+        description.updateHud(rotation, horse.getLocation().getBlockY(), hudGroup);
 
         getPilot(horse).ifPresent(pilot -> {});
 
