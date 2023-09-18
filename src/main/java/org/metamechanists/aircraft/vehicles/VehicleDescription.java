@@ -115,11 +115,13 @@ public class VehicleDescription {
         double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
         yaw = lookingAtForward.z > 0 ? -yaw : yaw;
 
+        final Vector3f hudCenter = new Vector3f(1, 1, 0);
+
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
-                .translate(new Vector3f(1, 0, 0))
+                .translate(hudCenter)
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
@@ -130,7 +132,7 @@ public class VehicleDescription {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
-                .translate(new Vector3f(1, 0, 0))
+                .translate(hudCenter)
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
@@ -144,7 +146,8 @@ public class VehicleDescription {
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
-                .translate(new Vector3f(horizonOffset).add(new Vector3f(1, 0, 0)))
+                .translate(new Vector3f(horizonOffset))
+                .translate(hudCenter)
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.3F, 0.3F, 0.001F))
                 .translate(0.5F, 0.5F, 0));
@@ -159,7 +162,9 @@ public class VehicleDescription {
                     .text(Component.text("--------------").color(TextColor.color(0, 180, 255)))
                     .brightness(Utils.BRIGHTNESS_ON)
                     .rotate(rotation)
-                    .translate(new Vector3f(horizonOffset).add(new Vector3f(1, 0 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0)))
+                    .translate(horizonOffset)
+                    .translate(hudCenter)
+                    .translate(new Vector3f(0, -((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0))
                     .facing(BlockFace.WEST)
                     .scale(new Vector3f(0.2F, 0.2F, 0.001F))
                     .translate(0.5F, 0.5F, 0));
