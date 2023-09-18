@@ -113,10 +113,12 @@ public class VehicleDescription {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
 
         final Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
-        final double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
+        double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
+        pitch = lookingAtForward.y < 0 ? pitch : -pitch;
 
         final Vector3d lookingAtSide = Utils.rotateByEulerAngles(new Vector3d(0, 0, 1), rotation);
-        final double yaw = lookingAtSide.angle(new Vector3d(lookingAtSide.x, 0, lookingAtSide.z));
+        double yaw = lookingAtSide.angle(new Vector3d(lookingAtSide.x, 0, lookingAtSide.z));
+        yaw = lookingAtForward.y < 0 ? yaw : -yaw;
 
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
@@ -138,7 +140,7 @@ public class VehicleDescription {
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
 
         final float adjustment = (float) (2 * pitch);
-        final Vector3f horizonOffset = new Vector3f(0, lookingAtForward.y < 0 ? adjustment : -adjustment, 0);
+        final Vector3f horizonOffset = new Vector3f(0, adjustment, 0);
         hudComponents.put("horizon_center", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
