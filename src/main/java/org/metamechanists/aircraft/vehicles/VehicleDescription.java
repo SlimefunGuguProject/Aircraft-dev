@@ -119,8 +119,7 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(2, 1, 0))
-                .rotateBackwards(rotation)
-                .rotate(0, rotation.y, rotation.z)
+                .rotateBackwards(new Vector3d(rotation.x, 0, 0))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
