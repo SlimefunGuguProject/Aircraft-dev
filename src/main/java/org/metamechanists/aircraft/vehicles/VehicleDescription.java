@@ -121,7 +121,7 @@ public class VehicleDescription {
         yaw = lookingAtForward.z > 0 ? yaw : -yaw;
         yaw = lookingAtForward.x > 0 ? -yaw : PI + yaw;
 
-        Bukkit.broadcastMessage("Pitch " + pitch);
+        Bukkit.broadcastMessage("Oh no " + lookingAtForward);
         Bukkit.broadcastMessage("Yaw " + yaw);
 
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
