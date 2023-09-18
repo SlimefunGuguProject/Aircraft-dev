@@ -142,7 +142,7 @@ public class Vehicle extends SlimefunItem {
     public void tickAircraft(final @NotNull Horse horse) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         final Vector3d velocity = traverser.getVector3d("velocity");
-        final Quaterniond rotation = traverser.getQuaterniond("rotation");
+        final Quaterniond rotation = Utils.getRotation2(traverser.getQuaterniond("rotation").getEulerAnglesXYZ(new Vector3d()));
         final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
