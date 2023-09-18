@@ -120,22 +120,22 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(1, 1, 0))
+                .translate(0.5F, 0, 0)
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
-                .scale(new Vector3f(0.7F, 0.7F, 0.001F))
-                .translate(0.5F, 0, 0));
+                .scale(new Vector3f(0.7F, 0.7F, 0.001F)));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
                 .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(1, 1, 0))
+                .translate(0.5F, 0, 0)
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
-                .scale(new Vector3f(0.7F, 0.7F, 0.001F))
-                .translate(0.5F, 0, 0));
+                .scale(new Vector3f(0.7F, 0.7F, 0.001F)));
 
         final float adjustment = (float) (2 * -pitch);
         final Vector3f horizonOffset = new Vector3f(0, adjustment, 0);
@@ -145,9 +145,9 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(horizonOffset).add(new Vector3f(1, 1, 0)))
+                .translate(0.5F, 0, 0)
                 .facing(BlockFace.WEST)
-                .scale(new Vector3f(0.3F, 0.3F, 0.001F))
-                .translate(0.5F, 0, 0));
+                .scale(new Vector3f(0.3F, 0.3F, 0.001F)));
         final int bars = 61;
         final float verticalSpacing = (float) ((PI / 1.14) / (bars / 2));
         for (int i = 0; i < bars; i++) {
@@ -160,9 +160,9 @@ public class VehicleDescription {
                     .brightness(Utils.BRIGHTNESS_ON)
                     .rotate(rotation)
                     .translate(new Vector3f(horizonOffset).add(new Vector3f(1, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0)))
+                    .translate(0.5F, 0, 0)
                     .facing(BlockFace.WEST)
-                    .scale(new Vector3f(0.2F, 0.2F, 0.001F))
-                    .translate(0.5F, 0, 0));
+                    .scale(new Vector3f(0.2F, 0.2F, 0.001F)));
         }
         return hudComponents;
     }
