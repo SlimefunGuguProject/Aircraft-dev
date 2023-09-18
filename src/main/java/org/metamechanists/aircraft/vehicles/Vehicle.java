@@ -178,7 +178,7 @@ public class Vehicle extends SlimefunItem {
 
         horse.setVelocity(Vector.fromJOML(velocity));
         Quaterniond finalRotation = rotation;
-        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(finalRotation)));
+        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(finalRotation.getEulerAnglesXYZ(new Vector3d()))));
         description.updateHud(rotation, horse.getLocation().getBlockY(), hudGroup);
 
         getPilot(horse).ifPresent(pilot -> {});
