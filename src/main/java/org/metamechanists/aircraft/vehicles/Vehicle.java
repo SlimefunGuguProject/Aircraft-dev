@@ -143,7 +143,7 @@ public class Vehicle extends SlimefunItem {
     public void tickAircraft(final @NotNull Horse horse) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         final Vector3d velocity = traverser.getVector3d("velocity");
-        final Quaterniond rotation = traverser.getQuaterniond("rotation");
+        Quaterniond rotation = traverser.getQuaterniond("rotation");
         final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
@@ -167,7 +167,7 @@ public class Vehicle extends SlimefunItem {
 
         angularVelocity.add(getAngularAcceleration(forces, rotation.getEulerAnglesXYZ(new Vector3d())));
         description.applyAngularVelocityDampening(angularVelocity);
-        rotation.mul(Utils.getRotationAngleAxis(angularVelocity));
+        rotation = Utils.getRotationEulerAngles(rotation.getEulerAnglesXYZ(new Vector3d()).add(Utils.getRotationAngleAxis(angularVelocity).getEulerAnglesXYZ(new Vector3d())));
 
         description.moveHingeComponentsToCenter(orientations);
 
@@ -177,7 +177,8 @@ public class Vehicle extends SlimefunItem {
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
         horse.setVelocity(Vector.fromJOML(velocity));
-        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
+        Quaterniond finalRotation = rotation;
+        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(finalRotation)));
         description.updateHud(rotation, horse.getLocation().getBlockY(), hudGroup);
 
         getPilot(horse).ifPresent(pilot -> {});
