@@ -36,8 +36,6 @@ public class Vehicle extends SlimefunItem {
     private final String name;
     private final VehicleDescription description;
 
-    private static final double MAX_VELOCITY = 50.0;
-
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_TEST_AIRCRAFT",
             Material.FEATHER,
@@ -143,7 +141,7 @@ public class Vehicle extends SlimefunItem {
     public void tickAircraft(final @NotNull Horse horse) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         final Vector3d velocity = traverser.getVector3d("velocity");
-        Vector3d rotation = traverser.getVector3d("rotation");
+        final Vector3d rotation = traverser.getVector3d("rotation");
         final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
@@ -156,18 +154,16 @@ public class Vehicle extends SlimefunItem {
 
         final DisplayGroup componentGroup = componentGroupId.get().get();
         final DisplayGroup hudGroup = hudGroupId.get().get();
-        hudGroup.getParentDisplay().setInteractionWidth(0.0F);
         final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
 
-        if (velocity.length() > MAX_VELOCITY) {
-            velocity.set(0, 0, 0);
-        }
         description.applyVelocityDampening(velocity);
         velocity.add(getAcceleration(forces));
 
         angularVelocity.add(getAngularAcceleration(forces, rotation));
         description.applyAngularVelocityDampening(angularVelocity);
-        rotation.add(angularVelocity);
+        rotation.set(Utils.getRotationEulerAngles(rotation)
+                .mul(Utils.getRotationAngleAxis(angularVelocity))
+                .getEulerAnglesXYZ(new Vector3d()));
 
         description.moveHingeComponentsToCenter(orientations);
 
@@ -177,8 +173,7 @@ public class Vehicle extends SlimefunItem {
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
         horse.setVelocity(Vector.fromJOML(velocity));
-        final Vector3d finalRotation = rotation;
-        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(finalRotation)));
+        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(rotation)));
         description.updateHud(rotation, horse.getLocation().getBlockY(), hudGroup);
 
         getPilot(horse).ifPresent(pilot -> {});
