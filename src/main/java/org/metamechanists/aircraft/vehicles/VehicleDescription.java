@@ -116,14 +116,16 @@ public class VehicleDescription {
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
+                .rotate(rotation)
                 .translate(new Vector3f(2, 1, 0))
-                .facing(BlockFace.WEST)
                 .rotate(rollAdjustment)
+                .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
                 .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
+                .rotate(rotation)
                 .translate(new Vector3f(2, 1, 0))
                 .rotate(rollAdjustment)
                 .facing(BlockFace.WEST)
@@ -135,6 +137,7 @@ public class VehicleDescription {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
                 .brightness(Utils.BRIGHTNESS_ON)
+                .rotate(rotation)
                 .translate(new Vector3f(horizonOffset).add(new Vector3f(2, 1, 0)))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.3F, 0.3F, 0.6F)));
@@ -148,6 +151,7 @@ public class VehicleDescription {
                     .background(Color.fromARGB(0, 0, 0, 0))
                     .text(Component.text("--------------").color(TextColor.color(0, 180, 255)))
                     .brightness(Utils.BRIGHTNESS_ON)
+                    .rotate(rotation)
                     .translate(new Vector3f(horizonOffset).add(new Vector3f(2, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0)))
                     .facing(BlockFace.WEST)
                     .scale(new Vector3f(0.2F, 0.2F, 0.4F)));
@@ -158,7 +162,7 @@ public class VehicleDescription {
     public void updateHud(final Vector3d rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
         final Map<String, ModelComponent> hudComponents = getHud(rotation);
         final Map<String, Display> displays = hudGroup.getDisplays();
-        hudComponents.forEach((name, component) -> displays.get(name).setTransformationMatrix(Utils.getRotatedMatrix(hudComponents.get(name), rotation)));
+        hudComponents.forEach((name, component) -> displays.get(name).setTransformationMatrix(hudComponents.get(name).getMatrix()));
 
         final TextDisplay altitudeText = (TextDisplay) displays.get("horizon_altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
