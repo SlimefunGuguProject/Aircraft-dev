@@ -128,13 +128,12 @@ public class Vehicle extends SlimefunItem {
         return new Vector3d(resultantForce).div(description.getMass()).div(400);
     }
 
-    private Vector3d getAngularAcceleration(final @NotNull Set<SpatialForce> forces, final @NotNull Quaterniond rotation) {
+    private Vector3d getAngularAcceleration(final @NotNull Set<SpatialForce> forces, final @NotNull Vector3d rotation) {
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
 
-        final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotation.angle(), rotation.x, rotation.y, rotation.z);
-        resultantTorque.rotate(negativeRotation);
+        Utils.rotateByEulerAngles(resultantTorque, new Vector3d(rotation).mul(-1));
 
         return new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(400);
     }
@@ -164,7 +163,7 @@ public class Vehicle extends SlimefunItem {
         description.applyVelocityDampening(velocity);
         velocity.add(getAcceleration(forces));
 
-        angularVelocity.add(getAngularAcceleration(forces, rotation));
+        angularVelocity.add(getAngularAcceleration(forces, rotation.getEulerAnglesXYZ(new Vector3d())));
         description.applyAngularVelocityDampening(angularVelocity);
         rotation.mul(Utils.getRotationAngleAxis(angularVelocity));
 
