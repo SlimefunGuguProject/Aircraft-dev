@@ -84,7 +84,7 @@ public class Vehicle extends SlimefunItem {
         traverser.set("name", name);
         traverser.set("velocity", new Vector3d());
         traverser.set("angularVelocity", new Vector3d());
-        traverser.set("rotation", new Vector3d(0, 0, 1).rotateY(toRadians(-90.0-player.getEyeLocation().getYaw())));
+        traverser.set("rotation", new Vector3d(0, toRadians(-90.0-player.getEyeLocation().getYaw()), 0));
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
         traverser.set("hudGroupId", new DisplayGroupId(hudGroup.getParentUUID()));
