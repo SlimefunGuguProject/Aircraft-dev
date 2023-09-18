@@ -63,6 +63,6 @@ public class Utils {
         if (rotation.length() < 0.0001) {
             return new Quaterniond();
         }
-        return new Quaterniond().fromAxisAngleRad(rotation.x, rotation.y, rotation.z, (float) rotation.length());
+        return new Quaterniond().identity().rotateXYZ(rotation.x, rotation.y, rotation.z);
     }
 }
