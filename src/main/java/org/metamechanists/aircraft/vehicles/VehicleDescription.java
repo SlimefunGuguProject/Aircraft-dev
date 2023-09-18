@@ -120,7 +120,7 @@ public class VehicleDescription {
                 .rotateZ(2)
                 .rotateZ(-2)
                 .rotateY(-20)
-                .rotateX(-2);
+                .rotateX(-5);
 
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
