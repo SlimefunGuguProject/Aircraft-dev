@@ -118,7 +118,7 @@ public class VehicleDescription {
         pitch = lookingAtForward.y > 0 ? pitch : -pitch;
 
         double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
-        yaw = lookingAtForward.z > 0 ? yaw : -yaw;
+        yaw = lookingAtForward.z > 0 ? -yaw : yaw;
 
         Bukkit.broadcastMessage("Oh no " + lookingAtForward);
         Bukkit.broadcastMessage("Yaw " + yaw);
