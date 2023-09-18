@@ -120,7 +120,7 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(1, 1, 0))
-                .translate(0.35F, 0.35F, 0)
+                .translate(-0.35F, -0.35F, 0)
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
@@ -131,7 +131,7 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(1, 1, 0))
-                .translate(0.35F, 0.35F, 0)
+                .translate(-0.35F, -0.35F, 0)
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
@@ -145,7 +145,7 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(horizonOffset).add(new Vector3f(1, 1, 0)))
-                .translate(0.15F, 0.15F, 0)
+                .translate(-0.15F, -0.15F, 0)
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.3F, 0.3F, 0.001F)));
         final int bars = 61;
@@ -160,7 +160,7 @@ public class VehicleDescription {
                     .brightness(Utils.BRIGHTNESS_ON)
                     .rotate(rotation)
                     .translate(new Vector3f(horizonOffset).add(new Vector3f(1, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0)))
-                    .translate(0.1F, 0.1F, 0)
+                    .translate(-0.1F, -0.1F, 0)
                     .facing(BlockFace.WEST)
                     .scale(new Vector3f(0.2F, 0.2F, 0.001F)));
         }
