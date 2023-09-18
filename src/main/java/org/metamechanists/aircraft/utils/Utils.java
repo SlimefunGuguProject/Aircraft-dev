@@ -4,9 +4,7 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
-import org.joml.Quaternionf;
 import org.joml.Vector3d;
-import org.joml.Vector3f;
 
 
 @UtilityClass
@@ -52,17 +50,21 @@ public class Utils {
         return Math.abs(a - b) < FLOATING_POINT_THRESHOLD;
     }
 
-    public Quaterniond getRotation(final @NotNull Vector3d rotation) {
+    public Quaterniond getRotationAngleAxis(final @NotNull Vector3d rotation) {
         if (rotation.length() < 0.0001) {
             return new Quaterniond();
         }
         return new Quaterniond().fromAxisAngleRad(rotation.x, rotation.y, rotation.z, (float) rotation.length());
     }
 
-    public Quaterniond getRotation2(final @NotNull Vector3d rotation) {
+    public Quaterniond getRotationEulerAngles(final @NotNull Vector3d rotation) {
         if (rotation.length() < 0.0001) {
             return new Quaterniond();
         }
         return new Quaterniond().identity().rotateXYZ(rotation.x, rotation.y, rotation.z);
+    }
+
+    public Vector3d rotateByEulerAngles(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
+        return new Vector3d(vector).rotate(getRotationEulerAngles(rotation));
     }
 }
