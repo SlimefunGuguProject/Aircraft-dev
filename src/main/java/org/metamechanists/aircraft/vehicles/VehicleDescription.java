@@ -118,7 +118,7 @@ public class VehicleDescription {
 
         double yaw = lookingAtForward.angle(new Vector3d(lookingAtForward.x, lookingAtForward.y, 0));
         yaw = lookingAtForward.z > 0 ? yaw : -yaw;
-        yaw = lookingAtForward.x > 0 ? -yaw : yaw;
+        yaw = lookingAtForward.x > 0 ? -yaw : PI + yaw;
 
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
