@@ -159,7 +159,9 @@ public class VehicleDescription {
                 continue;
             }
             final float barAdjustment = -((bars / 2) * verticalSpacing) + (verticalSpacing * i);
-            final boolean shouldRender = Math.abs(barAdjustment) > maxHorizonRadius;
+            final Vector3f barOffset = new Vector3f(0, barAdjustment, 0);
+            final float totalAdjustment = new Vector3f(barOffset).add(horizonOffset).y;
+            final boolean shouldRender = Math.abs(totalAdjustment) < maxHorizonRadius;
             hudComponents.put("horizon" + i, new ModelAdvancedText()
                     .background(Color.fromARGB(0, 0, 0, 0))
                     .text(Component.text("--------------").color(TextColor.color(0, 180, 255)))
@@ -167,7 +169,7 @@ public class VehicleDescription {
                     .rotate(rotation)
                     .translate(horizonOffset)
                     .translate(hudCenter)
-                    .translate(new Vector3f(0, barAdjustment, 0))
+                    .translate(barOffset)
                     .facing(BlockFace.WEST)
                     .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
                     .translate(0.5F, 0.5F, 0));
