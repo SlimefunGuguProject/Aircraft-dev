@@ -118,8 +118,10 @@ public class VehicleDescription {
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .rotate(Utils.getRotationEulerAngles(rotation).mul(new Quaterniond().rotateX(rotation.x).invert()).getEulerAnglesXYZ(new Vector3d()))
+                .rotate(rotation)
                 .translate(new Vector3f(2, 1, 0))
+                .rotateBackwards(rotation)
+                .rotate(Utils.getRotationEulerAngles(rotation).mul(new Quaterniond().rotateX(rotation.x).invert()).getEulerAnglesXYZ(new Vector3d()))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
