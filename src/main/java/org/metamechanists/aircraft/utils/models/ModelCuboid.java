@@ -138,17 +138,6 @@ public class ModelCuboid implements ModelComponent {
                 .scale(new Vector3f(size))
                 .buildForBlockDisplay();
     }
-    @Override
-    public Matrix4f getMatrix(final Quaterniond modelRotation) {
-        return new TransformationMatrixBuilder()
-                .rotate(modelRotation)
-                .translate(location)
-                .rotate(rotation)
-                .rotate(secondRotation)
-                .translate(secondLocation)
-                .scale(new Vector3f(size))
-                .buildForBlockDisplay();
-    }
 
     @Override
     public BlockDisplay build(@NotNull final Location origin, @NotNull final Vector3d modelRotation) {

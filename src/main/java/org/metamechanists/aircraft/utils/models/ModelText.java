@@ -9,7 +9,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
-import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.builders.TextDisplayBuilder;
@@ -150,18 +149,6 @@ public class ModelText implements ModelComponent {
 
     @Override
     public Matrix4f getMatrix(final Vector3d modelRotation) {
-        return new TransformationMatrixBuilder()
-                .rotate(modelRotation)
-                .lookAlong(facing)
-                .translate(location)
-                .rotate(rotation)
-                .rotate(secondRotation)
-                .translate(secondLocation)
-                .scale(new Vector3f(size))
-                .buildForTextDisplay();
-    }
-    @Override
-    public Matrix4f getMatrix(final Quaterniond modelRotation) {
         return new TransformationMatrixBuilder()
                 .rotate(modelRotation)
                 .lookAlong(facing)

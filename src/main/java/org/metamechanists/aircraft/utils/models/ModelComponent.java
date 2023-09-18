@@ -19,5 +19,4 @@ public interface ModelComponent {
     @SuppressWarnings("unused")
     Display build(@NotNull final Block block, @NotNull final Vector3d modelRotation);
     Matrix4f getMatrix(final Vector3d modelRotation);
-    Matrix4f getMatrix(final Quaterniond modelRotation);
 }
