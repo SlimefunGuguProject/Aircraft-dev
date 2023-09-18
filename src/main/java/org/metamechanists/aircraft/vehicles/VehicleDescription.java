@@ -117,7 +117,7 @@ public class VehicleDescription {
         double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
         pitch = lookingAtForward.y > 0 ? pitch : -pitch;
 
-        double yaw = lookingAtForward.angle(new Vector3d(lookingAtForward.x, lookingAtForward.y, 0));
+        double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
         yaw = lookingAtForward.z > 0 ? yaw : -yaw;
         yaw = lookingAtForward.x > 0 ? -yaw : PI + yaw;
 
