@@ -112,22 +112,19 @@ public class VehicleDescription {
         final Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
         final Vector3d lookingAtForwardWithoutY = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z);
 
-        final Vector3d rollAdjustment = new Vector3d(rotation.x, 0, 0);
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .rotate(rotation)
+                .rotate(new Vector3d(0, rotation.y, rotation.z))
                 .translate(new Vector3f(2, 1, 0))
-                .rotate(rollAdjustment)
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
                 .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .rotate(rotation)
+                .rotate(new Vector3d(0, rotation.y, rotation.z))
                 .translate(new Vector3f(2, 1, 0))
-                .rotate(rollAdjustment)
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
 
