@@ -3,7 +3,6 @@ package org.metamechanists.aircraft.vehicles;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
-import org.metamechanists.aircraft.utils.Utils;
 
 
 public class VehicleSurface {
@@ -27,9 +26,9 @@ public class VehicleSurface {
         return new Vector3d(normal).angleCos(airflowVelocity) * area;
     }
 
-    public SpatialForce getLiftForce(final @NotNull Vector3d rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
-        final Vector3d location = Utils.rotate(relativeLocation, rotation);
-        final Vector3d normal = Utils.rotate(relativeNormal, rotation);
+    public SpatialForce getLiftForce(final @NotNull Quaterniond rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
+        final Vector3d location = new Vector3d(relativeLocation).rotate(rotation);
+        final Vector3d normal = new Vector3d(relativeNormal).rotate(rotation);
         final Vector3d angularVelocityVector = new Vector3d(angularVelocity).mul(relativeLocation.length());
         final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
 
@@ -58,9 +57,9 @@ public class VehicleSurface {
         return new SpatialForce(force, location);
     }
 
-    public SpatialForce getDragForce(final @NotNull Vector3d rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
-        final Vector3d location = Utils.rotate(relativeLocation, rotation);
-        final Vector3d normal = Utils.rotate(relativeNormal, rotation);
+    public SpatialForce getDragForce(final @NotNull Quaterniond rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
+        final Vector3d location = new Vector3d(relativeLocation).rotate(rotation);
+        final Vector3d normal = new Vector3d(relativeNormal).rotate(rotation);
         final Vector3d angularVelocityVector = new Vector3d(angularVelocity).mul(relativeLocation.length());
         final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
 
