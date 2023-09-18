@@ -83,8 +83,8 @@ public class Vehicle extends SlimefunItem {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         traverser.set("name", name);
         traverser.set("velocity", new Vector3d());
-        traverser.set("angularVelocity", new Quaterniond());
-        traverser.set("rotation", new Quaterniond().rotateY(toRadians(-90.0-player.getEyeLocation().getYaw())));
+        traverser.set("angularVelocity", new Vector3d());
+        traverser.set("rotation", new Vector3d(0, 0, 1).rotateY(toRadians(-90.0-player.getEyeLocation().getYaw())));
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
         traverser.set("hudGroupId", new DisplayGroupId(hudGroup.getParentUUID()));
@@ -143,7 +143,7 @@ public class Vehicle extends SlimefunItem {
     public void tickAircraft(final @NotNull Horse horse) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         final Vector3d velocity = traverser.getVector3d("velocity");
-        Quaterniond rotation = traverser.getQuaterniond("rotation");
+        Vector3d rotation = traverser.getVector3d("rotation");
         final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
@@ -157,7 +157,7 @@ public class Vehicle extends SlimefunItem {
         final DisplayGroup componentGroup = componentGroupId.get().get();
         final DisplayGroup hudGroup = hudGroupId.get().get();
         hudGroup.getParentDisplay().setInteractionWidth(0.0F);
-        final Set<SpatialForce> forces = getForces(velocity, rotation.getEulerAnglesXYZ(new Vector3d()), angularVelocity, orientations);
+        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
 
         if (velocity.length() > MAX_VELOCITY) {
             velocity.set(0, 0, 0);
@@ -165,9 +165,9 @@ public class Vehicle extends SlimefunItem {
         description.applyVelocityDampening(velocity);
         velocity.add(getAcceleration(forces));
 
-        angularVelocity.add(getAngularAcceleration(forces, rotation.getEulerAnglesXYZ(new Vector3d())));
+        angularVelocity.add(getAngularAcceleration(forces, rotation));
         description.applyAngularVelocityDampening(angularVelocity);
-        rotation = Utils.getRotationEulerAngles(rotation.getEulerAnglesXYZ(new Vector3d())).mul(Utils.getRotationAngleAxis(angularVelocity));
+        rotation = Utils.getRotationEulerAngles(rotation).mul(Utils.getRotationAngleAxis(angularVelocity)).getEulerAnglesXYZ(new Vector3d());
 
         description.moveHingeComponentsToCenter(orientations);
 
@@ -177,9 +177,9 @@ public class Vehicle extends SlimefunItem {
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
         horse.setVelocity(Vector.fromJOML(velocity));
-        Quaterniond finalRotation = Utils.getRotationEulerAngles(rotation.getEulerAnglesXYZ(new Vector3d()));
+        Quaterniond finalRotation = Utils.getRotationEulerAngles(rotation);
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(cuboid.getMatrix(finalRotation)));
-        description.updateHud(rotation, horse.getLocation().getBlockY(), hudGroup);
+        description.updateHud(finalRotation, horse.getLocation().getBlockY(), hudGroup);
 
         getPilot(horse).ifPresent(pilot -> {});
 
