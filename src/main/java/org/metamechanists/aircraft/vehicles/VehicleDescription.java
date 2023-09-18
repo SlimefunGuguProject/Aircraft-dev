@@ -10,6 +10,7 @@ import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.entity.TextDisplay.TextAlignment;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.Utils;
@@ -19,6 +20,7 @@ import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedText;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
+import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashMap;
@@ -111,6 +113,11 @@ public class VehicleDescription {
 
         final Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
         final Vector3d lookingAtForwardWithoutY = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z);
+
+        Matrix4f FUCK_THIS_SHIT = new TransformationMatrixBuilder()
+                .rotate(rotation)
+                .rotateBackwards(rotation)
+                .buildForItemDisplay();
 
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
