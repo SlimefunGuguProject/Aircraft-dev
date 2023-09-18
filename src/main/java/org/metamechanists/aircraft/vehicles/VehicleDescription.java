@@ -111,10 +111,8 @@ public class VehicleDescription {
 
         final Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
         final Vector3d lookingAtForwardWithoutY = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z);
-        final Vector3d lookingAtUp = Utils.rotateByEulerAngles(new Vector3d(0, 0, 1), rotation);
 
-        final double roll = new Vector3d(0, 1, 0).angle(lookingAtUp);
-        final Vector3d rollAdjustment = new Vector3d(0, 0, lookingAtUp.z > 0 ? roll : -roll);
+        final Vector3d rollAdjustment = new Vector3d(0, 0, rotation.x);
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
@@ -150,7 +148,7 @@ public class VehicleDescription {
                     .background(Color.fromARGB(0, 0, 0, 0))
                     .text(Component.text("--------------").color(TextColor.color(0, 180, 255)))
                     .brightness(Utils.BRIGHTNESS_ON)
-                    .translate(new Vector3f(horizonOffset).add(new Vector3f(0, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), -2)))
+                    .translate(new Vector3f(horizonOffset).add(new Vector3f(2, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0)))
                     .facing(BlockFace.WEST)
                     .scale(new Vector3f(0.2F, 0.2F, 0.4F)));
         }
