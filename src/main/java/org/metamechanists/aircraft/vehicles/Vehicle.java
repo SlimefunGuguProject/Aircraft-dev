@@ -167,7 +167,7 @@ public class Vehicle extends SlimefunItem {
 
         angularVelocity.add(getAngularAcceleration(forces, rotation.getEulerAnglesXYZ(new Vector3d())));
         description.applyAngularVelocityDampening(angularVelocity);
-        rotation = Utils.getRotationEulerAngles(rotation.getEulerAnglesXYZ(new Vector3d()).add(Utils.getRotationAngleAxis(angularVelocity).getEulerAnglesXYZ(new Vector3d())));
+        rotation = Utils.getRotationEulerAngles(rotation.getEulerAnglesXYZ(new Vector3d())).mul(Utils.getRotationAngleAxis(angularVelocity));
 
         description.moveHingeComponentsToCenter(orientations);
 
