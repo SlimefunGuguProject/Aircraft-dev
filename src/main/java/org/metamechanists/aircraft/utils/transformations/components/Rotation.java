@@ -9,22 +9,14 @@ import org.joml.Vector3f;
 
 
 public class Rotation implements TransformationMatrixComponent {
-    private final Quaterniond rotation;
-
-    public Rotation(@NotNull final Quaterniond rotation) {
-        this.rotation = rotation;
-    }
+    private final Vector3f rotation;
 
     public Rotation(@NotNull final Vector3d rotation) {
-        if (rotation.length() < 0.0001) {
-            this.rotation = new Quaterniond();
-            return;
-        }
-        this.rotation = new Quaterniond().fromAxisAngleRad(new Vector3d(rotation).normalize(), rotation.length());
+        this.rotation = new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z);
     }
 
     @Override
     public void apply(@NotNull final Matrix4f matrix) {
-        matrix.rotate(new Quaternionf(rotation.x, rotation.y, rotation.z, rotation.w));
+        matrix.rotateXYZ(rotation);
     }
 }
