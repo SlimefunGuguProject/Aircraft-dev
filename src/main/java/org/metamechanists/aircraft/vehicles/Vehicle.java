@@ -143,7 +143,7 @@ public class Vehicle extends SlimefunItem {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         final Vector3d velocity = traverser.getVector3d("velocity");
         final Quaterniond rotation = traverser.getQuaterniond("rotation");
-        final Quaterniond angularVelocity = traverser.getQuaterniond("angularVelocity");
+        Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
@@ -153,12 +153,10 @@ public class Vehicle extends SlimefunItem {
             return;
         }
 
-        Vector3d angularVelocityVector = angularVelocity.getEulerAnglesXYZ(new Vector3d());
-
         final DisplayGroup componentGroup = componentGroupId.get().get();
         final DisplayGroup hudGroup = hudGroupId.get().get();
         hudGroup.getParentDisplay().setInteractionWidth(0.0F);
-        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocityVector, orientations);
+        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
 
         if (velocity.length() > MAX_VELOCITY) {
             velocity.set(0, 0, 0);
@@ -166,14 +164,14 @@ public class Vehicle extends SlimefunItem {
         description.applyVelocityDampening(velocity);
         velocity.add(getAcceleration(forces));
 
-        angularVelocityVector = angularVelocityVector.add(getAngularAcceleration(forces, rotation));
-        angularVelocityVector = description.applyAngularVelocityDampening(angularVelocityVector);
-        rotation.mul(Utils.getRotation(angularVelocityVector));
+        angularVelocity = angularVelocity.add(getAngularAcceleration(forces, rotation));
+        angularVelocity = description.applyAngularVelocityDampening(angularVelocity);
+        rotation.mul(Utils.getRotation(angularVelocity));
 
         description.moveHingeComponentsToCenter(orientations);
 
         traverser.set("velocity", velocity);
-        traverser.set("angularVelocity", Utils.getRotation(angularVelocityVector));
+        traverser.set("angularVelocity", angularVelocity);
         traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
