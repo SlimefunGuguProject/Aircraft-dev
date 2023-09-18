@@ -3,16 +3,12 @@ package org.metamechanists.aircraft.vehicles;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
-import org.bukkit.entity.TextDisplay.TextAlignment;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
-import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.Utils;
@@ -22,7 +18,6 @@ import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedText;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
-import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashMap;
@@ -125,22 +120,22 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(1, 1, 0))
+                .translate(0.35F, 0.35F, 0)
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
-                .scale(new Vector3f(0.7F, 0.7F, 0.001F))
-                .translate(0.35F, 0.35F, 0));
+                .scale(new Vector3f(0.7F, 0.7F, 0.001F)));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
                 .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(1, 1, 0))
+                .translate(0.35F, 0.35F, 0)
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
-                .scale(new Vector3f(0.7F, 0.7F, 0.001F))
-                .translate(0.35F, 0.35F, 0));
+                .scale(new Vector3f(0.7F, 0.7F, 0.001F)));
 
         final float adjustment = (float) (2 * -pitch);
         final Vector3f horizonOffset = new Vector3f(0, adjustment, 0);
@@ -150,9 +145,9 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(horizonOffset).add(new Vector3f(1, 1, 0)))
+                .translate(0.15F, 0.15F, 0)
                 .facing(BlockFace.WEST)
-                .scale(new Vector3f(0.3F, 0.3F, 0.001F))
-                .translate(0.15F, 0.15F, 0));
+                .scale(new Vector3f(0.3F, 0.3F, 0.001F)));
         final int bars = 61;
         final float verticalSpacing = (float) ((PI / 1.14) / (bars / 2));
         for (int i = 0; i < bars; i++) {
@@ -165,9 +160,9 @@ public class VehicleDescription {
                     .brightness(Utils.BRIGHTNESS_ON)
                     .rotate(rotation)
                     .translate(new Vector3f(horizonOffset).add(new Vector3f(1, 1 - ((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0)))
+                    .translate(0.1F, 0.1F, 0)
                     .facing(BlockFace.WEST)
-                    .scale(new Vector3f(0.2F, 0.2F, 0.001F))
-                    .translate(0.1F, 0.1F, 0));
+                    .scale(new Vector3f(0.2F, 0.2F, 0.001F)));
         }
         return hudComponents;
     }
