@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicles;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -119,6 +120,9 @@ public class VehicleDescription {
         double yaw = lookingAtForward.angle(new Vector3d(lookingAtForward.x, lookingAtForward.y, 0));
         yaw = lookingAtForward.z > 0 ? yaw : -yaw;
         yaw = lookingAtForward.x > 0 ? -yaw : PI + yaw;
+
+        Bukkit.broadcastMessage("Pitch " + pitch);
+        Bukkit.broadcastMessage("Yaw " + yaw);
 
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
