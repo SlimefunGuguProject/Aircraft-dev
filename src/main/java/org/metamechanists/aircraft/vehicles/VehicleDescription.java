@@ -114,20 +114,13 @@ public class VehicleDescription {
         final Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
         final Vector3d lookingAtForwardWithoutY = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z);
 
-        Matrix4f FUCK_THIS_SHIT = new Matrix4f()
-                .rotateX(5)
-                .rotateY(20)
-                .rotateZ(2)
-                .rotateZ(-2)
-                .rotateY(-20)
-                .rotateX(-5);
-
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
-                .rotateBackwards(rotation)
                 .translate(new Vector3f(2, 1, 0))
+                .rotateBackwards(rotation)
+                .rotate(0, rotation.y, rotation.z)
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
