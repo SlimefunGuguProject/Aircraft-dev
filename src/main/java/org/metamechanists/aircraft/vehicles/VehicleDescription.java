@@ -139,8 +139,8 @@ public class VehicleDescription {
                 .scale(new Vector3f(0.7F, 0.7F, 0.001F))
                 .translate(0.5F, 0.35F, 0));
 
-        final float adjustment = (float) (2 * -pitch);
-        final Vector3f horizonOffset = new Vector3f(0, adjustment, 0);
+        final float horizonAdjustment = (float) (2 * -pitch);
+        final Vector3f horizonOffset = new Vector3f(0, horizonAdjustment, 0);
         hudComponents.put("horizon_center", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
@@ -152,11 +152,14 @@ public class VehicleDescription {
                 .scale(new Vector3f(0.3F, 0.3F, 0.001F))
                 .translate(0.5F, 0.5F, 0));
         final int bars = 61;
+        final float maxHorizonRadius = 1.0F;
         final float verticalSpacing = (float) ((PI / 1.14) / (bars / 2));
         for (int i = 0; i < bars; i++) {
             if (i == bars / 2) {
                 continue;
             }
+            final float barAdjustment = -((bars / 2) * verticalSpacing) + (verticalSpacing * i);
+            final boolean shouldRender = Math.abs(barAdjustment) > maxHorizonRadius;
             hudComponents.put("horizon" + i, new ModelAdvancedText()
                     .background(Color.fromARGB(0, 0, 0, 0))
                     .text(Component.text("--------------").color(TextColor.color(0, 180, 255)))
@@ -164,9 +167,9 @@ public class VehicleDescription {
                     .rotate(rotation)
                     .translate(horizonOffset)
                     .translate(hudCenter)
-                    .translate(new Vector3f(0, -((bars / 2) * verticalSpacing) + (verticalSpacing * i), 0))
+                    .translate(new Vector3f(0, barAdjustment, 0))
                     .facing(BlockFace.WEST)
-                    .scale(new Vector3f(0.2F, 0.2F, 0.001F))
+                    .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
                     .translate(0.5F, 0.5F, 0));
         }
         return hudComponents;
