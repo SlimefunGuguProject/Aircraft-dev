@@ -83,8 +83,8 @@ public class Vehicle extends SlimefunItem {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         traverser.set("name", name);
         traverser.set("velocity", new Vector3d());
-        traverser.set("angularVelocity", new Vector3d());
-        traverser.set("rotation", new Vector3d(0, 0, 1).rotateY(toRadians(-90.0-player.getEyeLocation().getYaw())));
+        traverser.set("angularVelocity", new Quaterniond());
+        traverser.set("rotation", new Quaterniond().rotateY(toRadians(-90.0-player.getEyeLocation().getYaw())));
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
         traverser.set("hudGroupId", new DisplayGroupId(hudGroup.getParentUUID()));
@@ -142,7 +142,7 @@ public class Vehicle extends SlimefunItem {
     public void tickAircraft(final @NotNull Horse horse) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(horse);
         final Vector3d velocity = traverser.getVector3d("velocity");
-        final Quaterniond rotation = Utils.getRotation(traverser.getVector3d("rotation"));
+        final Quaterniond rotation = traverser.getQuaterniond("rotation");
         final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
@@ -172,7 +172,7 @@ public class Vehicle extends SlimefunItem {
 
         traverser.set("velocity", velocity);
         traverser.set("angularVelocity", angularVelocity);
-        traverser.set("rotation", rotation.getEulerAnglesXYZ(new Vector3d()));
+        traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
         horse.setVelocity(Vector.fromJOML(velocity));
