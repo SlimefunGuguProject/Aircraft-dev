@@ -133,7 +133,9 @@ public class Vehicle extends SlimefunItem {
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
 
-        Utils.rotateByEulerAngles(resultantTorque, new Vector3d(rotation).mul(-1));
+        final Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(rotation);
+        final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
+        resultantTorque.rotate(negativeRotation);
 
         return new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(400);
     }
