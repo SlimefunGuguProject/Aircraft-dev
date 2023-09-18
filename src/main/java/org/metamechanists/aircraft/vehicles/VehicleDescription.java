@@ -115,8 +115,8 @@ public class VehicleDescription {
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .rotateBackwards(rotation)
                 .rotate(rotation)
+                .rotateBackwards(rotation)
                 .translate(new Vector3f(2, 1, 0))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
