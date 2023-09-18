@@ -124,7 +124,7 @@ public class VehicleDescription {
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.001F))
-                .translate(0.5F, 0.5F, 0));
+                .translate(0.5F, 0, 0));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
                 .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
@@ -135,7 +135,7 @@ public class VehicleDescription {
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.001F))
-                .translate(0.5F, 0.5F, 0));
+                .translate(0.5F, 0, 0));
 
         final float adjustment = (float) (2 * -pitch);
         final Vector3f horizonOffset = new Vector3f(0, adjustment, 0);
