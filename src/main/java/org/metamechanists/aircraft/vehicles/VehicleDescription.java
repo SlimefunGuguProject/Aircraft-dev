@@ -11,6 +11,7 @@ import org.bukkit.entity.TextDisplay;
 import org.bukkit.entity.TextDisplay.TextAlignment;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
+import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.Utils;
@@ -117,9 +118,8 @@ public class VehicleDescription {
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .rotate(rotation)
+                .rotate(Utils.getRotationEulerAngles(rotation).rotateX(-rotation.x).getEulerAnglesXYZ(new Vector3d()))
                 .translate(new Vector3f(2, 1, 0))
-                .rotateBackwards(new Vector3d(rotation.x, 0, 0))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.7F, 0.7F, 0.7F)));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
