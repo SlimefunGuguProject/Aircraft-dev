@@ -134,11 +134,11 @@ public class VehicleDescription {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(hudCenter)
-                .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.5F, -0.01F)
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, yaw, pitch))
-                .facing(BlockFace.WEST));
+                .facing(BlockFace.WEST)
+                .scale(new Vector3f(0.4F, 0.4F, 0.001F))
+                .translate(0.5F, 0.5F, -0.01F));
 
         final float horizonAdjustment = (float) (2 * -pitch);
         final Vector3f horizonOffset = new Vector3f(0, horizonAdjustment, 0);
