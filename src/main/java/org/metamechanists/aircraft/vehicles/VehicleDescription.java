@@ -154,7 +154,7 @@ public class VehicleDescription {
                 .scale(shouldRenderCenter ? new Vector3f(0.3F, 0.3F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.5F, 0));
         final int bars = 30;
-        final float verticalSpacing = (float) ((PI / 1.14) / (bars / 2));
+        final float verticalSpacing = (float) ((PI / 1.14) / (bars));
         for (int i = -bars; i < bars; i++) {
             if (i == 0) {
                 continue;
