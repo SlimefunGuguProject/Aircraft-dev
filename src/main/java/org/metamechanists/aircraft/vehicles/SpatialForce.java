@@ -7,14 +7,14 @@ import org.joml.Vector3d;
 public class SpatialForce {
     @Getter
     private final Vector3d force;
-    private final Vector3d relativeLocation;
+    private final Vector3d absoluteLocation;
 
-    public SpatialForce(final Vector3d force, final Vector3d relativeLocation) {
+    public SpatialForce(final Vector3d force, final Vector3d absoluteLocation) {
         this.force = force;
-        this.relativeLocation = relativeLocation;
+        this.absoluteLocation = absoluteLocation;
     }
     
     public Vector3d getTorqueVector() {
-        return new Vector3d(relativeLocation).cross(force);
+        return new Vector3d(absoluteLocation).cross(force);
     }
 }
