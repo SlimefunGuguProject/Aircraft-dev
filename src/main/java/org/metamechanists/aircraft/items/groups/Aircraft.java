@@ -24,7 +24,7 @@ public class Aircraft {
         final JavaPlugin plugin = org.metamechanists.aircraft.Aircraft.getInstance();
         final SlimefunAddon addon = (SlimefunAddon) plugin;
 
-        plugin.saveResource("vehicles/test_aircraft.yml", true);
+        plugin.saveResource("vehicles/test_aircraft.yml", false);
 
         vehicles.put("test_aircraft", new Vehicle(Groups.AIRCRAFT, GLIDER, RecipeType.NULL, new ItemStack[]{}, "test_aircraft", new VehicleDescription("vehicles/test_aircraft.yml")));
 

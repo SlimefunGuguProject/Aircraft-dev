@@ -6,3 +6,13 @@ api-version: 1.19
 
 depend:
   - Slimefun
+
+commands:
+  aircraft:
+    description: /aircraft
+    usage: /aircraft <subcommand>
+
+permissions:
+  aircraft.command.reload:
+    default: op
+    description: Reloads the plugin
