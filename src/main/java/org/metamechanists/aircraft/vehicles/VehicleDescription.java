@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicles;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
@@ -145,7 +146,7 @@ public class VehicleDescription {
         final boolean shouldRenderCenter = Math.abs(horizonAdjustment) < maxHorizonRadius;
         hudComponents.put("horizon_center", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
-                .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
+                .text(Component.text("----------------").color(TextColor.color(0, 255, 255)).decorate(TextDecoration.BOLD))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(horizonOffset))
@@ -164,9 +165,13 @@ public class VehicleDescription {
             final float totalAdjustment = new Vector3f(barOffset).add(horizonOffset).y;
             final boolean shouldRender = Math.abs(totalAdjustment) < maxHorizonRadius;
             final boolean longBar = i % 5 == 0;
+            final Component text = Component.text("--------------" + (longBar ? "----" : "")).color(TextColor.color(0, 180, 255));
+            if (longBar) {
+                text.decorate(TextDecoration.BOLD);
+            }
             hudComponents.put("horizon" + i, new ModelAdvancedText()
                     .background(Color.fromARGB(0, 0, 0, 0))
-                    .text(Component.text("--------------" + (longBar ? "----" : "")).color(TextColor.color(0, 180, 255)))
+                    .text(text)
                     .brightness(Utils.BRIGHTNESS_ON)
                     .rotate(rotation)
                     .translate(horizonOffset)
@@ -175,6 +180,20 @@ public class VehicleDescription {
                     .facing(BlockFace.WEST)
                     .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
                     .translate(0.5F, 0.5F, 0));
+            if (longBar) {
+                hudComponents.put("horizon_degree" + i, new ModelAdvancedText()
+                        .background(Color.fromARGB(0, 0, 0, 0))
+                        .text(Component.text(i * (90 / bars)))
+                        .brightness(Utils.BRIGHTNESS_ON)
+                        .rotate(rotation)
+                        .translate(horizonOffset)
+                        .translate(hudCenter)
+                        .translate(barOffset)
+                        .translate(new Vector3f(0, 0, 0.3F))
+                        .facing(BlockFace.WEST)
+                        .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
+                        .translate(0.5F, 0.5F, 0));
+            }
         }
         return hudComponents;
     }
