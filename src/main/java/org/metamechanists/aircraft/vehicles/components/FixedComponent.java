@@ -48,7 +48,7 @@ public class FixedComponent {
         final Vector4d relativeLocation4 = new Vector4d(startingLocation, 1.0).mul(rotationMatrix);
         final Vector3d relativeLocation = new Vector3d(relativeLocation4.x, relativeLocation4.y, relativeLocation4.z);
         final Vector3d normal = new Vector3d(relativeLocation).normalize();
-        return new VehicleSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(locationRelativeToModelCenter).add(relativeLocation));
+        return new VehicleSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(locationRelativeToCenterOfMass).add(relativeLocation));
     }
 
     public Set<VehicleSurface> getSurfaces(final Vector3d rotation) {
