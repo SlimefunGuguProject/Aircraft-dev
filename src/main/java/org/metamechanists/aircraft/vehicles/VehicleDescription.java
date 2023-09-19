@@ -115,7 +115,7 @@ public class VehicleDescription {
         double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
         yaw = lookingAtForward.z > 0 ? -yaw : yaw;
 
-        final Vector3f hudCenter = new Vector3f(1, 1, 0);
+        final Vector3f hudCenter = new Vector3f(1.5F, 1, 0);
 
         hudComponents.put("horizon_altitude", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
@@ -141,6 +141,8 @@ public class VehicleDescription {
 
         final float horizonAdjustment = (float) (2 * -pitch);
         final Vector3f horizonOffset = new Vector3f(0, horizonAdjustment, 0);
+        final float maxHorizonRadius = 1.0F;
+        final boolean shouldRenderCenter = Math.abs(horizonAdjustment) < maxHorizonRadius;
         hudComponents.put("horizon_center", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("----------------").color(TextColor.color(0, 255, 255)))
@@ -149,22 +151,22 @@ public class VehicleDescription {
                 .translate(new Vector3f(horizonOffset))
                 .translate(hudCenter)
                 .facing(BlockFace.WEST)
-                .scale(new Vector3f(0.3F, 0.3F, 0.001F))
+                .scale(shouldRenderCenter ? new Vector3f(0.3F, 0.3F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.5F, 0));
-        final int bars = 61;
-        final float maxHorizonRadius = 1.0F;
+        final int bars = 30;
         final float verticalSpacing = (float) ((PI / 1.14) / (bars / 2));
-        for (int i = 0; i < bars; i++) {
-            if (i == bars / 2) {
+        for (int i = -bars; i < bars; i++) {
+            if (i == 0) {
                 continue;
             }
-            final float barAdjustment = -((bars / 2) * verticalSpacing) + (verticalSpacing * i);
+            final float barAdjustment = -(bars * verticalSpacing) + (verticalSpacing * i);
             final Vector3f barOffset = new Vector3f(0, barAdjustment, 0);
             final float totalAdjustment = new Vector3f(barOffset).add(horizonOffset).y;
             final boolean shouldRender = Math.abs(totalAdjustment) < maxHorizonRadius;
+            final boolean longBar = i % 5 == 0;
             hudComponents.put("horizon" + i, new ModelAdvancedText()
                     .background(Color.fromARGB(0, 0, 0, 0))
-                    .text(Component.text("--------------").color(TextColor.color(0, 180, 255)))
+                    .text(Component.text("--------------" + (longBar ? "----" : 0)).color(TextColor.color(0, 180, 255)))
                     .brightness(Utils.BRIGHTNESS_ON)
                     .rotate(rotation)
                     .translate(horizonOffset)
