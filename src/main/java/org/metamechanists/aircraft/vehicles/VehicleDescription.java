@@ -129,7 +129,7 @@ public class VehicleDescription {
                 .scale(new Vector3f(0.7F, 0.7F, 0.001F))
                 .translate(0.5F, 0.35F, 0));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
-                .text(Component.text("< = [       ] = >").color(TextColor.color(255, 255, 255)))
+                .text(Component.text("[ = <     > = ]").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
@@ -137,8 +137,8 @@ public class VehicleDescription {
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
-                .scale(new Vector3f(0.7F, 0.7F, 0.001F))
-                .translate(0.5F, 0.35F, 0));
+                .scale(new Vector3f(0.4F, 0.4F, 0.001F))
+                .translate(0.5F, 0.2F, 0));
 
         final float horizonAdjustment = (float) (2 * -pitch);
         final Vector3f horizonOffset = new Vector3f(0, horizonAdjustment, 0);
@@ -154,7 +154,7 @@ public class VehicleDescription {
                 .facing(BlockFace.WEST)
                 .scale(shouldRenderCenter ? new Vector3f(0.3F, 0.3F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.5F, 0));
-        final int bars = 30;
+        final int bars = 31;
         final float verticalSpacing = (float) ((PI / 1.14) / (bars));
         for (int i = -bars; i < bars; i++) {
             if (i == 0) {
