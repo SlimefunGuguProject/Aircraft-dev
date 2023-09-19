@@ -35,7 +35,8 @@ public class VehicleSurface {
         final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
 
         if (relativeLocation.length() - new Vector3d(0.7, 0.0, 0.6).length() < 0.000001) {
-            Bukkit.broadcastMessage("" + new Vector3d(angularVelocity).normalize() + angularVelocity.length() + angularVelocityVector);
+            Bukkit.broadcastMessage("" + new Vector3d(angularVelocity).normalize() + angularVelocity.length());
+            Bukkit.broadcastMessage("" + angularVelocityVector);
         }
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
