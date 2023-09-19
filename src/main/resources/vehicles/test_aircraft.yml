@@ -1,4 +1,4 @@
-centerOfMass: 0.5
+centerOfMass: 0.8
 mass: 0.006
 momentOfInertia: 0.006
 velocityDampening: 0.05
