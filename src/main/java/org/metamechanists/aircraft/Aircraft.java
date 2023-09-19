@@ -1,10 +1,12 @@
 package org.metamechanists.aircraft;
 
+import co.aikar.commands.PaperCommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.metamechanists.aircraft.commands.AircraftCommand;
 import org.metamechanists.aircraft.items.Groups;
 import org.metamechanists.aircraft.vehicles.VehicleTicker;
 import org.metamechanists.aircraft.vehicles.KeyboardHandler;
@@ -20,6 +22,12 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
 
     private void initializeRunnables() {
         new VehicleTicker().runTaskTimer(this, 0, VehicleTicker.INTERVAL_TICKS);
+    }
+
+    private void initializeCommands() {
+        final PaperCommandManager commandManager = new PaperCommandManager(this);
+        commandManager.registerCommand(new AircraftCommand());
+        commandManager.enableUnstableAPI("help");
     }
 
     @Override

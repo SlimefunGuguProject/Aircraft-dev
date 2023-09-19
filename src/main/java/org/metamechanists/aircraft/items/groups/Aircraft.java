@@ -26,10 +26,13 @@ public class Aircraft {
 
         plugin.saveResource("vehicles/test_aircraft.yml", true);
 
-        vehicles.put("test_aircraft", new Vehicle(Groups.AIRCRAFT, GLIDER, RecipeType.NULL, new ItemStack[]{},
-                "test_aircraft", new VehicleDescription(new YamlTraverser(plugin, "vehicles/test_aircraft.yml"))));
+        vehicles.put("test_aircraft", new Vehicle(Groups.AIRCRAFT, GLIDER, RecipeType.NULL, new ItemStack[]{}, "test_aircraft", new VehicleDescription("vehicles/test_aircraft.yml")));
 
         vehicles.values().forEach(vehicle -> vehicle.register(addon));
+    }
+
+    public void reload() {
+        vehicles.values().forEach(Vehicle::reload);
     }
 
     public Vehicle getVehicle(final String name) {

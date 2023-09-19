@@ -9,9 +9,11 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.components.FixedComponent;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
@@ -34,6 +36,8 @@ import static java.lang.Math.PI;
 public class VehicleDescription {
     private record ComponentGroup(double dragCoefficient, double liftCoefficient) {}
 
+    @Getter
+    private final String path;
     @Getter
     private final Vector3f centerOfMass;
     @Getter
@@ -78,7 +82,9 @@ public class VehicleDescription {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public VehicleDescription(final @NotNull YamlTraverser traverser) {
+    public VehicleDescription(final String path) {
+        this.path = path;
+        final YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), path);
         final double centerOfMassX = traverser.get("centerOfMass");
         centerOfMass = new Vector3f((float) centerOfMassX, 0, 0);
         mass = traverser.get("mass");

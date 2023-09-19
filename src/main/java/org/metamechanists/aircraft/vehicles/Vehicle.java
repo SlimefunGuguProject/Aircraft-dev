@@ -34,7 +34,7 @@ import static java.lang.Math.toRadians;
 
 public class Vehicle extends SlimefunItem {
     private final String name;
-    private final VehicleDescription description;
+    private VehicleDescription description;
 
     public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
             "ACR_TEST_AIRCRAFT",
@@ -47,6 +47,10 @@ public class Vehicle extends SlimefunItem {
         this.name = name;
         this.description = description;
         addItemHandler(onItemUse());
+    }
+
+    public void reload() {
+        description = new VehicleDescription(description.getPath());
     }
 
     private @NotNull ItemUseHandler onItemUse() {
