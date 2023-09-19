@@ -31,7 +31,7 @@ public class VehicleSurface {
     public SpatialForce getLiftForce(final @NotNull Vector3d rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
         final Vector3d location = Utils.rotateByEulerAngles(new Vector3d(relativeLocation), rotation);
         final Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), rotation);
-        final Vector3d angularVelocityVector = new Vector3d(angularVelocity).cross(relativeLocation).mul(2);
+        final Vector3d angularVelocityVector = new Vector3d(angularVelocity).cross(location).mul(2);
         final Vector3d airflowVelocity = new Vector3d(velocity).mul(-1);
 
         if (Utils.equal(relativeLocation.x, 0.7) && Utils.equal(relativeLocation.y, 0.0) && Utils.equal(relativeLocation.z, -0.6)) {
