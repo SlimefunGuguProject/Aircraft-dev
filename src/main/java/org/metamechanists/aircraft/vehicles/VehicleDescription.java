@@ -106,95 +106,121 @@ public class VehicleDescription {
         hingeComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid(orientations)));
         return cuboids;
     }
-    public Map<String, ModelComponent> getHud(final @NotNull Vector3d rotation) {
-        final Map<String, ModelComponent> hudComponents = new HashMap<>();
 
+    private static double getPitch(final @NotNull Vector3d rotation) {
         final Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
-        double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
-        pitch = lookingAtForward.y > 0 ? pitch : -pitch;
-
-        double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
-        yaw = lookingAtForward.z > 0 ? -yaw : yaw;
-
-        final Vector3f hudCenter = new Vector3f(1.5F, 1, 0);
-
-        hudComponents.put("horizon_altitude", new ModelAdvancedText()
+        final double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
+        return lookingAtForward.y > 0 ? pitch : -pitch;
+    }
+    private static double getYaw(final @NotNull Vector3d rotation) {
+        final Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
+        final double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
+        return lookingAtForward.z > 0 ? -yaw : yaw;
+    }
+    private static ModelAdvancedText getAltitudeIndicator(final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
+        return new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(hudCenter)
                 .rotateBackwards(rotation)
-                .rotate(new Vector3d(0, yaw, pitch))
+                .rotate(new Vector3d(0, getYaw(rotation), getPitch(rotation)))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.5F, -0.01F));
-        hudComponents.put("horizon_aircraft", new ModelAdvancedText()
+                .translate(0.5F, 0.5F, -0.01F);
+    }
+    private static ModelAdvancedText getHorizonIndicator(final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
+        return new ModelAdvancedText()
                 .text(Component.text("[ = <     > = ]").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(hudCenter)
                 .rotateBackwards(rotation)
-                .rotate(new Vector3d(0, yaw, pitch))
+                .rotate(new Vector3d(0, getYaw(rotation), getPitch(rotation)))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.5F, -0.01F));
-
-        final float horizonAdjustment = (float) (2 * -pitch);
-        final Vector3f horizonOffset = new Vector3f(0, horizonAdjustment, 0);
-        final float maxHorizonRadius = 0.4F;
-        final boolean shouldRenderCenter = Math.abs(horizonAdjustment) < maxHorizonRadius;
-        hudComponents.put("horizon_center", new ModelAdvancedText()
+                .translate(0.5F, 0.5F, -0.01F);
+    }
+    private static ModelAdvancedText getArtificialHorizonCenter(final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation, final Vector3f horizonOffset, final boolean shouldRender) {
+         return new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(Component.text("------------------").color(TextColor.color(0, 255, 255)).decorate(TextDecoration.BOLD))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
-                .translate(new Vector3f(horizonOffset))
+                .translate(horizonOffset)
                 .translate(hudCenter)
                 .facing(BlockFace.WEST)
-                .scale(shouldRenderCenter ? new Vector3f(0.3F, 0.3F, 0.001F) : new Vector3f())
-                .translate(0.5F, 0.5F, 0));
+                .scale(shouldRender ? new Vector3f(0.3F, 0.3F, 0.001F) : new Vector3f())
+                .translate(0.5F, 0.5F, 0);
+    }
+    private static ModelAdvancedText getArtificialHorizonBar(final Component component,
+                                                             final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation, final Vector3f horizonOffset,
+                                                             final Vector3f barOffset, final boolean shouldRender) {
+        return new ModelAdvancedText()
+                .background(Color.fromARGB(0, 0, 0, 0))
+                .text(component)
+                .brightness(Utils.BRIGHTNESS_ON)
+                .rotate(rotation)
+                .translate(horizonOffset)
+                .translate(hudCenter)
+                .translate(barOffset)
+                .facing(BlockFace.WEST)
+                .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
+                .translate(0.5F, 0.5F, 0);
+    }
+    private static ModelAdvancedText getArtificialHorizonDegree(final Component component,
+                                                                final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation, final Vector3f horizonOffset,
+                                                                final Vector3f barOffset, final boolean shouldRender) {
+        return new ModelAdvancedText()
+                .background(Color.fromARGB(0, 0, 0, 0))
+                .text(component)
+                .brightness(Utils.BRIGHTNESS_ON)
+                .rotate(rotation)
+                .translate(horizonOffset)
+                .translate(hudCenter)
+                .translate(barOffset)
+                .translate(new Vector3f(0, 0, 0.38F))
+                .facing(BlockFace.WEST)
+                .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
+                .translate(0.5F, 0.5F, 0);
+    }
+    public Map<String, ModelComponent> getHud(final @NotNull Vector3d rotation) {
+        final Map<String, ModelComponent> hudComponents = new HashMap<>();
+        final Vector3f hudCenter = new Vector3f(1.5F, 1, 0);
+
+        hudComponents.put("altitude", getAltitudeIndicator(hudCenter, rotation));
+        hudComponents.put("horizon", getHorizonIndicator(hudCenter, rotation));
+
+        final Vector3f horizonOffset = new Vector3f(0, (float) (2 * -getPitch(rotation)), 0);
+        final float horizonRadius = 0.4F;
+        final boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
+
+        hudComponents.put("horizon_center", getArtificialHorizonCenter(hudCenter, rotation, horizonOffset, shouldRenderCenter));
+
         final int bars = 31;
         final float verticalSpacing = (float) ((PI / 1.14) / (bars));
         for (int i = -bars; i < bars; i++) {
             if (i == 0) {
                 continue;
             }
-            final float barAdjustment = verticalSpacing * i;
-            final Vector3f barOffset = new Vector3f(0, barAdjustment, 0);
+
+            final Vector3f barOffset = new Vector3f(0, verticalSpacing * i, 0);
             final float totalAdjustment = new Vector3f(barOffset).add(horizonOffset).y;
             final boolean longBar = i % 5 == 0;
-            Component text = Component.text("--------------" + (longBar ? "------" : "")).color(TextColor.color(180, 180, 180));;
+            final String text = "--------------" + (longBar ? "------" : "");
+            final TextColor color = longBar ? TextColor.color(0, 180, 255) : TextColor.color(180, 180, 180);
+            final Component component = Component.text(text).color(color);
+            final boolean shouldRender = Math.abs(totalAdjustment) < horizonRadius;
+
+            hudComponents.put("horizon" + i, getArtificialHorizonBar(component, hudCenter, rotation, horizonOffset, barOffset, shouldRender));
+
             if (longBar) {
-                text = text.color(TextColor.color(0, 180, 255));
-            }
-            final boolean shouldRender = Math.abs(totalAdjustment) < maxHorizonRadius;
-            hudComponents.put("horizon" + i, new ModelAdvancedText()
-                    .background(Color.fromARGB(0, 0, 0, 0))
-                    .text(text)
-                    .brightness(Utils.BRIGHTNESS_ON)
-                    .rotate(rotation)
-                    .translate(horizonOffset)
-                    .translate(hudCenter)
-                    .translate(barOffset)
-                    .facing(BlockFace.WEST)
-                    .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
-                    .translate(0.5F, 0.5F, 0));
-            if (longBar) {
-                hudComponents.put("horizon_degree" + i, new ModelAdvancedText()
-                        .background(Color.fromARGB(0, 0, 0, 0))
-                        .text(Component.text(i * (90 / (bars-1))))
-                        .brightness(Utils.BRIGHTNESS_ON)
-                        .rotate(rotation)
-                        .translate(horizonOffset)
-                        .translate(hudCenter)
-                        .translate(barOffset)
-                        .translate(new Vector3f(0, 0, 0.38F))
-                        .facing(BlockFace.WEST)
-                        .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
-                        .translate(0.5F, 0.5F, 0));
+                final Component degreeComponent = Component.text(i * (90 / (bars-1)));
+                hudComponents.put("horizon_degree" + i, getArtificialHorizonDegree(degreeComponent, hudCenter, rotation, horizonOffset, barOffset, shouldRender));
             }
         }
+
         return hudComponents;
     }
 
