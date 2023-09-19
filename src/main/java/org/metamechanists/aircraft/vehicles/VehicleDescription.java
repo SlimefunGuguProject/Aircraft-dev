@@ -34,6 +34,7 @@ import static java.lang.Math.PI;
 public class VehicleDescription {
     private record ComponentGroup(double dragCoefficient, double liftCoefficient) {}
 
+    @Getter
     private final Vector3f centerOfMass;
     @Getter
     private final double mass;
