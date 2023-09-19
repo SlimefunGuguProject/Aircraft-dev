@@ -1,5 +1,6 @@
 package org.metamechanists.aircraft.vehicles;
 
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.Utils;
@@ -32,6 +33,10 @@ public class VehicleSurface {
         final Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), rotation);
         final Vector3d angularVelocityVector = new Vector3d(location).cross(angularVelocity).mul(2);
         final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
+
+        if (relativeLocation.equals(new Vector3d(0.7, 0.0, 0.6))) {
+            Bukkit.broadcastMessage("av " + angularVelocity);
+        }
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         // Also check that 1) airflow is not zero 2) airflow and normal are not in opposite directions - these cause NaN values
