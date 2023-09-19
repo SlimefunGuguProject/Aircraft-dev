@@ -65,7 +65,7 @@ public class VehicleDescription {
         final Vector3f location = getVector3f(componentTraverser, "location");
         final Vector3d rotation = getVector3d(componentTraverser, "rotation");
         final FixedComponent fixedComponent = new FixedComponent(componentTraverser.name(),
-                group.dragCoefficient, group.liftCoefficient, material, size, location, new Vector3f(location).add(centerOfMass), rotation);
+                group.dragCoefficient, group.liftCoefficient, material, size, location, new Vector3f(location).sub(centerOfMass), rotation);
 
         if (componentTraverser.get("controlSurface", false)) {
             hingeComponents.add(new HingeComponent(fixedComponent,

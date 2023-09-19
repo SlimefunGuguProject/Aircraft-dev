@@ -14,7 +14,8 @@ public class VehicleSurface {
     private final Vector3d relativeNormal;
     private final Vector3d relativeLocation;
 
-    public VehicleSurface(final double dragCoefficient, final double liftCoefficient, final double area, final Vector3d relativeNormal, final Vector3d relativeLocation) {
+    public VehicleSurface(final double dragCoefficient, final double liftCoefficient, final double area,
+                          final Vector3d relativeNormal, final Vector3d relativeLocation) {
         this.dragCoefficient = dragCoefficient;
         this.liftCoefficient = liftCoefficient;
         this.area = area;
