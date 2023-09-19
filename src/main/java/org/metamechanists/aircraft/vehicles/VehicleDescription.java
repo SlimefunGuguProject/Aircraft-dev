@@ -159,14 +159,14 @@ public class VehicleDescription {
             if (i == 0) {
                 continue;
             }
-            final float barAdjustment = -(bars * verticalSpacing) + (verticalSpacing * i);
+            final float barAdjustment = verticalSpacing * i;
             final Vector3f barOffset = new Vector3f(0, barAdjustment, 0);
             final float totalAdjustment = new Vector3f(barOffset).add(horizonOffset).y;
             final boolean shouldRender = Math.abs(totalAdjustment) < maxHorizonRadius;
             final boolean longBar = i % 5 == 0;
             hudComponents.put("horizon" + i, new ModelAdvancedText()
                     .background(Color.fromARGB(0, 0, 0, 0))
-                    .text(Component.text("--------------" + (longBar ? "----" : 0)).color(TextColor.color(0, 180, 255)))
+                    .text(Component.text("--------------" + (longBar ? "----" : "")).color(TextColor.color(0, 180, 255)))
                     .brightness(Utils.BRIGHTNESS_ON)
                     .rotate(rotation)
                     .translate(horizonOffset)
