@@ -127,7 +127,7 @@ public class VehicleDescription {
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.3F, -0.01F));
+                .translate(0.5F, 0.5F, -0.01F));
         hudComponents.put("horizon_aircraft", new ModelAdvancedText()
                 .text(Component.text("[ = <     > = ]").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
@@ -138,11 +138,11 @@ public class VehicleDescription {
                 .rotate(new Vector3d(0, yaw, pitch))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.3F, -0.01F));
+                .translate(0.5F, 0.5F, -0.01F));
 
         final float horizonAdjustment = (float) (2 * -pitch);
         final Vector3f horizonOffset = new Vector3f(0, horizonAdjustment, 0);
-        final float maxHorizonRadius = 0.6F;
+        final float maxHorizonRadius = 0.4F;
         final boolean shouldRenderCenter = Math.abs(horizonAdjustment) < maxHorizonRadius;
         hudComponents.put("horizon_center", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
@@ -183,7 +183,7 @@ public class VehicleDescription {
             if (longBar) {
                 hudComponents.put("horizon_degree" + i, new ModelAdvancedText()
                         .background(Color.fromARGB(0, 0, 0, 0))
-                        .text(Component.text(i * (90 / bars)))
+                        .text(Component.text(i * (90 / (bars-1))))
                         .brightness(Utils.BRIGHTNESS_ON)
                         .rotate(rotation)
                         .translate(horizonOffset)
