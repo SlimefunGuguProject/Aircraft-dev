@@ -32,11 +32,11 @@ public class VehicleSurface {
         final Vector3d location = Utils.rotateByEulerAngles(new Vector3d(relativeLocation), rotation);
         final Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), rotation);
         final Vector3d angularVelocityVector = new Vector3d(location).cross(angularVelocity).mul(2);
-        final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
+        final Vector3d airflowVelocity = new Vector3d(velocity).mul(-1);
 
         if (relativeLocation.length() - new Vector3d(0.7, 0.0, 0.6).length() < 0.000001) {
             Bukkit.broadcastMessage(new Vector3d(angularVelocity).normalize() + " " + Math.round(angularVelocity.length() * 100000000) / 100000000.0);
-            Bukkit.broadcastMessage("" + angularVelocityVector);
+            Bukkit.broadcastMessage("" + new Vector3d(angularVelocityVector).normalize());
         }
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
@@ -68,7 +68,7 @@ public class VehicleSurface {
         final Vector3d location = Utils.rotateByEulerAngles(new Vector3d(relativeLocation), rotation);
         final Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), rotation);
         final Vector3d angularVelocityVector = new Vector3d(location).cross(angularVelocity).mul(2);
-        final Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
+        final Vector3d airflowVelocity = new Vector3d(velocity).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         // Also check that 1) airflow is not zero 2) airflow and normal are not in opposite directions - these cause NaN values
