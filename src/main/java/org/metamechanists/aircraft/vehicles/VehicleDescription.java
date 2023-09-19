@@ -32,8 +32,9 @@ import static java.lang.Math.PI;
 
 
 public class VehicleDescription {
-    private record ComponentGroup(double density, double dragCoefficient, double liftCoefficient) {}
+    private record ComponentGroup(double dragCoefficient, double liftCoefficient) {}
 
+    private final Vector3f centerOfMass;
     @Getter
     private final double mass;
     @Getter
@@ -63,7 +64,8 @@ public class VehicleDescription {
         final Vector3f size = getVector3f(componentTraverser, "size");
         final Vector3f location = getVector3f(componentTraverser, "location");
         final Vector3d rotation = getVector3d(componentTraverser, "rotation");
-        final FixedComponent fixedComponent = new FixedComponent(componentTraverser.name(), group.density, group.dragCoefficient, group.liftCoefficient, material, size, location, rotation);
+        final FixedComponent fixedComponent = new FixedComponent(componentTraverser.name(),
+                group.dragCoefficient, group.liftCoefficient, material, size, location, new Vector3f(location).add(centerOfMass), rotation);
 
         if (componentTraverser.get("controlSurface", false)) {
             hingeComponents.add(new HingeComponent(fixedComponent,
@@ -76,6 +78,7 @@ public class VehicleDescription {
 
     @SuppressWarnings("DataFlowIssue")
     public VehicleDescription(final @NotNull YamlTraverser traverser) {
+        centerOfMass = getVector3f(traverser, "centerOfMass");
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia");
         velocityDampening = traverser.get("velocityDampening");
@@ -83,7 +86,7 @@ public class VehicleDescription {
 
         final Map<String, ComponentGroup> groups = new HashMap<>();
         for (final YamlTraverser group : traverser.getSection("groups").getSections()) {
-            groups.put(group.name(), new ComponentGroup(group.get("density"), group.get("dragCoefficient"), group.get("liftCoefficient")));
+            groups.put(group.name(), new ComponentGroup(group.get("dragCoefficient"), group.get("liftCoefficient")));
         }
 
         for (final YamlTraverser componentTraverser : traverser.getSection("components").getSections()) {

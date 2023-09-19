@@ -1,3 +1,4 @@
+centerOfMass: [1.0, 0.0, 0.0]
 mass: 0.006
 momentOfInertia: 0.006
 velocityDampening: 0.05
@@ -5,15 +6,12 @@ angularVelocityDampening: 0.1
 
 groups:
   body:
-    density: 0.0001
     dragCoefficient: 1.00
     liftCoefficient: 0.30
   wing:
-    density: 0.0001
     dragCoefficient: 0.30
     liftCoefficient: 1.20
   controlSurface:
-    density: 0.0001
     dragCoefficient: 0.30
     liftCoefficient: 1.20
 
