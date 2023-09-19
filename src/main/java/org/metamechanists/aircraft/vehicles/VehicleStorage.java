@@ -2,7 +2,7 @@ package org.metamechanists.aircraft.vehicles;
 
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Interaction;
+import org.bukkit.entity.Horse;
 import org.metamechanists.aircraft.items.groups.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 
@@ -14,27 +14,27 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class VehicleStorage {
-    private Set<UUID> seatInteractions = new HashSet<>();
+    private Set<UUID> horses = new HashSet<>();
 
-    public void add(final UUID seatInteractionId) {
-        seatInteractions.add(seatInteractionId);
+    public void add(final UUID horseId) {
+        horses.add(horseId);
     }
 
-    public void remove(final UUID seatInteractionId) {
-        seatInteractions.remove(seatInteractionId);
+    public void remove(final UUID horseId) {
+        horses.remove(horseId);
     }
 
     public void tick() {
-        seatInteractions = seatInteractions.stream().filter(id -> Bukkit.getEntity(id) != null).collect(Collectors.toSet());
-        seatInteractions.stream()
+        horses = horses.stream().filter(id -> Bukkit.getEntity(id) != null).collect(Collectors.toSet());
+        horses.stream()
                 .map(Bukkit::getEntity)
-                .map(Interaction.class::cast)
-                .filter(seatInteraction -> new PersistentDataTraverser(seatInteraction).getString("name") != null)
+                .map(Horse.class::cast)
+                .filter(horse -> new PersistentDataTraverser(horse).getString("name") != null)
                 .forEach(VehicleStorage::tick);
     }
 
-    private void tick(final Interaction seatInteraction) {
-        final String name = new PersistentDataTraverser(seatInteraction).getString("name");
-        Aircraft.getVehicle(name).tickAircraft(seatInteraction);
+    private void tick(final Horse horse) {
+        final String name = new PersistentDataTraverser(horse).getString("name");
+        Aircraft.getVehicle(name).tickAircraft(horse);
     }
 }
