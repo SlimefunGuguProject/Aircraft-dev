@@ -78,7 +78,8 @@ public class VehicleDescription {
 
     @SuppressWarnings("DataFlowIssue")
     public VehicleDescription(final @NotNull YamlTraverser traverser) {
-        centerOfMass = new Vector3f(traverser.get("centerOfMass"), 0, 0);
+        final double centerOfMassX = traverser.get("centerOfMass");
+        centerOfMass = new Vector3f((float) centerOfMassX, 0, 0);
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia");
         velocityDampening = traverser.get("velocityDampening");
