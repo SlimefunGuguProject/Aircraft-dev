@@ -140,7 +140,7 @@ public class VehicleDescription {
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
                 .rotateBackwards(new Vector3d(0, yaw, pitch))
                 .rotate(rotation)
-                .translate(0.2F, 0.5F, 0.01F)
+                .translate(0.5F, 0.2F, 0.01F)
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, yaw, pitch)));
 
