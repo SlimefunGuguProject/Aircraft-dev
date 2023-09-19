@@ -185,17 +185,21 @@ public class Vehicle extends SlimefunItem {
 
     private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         final Set<SpatialForce> forces = new HashSet<>();
-        forces.add(getWeightForce());
+        forces.add(getWeightForce(rotation));
         forces.add(getThrustForce(rotation));
         forces.addAll(getDragForces(rotation, velocity, angularVelocity, orientations));
         forces.addAll(getLiftForces(rotation, velocity, angularVelocity, orientations));
         return forces;
     }
-    private @NotNull SpatialForce getWeightForce() {
-        return new SpatialForce(new Vector3d(0, -2.5 * description.getMass(), 0), new Vector3d(description.getCenterOfMass()));
+    private @NotNull SpatialForce getWeightForce(final @NotNull Vector3d rotation) {
+        return new SpatialForce(
+                new Vector3d(0, -2.5 * description.getMass(), 0),
+                Utils.rotateByEulerAngles(new Vector3d(description.getCenterOfMass()), rotation));
     }
     private @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
-        return new SpatialForce(Utils.rotateByEulerAngles(new Vector3d(0.15, 0, 0), (rotation)), new Vector3d(description.getCenterOfMass()));
+        return new SpatialForce(
+                Utils.rotateByEulerAngles(new Vector3d(0.15, 0, 0), rotation),
+                Utils.rotateByEulerAngles(new Vector3d(description.getCenterOfMass()), rotation));
     }
     private Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return description.getSurfaces(orientations).stream()
