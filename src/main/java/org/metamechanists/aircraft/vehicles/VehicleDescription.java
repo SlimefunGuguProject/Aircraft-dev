@@ -146,7 +146,7 @@ public class VehicleDescription {
         final boolean shouldRenderCenter = Math.abs(horizonAdjustment) < maxHorizonRadius;
         hudComponents.put("horizon_center", new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
-                .text(Component.text("----------------").color(TextColor.color(0, 255, 255)).decorate(TextDecoration.BOLD))
+                .text(Component.text("------------------").color(TextColor.color(0, 255, 255)).decorate(TextDecoration.BOLD))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(new Vector3f(horizonOffset))
@@ -164,7 +164,7 @@ public class VehicleDescription {
             final Vector3f barOffset = new Vector3f(0, barAdjustment, 0);
             final float totalAdjustment = new Vector3f(barOffset).add(horizonOffset).y;
             final boolean longBar = i % 5 == 0;
-            Component text = Component.text("--------------" + (longBar ? "----" : "")).color(TextColor.color(180, 180, 180));;
+            Component text = Component.text("--------------" + (longBar ? "------" : "")).color(TextColor.color(180, 180, 180));;
             if (longBar) {
                 text = text.color(TextColor.color(0, 180, 255));
             }
@@ -189,7 +189,7 @@ public class VehicleDescription {
                         .translate(horizonOffset)
                         .translate(hudCenter)
                         .translate(barOffset)
-                        .translate(new Vector3f(0, 0, 0.35F))
+                        .translate(new Vector3f(0, 0, 0.38F))
                         .facing(BlockFace.WEST)
                         .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
                         .translate(0.5F, 0.5F, 0));
