@@ -18,7 +18,7 @@ public class Utils {
     public final int BRIGHTNESS_PANEL = 12;
     public final int VIEW_RANGE_ON = 1;
     public final int VIEW_RANGE_OFF = 0;
-    private final double FLOATING_POINT_THRESHOLD = 0.00001;
+    private final double FLOATING_POINT_THRESHOLD = 0.01;
     public double roundTo2dp(final double value) {
         return Math.round(value*Math.pow(10, 2)) / Math.pow(10, 2);
     }
