@@ -213,11 +213,11 @@ public class VehicleDescription {
             final Component component = Component.text(text).color(color);
             final boolean shouldRender = Math.abs(totalAdjustment) < horizonRadius;
 
-            hudComponents.put("horizon" + i, getArtificialHorizonBar(component, hudCenter, rotation, horizonOffset, barOffset, shouldRender));
+            hudComponents.put("horizon_bar_" + i, getArtificialHorizonBar(component, hudCenter, rotation, horizonOffset, barOffset, shouldRender));
 
             if (longBar) {
                 final Component degreeComponent = Component.text(i * (90 / (bars-1)));
-                hudComponents.put("horizon_degree" + i, getArtificialHorizonDegree(degreeComponent, hudCenter, rotation, horizonOffset, barOffset, shouldRender));
+                hudComponents.put("horizon_degree_" + i, getArtificialHorizonDegree(degreeComponent, hudCenter, rotation, horizonOffset, barOffset, shouldRender));
             }
         }
 
@@ -229,7 +229,7 @@ public class VehicleDescription {
         final Map<String, Display> displays = hudGroup.getDisplays();
         hudComponents.forEach((name, component) -> displays.get(name).setTransformationMatrix(hudComponents.get(name).getMatrix()));
 
-        final TextDisplay altitudeText = (TextDisplay) displays.get("horizon_altitude");
+        final TextDisplay altitudeText = (TextDisplay) displays.get("altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
     }
 
