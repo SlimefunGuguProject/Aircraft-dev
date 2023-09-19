@@ -34,7 +34,7 @@ public class VehicleSurface {
         final Vector3d angularVelocityVector = new Vector3d(location).cross(angularVelocity).mul(2);
         final Vector3d airflowVelocity = new Vector3d(velocity).mul(-1);
 
-        if (Math.abs(relativeLocation.length() - new Vector3d(0.7, 0.0, 0.6).length()) < 0.01) {
+        if (Utils.equal(relativeLocation.x, 0.7) && Utils.equal(relativeLocation.y, 0.0) && Utils.equal(relativeLocation.z, 0.6)) {
             Bukkit.broadcastMessage(new Vector3d(angularVelocity).normalize() + " " + Math.round(angularVelocity.length() * 100000000) / 100000000.0);
             Bukkit.broadcastMessage("" + new Vector3d(angularVelocityVector).normalize());
         }
