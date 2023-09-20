@@ -206,7 +206,7 @@ public class VehicleDescription {
     }
     public Map<String, ModelComponent> getHud(final @NotNull Vector3d rotation) {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
-        final Vector3f hudCenter = new Vector3f(1, 1.0F, 0);
+        final Vector3f hudCenter = new Vector3f(1, 0, 0);
 
         hudComponents.put("altitude", getAltitudeIndicator(hudCenter, rotation));
         hudComponents.put("horizon", getHorizonIndicator(hudCenter, rotation));

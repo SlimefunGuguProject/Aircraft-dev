@@ -196,13 +196,13 @@ public class Vehicle extends SlimefunItem {
 
     private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         final Set<SpatialForce> forces = new HashSet<>();
-        forces.add(getWeightForce(rotation));
+        forces.add(getWeightForce());
         forces.add(getThrustForce(rotation));
         forces.addAll(getDragForces(rotation, velocity, angularVelocity, orientations));
         forces.addAll(getLiftForces(rotation, velocity, angularVelocity, orientations));
         return forces;
     }
-    private @NotNull SpatialForce getWeightForce(final @NotNull Vector3d rotation) {
+    private @NotNull SpatialForce getWeightForce() {
         return new SpatialForce(
                 new Vector3d(0, 0 * description.getMass(), 0),
                 new Vector3d(0, 0, 0));

@@ -20,6 +20,7 @@ public class Utils {
     public final int VIEW_RANGE_ON = 1;
     public final int VIEW_RANGE_OFF = 0;
     private final double FLOATING_POINT_THRESHOLD = 0.01;
+    private final Vector3f PLAYER_HEAD_OFFSET = new Vector3f(0, 1.2F, 0);
     public double roundTo2dp(final double value) {
         return Math.round(value*Math.pow(10, 2)) / Math.pow(10, 2);
     }
@@ -69,7 +70,11 @@ public class Utils {
     }
 
     public Matrix4f getRotatedMatrix(final @NotNull ModelComponent component, final @NotNull Vector3d rotation, final @NotNull Vector3f absoluteCenterOfMass) {
-        return new Matrix4f().translate(absoluteCenterOfMass).rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z)).mul(component.getMatrix());
+        return new Matrix4f()
+                .translate(PLAYER_HEAD_OFFSET)
+                .translate(absoluteCenterOfMass)
+                .rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z))
+                .mul(component.getMatrix());
     }
 
     public Vector3d rotateByEulerAngles(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
