@@ -88,8 +88,7 @@ public class VehicleDescription {
     public VehicleDescription(final String path) {
         this.path = path;
         final YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), path);
-        final double centerOfMassX = traverser.get("centerOfMass");
-        relativeCenterOfMass = new Vector3f((float) centerOfMassX, 0, 0);
+        relativeCenterOfMass = getVector3f(traverser, "centerOfMass");
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia");
         velocityDampening = traverser.get("velocityDampening");
@@ -207,7 +206,7 @@ public class VehicleDescription {
     }
     public Map<String, ModelComponent> getHud(final @NotNull Vector3d rotation) {
         final Map<String, ModelComponent> hudComponents = new HashMap<>();
-        final Vector3f hudCenter = new Vector3f(1.5F, 1, 0);
+        final Vector3f hudCenter = new Vector3f(1, 0, 0);
 
         hudComponents.put("altitude", getAltitudeIndicator(hudCenter, rotation));
         hudComponents.put("horizon", getHorizonIndicator(hudCenter, rotation));
