@@ -5,7 +5,6 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -177,7 +176,7 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
-        final Vector3d seatLocation = new Vector3d(description.getCenterOfMass()).mul(-1);
+        final Vector3d seatLocation = new Vector3d(description.getRelativeCenterOfMass()).mul(-1);
         final Vector3d angularSeatVelocityVector = new Vector3d(angularVelocity).cross(seatLocation).mul(10);
         //Bukkit.broadcastMessage("" + angularSeatVelocityVector);
         final Vector3d seatVelocity = new Vector3d(velocity).add(angularSeatVelocityVector).div(20);
@@ -206,12 +205,12 @@ public class Vehicle extends SlimefunItem {
     private @NotNull SpatialForce getWeightForce(final @NotNull Vector3d rotation) {
         return new SpatialForce(
                 new Vector3d(0, 0 * description.getMass(), 0),
-                Utils.rotateByEulerAngles(new Vector3d(description.getCenterOfMass()), rotation));
+                Utils.rotateByEulerAngles(new Vector3d(description.getRelativeCenterOfMass()), rotation));
     }
     private @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
         return new SpatialForce(
                 Utils.rotateByEulerAngles(new Vector3d(description.getThrust(), 0, 0), rotation),
-                Utils.rotateByEulerAngles(new Vector3d(description.getCenterOfMass()), rotation));
+                Utils.rotateByEulerAngles(new Vector3d(description.getRelativeCenterOfMass()), rotation));
     }
     private Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return description.getSurfaces(orientations).stream()

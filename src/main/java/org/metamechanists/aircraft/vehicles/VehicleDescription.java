@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
-import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
@@ -39,7 +38,7 @@ public class VehicleDescription {
     @Getter
     private final String path;
     @Getter
-    private final Vector3f centerOfMass;
+    private final Vector3f relativeCenterOfMass;
     @Getter
     private final double mass;
     @Getter
@@ -74,7 +73,7 @@ public class VehicleDescription {
         final Vector3f location = getVector3f(componentTraverser, "location");
         final Vector3d rotation = getVector3d(componentTraverser, "rotation");
         final FixedComponent fixedComponent = new FixedComponent(componentTraverser.name(),
-                group.dragCoefficient, group.liftCoefficient, material, size, location, new Vector3f(location).sub(centerOfMass), rotation);
+                group.dragCoefficient, group.liftCoefficient, material, size, location, new Vector3f(location).sub(relativeCenterOfMass), rotation);
 
         if (componentTraverser.get("controlSurface", false)) {
             hingeComponents.add(new HingeComponent(fixedComponent,
@@ -90,7 +89,7 @@ public class VehicleDescription {
         this.path = path;
         final YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), path);
         final double centerOfMassX = traverser.get("centerOfMass");
-        centerOfMass = new Vector3f((float) centerOfMassX, 0, 0);
+        relativeCenterOfMass = new Vector3f((float) centerOfMassX, 0, 0);
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia");
         velocityDampening = traverser.get("velocityDampening");

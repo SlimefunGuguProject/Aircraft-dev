@@ -73,7 +73,7 @@ public class FixedComponent {
     public ModelAdvancedCuboid getCuboid(final Vector3d rotation, final @NotNull Vector3d translation) {
         return new ModelAdvancedCuboid()
                 .material(material)
-                .translate(locationRelativeToModelCenter)
+                .translate(locationRelativeToCenterOfMass)
                 .rotate(this.rotation)
                 .rotate(rotation)
                 .translate(new Vector3f((float) translation.x, (float) translation.y, (float) translation.z))
