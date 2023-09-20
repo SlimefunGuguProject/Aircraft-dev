@@ -5,6 +5,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -178,6 +179,7 @@ public class Vehicle extends SlimefunItem {
 
         final Vector3d seatLocation = new Vector3d(description.getCenterOfMass()).mul(-1);
         final Vector3d angularSeatVelocityVector = new Vector3d(angularVelocity).cross(seatLocation);
+        Bukkit.broadcastMessage("" + angularSeatVelocityVector);
         seat.setVelocity(Vector.fromJOML(new Vector3d(velocity).add(angularSeatVelocityVector)));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(Utils.getRotatedMatrix(cuboid, rotation)));
         description.updateHud(rotation, seat.getLocation().getBlockY(), hudGroup);
