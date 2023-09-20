@@ -68,7 +68,7 @@ public class Utils {
     }
 
     public Matrix4f getRotatedMatrix(final @NotNull ModelComponent component, final @NotNull Vector3d rotation, final @NotNull Vector3f centerOfMass) {
-        return new Matrix4f().translate(centerOfMass).rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z)).mul(component.getMatrix());
+        return new Matrix4f().rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z)).translate(centerOfMass).mul(component.getMatrix());
     }
 
     public Vector3d rotateByEulerAngles(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
