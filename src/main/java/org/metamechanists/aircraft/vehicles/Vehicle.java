@@ -176,7 +176,9 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
-        seat.setVelocity(Vector.fromJOML(velocity));
+        final Vector3d seatLocation = new Vector3d(description.getCenterOfMass()).mul(-1);
+        final Vector3d angularSeatVelocityVector = new Vector3d(angularVelocity).cross(seatLocation);
+        seat.setVelocity(Vector.fromJOML(new Vector3d(velocity).add(angularSeatVelocityVector)));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(Utils.getRotatedMatrix(cuboid, rotation)));
         description.updateHud(rotation, seat.getLocation().getBlockY(), hudGroup);
 
