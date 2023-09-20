@@ -180,7 +180,11 @@ public class Vehicle extends SlimefunItem {
         final Vector3d seatLocation = new Vector3d(description.getCenterOfMass()).mul(-1);
         final Vector3d angularSeatVelocityVector = new Vector3d(angularVelocity).cross(seatLocation);
         Bukkit.broadcastMessage("" + angularSeatVelocityVector);
-        seat.setVelocity(Vector.fromJOML(new Vector3d(velocity).add(angularSeatVelocityVector).div(20)));
+        final Vector3d seatVelocity = new Vector3d(velocity).add(angularSeatVelocityVector).div(20);
+        if (seatVelocity.length() > 5) {
+            seatVelocity.set(0);
+        }
+        seat.setVelocity(Vector.fromJOML(seatVelocity));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(Utils.getRotatedMatrix(cuboid, rotation)));
         description.updateHud(rotation, seat.getLocation().getBlockY(), hudGroup);
 
