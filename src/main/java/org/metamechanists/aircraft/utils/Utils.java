@@ -71,9 +71,9 @@ public class Utils {
 
     public Matrix4f getRotatedMatrix(final @NotNull ModelComponent component, final @NotNull Vector3d rotation, final @NotNull Vector3f absoluteCenterOfMass) {
         return new Matrix4f()
-                .translate(PLAYER_HEAD_OFFSET)
                 .translate(absoluteCenterOfMass)
                 .rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z))
+                .translate(PLAYER_HEAD_OFFSET)
                 .mul(component.getMatrix());
     }
 
