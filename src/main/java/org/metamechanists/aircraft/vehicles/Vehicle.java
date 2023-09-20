@@ -127,15 +127,15 @@ public class Vehicle extends SlimefunItem {
     private Vector3d getAcceleration(final @NotNull Set<SpatialForce> forces) {
         final Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::getForce).forEach(resultantForce::add);
-        return new Vector3d(resultantForce).div(description.getMass()).div(400);
+        return new Vector3d(resultantForce).div(description.getMass()).div(20);
     }
 
-    private Vector3d getAngularAcceleration(final @NotNull Set<SpatialForce> forces, final @NotNull Vector3d rotation) {
+    private Vector3d getAngularAcceleration(final @NotNull Set<SpatialForce> forces) {
         final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
         final Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
 
-        return new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(400);
+        return new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(20);
     }
 
     public void tickAircraft(final @NotNull Cod seat) {
@@ -159,12 +159,12 @@ public class Vehicle extends SlimefunItem {
         description.applyVelocityDampening(velocity);
         velocity.add(getAcceleration(forces));
 
-        angularVelocity.add(getAngularAcceleration(forces, rotation));
+        angularVelocity.add(getAngularAcceleration(forces));
         description.applyAngularVelocityDampening(angularVelocity);
 
         final Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(rotation);
         final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
-        final Vector3d relativeAngularVelocity = new Vector3d(angularVelocity).rotate(negativeRotation);
+        final Vector3d relativeAngularVelocity = new Vector3d(angularVelocity).div(20).rotate(negativeRotation);
 
         rotation.set(Utils.getRotationEulerAngles(rotation)
                 .mul(Utils.getRotationAngleAxis(relativeAngularVelocity))
@@ -180,7 +180,7 @@ public class Vehicle extends SlimefunItem {
         final Vector3d seatLocation = new Vector3d(description.getCenterOfMass()).mul(-1);
         final Vector3d angularSeatVelocityVector = new Vector3d(angularVelocity).cross(seatLocation);
         Bukkit.broadcastMessage("" + angularSeatVelocityVector);
-        seat.setVelocity(Vector.fromJOML(new Vector3d(velocity).add(angularSeatVelocityVector)));
+        seat.setVelocity(Vector.fromJOML(new Vector3d(velocity).add(angularSeatVelocityVector).div(20)));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(Utils.getRotatedMatrix(cuboid, rotation)));
         description.updateHud(rotation, seat.getLocation().getBlockY(), hudGroup);
 
