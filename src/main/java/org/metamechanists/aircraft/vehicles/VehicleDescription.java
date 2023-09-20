@@ -123,6 +123,10 @@ public class VehicleDescription {
         return cuboids;
     }
 
+    public Vector3f getAbsoluteCenterOfMass(final Vector3d rotation) {
+        return Utils.rotateByEulerAngles(relativeCenterOfMass, rotation);
+    }
+
     private static double getPitch(final @NotNull Vector3d rotation) {
         final Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
         final double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));

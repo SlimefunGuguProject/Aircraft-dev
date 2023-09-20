@@ -5,6 +5,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Quaterniond;
+import org.joml.Quaternionf;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
@@ -67,11 +68,15 @@ public class Utils {
         return new Quaterniond().identity().rotateXYZ(rotation.x, rotation.y, rotation.z);
     }
 
-    public Matrix4f getRotatedMatrix(final @NotNull ModelComponent component, final @NotNull Vector3d rotation, final @NotNull Vector3f centerOfMass) {
-        return new Matrix4f().rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z)).mul(component.getMatrix());
+    public Matrix4f getRotatedMatrix(final @NotNull ModelComponent component, final @NotNull Vector3d rotation, final @NotNull Vector3f absoluteCenterOfMass) {
+        return new Matrix4f().translate(absoluteCenterOfMass).rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z)).mul(component.getMatrix());
     }
 
     public Vector3d rotateByEulerAngles(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
         return new Vector3d(vector).rotate(getRotationEulerAngles(rotation));
+    }
+
+    public Vector3f rotateByEulerAngles(final @NotNull Vector3f vector, final @NotNull Vector3d rotation) {
+        return new Vector3f(vector).rotate(new Quaternionf(getRotationEulerAngles(rotation)));
     }
 }
