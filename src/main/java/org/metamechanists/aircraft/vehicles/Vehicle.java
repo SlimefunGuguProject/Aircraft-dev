@@ -164,7 +164,7 @@ public class Vehicle extends SlimefunItem {
 
         final Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(rotation);
         final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
-        final Vector3d relativeAngularVelocity = new Vector3d(angularVelocity).div(20).rotate(negativeRotation);
+        final Vector3d relativeAngularVelocity = new Vector3d(angularVelocity).rotate(negativeRotation);
 
         rotation.set(Utils.getRotationEulerAngles(rotation)
                 .mul(Utils.getRotationAngleAxis(relativeAngularVelocity))
