@@ -202,17 +202,17 @@ public class Vehicle extends SlimefunItem {
     }
     private @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
         return new SpatialForce(
-                Utils.rotateByEulerAngles(new Vector3d(0.15, 0, 0), rotation),
+                Utils.rotateByEulerAngles(new Vector3d(description.getThrust(), 0, 0), rotation),
                 Utils.rotateByEulerAngles(new Vector3d(description.getCenterOfMass()), rotation));
     }
     private Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return description.getSurfaces(orientations).stream()
-                .map(vehicleSurface -> vehicleSurface.getDragForce(rotation, velocity, angularVelocity))
+                .map(vehicleSurface -> vehicleSurface.getDragForce(description.getAirDensity(), rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
     private @NotNull Set<SpatialForce> getLiftForces(final Vector3d rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return description.getSurfaces(orientations).stream()
-                .map(vehicleSurface -> vehicleSurface.getLiftForce(rotation, velocity, angularVelocity))
+                .map(vehicleSurface -> vehicleSurface.getLiftForce(description.getAirDensity(), rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
 

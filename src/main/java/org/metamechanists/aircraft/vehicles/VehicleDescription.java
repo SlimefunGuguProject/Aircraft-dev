@@ -46,6 +46,10 @@ public class VehicleDescription {
     private final double momentOfInertia;
     private final double velocityDampening;
     private final double angularVelocityDampening;
+    @Getter
+    private final double thrust;
+    @Getter
+    private final double airDensity;
     private final Set<FixedComponent> fixedComponents = new HashSet<>();
     @Getter
     private final Set<HingeComponent> hingeComponents = new HashSet<>();
@@ -91,6 +95,8 @@ public class VehicleDescription {
         momentOfInertia = traverser.get("momentOfInertia");
         velocityDampening = traverser.get("velocityDampening");
         angularVelocityDampening = traverser.get("angularVelocityDampening");
+        thrust = traverser.get("thrust");
+        airDensity = traverser.get("airDensity");
 
         final Map<String, ComponentGroup> groups = new HashMap<>();
         for (final YamlTraverser group : traverser.getSection("groups").getSections()) {

@@ -6,8 +6,6 @@ import org.metamechanists.aircraft.utils.Utils;
 
 
 public class VehicleSurface {
-    private static final double AIR_DENSITY = 1.0;
-
     private final double liftCoefficient;
     private final double dragCoefficient;
     private final double area;
@@ -27,7 +25,7 @@ public class VehicleSurface {
         return new Vector3d(normal).angleCos(airflowVelocity) * area;
     }
 
-    public SpatialForce getLiftForce(final @NotNull Vector3d rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
+    public SpatialForce getLiftForce(final double airDensity, final @NotNull Vector3d rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
         final Vector3d location = Utils.rotateByEulerAngles(new Vector3d(relativeLocation), rotation);
         final Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), rotation);
         final Vector3d angularVelocityVector = new Vector3d(angularVelocity).cross(location);
@@ -52,13 +50,13 @@ public class VehicleSurface {
                 Math.sin(2.0*normal.angle(airflowVelocity))
                         * 0.5
                         * liftCoefficient
-                        * AIR_DENSITY
+                        * airDensity
                         * getRelativeArea(normal, airflowVelocity)
                         * (aircraftSpeed * aircraftSpeed));
         return new SpatialForce(force, location);
     }
 
-    public SpatialForce getDragForce(final @NotNull Vector3d rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
+    public SpatialForce getDragForce(final double airDensity, final @NotNull Vector3d rotation, final @NotNull Vector3d velocity, final @NotNull Vector3d angularVelocity) {
         final Vector3d location = Utils.rotateByEulerAngles(new Vector3d(relativeLocation), rotation);
         final Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), rotation);
         final Vector3d angularVelocityVector = new Vector3d(angularVelocity).cross(location);
@@ -82,7 +80,7 @@ public class VehicleSurface {
                 Math.sin(normal.angle(airflowVelocity))
                         * 0.5
                         * dragCoefficient
-                        * AIR_DENSITY
+                        * airDensity
                         * getRelativeArea(normal, airflowVelocity)
                         * (aircraftSpeed * aircraftSpeed));
         return new SpatialForce(force, location);
