@@ -141,7 +141,7 @@ public class Vehicle extends SlimefunItem {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
         final Vector3d velocity = traverser.getVector3d("velocity");
         final Vector3d rotation = traverser.getVector3d("rotation");
-        final Vector3d angularVelocity = new Vector3d(0.1, 0.0, 0.0);//traverser.getVector3d("angularVelocity");
+        final Vector3d angularVelocity = new Vector3d(0.3, 0.0, 0.0);//traverser.getVector3d("angularVelocity");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
@@ -179,11 +179,11 @@ public class Vehicle extends SlimefunItem {
         final Vector3d seatLocation = new Vector3d(description.getAbsoluteCenterOfMass(rotation)).mul(-1); // todo maybe must be absolute?
         final Vector3d angularSeatVelocityVector = new Vector3d(angularVelocity).cross(seatLocation).mul(10);
         //Bukkit.broadcastMessage("" + angularSeatVelocityVector);
-        final Vector3d seatVelocity = new Vector3d(velocity).add(angularSeatVelocityVector).div(20);
+        final Vector3d seatVelocity = angularSeatVelocityVector.div(20); //new Vector3d(velocity).add(
         if (seatVelocity.length() > 5) {
             seatVelocity.set(0);
         }
-        //seat.setVelocity(Vector.fromJOML(seatVelocity));
+        seat.setVelocity(Vector.fromJOML(seatVelocity));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName)
                         .setTransformationMatrix(Utils.getRotatedMatrix(cuboid, rotation, description.getAbsoluteCenterOfMass(rotation))));
         description.updateHud(rotation, seat.getLocation().getBlockY(), hudGroup);
