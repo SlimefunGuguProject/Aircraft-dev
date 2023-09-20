@@ -179,7 +179,7 @@ public class Vehicle extends SlimefunItem {
         final Vector3d seatLocation = new Vector3d(description.getAbsoluteCenterOfMass(rotation)).mul(-1); // todo maybe must be absolute?
         final Vector3d angularSeatVelocityVector = new Vector3d(angularVelocity).cross(seatLocation).mul(10);
         //Bukkit.broadcastMessage("" + angularSeatVelocityVector);
-        final Vector3d seatVelocity = angularSeatVelocityVector.div(20); //new Vector3d(velocity).add(
+        final Vector3d seatVelocity = angularSeatVelocityVector.div(400); //new Vector3d(velocity).add(
         if (seatVelocity.length() > 5) {
             seatVelocity.set(0);
         }
