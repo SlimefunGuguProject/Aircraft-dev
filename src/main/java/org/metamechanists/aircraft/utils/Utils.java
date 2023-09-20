@@ -67,8 +67,8 @@ public class Utils {
         return new Quaterniond().identity().rotateXYZ(rotation.x, rotation.y, rotation.z);
     }
 
-    public Matrix4f getRotatedMatrix(final @NotNull ModelComponent component, final @NotNull Vector3d rotation) {
-        return new Matrix4f().rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z)).mul(component.getMatrix());
+    public Matrix4f getRotatedMatrix(final @NotNull ModelComponent component, final @NotNull Vector3d rotation, final @NotNull Vector3f centerOfMass) {
+        return new Matrix4f().translate(centerOfMass).rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z)).mul(component.getMatrix());
     }
 
     public Vector3d rotateByEulerAngles(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {

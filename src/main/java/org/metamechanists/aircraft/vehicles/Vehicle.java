@@ -184,7 +184,7 @@ public class Vehicle extends SlimefunItem {
             seatVelocity.set(0);
         }
         seat.setVelocity(Vector.fromJOML(seatVelocity));
-        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(Utils.getRotatedMatrix(cuboid, rotation)));
+        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName).setTransformationMatrix(Utils.getRotatedMatrix(cuboid, rotation, description.getRelativeCenterOfMass())));
         description.updateHud(rotation, seat.getLocation().getBlockY(), hudGroup);
 
         getPilot(seat).ifPresent(pilot -> {});
