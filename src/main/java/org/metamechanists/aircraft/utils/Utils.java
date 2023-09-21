@@ -73,7 +73,7 @@ public class Utils {
         return new Matrix4f()
                 .translate(absoluteCenterOfMass)
                 .rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z))
-                .translate(PLAYER_HEAD_OFFSET)
+                //.translate(PLAYER_HEAD_OFFSET)
                 .mul(component.getMatrix());
     }
 
