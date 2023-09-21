@@ -26,7 +26,7 @@ public class PlayerLookHandler {
         manager.addPacketListener(new PacketAdapter(
                 Aircraft.getInstance(),
                 ListenerPriority.HIGH,
-                PacketType.Play.Server.LOOK_AT) {
+                PacketType.Play.Client.LOOK) {
             @Override
             public void onPacketReceiving(final PacketEvent event) {
                 final PacketContainer packet = event.getPacket();
