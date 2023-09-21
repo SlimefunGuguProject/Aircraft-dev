@@ -25,14 +25,19 @@ public class PlayerLookHandler {
 
         manager.addPacketListener(new PacketAdapter(
                 Aircraft.getInstance(),
-                ListenerPriority.NORMAL,
+                ListenerPriority.HIGH,
                 PacketType.Play.Server.LOOK_AT) {
             @Override
             public void onPacketReceiving(final PacketEvent event) {
                 final PacketContainer packet = event.getPacket();
-                final float rightleft = packet.getFloat().readSafely(0);
-                final float forwardbackwards = packet.getFloat().readSafely(1);
-
+                final Location location = event.getPlayer().getLocation();
+                final Vector coordinates = getVectorForLookAtPacket(location, 45, 5);
+                packet.getIntegers().writeSafely(0, 1);
+                packet.getDoubles().writeSafely(0, coordinates.getX());
+                packet.getDoubles().writeSafely(1, coordinates.getY());
+                packet.getDoubles().writeSafely(2, coordinates.getZ());
+                packet.getBooleans().writeSafely(0, false);
+                sendRotationPacket(event.getPlayer(), 5, 45);
             }
         });
 
