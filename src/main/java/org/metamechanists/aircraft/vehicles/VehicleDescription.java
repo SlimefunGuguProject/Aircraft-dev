@@ -30,6 +30,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.PI;
+import static org.metamechanists.aircraft.utils.Utils.PLAYER_HEAD_OFFSET;
 
 
 public class VehicleDescription {
@@ -246,7 +247,7 @@ public class VehicleDescription {
     public void updateHud(final Vector3d rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
         final Map<String, ModelComponent> hudComponents = getHud(rotation);
         final Map<String, Display> displays = hudGroup.getDisplays();
-        hudComponents.forEach((name, component) -> displays.get(name).setTransformationMatrix(hudComponents.get(name).getMatrix()));
+        hudComponents.forEach((name, component) -> displays.get(name).setTransformationMatrix(hudComponents.get(name).getMatrix().translate(PLAYER_HEAD_OFFSET)));
 
         final TextDisplay altitudeText = (TextDisplay) displays.get("altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
