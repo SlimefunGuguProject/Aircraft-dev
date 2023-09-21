@@ -20,7 +20,7 @@ public class Utils {
     public final int VIEW_RANGE_ON = 1;
     public final int VIEW_RANGE_OFF = 0;
     private final double FLOATING_POINT_THRESHOLD = 0.01;
-    public final Vector3f PLAYER_HEAD_OFFSET = new Vector3f(0, 1.2F, 0);
+    private final Vector3f PLAYER_HEAD_OFFSET = new Vector3f(0, 1.2F, 0);
     public double roundTo2dp(final double value) {
         return Math.round(value*Math.pow(10, 2)) / Math.pow(10, 2);
     }
