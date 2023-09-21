@@ -51,7 +51,7 @@ public class VehicleHud {
                 .rotate(new Vector3d(0, getYaw(rotation), getPitch(rotation)))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.5F, -0.01F);
+                .translate(0.5F, 0.0F, -0.01F);
     }
     private static ModelAdvancedText getHorizonIndicator(final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
         return rollIndependentComponent(hudCenter, rotation)
@@ -59,7 +59,7 @@ public class VehicleHud {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.5F, -0.01F);
+                .translate(0.5F, 0.0F, -0.01F);
     }
     private static ModelAdvancedText getArtificialHorizonCenter(final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation, final Vector3f horizonOffset, final boolean shouldRender) {
         return new ModelAdvancedText()
@@ -71,7 +71,7 @@ public class VehicleHud {
                 .translate(hudCenter)
                 .facing(BlockFace.WEST)
                 .scale(shouldRender ? new Vector3f(0.3F, 0.3F, 0.001F) : new Vector3f())
-                .translate(0.5F, 0.5F, 0);
+                .translate(0.5F, 0.0F, 0);
     }
     private static ModelAdvancedText getArtificialHorizonBar(final Component component,
                                                              final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation, final Vector3f horizonOffset,
@@ -86,7 +86,7 @@ public class VehicleHud {
                 .translate(barOffset)
                 .facing(BlockFace.WEST)
                 .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
-                .translate(0.5F, 0.5F, 0);
+                .translate(0.5F, 0.0F, 0);
     }
     private static ModelAdvancedText getArtificialHorizonDegree(final Component component,
                                                                 final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation, final Vector3f horizonOffset,
@@ -102,7 +102,7 @@ public class VehicleHud {
                 .translate(new Vector3f(0, 0, 0.38F))
                 .facing(BlockFace.WEST)
                 .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
-                .translate(0.5F, 0.5F, 0);
+                .translate(0.5F, 0.0F, 0);
     }
 
     private static void addArtificialHorizon(final @NotNull Map<String, ModelComponent> hudComponents, final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
