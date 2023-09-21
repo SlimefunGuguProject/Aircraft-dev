@@ -198,7 +198,7 @@ public class VehicleHud {
             final Vector3f totalAdjustment = new Vector3f(barOffset).add(compassOffset);
             hudComponents.put("compass_bar_" + i, getCompassBar(hudCenter, rotation, totalAdjustment, compassRadius, i));
 
-            if ((i+1000) % 30 == 0) {
+            if ((i+420) % 30 == 0) {
                 final String text = switch (i) {
                     case -60, 60 -> "N";
                     case -30 -> "E";
@@ -209,12 +209,12 @@ public class VehicleHud {
                 hudComponents.put("compass_direction_" + i, getCompassDirection(hudCenter, rotation, totalAdjustment, compassRadius, text));
             }
 
-            if ((i+1000) % 10 == 0) {
+            if ((i+420) % 10 == 0) {
                 int degrees = (i + 60) * 3;
                 if (degrees < 0) {
                     degrees += 360;
                 } else if (degrees > 360) {
-                    degrees += 360;
+                    degrees -= 360;
                 }
                 hudComponents.put("compass_degree_" + i, getCompassDegree(hudCenter, rotation, totalAdjustment, compassRadius, degrees));
             }
