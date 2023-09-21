@@ -169,7 +169,7 @@ public class VehicleHud {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.3F, 0.3F, 0.001F) : new Vector3f())
-                .translate(0.5F, -0.2F, -0.01F);
+                .translate(0.5F, -0.15F, -0.01F);
     }
     private static ModelComponent getCompassDegree(final @NotNull Vector3f hudCenter,
                                                       final @NotNull Vector3d rotation, final @NotNull Vector3f totalAdjustment, final float compassRadius, final int degrees) {
@@ -180,7 +180,7 @@ public class VehicleHud {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
-                .translate(0.5F, 0.0F, -0.01F);
+                .translate(0.5F, -0.04F, -0.01F);
     }
     private static ModelComponent getCompassNotch(final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
         return rollIndependentComponent(hudCenter, rotation)
