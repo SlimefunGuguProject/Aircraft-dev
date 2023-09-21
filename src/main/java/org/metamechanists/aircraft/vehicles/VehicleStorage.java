@@ -2,7 +2,7 @@ package org.metamechanists.aircraft.vehicles;
 
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Cod;
+import org.bukkit.entity.Pig;
 import org.metamechanists.aircraft.items.groups.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 
@@ -28,12 +28,12 @@ public class VehicleStorage {
         seats = seats.stream().filter(id -> Bukkit.getEntity(id) != null).collect(Collectors.toSet());
         seats.stream()
                 .map(Bukkit::getEntity)
-                .map(Cod.class::cast)
+                .map(Pig.class::cast)
                 .filter(seat -> new PersistentDataTraverser(seat).getString("name") != null)
                 .forEach(VehicleStorage::tick);
     }
 
-    private void tick(final Cod seat) {
+    private void tick(final Pig seat) {
         final String name = new PersistentDataTraverser(seat).getString("name");
         Aircraft.getVehicle(name).tickAircraft(seat);
     }

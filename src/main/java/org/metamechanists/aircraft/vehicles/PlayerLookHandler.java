@@ -11,7 +11,7 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Cod;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -53,9 +53,9 @@ public class PlayerLookHandler {
         });
     }
 
-    public static void lookWith(final Player player, final @NotNull Cod cod) {
+    public static void lookWith(final Player player, final @NotNull Pig pig) {
         final PacketContainer lookAtPacket = MANAGER.createPacket(PacketType.Play.Server.CAMERA);
-        lookAtPacket.getIntegers().writeSafely(0, cod.getEntityId());
+        lookAtPacket.getIntegers().writeSafely(0, pig.getEntityId());
         MANAGER.sendServerPacket(player, lookAtPacket);
     }
 

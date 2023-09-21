@@ -9,8 +9,8 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Cod;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
@@ -69,13 +69,11 @@ public class Vehicle extends SlimefunItem {
         final DisplayGroup componentGroup = buildComponents(block.getLocation());
         final DisplayGroup hudGroup = buildHud(block.getLocation(), new Vector3d());
 
-        final Cod seat = (Cod) block.getWorld().spawnEntity(block.getLocation(), EntityType.COD);
+        final Pig seat = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
         seat.setInvulnerable(true);
         seat.setGravity(false);
         seat.setInvisible(true);
         seat.setSilent(true);
-
-        PlayerLookHandler.lookWith(player, seat);
 
         seat.addPassenger(componentGroup.getParentDisplay());
         seat.addPassenger(hudGroup.getParentDisplay());
@@ -106,14 +104,14 @@ public class Vehicle extends SlimefunItem {
         return builder.buildAtBlockCenter(location);
     }
 
-    private static @NotNull Optional<Player> getPilot(final @NotNull Cod seat) {
+    private static @NotNull Optional<Player> getPilot(final @NotNull Pig seat) {
         return seat.getPassengers().stream()
                 .filter(entity -> entity instanceof Player)
                 .map(Player.class::cast)
                 .findFirst();
     }
 
-    private static void remove(final @NotNull Cod seat, final @NotNull DisplayGroup componentGroup, final @NotNull DisplayGroup hudGroup) {
+    private static void remove(final @NotNull Pig seat, final @NotNull DisplayGroup componentGroup, final @NotNull DisplayGroup hudGroup) {
         componentGroup.remove();
         hudGroup.remove();
         VehicleStorage.remove(seat.getUniqueId());
@@ -139,7 +137,7 @@ public class Vehicle extends SlimefunItem {
         return new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(20);
     }
 
-    public void tickAircraft(final @NotNull Cod seat) {
+    public void tickAircraft(final @NotNull Pig seat) {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
         final Vector3d velocity = traverser.getVector3d("velocity");
         final Vector3d rotation = traverser.getVector3d("rotation");
