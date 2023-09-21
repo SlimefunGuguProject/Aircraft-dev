@@ -182,7 +182,7 @@ public class VehicleHud {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
-                .scale(shouldRender ? new Vector3f(0.4F, 0.4F, 0.001F) : new Vector3f())
+                .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.2F, -0.01F);
     }
 
@@ -200,17 +200,17 @@ public class VehicleHud {
 
             if ((i+420) % 30 == 0) {
                 final String text = switch (i) {
-                    case -60, 60 -> "N";
-                    case -30 -> "E";
-                    case 0 -> "S";
-                    case 30 -> "W";
+                    case -60, 60 -> "W";
+                    case -30 -> "N";
+                    case 0 -> "E";
+                    case 30 -> "S";
                     default -> "ERROR";
                 };
                 hudComponents.put("compass_direction_" + i, getCompassDirection(hudCenter, rotation, totalAdjustment, compassRadius, text));
             }
 
             if ((i+420) % 10 == 0) {
-                int degrees = (i + 60) * 3;
+                int degrees = (i + 60) * 3 - 90;
                 if (degrees < 0) {
                     degrees += 360;
                 } else if (degrees > 360) {
