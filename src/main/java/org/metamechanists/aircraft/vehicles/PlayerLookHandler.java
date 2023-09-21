@@ -11,8 +11,10 @@ import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Cod;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
 
 
@@ -32,9 +34,9 @@ public class PlayerLookHandler {
                 //final PacketContainer packet = event.getPacket();
                 //final float yaw = packet.getFloat().readSafely(0);
                 //final float pitch = packet.getFloat().readSafely(1);
-                event.getPacket().getFloat().writeSafely(0, 0.0F);
-                event.getPacket().getFloat().writeSafely(1, 0.0F);
-                sendRotationPacket(event.getPlayer(), event.getPlayer().getEyeLocation().getYaw() + 5, 0);
+//                event.getPacket().getFloat().writeSafely(0, 0.0F);
+//                event.getPacket().getFloat().writeSafely(1, 0.0F);
+//                sendRotationPacket(event.getPlayer(), event.getPlayer().getEyeLocation().getYaw() + 5, 0);
             }
         });
 
@@ -49,6 +51,12 @@ public class PlayerLookHandler {
                 Bukkit.getLogger().info(event.getPacketType().toString());
             }
         });
+    }
+
+    public static void lookWith(final Player player, final @NotNull Cod cod) {
+        final PacketContainer lookAtPacket = MANAGER.createPacket(PacketType.Play.Server.CAMERA);
+        lookAtPacket.getIntegers().writeSafely(0, cod.getEntityId());
+        MANAGER.sendServerPacket(player, lookAtPacket);
     }
 
     public static void sendYawPacket(Player player, double delta) {

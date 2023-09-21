@@ -75,6 +75,8 @@ public class Vehicle extends SlimefunItem {
         seat.setInvisible(true);
         seat.setSilent(true);
 
+        PlayerLookHandler.lookWith(player, seat);
+
         seat.addPassenger(componentGroup.getParentDisplay());
         seat.addPassenger(hudGroup.getParentDisplay());
         componentGroup.getDisplays().values().forEach(seat::addPassenger);
