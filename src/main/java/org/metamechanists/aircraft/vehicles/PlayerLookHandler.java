@@ -41,6 +41,11 @@ public class PlayerLookHandler {
             public void onPacketReceiving(final PacketEvent event) {
                 Bukkit.getLogger().info(event.getPacketType().toString());
             }
+
+            @Override
+            public void onPacketSending(final PacketEvent event) {
+                Bukkit.getLogger().info(event.getPacketType().toString());
+            }
         });
     }
 
