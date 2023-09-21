@@ -165,9 +165,9 @@ public class VehicleHud {
     private static void addCompass(final @NotNull Map<String, ModelComponent> hudComponents, final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
         final int bars = 30;
         //final int extraBars = 4;
-        final Vector3f compassOffset = new Vector3f((float) (2 * getYaw(rotation)), -0.6F, 0);
+        final Vector3f compassOffset = new Vector3f((float) (getYaw(rotation)), -0.6F, 0);
         final float compassRadius = 0.4F;
-        final float horizontalSpacing = (float) ((2*PI) / (bars));
+        final float horizontalSpacing = (float) ((PI) / (bars));
 
         for (int i = -bars; i <= bars; i++) {
             final Vector3f barOffset = new Vector3f(horizontalSpacing * i, 0, 0);
