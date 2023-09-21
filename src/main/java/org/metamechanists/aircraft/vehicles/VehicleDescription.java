@@ -10,7 +10,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
@@ -248,7 +247,7 @@ public class VehicleDescription {
     public void updateHud(final Vector3d rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
         final Map<String, ModelComponent> hudComponents = getHud(rotation);
         final Map<String, Display> displays = hudGroup.getDisplays();
-        hudComponents.forEach((name, component) -> displays.get(name).setTransformationMatrix(new Matrix4f().translate(PLAYER_HEAD_OFFSET).mul(hudComponents.get(name).getMatrix())));
+        hudComponents.forEach((name, component) -> displays.get(name).setTransformationMatrix(hudComponents.get(name).getMatrix().translate(PLAYER_HEAD_OFFSET)));
 
         final TextDisplay altitudeText = (TextDisplay) displays.get("altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
