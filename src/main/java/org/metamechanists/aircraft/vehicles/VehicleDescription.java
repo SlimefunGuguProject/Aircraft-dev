@@ -246,7 +246,7 @@ public class VehicleDescription {
     public void updateHud(final Vector3d rotation, final int altitude, final @NotNull DisplayGroup hudGroup) {
         final Map<String, ModelComponent> hudComponents = getHud(rotation);
         final Map<String, Display> displays = hudGroup.getDisplays();
-        hudComponents.forEach((name, component) -> displays.get(name).setTransformationMatrix(hudComponents.get(name).getMatrix()));
+        hudComponents.forEach((name, component) -> displays.get(name).setTransformationMatrix(Utils.getHudMatrix(hudComponents.get(name))));
 
         final TextDisplay altitudeText = (TextDisplay) displays.get("altitude");
         altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
