@@ -100,7 +100,7 @@ public class Vehicle extends SlimefunItem {
     }
     private @NotNull DisplayGroup buildHud(final Location location, final Vector3d rotation) {
         final ModelBuilder builder = new ModelBuilder();
-        description.getHud(rotation).forEach(builder::add);
+        VehicleHud.getHud(rotation).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
 
@@ -185,7 +185,7 @@ public class Vehicle extends SlimefunItem {
         seat.setVelocity(Vector.fromJOML(seatVelocity));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName)
                         .setTransformationMatrix(Utils.getComponentMatrix(cuboid, rotation, description.getAbsoluteCenterOfMass(rotation))));
-        description.updateHud(rotation, seat.getLocation().getBlockY(), hudGroup);
+        VehicleHud.updateHud(rotation, seat.getLocation().getBlockY(), hudGroup);
 
         getPilot(seat).ifPresent(pilot -> {});
 
