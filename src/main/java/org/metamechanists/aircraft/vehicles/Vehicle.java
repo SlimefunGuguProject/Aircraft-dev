@@ -141,7 +141,7 @@ public class Vehicle extends SlimefunItem {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
         final Vector3d velocity = traverser.getVector3d("velocity");
         final Vector3d rotation = traverser.getVector3d("rotation");
-        final Vector3d angularVelocity = new Vector3d(0.5, 0, 0);//traverser.getVector3d("angularVelocity");
+        final Vector3d angularVelocity = new Vector3d(5.0, 0, 0);//traverser.getVector3d("angularVelocity");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
