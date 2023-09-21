@@ -20,7 +20,7 @@ public class Utils {
     public final int VIEW_RANGE_ON = 1;
     public final int VIEW_RANGE_OFF = 0;
     private final double FLOATING_POINT_THRESHOLD = 0.01;
-    public final Vector3f PLAYER_HEAD_OFFSET = new Vector3f(0, 1.2F, 0);
+    private final Vector3f PLAYER_HEAD_OFFSET = new Vector3f(0, 1.2F, 0);
     public double roundTo2dp(final double value) {
         return Math.round(value*Math.pow(10, 2)) / Math.pow(10, 2);
     }
@@ -69,11 +69,17 @@ public class Utils {
         return new Quaterniond().identity().rotateXYZ(rotation.x, rotation.y, rotation.z);
     }
 
-    public Matrix4f getRotatedMatrix(final @NotNull ModelComponent component, final @NotNull Vector3d rotation, final @NotNull Vector3f absoluteCenterOfMass) {
+    public Matrix4f getComponentMatrix(final @NotNull ModelComponent component, final @NotNull Vector3d rotation, final @NotNull Vector3f absoluteCenterOfMass) {
         return new Matrix4f()
                 .translate(absoluteCenterOfMass)
                 .translate(PLAYER_HEAD_OFFSET)
                 .rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z))
+                .mul(component.getMatrix());
+    }
+
+    public Matrix4f getHudMatrix(final @NotNull ModelComponent component) {
+        return new Matrix4f()
+                .translate(PLAYER_HEAD_OFFSET)
                 .mul(component.getMatrix());
     }
 
