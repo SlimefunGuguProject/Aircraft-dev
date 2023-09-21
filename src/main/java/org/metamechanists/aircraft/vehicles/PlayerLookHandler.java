@@ -32,7 +32,7 @@ public class PlayerLookHandler {
                 //final PacketContainer packet = event.getPacket();
                 //final float yaw = packet.getFloat().readSafely(0);
                 //final float pitch = packet.getFloat().readSafely(1);
-                sendRotationPacket(event.getPlayer(), event.getPlayer().getEyeLocation().getYaw() + 45, 0);
+                sendRotationPacket(event.getPlayer(), event.getPlayer().getEyeLocation().getYaw() + 5, 0);
             }
         });
 
