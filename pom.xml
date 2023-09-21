@@ -107,7 +107,7 @@
         <dependency>
             <groupId>org.metamechanists</groupId>
             <artifactId>DisplayModelLib</artifactId>
-            <version>14</version>
+            <version>17</version>
             <scope>compile</scope>
         </dependency>
 
