@@ -180,7 +180,7 @@ public class VehicleHud {
                 .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
-                .translate(0.5F, 0.02F, -0.01F);
+                .translate(0.5F, 0.0F, -0.01F);
     }
     private static ModelComponent getCompassNotch(final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
         return rollIndependentComponent(hudCenter, rotation)
@@ -188,17 +188,17 @@ public class VehicleHud {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.2F, 0.2F, 0.001F))
-                .translate(0.5F, 0.3F, -0.01F);
+                .translate(0.5F, -0.3F, -0.01F);
     }
 
     private static void addCompass(final @NotNull Map<String, ModelComponent> hudComponents, final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
+        hudComponents.put("compass_notch", getCompassNotch(hudCenter, rotation));
+
         final int bars = 60;
         final int extraBars = 8;
         final Vector3f compassOffset = new Vector3f((float) (getYaw(rotation)), -0.6F, 0);
         final float compassRadius = 0.4F;
         final float horizontalSpacing = (float) (PI / (bars));
-
-        hudComponents.put("compass_notch", getCompassNotch(hudCenter, rotation));
 
         for (int i = -bars-extraBars; i <= bars+extraBars; i++) {
             final Vector3f barOffset = new Vector3f(horizontalSpacing * i, 0, 0);
