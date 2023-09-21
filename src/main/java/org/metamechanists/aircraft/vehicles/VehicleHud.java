@@ -86,7 +86,7 @@ public class VehicleHud {
                 .translate(barOffset)
                 .facing(BlockFace.WEST)
                 .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
-                .translate(0.5F, 0.3F, 0);
+                .translate(0.5F, 0.35F, 0);
     }
     private static ModelAdvancedText getArtificialHorizonDegree(final Component component,
                                                                 final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation, final Vector3f horizonOffset,
@@ -115,9 +115,9 @@ public class VehicleHud {
 
         hudComponents.put("horizon_center", getArtificialHorizonCenter(hudCenter, rotation, horizonOffset, shouldRenderCenter));
 
-        final int bars = 31;
+        final int bars = 30;
         final float verticalSpacing = (float) ((PI / 1.14) / (bars));
-        for (int i = -bars; i < bars; i++) {
+        for (int i = -bars; i <= bars; i++) {
             if (i == 0) {
                 continue;
             }
