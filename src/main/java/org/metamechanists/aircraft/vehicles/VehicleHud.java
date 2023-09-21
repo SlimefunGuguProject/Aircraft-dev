@@ -102,7 +102,7 @@ public class VehicleHud {
                 .translate(new Vector3f(0, 0, 0.38F))
                 .facing(BlockFace.WEST)
                 .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
-                .translate(0.5F, 0.0F, 0);
+                .translate(0.5F, 0.35F, 0);
     }
 
     private static void addArtificialHorizon(final @NotNull Map<String, ModelComponent> hudComponents, final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
@@ -139,21 +139,25 @@ public class VehicleHud {
         }
     }
 
-    private static ModelComponent getCompassBar(final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation, final float headingDegrees) {
+    private static ModelComponent getCompassBar(final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation, final float headingDegrees, final boolean shouldRender) {
         return rollIndependentComponent(hudCenter, rotation)
                 .text(Component.text("|").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .translate(new Vector3f(headingDegrees / 100, -1.0F, 0))
-                .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.5F, -0.01F);
+                .translate(new Vector3f(headingDegrees / 100, -0.8F, 0))
+                .scale(shouldRender ? new Vector3f(0.4F, 0.4F, 0.001F) : new Vector3f())
+                .translate(0.5F, 0.35F, -0.01F);
     }
 
     private static void addCompass(final @NotNull Map<String, ModelComponent> hudComponents, final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
-        final int bars = 72;
-        for (int i = 0; i < bars; i++) {
-            final float headingDegrees = (i / (float) bars) * 360;
-            hudComponents.put("compass_" + i, getCompassBar(hudCenter, rotation, headingDegrees));
+        final int bars = 30;
+        final int extraBars = 4;
+        final Vector3f compassOffset = new Vector3f(0, (float) (2 * -getYaw(rotation)), 0);
+        final float compassRadius = 0.4F;
+        for (int i = -bars-extraBars; i <= bars+extraBars; i++) {
+            final float headingDegrees = ((float)(i+extraBars) / bars) * 360;
+            final boolean shouldRender = compassOffset.length() < compassRadius;
+            hudComponents.put("compass_" + i, getCompassBar(hudCenter, rotation, headingDegrees, shouldRender));
         }
     }
 
