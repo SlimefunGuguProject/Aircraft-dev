@@ -142,10 +142,10 @@ public class VehicleHud {
         final boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
         final TextColor color;
         final float size;
-        if (i % 15 == 0) {
+        if (i % 30 == 0) {
             color = TextColor.color(0, 255, 0);
             size = 0.6F;
-        } else if (i % 5 == 0) {
+        } else if (i % 10 == 0) {
             color = TextColor.color(100, 140, 100);
             size = 0.3F;
         } else {
@@ -162,17 +162,62 @@ public class VehicleHud {
                 .translate(0.5F, 0.35F, -0.01F);
     }
 
+    private static ModelComponent getCompassDirection(final @NotNull Vector3f hudCenter,
+                                                final @NotNull Vector3d rotation, final @NotNull Vector3f totalAdjustment, final float compassRadius, final String text) {
+        final boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
+        return rollIndependentComponent(hudCenter, rotation)
+                .text(Component.text(text).color(TextColor.color(255, 0, 0)))
+                .background(Color.fromARGB(0, 0, 0, 0))
+                .brightness(Utils.BRIGHTNESS_ON)
+                .translate(totalAdjustment)
+                .scale(shouldRender ? new Vector3f(0.4F, 0.4F, 0.001F) : new Vector3f())
+                .translate(0.5F, 0.0F, -0.01F);
+    }
+
+    private static ModelComponent getCompassDegree(final @NotNull Vector3f hudCenter,
+                                                      final @NotNull Vector3d rotation, final @NotNull Vector3f totalAdjustment, final float compassRadius, final int degrees) {
+        final boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
+        return rollIndependentComponent(hudCenter, rotation)
+                .text(Component.text(degrees).color(TextColor.color(255, 255, 255)))
+                .background(Color.fromARGB(0, 0, 0, 0))
+                .brightness(Utils.BRIGHTNESS_ON)
+                .translate(totalAdjustment)
+                .scale(shouldRender ? new Vector3f(0.4F, 0.4F, 0.001F) : new Vector3f())
+                .translate(0.5F, 0.2F, -0.01F);
+    }
+
     private static void addCompass(final @NotNull Map<String, ModelComponent> hudComponents, final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
-        final int bars = 30;
+        final int bars = 60;
         final int extraBars = 8;
-        final Vector3f compassOffset = new Vector3f((float) (0.5 * getYaw(rotation)), -0.6F, 0);
+        final Vector3f compassOffset = new Vector3f((float) (getYaw(rotation)), -0.6F, 0);
         final float compassRadius = 0.4F;
-        final float horizontalSpacing = (float) ((0.5 * PI) / (bars));
+        final float horizontalSpacing = (float) (PI / (bars));
 
         for (int i = -bars-extraBars; i <= bars+extraBars; i++) {
             final Vector3f barOffset = new Vector3f(horizontalSpacing * i, 0, 0);
             final Vector3f totalAdjustment = new Vector3f(barOffset).add(compassOffset);
-            hudComponents.put("compass_" + i, getCompassBar(hudCenter, rotation, totalAdjustment, compassRadius, i));
+            hudComponents.put("compass_bar_" + i, getCompassBar(hudCenter, rotation, totalAdjustment, compassRadius, i));
+
+            if ((i+1000) % 30 == 0) {
+                final String text = switch (i) {
+                    case -60, 60 -> "N";
+                    case -30 -> "E";
+                    case 0 -> "S";
+                    case 30 -> "W";
+                    default -> "ERROR";
+                };
+                hudComponents.put("compass_direction_" + i, getCompassDirection(hudCenter, rotation, totalAdjustment, compassRadius, text));
+            }
+
+            if ((i+1000) % 10 == 0) {
+                int degrees = (i + 60) * 3;
+                if (degrees < 0) {
+                    degrees += 360;
+                } else if (degrees > 360) {
+                    degrees += 360;
+                }
+                hudComponents.put("compass_degree_" + i, getCompassDegree(hudCenter, rotation, totalAdjustment, compassRadius, degrees));
+            }
         }
     }
 
