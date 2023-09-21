@@ -155,7 +155,7 @@ public class VehicleHud {
         final float horizontalSpacing = (float) ((PI / 1.14) / (bars));
 
         for (int i = -bars-extraBars; i <= bars+extraBars; i++) {
-            final Vector3f barOffset = new Vector3f(horizontalSpacing * i, -0.8F, 0);
+            final Vector3f barOffset = new Vector3f(horizontalSpacing * i, 0, 0);
             final Vector3f totalAdjustment = new Vector3f(barOffset).add(compassOffset);
             final boolean shouldRender = totalAdjustment.length() < compassRadius;
             hudComponents.put("compass_" + i, getCompassBar(hudCenter, rotation, totalAdjustment, shouldRender));
