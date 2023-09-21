@@ -86,7 +86,7 @@ public class VehicleHud {
                 .translate(barOffset)
                 .facing(BlockFace.WEST)
                 .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
-                .translate(0.5F, 0.0F, 0);
+                .translate(0.5F, 0.23F, 0);
     }
     private static ModelAdvancedText getArtificialHorizonDegree(final Component component,
                                                                 final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation, final Vector3f horizonOffset,

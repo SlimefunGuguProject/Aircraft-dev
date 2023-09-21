@@ -141,7 +141,7 @@ public class Vehicle extends SlimefunItem {
         final PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
         final Vector3d velocity = traverser.getVector3d("velocity");
         final Vector3d rotation = traverser.getVector3d("rotation");
-        final Vector3d angularVelocity = new Vector3d(5.0, 0, 0);//traverser.getVector3d("angularVelocity");
+        final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         final DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
@@ -158,7 +158,7 @@ public class Vehicle extends SlimefunItem {
         description.applyVelocityDampening(velocity);
         velocity.add(getAcceleration(forces));
 
-        //angularVelocity.add(getAngularAcceleration(forces));
+        angularVelocity.add(getAngularAcceleration(forces));
         description.applyAngularVelocityDampening(angularVelocity);
 
         final Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(rotation);
@@ -182,7 +182,7 @@ public class Vehicle extends SlimefunItem {
         if (seatVelocity.length() > 5) {
             seatVelocity.set(0);
         }
-        //seat.setVelocity(Vector.fromJOML(seatVelocity));
+        seat.setVelocity(Vector.fromJOML(seatVelocity));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName)
                         .setTransformationMatrix(Utils.getComponentMatrix(cuboid, rotation, description.getAbsoluteCenterOfMass(rotation))));
         VehicleHud.updateHud(rotation, seat.getLocation().getBlockY(), hudGroup);
