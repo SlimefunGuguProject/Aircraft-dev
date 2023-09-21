@@ -146,10 +146,10 @@ public class VehicleHud {
             color = TextColor.color(0, 255, 0);
             size = 0.6F;
         } else if (i % 5 == 0) {
-            color = TextColor.color(0, 170, 0);
+            color = TextColor.color(100, 140, 100);
             size = 0.3F;
         } else {
-            color = TextColor.color(0, 100, 0);
+            color = TextColor.color(100, 100, 100);
             size = 0.2F;
         }
 
@@ -165,9 +165,9 @@ public class VehicleHud {
     private static void addCompass(final @NotNull Map<String, ModelComponent> hudComponents, final @NotNull Vector3f hudCenter, final @NotNull Vector3d rotation) {
         final int bars = 30;
         //final int extraBars = 4;
-        final Vector3f compassOffset = new Vector3f((float) (getYaw(rotation)), -0.6F, 0);
+        final Vector3f compassOffset = new Vector3f((float) (0.5 * getYaw(rotation)), -0.6F, 0);
         final float compassRadius = 0.4F;
-        final float horizontalSpacing = (float) ((PI) / (bars));
+        final float horizontalSpacing = (float) ((0.5 * PI) / (bars));
 
         for (int i = -bars; i <= bars; i++) {
             final Vector3f barOffset = new Vector3f(horizontalSpacing * i, 0, 0);
