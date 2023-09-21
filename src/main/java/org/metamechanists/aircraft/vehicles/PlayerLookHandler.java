@@ -3,14 +3,46 @@ package org.metamechanists.aircraft.vehicles;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import com.comphenix.protocol.events.ConnectionSide;
+import com.comphenix.protocol.events.ListenerPriority;
+import com.comphenix.protocol.events.MonitorAdapter;
+import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+import org.metamechanists.aircraft.Aircraft;
+
 
 public class PlayerLookHandler {
     private static final ProtocolManager MANAGER = ProtocolLibrary.getProtocolManager();
     private static final double DEGREES_TO_RADIAN = Math.PI / 180;
+
+    public static void addProtocolListener() {
+        final ProtocolManager manager = ProtocolLibrary.getProtocolManager();
+
+        manager.addPacketListener(new PacketAdapter(
+                Aircraft.getInstance(),
+                ListenerPriority.NORMAL,
+                PacketType.Play.Server.LOOK_AT) {
+            @Override
+            public void onPacketReceiving(final PacketEvent event) {
+                final PacketContainer packet = event.getPacket();
+                final float rightleft = packet.getFloat().readSafely(0);
+                final float forwardbackwards = packet.getFloat().readSafely(1);
+
+            }
+        });
+
+        manager.addPacketListener(new MonitorAdapter(Aircraft.getInstance(), ConnectionSide.BOTH) {
+            @Override
+            public void onPacketReceiving(final PacketEvent event) {
+                Bukkit.getLogger().info(event.getPacketType().toString());
+            }
+        });
+    }
 
     public static void sendYawPacket(Player player, double delta) {
         final Location eyeLocation = player.getEyeLocation();

@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.commands.AircraftCommand;
 import org.metamechanists.aircraft.items.Groups;
+import org.metamechanists.aircraft.vehicles.PlayerLookHandler;
 import org.metamechanists.aircraft.vehicles.VehicleTicker;
 import org.metamechanists.aircraft.vehicles.KeyboardHandler;
 
@@ -18,6 +19,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
 
     private static void initializeListeners() {
         KeyboardHandler.addProtocolListener();
+        PlayerLookHandler.addProtocolListener();
     }
 
     private void initializeRunnables() {
