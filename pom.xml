@@ -41,6 +41,10 @@
                             <pattern>org.metamechanists.displaymodellib</pattern>
                             <shadedPattern>org.metamechanists.aircraft.displaymodellib</shadedPattern>
                         </relocation>
+                        <relocation>
+                            <pattern>co.aiker</pattern>
+                            <shadedPattern>org.metamechanists.aircraft.co.aikar</shadedPattern>
+                        </relocation>
                     </relocations>
                     <filters>
                         <filter>
@@ -143,7 +147,7 @@
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
             <version>0.5.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
