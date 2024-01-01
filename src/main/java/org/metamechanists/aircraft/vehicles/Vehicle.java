@@ -36,8 +36,8 @@ public class Vehicle extends SlimefunItem {
     private final String name;
     private VehicleDescription description;
 
-    public static final SlimefunItemStack GLIDER = new SlimefunItemStack(
-            "ACR_TEST_AIRCRAFT",
+    public static final SlimefunItemStack LIGHT_AIRCRAFT = new SlimefunItemStack(
+            "ACR_LIGHT_AIRCRAFT",
             Material.FEATHER,
             "&4&ljustin don't hurt me",
             "&cpls");
@@ -98,7 +98,7 @@ public class Vehicle extends SlimefunItem {
         description.getCuboids(description.initializeOrientations()).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
-    private @NotNull DisplayGroup buildHud(final Location location, final Vector3d rotation) {
+    private static @NotNull DisplayGroup buildHud(final Location location, final Vector3d rotation) {
         final ModelBuilder builder = new ModelBuilder();
         VehicleHud.getHud(rotation).forEach(builder::add);
         return builder.buildAtBlockCenter(location);

@@ -8,12 +8,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.metamechanists.aircraft.items.Groups;
 import org.metamechanists.aircraft.vehicles.Vehicle;
 import org.metamechanists.aircraft.vehicles.VehicleDescription;
-import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.metamechanists.aircraft.vehicles.Vehicle.GLIDER;
+import static org.metamechanists.aircraft.vehicles.Vehicle.LIGHT_AIRCRAFT;
 
 
 @UtilityClass
@@ -26,7 +25,7 @@ public class Aircraft {
 
         plugin.saveResource("vehicles/test_aircraft.yml", false);
 
-        vehicles.put("test_aircraft", new Vehicle(Groups.AIRCRAFT, GLIDER, RecipeType.NULL, new ItemStack[]{}, "test_aircraft", new VehicleDescription("vehicles/test_aircraft.yml")));
+        vehicles.put("test_aircraft", new Vehicle(Groups.AIRCRAFT, LIGHT_AIRCRAFT, RecipeType.NULL, new ItemStack[]{}, "test_aircraft", new VehicleDescription("vehicles/test_aircraft.yml")));
 
         vehicles.values().forEach(vehicle -> vehicle.register(addon));
     }
