@@ -232,12 +232,24 @@ public class Vehicle extends SlimefunItem {
 
         boolean isOnGround = seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
         if (isOnGround) {
-            Vector3d friction = new Vector3d(velocity)
-                    .normalize()
-                    .mul(-1.0)
-                    .mul(Math.abs(acceleration.y))
-                    .mul(description.getFrictionCoefficient());
-            velocity.sub(friction);
+            if (velocity.length() > 0.0001) {
+                double horizontalForce = new Vector3d(acceleration.x, 0.0, acceleration.z)
+                        .mul(description.getMass())
+                        .length();
+                double horizontalVelocity = new Vector3d(velocity.x, 0.0, velocity.z)
+                        .length();
+
+                double frictionAmount = Math.abs(acceleration.y) * description.getFrictionCoefficient();
+                if (horizontalVelocity < 0.01) {
+                    // Stationary; limiting equilibrium
+                    frictionAmount = Math.min(frictionAmount, horizontalForce);
+                }
+
+                Vector3d friction = new Vector3d(velocity)
+                        .normalize()
+                        .mul(-frictionAmount);
+                velocity.sub(friction);
+            }
         }
 
         angularVelocity.add(getAngularAcceleration(forces));
