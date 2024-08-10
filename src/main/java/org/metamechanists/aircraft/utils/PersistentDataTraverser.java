@@ -254,9 +254,10 @@ public class PersistentDataTraverser {
                 .collect(Collectors.toList());
     }
     public @Nullable Map<String, ControlSurfaceOrientation> getControlSurfaceOrientations(@NotNull String key) {
+
         int size = getInt(key + "length");
         if (size == 0) {
-            return null;
+            return new HashMap<>();
         }
         Map<String, ControlSurfaceOrientation> controlSurfaceOrientations = new HashMap<>();
         IntStream.range(0, size).forEach(i -> {
