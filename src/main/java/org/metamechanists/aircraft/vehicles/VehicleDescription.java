@@ -36,6 +36,8 @@ public class VehicleDescription {
     @Getter
     private final double thrust;
     @Getter
+    private final double gravityAcceleration;
+    @Getter
     private final double airDensity;
     private final Set<FixedComponent> fixedComponents = new HashSet<>();
     @Getter
@@ -82,6 +84,7 @@ public class VehicleDescription {
         velocityDampening = traverser.get("velocityDampening");
         angularVelocityDampening = traverser.get("angularVelocityDampening");
         thrust = traverser.get("thrust");
+        gravityAcceleration = traverser.get("gravityAcceleration");
         airDensity = traverser.get("airDensity");
 
         Map<String, ComponentGroup> groups = new HashMap<>();
