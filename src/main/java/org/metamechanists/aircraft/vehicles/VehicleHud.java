@@ -57,7 +57,7 @@ public final class VehicleHud {
     }
     private static ModelAdvancedText getHorizonIndicator(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
         return rollIndependentComponent(hudCenter, rotation)
-                .text(Component.text("[ = <     > = ]").color(TextColor.color(255, 255, 255)))
+                .text(Component.text("[= =  [     ] = =").color(TextColor.color(170, 255, 170)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
@@ -66,7 +66,7 @@ public final class VehicleHud {
     private static ModelAdvancedText getArtificialHorizonCenter(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation, Vector3f horizonOffset, boolean shouldRender) {
         return new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
-                .text(Component.text("------------------").color(TextColor.color(0, 255, 255)).decorate(TextDecoration.BOLD))
+                .text(Component.text("➖➖➖➖➖➖➖➖➖➖").color(TextColor.color(0, 255, 255)).decorate(TextDecoration.BOLD))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(horizonOffset)
@@ -125,9 +125,9 @@ public final class VehicleHud {
             Vector3f barOffset = new Vector3f(0, verticalSpacing * i, 0);
             Vector3f totalAdjustment = new Vector3f(barOffset).add(horizonOffset);
             boolean longBar = i % 5 == 0;
-            String text = "--------------" + (longBar ? "------" : "");
-            TextColor color = longBar ? TextColor.color(0, 180, 255) : TextColor.color(180, 180, 180);
-            Component component = Component.text(text).color(color);
+            String text = "➖➖➖➖➖➖➖➖➖➖" + (longBar ? "➖➖➖" : "");
+            TextColor color = longBar ? TextColor.color(0, 180, 255) : TextColor.color(0, 150, 180);
+            Component component = Component.text(text).color(color).decorate(TextDecoration.BOLD);
             boolean shouldRender = Math.abs(totalAdjustment.length()) < horizonRadius;
 
             hudComponents.put("horizon_bar_" + i, getArtificialHorizonBar(component, hudCenter, rotation, horizonOffset, barOffset, shouldRender));
@@ -144,13 +144,13 @@ public final class VehicleHud {
         TextColor color;
         float size;
         if (i % 30 == 0) {
-            color = TextColor.color(0, 255, 0);
+            color = TextColor.color(0, 255, 255);
             size = 0.6F;
         } else if (i % 10 == 0) {
-            color = TextColor.color(100, 140, 100);
+            color = TextColor.color(0, 180, 255);
             size = 0.3F;
         } else {
-            color = TextColor.color(100, 100, 100);
+            color = TextColor.color(0, 150, 180);
             size = 0.2F;
         }
 
@@ -177,7 +177,7 @@ public final class VehicleHud {
                                                    @NotNull Vector3d rotation, @NotNull Vector3f totalAdjustment, float compassRadius, int degrees) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
         return rollIndependentComponent(hudCenter, rotation)
-                .text(Component.text(degrees).color(TextColor.color(255, 255, 255)))
+                .text(Component.text(degrees).color(TextColor.color(0, 200, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
@@ -186,7 +186,7 @@ public final class VehicleHud {
     }
     private static ModelComponent getCompassNotch(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
         return rollIndependentComponent(hudCenter, rotation)
-                .text(Component.text("v").color(TextColor.color(255, 255, 255)))
+                .text(Component.text("▼").color(TextColor.color(255, 255, 255)))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.2F, 0.2F, 0.001F))
@@ -230,7 +230,7 @@ public final class VehicleHud {
 
     public static @NotNull Map<String, ModelComponent> getHud(@NotNull Vector3d rotation) {
         Map<String, ModelComponent> hudComponents = new HashMap<>();
-        Vector3f hudCenter = new Vector3f(1, -0.2F, 0);
+        Vector3f hudCenter = new Vector3f(2.0F, -0.2F, 0.0F);
 
         addArtificialHorizon(hudComponents, hudCenter, rotation);
         addCompass(hudComponents, hudCenter, rotation);
