@@ -134,7 +134,7 @@ public final class VehicleHud {
         hudComponents.put("horizon_center", getArtificialHorizonCenter(hudCenter, rotation, horizonOffset, shouldRenderCenter));
 
         final int bars = 30;
-        final float verticalSpacing = (float) ((PI / 1.14) / (bars));
+        final float verticalSpacing = 0.5F * (float) ((PI / 1.14) / (bars));
         for (int i = -bars; i <= bars; i++) {
             if (i == 0) {
                 continue;
@@ -251,7 +251,7 @@ public final class VehicleHud {
 
     public static @NotNull Map<String, ModelComponent> getHud(@NotNull Vector3d rotation) {
         Map<String, ModelComponent> hudComponents = new HashMap<>();
-        Vector3f hudCenter = new Vector3f(0.25F, -0.1F, 0.0F);
+        Vector3f hudCenter = new Vector3f(0.5F, -0.2F, 0.0F);
 
         addArtificialHorizon(hudComponents, hudCenter, rotation);
         addCompass(hudComponents, hudCenter, rotation);
