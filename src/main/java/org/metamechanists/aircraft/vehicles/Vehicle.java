@@ -215,17 +215,33 @@ public class Vehicle extends SlimefunItem {
 
         DisplayGroup componentGroup = componentGroupId.get().get();
         DisplayGroup hudGroup = hudGroupId.get().get();
-        Set<SpatialForce> forces = getForces(throttle, velocity, rotation, angularVelocity, orientations);
 
-        description.applyVelocityDampening(velocity);
-        Vector3d acceleration = getAcceleration(forces);
-        velocity.add(acceleration);
+        for (int i = 0; i < 10; i++) {
+            Set<SpatialForce> forces = getForces(throttle, velocity, rotation, angularVelocity, orientations);
+
+            description.applyVelocityDampening(velocity);
+            Vector3d acceleration = getAcceleration(forces);
+            velocity.add(acceleration.div(200));
+
+            angularVelocity.add(getAngularAcceleration(forces));
+            description.applyAngularVelocityDampening(angularVelocity);
+
+            Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(rotation);
+            Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
+            Vector3d relativeAngularVelocity = new Vector3d(angularVelocity).rotate(negativeRotation);
+
+            rotation.set(Utils.getRotationEulerAngles(rotation)
+                    .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(200)))
+                    .getEulerAnglesXYZ(new Vector3d()));
+        }
 
         cancelVelocity(velocity, pig);
 
         boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
         if (isOnGround) {
             if (velocity.length() > 0.0001) {
+                Set<SpatialForce> forces = getForces(throttle, velocity, rotation, angularVelocity, orientations);
+                Vector3d acceleration = getAcceleration(forces);
                 double horizontalForce = new Vector3d(acceleration.x, 0.0, acceleration.z)
                         .mul(description.getMass())
                         .length();
@@ -244,17 +260,6 @@ public class Vehicle extends SlimefunItem {
                 velocity.sub(friction);
             }
         }
-
-        angularVelocity.add(getAngularAcceleration(forces));
-        description.applyAngularVelocityDampening(angularVelocity);
-
-        Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(rotation);
-        Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
-        Vector3d relativeAngularVelocity = new Vector3d(angularVelocity).rotate(negativeRotation);
-
-        rotation.set(Utils.getRotationEulerAngles(rotation)
-                .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(20)))
-                .getEulerAnglesXYZ(new Vector3d()));
 
         description.moveHingeComponentsToCenter(orientations);
 
