@@ -1,5 +1,6 @@
 package org.metamechanists.aircraft.items;
 
+import io.github.bakedlibs.dough.common.ChatColors;
 import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -40,13 +41,15 @@ public class Items {
         for (File file : vehicleFiles) {
             try {
                 String name = new YamlTraverser(Aircraft.getInstance(), file).get("name");
-                String id = name.toLowerCase().replace(' ', '_');
+                String id = name.toLowerCase()
+                        .replace(' ', '_')
+                        .replaceAll("&.", "");
                 vehicles.put(id, new Vehicle(
                         AIRCRAFT_GROUP,
                         LIGHT_AIRCRAFT,
                         RecipeType.NULL,
                         new ItemStack[]{},
-                        id,
+                        ChatColor.translateAlternateColorCodes('&', name),
                         new VehicleDescription("vehicles/" + file.getName())));
             } catch (RuntimeException e) {
                 Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + file.getName() + ": " + e);

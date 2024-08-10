@@ -28,8 +28,6 @@ public class VehicleDescription {
     @Getter
     private final Vector3f relativeCenterOfMass;
     @Getter
-    private final Vector3f seatLocation;
-    @Getter
     private final double mass;
     @Getter
     private final double momentOfInertia;
@@ -82,7 +80,6 @@ public class VehicleDescription {
     public VehicleDescription(String path) {
         this.path = path;
         YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), path);
-        seatLocation = getVector3f(traverser, "seat");
         relativeCenterOfMass = getVector3f(traverser, "centerOfMass");
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia");

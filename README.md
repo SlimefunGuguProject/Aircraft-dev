@@ -5,6 +5,7 @@
 * Throttle
 * Hide player when on aircraft
 * Friction
+Allow mounting
 - Fuel
 - Velocity indicator
 - Vertical/horizontal speed indicator
@@ -12,7 +13,6 @@
 - Recipes
 - Only explode above velocity + explosion size depends on velocity
 - Protection plugin integration
-- Allow mounting
 - Dismounting kills throttle
 - Persist over restarts
 - Taxiing
