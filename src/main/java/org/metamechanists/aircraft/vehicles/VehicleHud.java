@@ -2,7 +2,6 @@ package org.metamechanists.aircraft.vehicles;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Color;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Display;
@@ -68,7 +67,7 @@ public final class VehicleHud {
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, getYaw(rotation), getPitch(rotation)))
                 .facing(BlockFace.WEST)
-                .scale(new Vector3f(0.4F, 0.4F, 0.001F))
+                .scale(new Vector3f(0.2F, 0.2F, 0.001F))
                 .translate(0.5F, 0.35F, 0.03F);
     }
     private static ModelAdvancedText getHorizonIndicator(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
