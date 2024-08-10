@@ -7,7 +7,7 @@ import org.metamechanists.aircraft.Aircraft;
 
 @UtilityClass
 public class Keys {
-    private @NotNull NamespacedKey newKey(final String key) {
+    private @NotNull NamespacedKey newKey(String key) {
         return new NamespacedKey(Aircraft.getInstance(), key);
     }
 

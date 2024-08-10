@@ -11,13 +11,13 @@ public class DisplayGroupId extends CustomId {
     public DisplayGroupId() {
         super();
     }
-    public DisplayGroupId(final CustomId id) {
+    public DisplayGroupId(CustomId id) {
         super(id);
     }
-    public DisplayGroupId(final String uuid) {
+    public DisplayGroupId(String uuid) {
         super(uuid);
     }
-    public DisplayGroupId(final UUID uuid) {
+    public DisplayGroupId(UUID uuid) {
         super(uuid);
     }
     @Override

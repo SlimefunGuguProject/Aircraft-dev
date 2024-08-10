@@ -25,7 +25,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
     }
 
     private void initializeCommands() {
-        final PaperCommandManager commandManager = new PaperCommandManager(this);
+        PaperCommandManager commandManager = new PaperCommandManager(this);
         commandManager.registerCommand(new AircraftCommand());
         commandManager.enableUnstableAPI("help");
     }

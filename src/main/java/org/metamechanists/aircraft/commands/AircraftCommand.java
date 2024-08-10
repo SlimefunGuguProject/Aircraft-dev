@@ -20,14 +20,14 @@ public class AircraftCommand extends BaseCommand {
     @HelpCommand
     @Syntax("")
     @Private
-    public static void helpCommand(final CommandSender sender, @NotNull final CommandHelp help) {
+    public static void helpCommand(CommandSender sender, @NotNull CommandHelp help) {
         help.showHelp();
     }
 
     @Subcommand("reload")
     @Syntax("Reloads the plugin")
     @CommandPermission("aircraft.command.reload")
-    public static void charge(final Player player, final String @NotNull [] args) {
+    public static void charge(Player player, String @NotNull [] args) {
         Aircraft.reload();
     }
 }

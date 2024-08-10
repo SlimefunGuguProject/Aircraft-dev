@@ -20,8 +20,8 @@ public class Aircraft {
     private final Map<String, Vehicle> vehicles = new HashMap<>();
 
     public void initialize() {
-        final JavaPlugin plugin = org.metamechanists.aircraft.Aircraft.getInstance();
-        final SlimefunAddon addon = (SlimefunAddon) plugin;
+        JavaPlugin plugin = org.metamechanists.aircraft.Aircraft.getInstance();
+        SlimefunAddon addon = (SlimefunAddon) plugin;
 
         plugin.saveResource("vehicles/test_aircraft.yml", false);
 
@@ -34,7 +34,7 @@ public class Aircraft {
         vehicles.values().forEach(Vehicle::reload);
     }
 
-    public Vehicle getVehicle(final String name) {
+    public Vehicle getVehicle(String name) {
         return vehicles.get(name);
     }
 }

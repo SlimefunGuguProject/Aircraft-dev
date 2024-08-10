@@ -12,18 +12,18 @@ public class BlockDisplayId extends CustomId {
     public BlockDisplayId() {
         super();
     }
-    public BlockDisplayId(final CustomId id) {
+    public BlockDisplayId(CustomId id) {
         super(id);
     }
-    public BlockDisplayId(final String uuid) {
+    public BlockDisplayId(String uuid) {
         super(uuid);
     }
-    public BlockDisplayId(final UUID uuid) {
+    public BlockDisplayId(UUID uuid) {
         super(uuid);
     }
     @Override
     public Optional<BlockDisplay> get() {
-        return Bukkit.getEntity(getUUID()) instanceof final BlockDisplay blockDisplay
+        return Bukkit.getEntity(getUUID()) instanceof BlockDisplay blockDisplay
                 ? Optional.of(blockDisplay)
                 : Optional.empty();
     }

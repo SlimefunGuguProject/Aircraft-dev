@@ -42,7 +42,7 @@ public class Vehicle extends SlimefunItem {
             "&4&ljustin don't hurt me",
             "&cpls");
 
-    public Vehicle(final ItemGroup itemGroup, final SlimefunItemStack item, final RecipeType recipeType, final ItemStack[] recipe, final String name, final VehicleDescription description) {
+    public Vehicle(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String name, VehicleDescription description) {
         super(itemGroup, item, recipeType, recipe);
         this.name = name;
         this.description = description;
@@ -55,7 +55,7 @@ public class Vehicle extends SlimefunItem {
 
     private @NotNull ItemUseHandler onItemUse() {
         return event -> {
-            final Player player = event.getPlayer();
+            Player player = event.getPlayer();
             if (event.getClickedBlock().isPresent() && !player.isInsideVehicle()) {
                 if (player.getGameMode() != GameMode.CREATIVE) {
                     player.getInventory().getItemInMainHand().subtract();
@@ -65,11 +65,11 @@ public class Vehicle extends SlimefunItem {
         };
     }
 
-    private void place(final @NotNull Block block, final @NotNull Player player) {
-        final DisplayGroup componentGroup = buildComponents(block.getLocation());
-        final DisplayGroup hudGroup = buildHud(block.getLocation(), new Vector3d());
+    private void place(@NotNull Block block, @NotNull Player player) {
+        DisplayGroup componentGroup = buildComponents(block.getLocation());
+        DisplayGroup hudGroup = buildHud(block.getLocation(), new Vector3d());
 
-        final Pig seat = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
+        Pig seat = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
         seat.setInvulnerable(true);
         seat.setGravity(false);
         seat.setInvisible(true);
@@ -81,7 +81,7 @@ public class Vehicle extends SlimefunItem {
         hudGroup.getDisplays().values().forEach(seat::addPassenger);
         seat.addPassenger(player);
 
-        final PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
+        PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
         traverser.set("name", name);
         traverser.set("velocity", new Vector3d());
         traverser.set("angularVelocity", new Vector3d());
@@ -93,25 +93,25 @@ public class Vehicle extends SlimefunItem {
 
         VehicleStorage.add(seat.getUniqueId());
     }
-    private @NotNull DisplayGroup buildComponents(final Location location) {
-        final ModelBuilder builder = new ModelBuilder();
+    private @NotNull DisplayGroup buildComponents(Location location) {
+        ModelBuilder builder = new ModelBuilder();
         description.getCuboids(description.initializeOrientations()).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
-    private static @NotNull DisplayGroup buildHud(final Location location, final Vector3d rotation) {
-        final ModelBuilder builder = new ModelBuilder();
+    private static @NotNull DisplayGroup buildHud(Location location, Vector3d rotation) {
+        ModelBuilder builder = new ModelBuilder();
         VehicleHud.getHud(rotation).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
 
-    private static @NotNull Optional<Player> getPilot(final @NotNull Pig seat) {
+    private static @NotNull Optional<Player> getPilot(@NotNull Pig seat) {
         return seat.getPassengers().stream()
                 .filter(entity -> entity instanceof Player)
                 .map(Player.class::cast)
                 .findFirst();
     }
 
-    private static void remove(final @NotNull Pig seat, final @NotNull DisplayGroup componentGroup, final @NotNull DisplayGroup hudGroup) {
+    private static void remove(@NotNull Pig seat, @NotNull DisplayGroup componentGroup, @NotNull DisplayGroup hudGroup) {
         componentGroup.remove();
         hudGroup.remove();
         VehicleStorage.remove(seat.getUniqueId());
@@ -123,37 +123,37 @@ public class Vehicle extends SlimefunItem {
         seat.remove();
     }
 
-    private Vector3d getAcceleration(final @NotNull Set<SpatialForce> forces) {
-        final Vector3d resultantForce = new Vector3d();
+    private Vector3d getAcceleration(@NotNull Set<SpatialForce> forces) {
+        Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::getForce).forEach(resultantForce::add);
         return new Vector3d(resultantForce).div(description.getMass()).div(20);
     }
 
-    private Vector3d getAngularAcceleration(final @NotNull Set<SpatialForce> forces) {
-        final Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
-        final Vector3d resultantTorque = new Vector3d();
+    private Vector3d getAngularAcceleration(@NotNull Set<SpatialForce> forces) {
+        Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
+        Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
 
         return new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(20);
     }
 
-    public void tickAircraft(final @NotNull Pig seat) {
-        final PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
-        final Vector3d velocity = traverser.getVector3d("velocity");
-        final Vector3d rotation = traverser.getVector3d("rotation");
-        final Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
-        final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
-        final DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
-        final DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
+    public void tickAircraft(@NotNull Pig seat) {
+        PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
+        Vector3d velocity = traverser.getVector3d("velocity");
+        Vector3d rotation = traverser.getVector3d("rotation");
+        Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
+        Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
+        DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
+        DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
         if (velocity == null || angularVelocity == null || rotation == null || orientations == null
                 || componentGroupId == null || componentGroupId.get().isEmpty()
                 || hudGroupId == null || hudGroupId.get().isEmpty()) {
             return;
         }
 
-        final DisplayGroup componentGroup = componentGroupId.get().get();
-        final DisplayGroup hudGroup = hudGroupId.get().get();
-        final Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
+        DisplayGroup componentGroup = componentGroupId.get().get();
+        DisplayGroup hudGroup = hudGroupId.get().get();
+        Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
 
         description.applyVelocityDampening(velocity);
         velocity.add(getAcceleration(forces));
@@ -161,9 +161,9 @@ public class Vehicle extends SlimefunItem {
         angularVelocity.add(getAngularAcceleration(forces));
         description.applyAngularVelocityDampening(angularVelocity);
 
-        final Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(rotation);
-        final Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
-        final Vector3d relativeAngularVelocity = new Vector3d(angularVelocity).rotate(negativeRotation);
+        Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(rotation);
+        Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
+        Vector3d relativeAngularVelocity = new Vector3d(angularVelocity).rotate(negativeRotation);
 
         rotation.set(Utils.getRotationEulerAngles(rotation)
                 .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(20)))
@@ -176,9 +176,9 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
-        final Vector3d seatLocation = new Vector3d(description.getAbsoluteCenterOfMass(rotation)).mul(-1); // todo maybe must be absolute?
-        final Vector3d angularSeatVelocityVector = new Vector3d(angularVelocity).cross(seatLocation).div(20);
-        final Vector3d seatVelocity = new Vector3d(velocity).div(20).add(angularSeatVelocityVector);
+        Vector3d seatLocation = new Vector3d(description.getAbsoluteCenterOfMass(rotation)).mul(-1); // todo maybe must be absolute?
+        Vector3d angularSeatVelocityVector = new Vector3d(angularVelocity).cross(seatLocation).div(20);
+        Vector3d seatVelocity = new Vector3d(velocity).div(20).add(angularSeatVelocityVector);
         if (seatVelocity.length() > 5) {
             seatVelocity.set(0);
         }
@@ -194,8 +194,8 @@ public class Vehicle extends SlimefunItem {
         }
     }
 
-    private @NotNull Set<SpatialForce> getForces(final Vector3d velocity, final Vector3d rotation, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
-        final Set<SpatialForce> forces = new HashSet<>();
+    private @NotNull Set<SpatialForce> getForces(Vector3d velocity, Vector3d rotation, Vector3d angularVelocity, @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+        Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
         forces.add(getThrustForce(rotation));
         forces.addAll(getDragForces(rotation, velocity, angularVelocity, orientations));
@@ -207,24 +207,24 @@ public class Vehicle extends SlimefunItem {
                 new Vector3d(0, 0 * description.getMass(), 0),
                 new Vector3d(0, 0, 0));
     }
-    private @NotNull SpatialForce getThrustForce(final @NotNull Vector3d rotation) {
+    private @NotNull SpatialForce getThrustForce(@NotNull Vector3d rotation) {
         return new SpatialForce(
                 Utils.rotateByEulerAngles(new Vector3d(description.getThrust(), 0, 0), rotation),
                 new Vector3d(0, 0, 0));
     }
-    private Set<SpatialForce> getDragForces(final Vector3d rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    private Set<SpatialForce> getDragForces(Vector3d rotation, Vector3d velocity, Vector3d angularVelocity, @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return description.getSurfaces(orientations).stream()
                 .map(vehicleSurface -> vehicleSurface.getDragForce(description.getAirDensity(), rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
-    private @NotNull Set<SpatialForce> getLiftForces(final Vector3d rotation, final Vector3d velocity, final Vector3d angularVelocity, final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    private @NotNull Set<SpatialForce> getLiftForces(Vector3d rotation, Vector3d velocity, Vector3d angularVelocity, @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return description.getSurfaces(orientations).stream()
                 .map(vehicleSurface -> vehicleSurface.getLiftForce(description.getAirDensity(), rotation, velocity, angularVelocity))
                 .collect(Collectors.toSet());
     }
 
-    public void onKey(final @NotNull PersistentDataTraverser traverser, final char key) {
-        final Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
+    public void onKey(@NotNull PersistentDataTraverser traverser, char key) {
+        Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         description.adjustHingeComponents(orientations, key);
         traverser.setControlSurfaceOrientations("orientations", orientations);
     }

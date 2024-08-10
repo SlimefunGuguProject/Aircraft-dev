@@ -10,7 +10,6 @@ import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import java.util.Map;
 import java.util.Set;
 
-import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
 
@@ -22,7 +21,7 @@ public class HingeComponent {
     private final char keyUp;
     private final char keyDown;
 
-    public HingeComponent(final FixedComponent fixedComponent, final Vector3d rotationAxis, final double rotationRate, final double rotationMax, final char keyUp, final char keyDown) {
+    public HingeComponent(FixedComponent fixedComponent, Vector3d rotationAxis, double rotationRate, double rotationMax, char keyUp, char keyDown) {
         this.fixedComponent = fixedComponent;
         this.rotationAxis = rotationAxis;
         this.rotationRate = rotationRate;
@@ -31,7 +30,7 @@ public class HingeComponent {
         this.keyDown = keyDown;
     }
 
-    public void useKey(final Map<String, ControlSurfaceOrientation> orientations, final char key) {
+    public void useKey(Map<String, ControlSurfaceOrientation> orientations, char key) {
         if (key == keyUp) {
             orientations.get(fixedComponent.getName()).adjust(rotationRate, rotationMax);
         } else if (key == keyDown) {
@@ -39,7 +38,7 @@ public class HingeComponent {
         }
     }
 
-    public void moveTowardsCenter(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    public void moveTowardsCenter(@NotNull Map<String, ControlSurfaceOrientation> orientations) {
         orientations.get(fixedComponent.getName()).moveTowardsCenter(rotationRate);
     }
 
@@ -47,21 +46,21 @@ public class HingeComponent {
         return fixedComponent.getName();
     }
 
-    private Vector3d getRotation(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    private Vector3d getRotation(@NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return new Quaterniond()
                 .fromAxisAngleRad(new Vector3d(rotationAxis), orientations.get(fixedComponent.getName()).getAngle())
                 .getEulerAnglesXYZ(new Vector3d());
     }
 
-    private Vector3d getTranslation(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    private Vector3d getTranslation(@NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return new Vector3d(0.0, -fixedComponent.getSize().x / 2.0, 0.0).mul(sin(orientations.get(fixedComponent.getName()).getAngle()));
     }
 
-    public Set<VehicleSurface> getSurfaces(final @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    public Set<VehicleSurface> getSurfaces(@NotNull Map<String, ControlSurfaceOrientation> orientations) {
         return fixedComponent.getSurfaces(getRotation(orientations)); // Effect of translation is very small so we don't model it
     }
 
-    public ModelAdvancedCuboid getCuboid(final Map<String, ControlSurfaceOrientation> orientations) {
+    public ModelAdvancedCuboid getCuboid(Map<String, ControlSurfaceOrientation> orientations) {
         return fixedComponent.getCuboid(getRotation(orientations), getTranslation(orientations));
     }
 }

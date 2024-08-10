@@ -10,17 +10,17 @@ public class ControlSurfaceOrientation {
 
     public ControlSurfaceOrientation() {}
 
-    public ControlSurfaceOrientation(final double angle, final int ticksUntilReturn) {
+    public ControlSurfaceOrientation(double angle, int ticksUntilReturn) {
         this.angle = angle;
         this.ticksUntilReturn = ticksUntilReturn;
     }
 
-    public void adjust(final double rotationRate, final double rotationMax) {
+    public void adjust(double rotationRate, double rotationMax) {
         angle = Utils.clampToRange(angle + rotationRate, -rotationMax, rotationMax);
         ticksUntilReturn = 1;
     }
 
-    public void moveTowardsCenter(final double rotationRate) {
+    public void moveTowardsCenter(double rotationRate) {
         if (ticksUntilReturn > 0) {
             ticksUntilReturn--;
             return;

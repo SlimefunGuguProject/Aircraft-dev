@@ -28,9 +28,9 @@ public class FixedComponent {
     @Getter
     private final Vector3d rotation;
 
-    public FixedComponent(final String name, final double dragCoefficient, final double liftCoefficient,
-                          final Material material, final Vector3f size,
-                          final Vector3f locationRelativeToModelCenter, final Vector3f locationRelativeToCenterOfMass, final Vector3d rotation) {
+    public FixedComponent(String name, double dragCoefficient, double liftCoefficient,
+                          Material material, Vector3f size,
+                          Vector3f locationRelativeToModelCenter, Vector3f locationRelativeToCenterOfMass, Vector3d rotation) {
         this.name = name;
         this.dragCoefficient = dragCoefficient;
         this.liftCoefficient = liftCoefficient;
@@ -41,18 +41,18 @@ public class FixedComponent {
         this.rotation = rotation;
     }
 
-    private @NotNull VehicleSurface getSurface(final @NotNull Vector3d startingLocation,
-                                               final double surfaceWidth, final double surfaceHeight, final @NotNull Vector3d rotation) {
-        final double area = surfaceWidth * surfaceHeight;
-        final Matrix4f rotationMatrix = new TransformationMatrixBuilder().rotate(this.rotation).rotate(rotation).buildForItemDisplay();
-        final Vector4d relativeLocation4 = new Vector4d(startingLocation, 1.0).mul(rotationMatrix);
-        final Vector3d relativeLocation = new Vector3d(relativeLocation4.x, relativeLocation4.y, relativeLocation4.z);
-        final Vector3d normal = new Vector3d(relativeLocation).normalize();
+    private @NotNull VehicleSurface getSurface(@NotNull Vector3d startingLocation,
+                                               double surfaceWidth, double surfaceHeight, @NotNull Vector3d rotation) {
+        double area = surfaceWidth * surfaceHeight;
+        Matrix4f rotationMatrix = new TransformationMatrixBuilder().rotate(this.rotation).rotate(rotation).buildForItemDisplay();
+        Vector4d relativeLocation4 = new Vector4d(startingLocation, 1.0).mul(rotationMatrix);
+        Vector3d relativeLocation = new Vector3d(relativeLocation4.x, relativeLocation4.y, relativeLocation4.z);
+        Vector3d normal = new Vector3d(relativeLocation).normalize();
         return new VehicleSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(locationRelativeToCenterOfMass).add(relativeLocation));
     }
 
-    public Set<VehicleSurface> getSurfaces(final Vector3d rotation) {
-        final Set<VehicleSurface> surfaces = new HashSet<>();
+    public Set<VehicleSurface> getSurfaces(Vector3d rotation) {
+        Set<VehicleSurface> surfaces = new HashSet<>();
 
         surfaces.add(getSurface(new Vector3d(0, 0, size.z / 2), size.x, size.y, rotation));
         surfaces.add(getSurface(new Vector3d(0, 0, -size.z / 2), size.x, size.y, rotation));
@@ -70,7 +70,7 @@ public class FixedComponent {
         return getSurfaces(new Vector3d());
     }
 
-    public ModelAdvancedCuboid getCuboid(final Vector3d rotation, final @NotNull Vector3d translation) {
+    public ModelAdvancedCuboid getCuboid(Vector3d rotation, @NotNull Vector3d translation) {
         return new ModelAdvancedCuboid()
                 .material(material)
                 .translate(locationRelativeToCenterOfMass)

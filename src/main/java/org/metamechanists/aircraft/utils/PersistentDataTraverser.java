@@ -36,44 +36,44 @@ public class PersistentDataTraverser {
     private final PersistentDataHolder persistentDataHolder;
     private static final Map<String, NamespacedKey> keys = new ConcurrentHashMap<>();
 
-    public PersistentDataTraverser(@NotNull final CustomId id) {
+    public PersistentDataTraverser(@NotNull CustomId id) {
         this.persistentDataHolder = Bukkit.getEntity(id.getUUID());
     }
-    public PersistentDataTraverser(@NotNull final UUID id) {
+    public PersistentDataTraverser(@NotNull UUID id) {
         this.persistentDataHolder = Bukkit.getEntity(id);
     }
-    public PersistentDataTraverser(@NotNull final PersistentDataHolder entity) {
+    public PersistentDataTraverser(@NotNull PersistentDataHolder entity) {
         this.persistentDataHolder = entity;
     }
-    public PersistentDataTraverser(@NotNull final ItemStack stack) {
+    public PersistentDataTraverser(@NotNull ItemStack stack) {
         this.persistentDataHolder = stack.getItemMeta();
     }
 
-    public void save(@NotNull final ItemStack stack) {
+    public void save(@NotNull ItemStack stack) {
         stack.setItemMeta((ItemMeta) persistentDataHolder);
     }
 
-    private static @NotNull NamespacedKey getKey(@NotNull final String key) {
+    private static @NotNull NamespacedKey getKey(@NotNull String key) {
         return keys.computeIfAbsent(key, k -> new NamespacedKey(Aircraft.getInstance(), key));
     }
 
-    public void set(@NotNull final String key, final int value) {
+    public void set(@NotNull String key, int value) {
         PersistentDataAPI.setInt(persistentDataHolder, getKey(key), value);
     }
-    public void set(@NotNull final String key, final double value) {
+    public void set(@NotNull String key, double value) {
         PersistentDataAPI.setDouble(persistentDataHolder, getKey(key), value);
     }
-    public void set(@NotNull final String key, final boolean value) {
+    public void set(@NotNull String key, boolean value) {
         PersistentDataAPI.setBoolean(persistentDataHolder, getKey(key), value);
     }
-    public void set(@NotNull final String key, @Nullable final String value) {
+    public void set(@NotNull String key, @Nullable String value) {
         if (value == null) {
             PersistentDataAPI.remove(persistentDataHolder, getKey(key));
             return;
         }
         PersistentDataAPI.setString(persistentDataHolder, getKey(key), value);
     }
-    public void set(@NotNull final String key, @Nullable final Vector value) {
+    public void set(@NotNull String key, @Nullable Vector value) {
         if (value == null) {
             PersistentDataAPI.remove(persistentDataHolder, getKey(key + "x"));
             PersistentDataAPI.remove(persistentDataHolder, getKey(key + "y"));
@@ -85,7 +85,7 @@ public class PersistentDataTraverser {
         set(key + "y", value.getY());
         set(key + "z", value.getZ());
     }
-    public void set(@NotNull final String key, @Nullable final Vector3f value) {
+    public void set(@NotNull String key, @Nullable Vector3f value) {
         if (value == null) {
             PersistentDataAPI.remove(persistentDataHolder, getKey(key + "x"));
             PersistentDataAPI.remove(persistentDataHolder, getKey(key + "y"));
@@ -97,7 +97,7 @@ public class PersistentDataTraverser {
         set(key + "y", value.y);
         set(key + "z", value.z);
     }
-    public void set(@NotNull final String key, @Nullable final Vector3d value) {
+    public void set(@NotNull String key, @Nullable Vector3d value) {
         if (value == null) {
             PersistentDataAPI.remove(persistentDataHolder, getKey(key + "x"));
             PersistentDataAPI.remove(persistentDataHolder, getKey(key + "y"));
@@ -109,7 +109,7 @@ public class PersistentDataTraverser {
         set(key + "y", value.y);
         set(key + "z", value.z);
     }
-    public void set(@NotNull final String key, @Nullable final Quaterniond value) {
+    public void set(@NotNull String key, @Nullable Quaterniond value) {
         if (value == null) {
             PersistentDataAPI.remove(persistentDataHolder, getKey(key + "x"));
             PersistentDataAPI.remove(persistentDataHolder, getKey(key + "y"));
@@ -123,7 +123,7 @@ public class PersistentDataTraverser {
         set(key + "z", value.z);
         set(key + "w", value.w);
     }
-    public void set(@NotNull final String key, @Nullable final UUID value) {
+    public void set(@NotNull String key, @Nullable UUID value) {
         if (value == null) {
             PersistentDataAPI.remove(persistentDataHolder, getKey(key));
             return;
@@ -131,34 +131,34 @@ public class PersistentDataTraverser {
 
         PersistentDataAPI.setString(persistentDataHolder, getKey(key), value.toString());
     }
-    public void set(@NotNull final String key, @Nullable final CustomId value) {
+    public void set(@NotNull String key, @Nullable CustomId value) {
         set(key, value == null ? null : value.toString());
     }
-    public void set(@NotNull final String key, @Nullable final ControlSurfaceOrientation value) {
+    public void set(@NotNull String key, @Nullable ControlSurfaceOrientation value) {
         set(key + "angle", value == null ? 0 : value.getAngle());
         set(key + "ticksUntilReturn", value == null ? 0 : value.getTicksUntilReturn());
     }
-    public void set(@NotNull final String key, @NotNull final List<UUID> value) {
+    public void set(@NotNull String key, @NotNull List<UUID> value) {
         set(key + "length", value.size());
         int i = 0;
-        for (final UUID uuid : value) {
+        for (UUID uuid : value) {
             set(key + i, uuid.toString());
             i++;
         }
     }
     // 'both methods have the same erasure' I hate this language so much......
-    public void setCustomIdList(@NotNull final String key, final @NotNull List<? extends CustomId> value) {
+    public void setCustomIdList(@NotNull String key, @NotNull List<? extends CustomId> value) {
         set(key + "length", value.size());
         int i = 0;
-        for (final CustomId uuid : value) {
+        for (CustomId uuid : value) {
             set(key + i, uuid.toString());
             i++;
         }
     }
-    public void setControlSurfaceOrientations(@NotNull final String key, @NotNull final Map<String, ControlSurfaceOrientation> value) {
+    public void setControlSurfaceOrientations(@NotNull String key, @NotNull Map<String, ControlSurfaceOrientation> value) {
         set(key + "length", value.size());
         int i = 0;
-        for (final Entry<String, ControlSurfaceOrientation> pair : value.entrySet()) {
+        for (Entry<String, ControlSurfaceOrientation> pair : value.entrySet()) {
             set(key + i + "key", pair.getKey());
             set(key + i + "value_angle", pair.getValue().getAngle());
             set(key + i + "value_ticksUntilReturn", pair.getValue().getTicksUntilReturn());
@@ -166,69 +166,69 @@ public class PersistentDataTraverser {
         }
     }
 
-    public int getInt(@NotNull final String key) {
+    public int getInt(@NotNull String key) {
         return PersistentDataAPI.getInt(persistentDataHolder, getKey(key));
     }
-    public double getDouble(@NotNull final String key) {
+    public double getDouble(@NotNull String key) {
         return PersistentDataAPI.getDouble(persistentDataHolder, getKey(key));
     }
-    public boolean getBoolean(@NotNull final String key) {
+    public boolean getBoolean(@NotNull String key) {
         return PersistentDataAPI.getBoolean(persistentDataHolder, getKey(key));
     }
-    public @Nullable String getString(@NotNull final String key) {
+    public @Nullable String getString(@NotNull String key) {
         return PersistentDataAPI.getString(persistentDataHolder, getKey(key));
     }
-    public @Nullable Vector getVector(@NotNull final String key) {
+    public @Nullable Vector getVector(@NotNull String key) {
         return new Vector(
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "x")),
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "y")),
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "z")));
     }
-    public @Nullable Vector3f getVector3f(@NotNull final String key) {
+    public @Nullable Vector3f getVector3f(@NotNull String key) {
         return new Vector3f(
                 PersistentDataAPI.getFloat(persistentDataHolder, getKey(key + "x")),
                 PersistentDataAPI.getFloat(persistentDataHolder, getKey(key + "y")),
                 PersistentDataAPI.getFloat(persistentDataHolder, getKey(key + "z")));
     }
-    public @Nullable Vector3d getVector3d(@NotNull final String key) {
+    public @Nullable Vector3d getVector3d(@NotNull String key) {
         return new Vector3d(
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "x")),
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "y")),
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "z")));
     }
-    public @Nullable Quaterniond getQuaterniond(@NotNull final String key) {
+    public @Nullable Quaterniond getQuaterniond(@NotNull String key) {
         return new Quaterniond(
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "x")),
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "y")),
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "z")),
                 PersistentDataAPI.getDouble(persistentDataHolder, getKey(key + "w")));
     }
-    public @Nullable UUID getUuid(@NotNull final String key) {
-        final String uuidString = getString(key);
+    public @Nullable UUID getUuid(@NotNull String key) {
+        String uuidString = getString(key);
         if (uuidString == null) {
             return null;
         }
 
         return UUID.fromString(uuidString);
     }
-    public @Nullable BlockDisplayId getBlockDisplayId(@NotNull final String key) {
-        final String uuid = getString(key);
+    public @Nullable BlockDisplayId getBlockDisplayId(@NotNull String key) {
+        String uuid = getString(key);
         return uuid == null ? null : new BlockDisplayId(uuid);
     }
-    public @Nullable DisplayGroupId getDisplayGroupId(@NotNull final String key) {
-        final String uuid = getString(key);
+    public @Nullable DisplayGroupId getDisplayGroupId(@NotNull String key) {
+        String uuid = getString(key);
         return uuid == null ? null : new DisplayGroupId(uuid);
     }
-    public @Nullable InteractionId getInteractionId(@NotNull final String key) {
-        final String uuid = getString(key);
+    public @Nullable InteractionId getInteractionId(@NotNull String key) {
+        String uuid = getString(key);
         return uuid == null ? null : new InteractionId(uuid);
     }
-    public @Nullable TextDisplayId getTextDisplayId(@NotNull final String key) {
-        final String uuid = getString(key);
+    public @Nullable TextDisplayId getTextDisplayId(@NotNull String key) {
+        String uuid = getString(key);
         return uuid == null ? null : new TextDisplayId(uuid);
     }
-    public @Nullable List<UUID> getUuidList(@NotNull final String key) {
-        final int size = getInt(key + "length");
+    public @Nullable List<UUID> getUuidList(@NotNull String key) {
+        int size = getInt(key + "length");
         if (size == 0) {
             return null;
         }
@@ -237,8 +237,8 @@ public class PersistentDataTraverser {
                 .filter(Objects::nonNull)
                 .map(UUID::fromString).collect(Collectors.toList());
     }
-    public @Nullable List<InteractionId> getCustomIdList(@NotNull final String key) {
-        final int size = getInt(key + "length");
+    public @Nullable List<InteractionId> getCustomIdList(@NotNull String key) {
+        int size = getInt(key + "length");
         if (size == 0) {
             return null;
         }
@@ -249,15 +249,15 @@ public class PersistentDataTraverser {
                 .map(InteractionId::new)
                 .collect(Collectors.toList());
     }
-    public @Nullable Map<String, ControlSurfaceOrientation> getControlSurfaceOrientations(@NotNull final String key) {
-        final int size = getInt(key + "length");
+    public @Nullable Map<String, ControlSurfaceOrientation> getControlSurfaceOrientations(@NotNull String key) {
+        int size = getInt(key + "length");
         if (size == 0) {
             return null;
         }
-        final Map<String, ControlSurfaceOrientation> controlSurfaceOrientations = new HashMap<>();
+        Map<String, ControlSurfaceOrientation> controlSurfaceOrientations = new HashMap<>();
         IntStream.range(0, size).forEach(i -> {
-            final String name = getString(key + i + "key");
-            final ControlSurfaceOrientation orientation = new ControlSurfaceOrientation(getDouble(key + i + "value_angle"), getInt(key + i + "value_ticksUntilReturn"));
+            String name = getString(key + i + "key");
+            ControlSurfaceOrientation orientation = new ControlSurfaceOrientation(getDouble(key + i + "value_angle"), getInt(key + i + "value_ticksUntilReturn"));
             controlSurfaceOrientations.put(name, orientation);
         });
         return controlSurfaceOrientations;

@@ -21,11 +21,11 @@ public class Utils {
     public final int VIEW_RANGE_OFF = 0;
     private final double FLOATING_POINT_THRESHOLD = 0.01;
     private final Vector3f PLAYER_HEAD_OFFSET = new Vector3f(0, 1.2F, 0);
-    public double roundTo2dp(final double value) {
+    public double roundTo2dp(double value) {
         return Math.round(value*Math.pow(10, 2)) / Math.pow(10, 2);
     }
 
-    public void clampToRange(final @NotNull Vector vector, final float min, final float max) {
+    public void clampToRange(@NotNull Vector vector, float min, float max) {
         vector.setX(Math.min(vector.getX(), max));
         vector.setY(Math.min(vector.getY(), max));
         vector.setZ(Math.min(vector.getZ(), max));
@@ -35,41 +35,41 @@ public class Utils {
         vector.setZ(Math.max(vector.getZ(), min));
     }
 
-    public double clampToRange(final double value, final double min, final double max) {
+    public double clampToRange(double value, double min, double max) {
         return Math.max(Math.min(value, max), min);
     }
 
-    public float clampToRange(final float value, final float min, final float max) {
+    public float clampToRange(float value, float min, float max) {
         return Math.max(Math.min(value, max), min);
     }
 
-    public int clampToRange(final int value, final int min, final int max) {
+    public int clampToRange(int value, int min, int max) {
         return Math.max(Math.min(value, max), min);
     }
 
-    public boolean equal(final double a, final double b) {
+    public boolean equal(double a, double b) {
         return Math.abs(a - b) < FLOATING_POINT_THRESHOLD;
     }
 
-    public boolean equal(final float a, final float b) {
+    public boolean equal(float a, float b) {
         return Math.abs(a - b) < FLOATING_POINT_THRESHOLD;
     }
 
-    public Quaterniond getRotationAngleAxis(final @NotNull Vector3d rotation) {
+    public Quaterniond getRotationAngleAxis(@NotNull Vector3d rotation) {
         if (rotation.length() < 0.0001) {
             return new Quaterniond();
         }
         return new Quaterniond().fromAxisAngleRad(rotation.x, rotation.y, rotation.z, (float) rotation.length());
     }
 
-    public Quaterniond getRotationEulerAngles(final @NotNull Vector3d rotation) {
+    public Quaterniond getRotationEulerAngles(@NotNull Vector3d rotation) {
         if (rotation.length() < 0.0001) {
             return new Quaterniond();
         }
         return new Quaterniond().identity().rotateXYZ(rotation.x, rotation.y, rotation.z);
     }
 
-    public Matrix4f getComponentMatrix(final @NotNull ModelComponent component, final @NotNull Vector3d rotation, final @NotNull Vector3f absoluteCenterOfMass) {
+    public Matrix4f getComponentMatrix(@NotNull ModelComponent component, @NotNull Vector3d rotation, @NotNull Vector3f absoluteCenterOfMass) {
         return new Matrix4f()
                 .translate(absoluteCenterOfMass)
                 .translate(PLAYER_HEAD_OFFSET)
@@ -77,17 +77,17 @@ public class Utils {
                 .mul(component.getMatrix());
     }
 
-    public Matrix4f getHudMatrix(final @NotNull ModelComponent component) {
+    public Matrix4f getHudMatrix(@NotNull ModelComponent component) {
         return new Matrix4f()
                 .translate(PLAYER_HEAD_OFFSET)
                 .mul(component.getMatrix());
     }
 
-    public Vector3d rotateByEulerAngles(final @NotNull Vector3d vector, final @NotNull Vector3d rotation) {
+    public Vector3d rotateByEulerAngles(@NotNull Vector3d vector, @NotNull Vector3d rotation) {
         return new Vector3d(vector).rotate(getRotationEulerAngles(rotation));
     }
 
-    public Vector3f rotateByEulerAngles(final @NotNull Vector3f vector, final @NotNull Vector3d rotation) {
+    public Vector3f rotateByEulerAngles(@NotNull Vector3f vector, @NotNull Vector3d rotation) {
         return new Vector3f(vector).rotate(new Quaternionf(getRotationEulerAngles(rotation)));
     }
 }

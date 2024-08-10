@@ -12,18 +12,18 @@ public class TextDisplayId extends CustomId {
     public TextDisplayId() {
         super();
     }
-    public TextDisplayId(final CustomId id) {
+    public TextDisplayId(CustomId id) {
         super(id);
     }
-    public TextDisplayId(final String uuid) {
+    public TextDisplayId(String uuid) {
         super(uuid);
     }
-    public TextDisplayId(final UUID uuid) {
+    public TextDisplayId(UUID uuid) {
         super(uuid);
     }
     @Override
     public Optional<TextDisplay> get() {
-        return (Bukkit.getEntity(getUUID()) instanceof final TextDisplay textDisplay)
+        return (Bukkit.getEntity(getUUID()) instanceof TextDisplay textDisplay)
                 ? Optional.of(textDisplay)
                 : Optional.empty();
     }

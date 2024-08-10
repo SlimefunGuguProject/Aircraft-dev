@@ -10,13 +10,13 @@ public abstract class CustomId {
     protected CustomId() {
         this.uuid = UUID.randomUUID();
     }
-    protected CustomId(final String uuid) {
+    protected CustomId(String uuid) {
         this.uuid = UUID.fromString(uuid);
     }
-    protected CustomId(final @NotNull CustomId id) {
+    protected CustomId(@NotNull CustomId id) {
         this.uuid = id.uuid;
     }
-    protected CustomId(final UUID uuid) {
+    protected CustomId(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -28,8 +28,8 @@ public abstract class CustomId {
     }
 
     @Override
-    public boolean equals(final Object obj) {
-        return this == obj || obj instanceof final CustomId customId && uuid.equals(customId.uuid);
+    public boolean equals(Object obj) {
+        return this == obj || obj instanceof CustomId customId && uuid.equals(customId.uuid);
     }
 
     @Override

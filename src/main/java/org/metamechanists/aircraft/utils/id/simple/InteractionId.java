@@ -12,18 +12,18 @@ public class InteractionId extends CustomId {
     public InteractionId() {
         super();
     }
-    public InteractionId(final CustomId id) {
+    public InteractionId(CustomId id) {
         super(id);
     }
-    public InteractionId(final String uuid) {
+    public InteractionId(String uuid) {
         super(uuid);
     }
-    public InteractionId(final UUID uuid) {
+    public InteractionId(UUID uuid) {
         super(uuid);
     }
     @Override
     public Optional<Interaction> get() {
-        return (Bukkit.getEntity(getUUID()) instanceof final Interaction interaction)
+        return (Bukkit.getEntity(getUUID()) instanceof Interaction interaction)
                 ? Optional.of(interaction)
                 : Optional.empty();
     }

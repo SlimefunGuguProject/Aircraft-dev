@@ -2,6 +2,7 @@ package org.metamechanists.aircraft.vehicles;
 
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Pig;
 import org.metamechanists.aircraft.items.groups.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
@@ -16,25 +17,35 @@ import java.util.stream.Collectors;
 public class VehicleStorage {
     private Set<UUID> seats = new HashSet<>();
 
-    public void add(final UUID seatId) {
+    public void add(UUID seatId) {
         seats.add(seatId);
     }
 
-    public void remove(final UUID seatId) {
+    public void remove(UUID seatId) {
         seats.remove(seatId);
     }
 
     public void tick() {
         seats = seats.stream().filter(id -> Bukkit.getEntity(id) != null).collect(Collectors.toSet());
-        seats.stream()
-                .map(Bukkit::getEntity)
-                .map(Pig.class::cast)
-                .filter(seat -> new PersistentDataTraverser(seat).getString("name") != null)
-                .forEach(VehicleStorage::tick);
+        for (UUID seat : seats) {
+            Entity entity = Bukkit.getEntity(seat);
+            if (!(entity instanceof Pig pig)) {
+                return;
+            }
+
+            if (new PersistentDataTraverser(pig).getString("name") == null) {
+                continue;
+            }
+            tick(pig);
+        }
     }
 
-    private void tick(final Pig seat) {
-        final String name = new PersistentDataTraverser(seat).getString("name");
+    private void tick(Pig seat) {
+        String name = new PersistentDataTraverser(seat).getString("name");
+        if (name == null) {
+            return;
+        }
+
         Aircraft.getVehicle(name).tickAircraft(seat);
     }
 }

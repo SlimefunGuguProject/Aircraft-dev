@@ -1,14 +1,7 @@
 package org.metamechanists.aircraft.vehicles;
 
 import lombok.Getter;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
-import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Display;
-import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
@@ -17,9 +10,6 @@ import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.components.FixedComponent;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
-import org.metamechanists.displaymodellib.models.components.ModelAdvancedText;
-import org.metamechanists.displaymodellib.models.components.ModelComponent;
-import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashMap;
@@ -28,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static java.lang.Math.PI;
 
 
 public class VehicleDescription {
@@ -53,26 +41,26 @@ public class VehicleDescription {
     @Getter
     private final Set<HingeComponent> hingeComponents = new HashSet<>();
 
-    private static @NotNull Vector3d getVector3d(@NotNull final YamlTraverser traverser, final String name) {
-        final List<Double> rotationList = traverser.get(name);
+    private static @NotNull Vector3d getVector3d(@NotNull YamlTraverser traverser, String name) {
+        List<Double> rotationList = traverser.get(name);
         return new Vector3d(rotationList.get(0), rotationList.get(1), rotationList.get(2));
     }
-    private static @NotNull Vector3f getVector3f(@NotNull final YamlTraverser traverser, final String name) {
-        final Vector3d as3d = getVector3d(traverser, name);
+    private static @NotNull Vector3f getVector3f(@NotNull YamlTraverser traverser, String name) {
+        Vector3d as3d = getVector3d(traverser, name);
         return new Vector3f((float) as3d.x, (float) as3d.y, (float) as3d.z);
     }
-    private static char getChar(@NotNull final YamlTraverser traverser, final String name) {
+    private static char getChar(@NotNull YamlTraverser traverser, String name) {
         return ((CharSequence) traverser.get(name)).charAt(0);
     }
 
     @SuppressWarnings("DataFlowIssue")
-    private void processComponentFromTraverser(final @NotNull YamlTraverser componentTraverser, final @NotNull Map<String, ComponentGroup> groups) {
-        final ComponentGroup group = groups.get(componentTraverser.get("group"));
-        final Material material = Material.valueOf(componentTraverser.get("material"));
-        final Vector3f size = getVector3f(componentTraverser, "size");
-        final Vector3f location = getVector3f(componentTraverser, "location");
-        final Vector3d rotation = getVector3d(componentTraverser, "rotation");
-        final FixedComponent fixedComponent = new FixedComponent(componentTraverser.name(),
+    private void processComponentFromTraverser(@NotNull YamlTraverser componentTraverser, @NotNull Map<String, ComponentGroup> groups) {
+        ComponentGroup group = groups.get(componentTraverser.get("group").toString());
+        Material material = Material.valueOf(componentTraverser.get("material"));
+        Vector3f size = getVector3f(componentTraverser, "size");
+        Vector3f location = getVector3f(componentTraverser, "location");
+        Vector3d rotation = getVector3d(componentTraverser, "rotation");
+        FixedComponent fixedComponent = new FixedComponent(componentTraverser.name(),
                 group.dragCoefficient, group.liftCoefficient, material, size, location, new Vector3f(location).sub(relativeCenterOfMass), rotation);
 
         if (componentTraverser.get("controlSurface", false)) {
@@ -85,9 +73,9 @@ public class VehicleDescription {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public VehicleDescription(final String path) {
+    public VehicleDescription(String path) {
         this.path = path;
-        final YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), path);
+        YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), path);
         relativeCenterOfMass = getVector3f(traverser, "centerOfMass");
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia");
@@ -96,41 +84,41 @@ public class VehicleDescription {
         thrust = traverser.get("thrust");
         airDensity = traverser.get("airDensity");
 
-        final Map<String, ComponentGroup> groups = new HashMap<>();
-        for (final YamlTraverser group : traverser.getSection("groups").getSections()) {
+        Map<String, ComponentGroup> groups = new HashMap<>();
+        for (YamlTraverser group : traverser.getSection("groups").getSections()) {
             groups.put(group.name(), new ComponentGroup(group.get("dragCoefficient"), group.get("liftCoefficient")));
         }
 
-        for (final YamlTraverser componentTraverser : traverser.getSection("components").getSections()) {
+        for (YamlTraverser componentTraverser : traverser.getSection("components").getSections()) {
             processComponentFromTraverser(componentTraverser, groups);
         }
     }
 
     @SuppressWarnings("SimplifyForEach")
-    public Set<VehicleSurface> getSurfaces(final Map<String, ControlSurfaceOrientation> orientations) {
-        final Set<VehicleSurface> surfaces = new HashSet<>();
+    public Set<VehicleSurface> getSurfaces(Map<String, ControlSurfaceOrientation> orientations) {
+        Set<VehicleSurface> surfaces = new HashSet<>();
         fixedComponents.forEach(component -> surfaces.addAll(component.getSurfaces()));
         hingeComponents.forEach(component -> surfaces.addAll(component.getSurfaces(orientations)));
         return surfaces;
     }
 
     @SuppressWarnings("SimplifyForEach")
-    public Map<String, ModelAdvancedCuboid> getCuboids(final Map<String, ControlSurfaceOrientation> orientations) {
-        final Map<String, ModelAdvancedCuboid> cuboids = new HashMap<>();
+    public Map<String, ModelAdvancedCuboid> getCuboids(Map<String, ControlSurfaceOrientation> orientations) {
+        Map<String, ModelAdvancedCuboid> cuboids = new HashMap<>();
         fixedComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid()));
         hingeComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid(orientations)));
         return cuboids;
     }
 
-    public Vector3f getAbsoluteCenterOfMass(final Vector3d rotation) {
+    public Vector3f getAbsoluteCenterOfMass(Vector3d rotation) {
         return Utils.rotateByEulerAngles(relativeCenterOfMass, rotation);
     }
 
-    public void adjustHingeComponents(final Map<String, ControlSurfaceOrientation> orientations, final char key) {
+    public void adjustHingeComponents(Map<String, ControlSurfaceOrientation> orientations, char key) {
         hingeComponents.forEach(component -> component.useKey(orientations, key));
     }
 
-    public void moveHingeComponentsToCenter(final Map<String, ControlSurfaceOrientation> orientations) {
+    public void moveHingeComponentsToCenter(Map<String, ControlSurfaceOrientation> orientations) {
         hingeComponents.forEach(component -> component.moveTowardsCenter(orientations));
     }
 
@@ -138,11 +126,11 @@ public class VehicleDescription {
         return hingeComponents.stream().collect(Collectors.toMap(HingeComponent::getName, component -> new ControlSurfaceOrientation(), (name, orientation) -> orientation));
     }
 
-    public void applyVelocityDampening(final @NotNull Vector3d velocity) {
+    public void applyVelocityDampening(@NotNull Vector3d velocity) {
         velocity.mul(1.0 - velocityDampening);
     }
 
-    public void applyAngularVelocityDampening(final @NotNull Vector3d angularVelocity) {
+    public void applyAngularVelocityDampening(@NotNull Vector3d angularVelocity) {
         angularVelocity.mul(1.0 - angularVelocityDampening);
     }
 }

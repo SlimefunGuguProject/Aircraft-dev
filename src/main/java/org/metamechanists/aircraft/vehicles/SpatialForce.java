@@ -9,7 +9,7 @@ public class SpatialForce {
     private final Vector3d force;
     private final Vector3d absoluteLocation;
 
-    public SpatialForce(final Vector3d force, final Vector3d absoluteLocation) {
+    public SpatialForce(Vector3d force, Vector3d absoluteLocation) {
         this.force = force;
         this.absoluteLocation = absoluteLocation;
     }
