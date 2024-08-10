@@ -29,11 +29,15 @@ public final class VehicleHud {
     private static final TextColor HORIZON_MAJOR_COLOR = TextColor.color(0, 255, 255);
     private static final TextColor HORIZON_MINOR_COLOR = TextColor.color(0, 180, 255);
     private static final TextColor HORIZON_DETAIL_COLOR = TextColor.color(0, 150, 180);
+    private static final String HORIZON_INDICATOR_TEXT = "= = [     ] = =";
+    private static final String HORIZON_MAJOR_TEXT = "----------";
+    private static final String HORIZON_MINOR_TEXT = "--------";
+    private static final String HORIZON_DETAIL_TEXT = "--------";
 
     private static final TextColor COMPASS_MAJOR_COLOR = TextColor.color(0, 255, 255);
     private static final TextColor COMPASS_MINOR_COLOR = TextColor.color(0, 180, 255);
     private static final TextColor COMPASS_DETAIL_COLOR = TextColor.color(0, 150, 180);
-    private static final TextColor COMPASS_DIRECTION_COLOR = TextColor.color(180, 180, 255);
+    private static final TextColor COMPASS_DIRECTION_COLOR = TextColor.color(180, 255, 255);
     private static final TextColor COMPASS_NOTCH_COLOR = TextColor.color(100, 255, 100);
 
     private static double getPitch(@NotNull Vector3d rotation) {
@@ -69,7 +73,7 @@ public final class VehicleHud {
     }
     private static ModelAdvancedText getHorizonIndicator(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
         return rollIndependentComponent(hudCenter, rotation)
-                .text(Component.text("= = [     ] = =").color(HORIZON_INDICATOR_COLOR))
+                .text(Component.text(HORIZON_INDICATOR_TEXT).color(HORIZON_INDICATOR_COLOR))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
@@ -79,7 +83,7 @@ public final class VehicleHud {
             @NotNull Vector3f hudCenter, @NotNull Vector3d rotation, Vector3f horizonOffset, boolean shouldRender) {
         return new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
-                .text(Component.text("➖➖➖➖➖➖➖➖➖➖").color(HORIZON_MAJOR_COLOR).decorate(TextDecoration.BOLD))
+                .text(Component.text(HORIZON_MAJOR_TEXT).color(HORIZON_MAJOR_COLOR))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(horizonOffset)
@@ -140,9 +144,9 @@ public final class VehicleHud {
             Vector3f barOffset = new Vector3f(0, verticalSpacing * i, 0);
             Vector3f totalAdjustment = new Vector3f(barOffset).add(horizonOffset);
             boolean longBar = i % 5 == 0;
-            String text = "➖➖➖➖➖➖➖➖➖➖" + (longBar ? "➖➖➖" : "");
+            String text = longBar ? HORIZON_MINOR_TEXT : HORIZON_DETAIL_TEXT;
             TextColor color = longBar ? HORIZON_MINOR_COLOR : HORIZON_DETAIL_COLOR;
-            Component component = Component.text(text).color(color).decorate(TextDecoration.BOLD);
+            Component component = Component.text(text).color(color);
             boolean shouldRender = Math.abs(totalAdjustment.length()) < horizonRadius;
 
             hudComponents.put("horizon_bar_" + i, getArtificialHorizonBar(component, hudCenter, rotation, horizonOffset, barOffset, shouldRender));
