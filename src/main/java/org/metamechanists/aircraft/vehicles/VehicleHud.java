@@ -127,7 +127,7 @@ public final class VehicleHud {
         hudComponents.put("altitude", getAltitudeIndicator(hudCenter, rotation));
         hudComponents.put("horizon", getHorizonIndicator(hudCenter, rotation));
 
-        Vector3f horizonOffset = new Vector3f(0, 0.05F + (float) (-getPitch(rotation)), 0);
+        Vector3f horizonOffset = new Vector3f(0, (float) (-getPitch(rotation)), 0);
         final float horizonRadius = 0.2F;
         boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
 
@@ -210,8 +210,8 @@ public final class VehicleHud {
                 .text(Component.text("▼").color(COMPASS_NOTCH_COLOR))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .scale(new Vector3f(0.1F, 0.1F, 0.001F))
-                .translate(0.5F, -1.35F, -0.01F);
+                .scale(new Vector3f(0.08F, 0.08F, 0.001F))
+                .translate(0.5F, -1.37F, -0.01F);
     }
 
     private static void addCompass(@NotNull Map<String, ModelComponent> hudComponents, @NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
@@ -219,7 +219,7 @@ public final class VehicleHud {
 
         final int bars = 60;
         final int extraBars = 8;
-        Vector3f compassOffset = new Vector3f((float) (0.5 * getYaw(rotation)), -0.25F, 0);
+        Vector3f compassOffset = new Vector3f((float) (0.5 * getYaw(rotation)), -0.27F, 0);
         final float compassRadius = 0.2F;
         final float horizontalSpacing = 0.5F * (float) (PI / (bars));
 
