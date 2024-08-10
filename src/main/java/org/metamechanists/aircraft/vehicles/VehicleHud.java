@@ -127,14 +127,14 @@ public final class VehicleHud {
         hudComponents.put("altitude", getAltitudeIndicator(hudCenter, rotation));
         hudComponents.put("horizon", getHorizonIndicator(hudCenter, rotation));
 
-        Vector3f horizonOffset = new Vector3f(0, (float) (2 * -getPitch(rotation)), 0);
+        Vector3f horizonOffset = new Vector3f(0, (float) ( -getPitch(rotation)), 0);
         final float horizonRadius = 0.2F;
         boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
 
         hudComponents.put("horizon_center", getArtificialHorizonCenter(hudCenter, rotation, horizonOffset, shouldRenderCenter));
 
         final int bars = 30;
-        final float verticalSpacing = 0.5F * (float) ((PI / 1.14) / (bars));
+        final float verticalSpacing = (float) ((PI / 1.28) / (bars));
         for (int i = -bars; i <= bars; i++) {
             if (i == 0) {
                 continue;
@@ -211,7 +211,7 @@ public final class VehicleHud {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.2F, 0.2F, 0.001F))
-                .translate(0.5F, -2.2F, -0.01F);
+                .translate(0.5F, -1.1F, -0.01F);
     }
 
     private static void addCompass(@NotNull Map<String, ModelComponent> hudComponents, @NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
