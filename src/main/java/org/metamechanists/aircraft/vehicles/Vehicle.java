@@ -5,10 +5,12 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
@@ -30,6 +32,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static java.lang.Math.toRadians;
@@ -68,13 +71,39 @@ public class Vehicle extends SlimefunItem {
         };
     }
 
+    public static void mount(@NotNull Pig seat, @NotNull Player player) {
+        UUID uuid = new PersistentDataTraverser(seat).getUuid("interactionId");
+        if (uuid != null) {
+            Entity interaction = Bukkit.getEntity(uuid);
+            if (interaction != null) {
+                interaction.remove();
+            }
+        }
+
+        new PersistentDataTraverser(seat).unset("interactionId");
+
+        seat.addPassenger(player);
+        player.setInvisible(true);
+    }
+
+    public static void unMount(@NotNull Pig seat, @NotNull Player player) {
+        Interaction interaction = new InteractionBuilder()
+                .width(1.2F)
+                .height(1.2F)
+                .build(seat.getLocation());
+
+        new PersistentDataTraverser(interaction).set("seatId", seat.getUniqueId());
+        new PersistentDataTraverser(seat).set("interactionId", interaction.getUniqueId());
+
+        seat.addPassenger(interaction);
+        seat.addPassenger(player);
+        player.setInvisible(true);
+    }
+
     private void place(@NotNull Block block, @NotNull Player player) {
         DisplayGroup componentGroup = buildComponents(block.getLocation());
         DisplayGroup hudGroup = buildHud(block.getLocation(), new Vector3d());
-        Interaction interaction = new InteractionBuilder()
-                .width(2.0F)
-                .height(2.0F)
-                .build(block.getLocation());
+
 
         Pig seat = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
         seat.setInvulnerable(true);
@@ -84,14 +113,9 @@ public class Vehicle extends SlimefunItem {
 
         seat.addPassenger(componentGroup.getParentDisplay());
         seat.addPassenger(hudGroup.getParentDisplay());
-        seat.addPassenger(interaction);
-
-        new PersistentDataTraverser(interaction).set("seat", seat.getUniqueId());
 
         componentGroup.getDisplays().values().forEach(seat::addPassenger);
         hudGroup.getDisplays().values().forEach(seat::addPassenger);
-        seat.addPassenger(player);
-        player.setInvisible(true);
 
         PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
         traverser.set("name", name);
@@ -102,7 +126,6 @@ public class Vehicle extends SlimefunItem {
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
         traverser.set("hudGroupId", new DisplayGroupId(hudGroup.getParentUUID()));
-        traverser.set("interactionId", new InteractionId(interaction.getUniqueId()));
         traverser.setControlSurfaceOrientations("orientations", description.initializeOrientations());
 
         Storage.add(seat.getUniqueId());
@@ -125,7 +148,8 @@ public class Vehicle extends SlimefunItem {
                 .findFirst();
     }
 
-    private static void remove(@NotNull Pig seat, @NotNull DisplayGroup componentGroup, @NotNull DisplayGroup hudGroup) {
+    private static void remove(@NotNull Pig seat, @NotNull Interaction interaction, @NotNull DisplayGroup componentGroup, @NotNull DisplayGroup hudGroup) {
+        interaction.remove();
         componentGroup.remove();
         hudGroup.remove();
         Storage.remove(seat.getUniqueId());

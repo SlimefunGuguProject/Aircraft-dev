@@ -24,8 +24,7 @@ public class MountHandler implements Listener {
             return;
         }
 
-        seat.addPassenger(e.getPlayer());
-        e.getPlayer().setInvisible(true);
+        Vehicle.mount(seat, e.getPlayer());
     }
 
     @EventHandler
@@ -35,6 +34,6 @@ public class MountHandler implements Listener {
             return;
         }
 
-        e.getPlayer().setInvisible(false);
+        Vehicle.unMount(seat, e.getPlayer());
     }
 }

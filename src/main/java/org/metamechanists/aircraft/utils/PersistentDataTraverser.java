@@ -57,6 +57,10 @@ public class PersistentDataTraverser {
         return keys.computeIfAbsent(key, k -> new NamespacedKey(Aircraft.getInstance(), key));
     }
 
+    public void unset(@NotNull String key) {
+        PersistentDataAPI.remove(persistentDataHolder, getKey(key));
+    }
+
     public void set(@NotNull String key, int value) {
         PersistentDataAPI.setInt(persistentDataHolder, getKey(key), value);
     }
