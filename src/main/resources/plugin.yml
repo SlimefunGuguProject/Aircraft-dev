@@ -6,6 +6,7 @@ api-version: 1.19
 
 depend:
   - Slimefun
+  - ProtocolLib
 
 commands:
   aircraft:
