@@ -80,8 +80,9 @@ public class Vehicle extends SlimefunItem {
         }
 
         new PersistentDataTraverser(seat).unset("interactionId");
+        DisplayGroup group = DisplayGroup.fromInteraction((Interaction) Bukkit.getEntity(new PersistentDataTraverser(seat).getUuid("componentGroupId")));
 
-        seat.addPassenger(player);
+        group.getDisplays().get("MainBody").addPassenger(player);
         player.setInvisible(true);
     }
 
