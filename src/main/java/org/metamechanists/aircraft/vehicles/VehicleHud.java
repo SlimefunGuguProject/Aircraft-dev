@@ -65,7 +65,7 @@ public final class VehicleHud {
                 .rotate(new Vector3d(0, getYaw(rotation), getPitch(rotation)))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.35F, -0.03F);
+                .translate(0.5F, 0.35F, 0.03F);
     }
     private static ModelAdvancedText getHorizonIndicator(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
         return rollIndependentComponent(hudCenter, rotation)
@@ -73,7 +73,7 @@ public final class VehicleHud {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.35F, -0.03F);
+                .translate(0.5F, 0.35F, 0.03F);
     }
     private static ModelAdvancedText getArtificialHorizonCenter(
             @NotNull Vector3f hudCenter, @NotNull Vector3d rotation, Vector3f horizonOffset, boolean shouldRender) {
