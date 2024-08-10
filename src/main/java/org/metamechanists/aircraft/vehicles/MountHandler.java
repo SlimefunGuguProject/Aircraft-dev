@@ -14,7 +14,7 @@ import java.util.UUID;
 public class MountHandler implements Listener {
     @EventHandler
     public static void onMount(@NotNull PlayerInteractEntityEvent e) {
-        UUID uuid = new PersistentDataTraverser(e.getRightClicked().getUniqueId()).getUuid("seat");
+        UUID uuid = new PersistentDataTraverser(e.getRightClicked().getUniqueId()).getUuid("seatId");
         if (uuid == null) {
             return;
         }
