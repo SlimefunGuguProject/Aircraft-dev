@@ -4,7 +4,7 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Pig;
-import org.metamechanists.aircraft.items.groups.Aircraft;
+import org.metamechanists.aircraft.items.Items;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 
 import java.util.HashSet;
@@ -23,6 +23,10 @@ public class VehicleStorage {
 
     public void remove(UUID seatId) {
         seats.remove(seatId);
+    }
+
+    public boolean has(UUID seatId) {
+        return seats.contains(seatId);
     }
 
     public void tick() {
@@ -46,6 +50,6 @@ public class VehicleStorage {
             return;
         }
 
-        Aircraft.getVehicle(name).tickAircraft(seat);
+        Items.getVehicle(name).tickAircraft(seat);
     }
 }

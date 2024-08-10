@@ -37,7 +37,7 @@ public class Vehicle extends SlimefunItem {
     private VehicleDescription description;
 
     public static final SlimefunItemStack LIGHT_AIRCRAFT = new SlimefunItemStack(
-            "ACR_LIGHT_AIRCRAFT",
+            "AIRCRAFT_LIGHT_AIRCRAFT",
             Material.FEATHER,
             "&4&ljustin don't hurt me",
             "&cpls");
@@ -83,6 +83,7 @@ public class Vehicle extends SlimefunItem {
 
         PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
         traverser.set("name", name);
+        traverser.set("throttle", 0);
         traverser.set("velocity", new Vector3d());
         traverser.set("angularVelocity", new Vector3d());
         traverser.set("rotation", new Vector3d(0, toRadians(-90.0-player.getEyeLocation().getYaw()), 0));
@@ -139,6 +140,7 @@ public class Vehicle extends SlimefunItem {
 
     public void tickAircraft(@NotNull Pig seat) {
         PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
+        int throttle = traverser.getInt("throttle");
         Vector3d velocity = traverser.getVector3d("velocity");
         Vector3d rotation = traverser.getVector3d("rotation");
         Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
@@ -153,7 +155,7 @@ public class Vehicle extends SlimefunItem {
 
         DisplayGroup componentGroup = componentGroupId.get().get();
         DisplayGroup hudGroup = hudGroupId.get().get();
-        Set<SpatialForce> forces = getForces(velocity, rotation, angularVelocity, orientations);
+        Set<SpatialForce> forces = getForces(throttle, velocity, rotation, angularVelocity, orientations);
 
         description.applyVelocityDampening(velocity);
         velocity.add(getAcceleration(forces));
@@ -194,10 +196,10 @@ public class Vehicle extends SlimefunItem {
         }
     }
 
-    private @NotNull Set<SpatialForce> getForces(Vector3d velocity, Vector3d rotation, Vector3d angularVelocity, @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    private @NotNull Set<SpatialForce> getForces(int throttle, Vector3d velocity, Vector3d rotation, Vector3d angularVelocity, @NotNull Map<String, ControlSurfaceOrientation> orientations) {
         Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
-        forces.add(getThrustForce(rotation));
+        forces.add(getThrustForce(throttle, rotation));
         forces.addAll(getDragForces(rotation, velocity, angularVelocity, orientations));
         forces.addAll(getLiftForces(rotation, velocity, angularVelocity, orientations));
         return forces;
@@ -207,9 +209,10 @@ public class Vehicle extends SlimefunItem {
                 new Vector3d(0, 0 * description.getMass(), 0),
                 new Vector3d(0, 0, 0));
     }
-    private @NotNull SpatialForce getThrustForce(@NotNull Vector3d rotation) {
+    private @NotNull SpatialForce getThrustForce(int throttle, @NotNull Vector3d rotation) {
+        double throttleFraction = throttle / 100.0;
         return new SpatialForce(
-                Utils.rotateByEulerAngles(new Vector3d(description.getThrust(), 0, 0), rotation),
+                Utils.rotateByEulerAngles(new Vector3d(throttleFraction * description.getThrust(), 0, 0), rotation),
                 new Vector3d(0, 0, 0));
     }
     private Set<SpatialForce> getDragForces(Vector3d rotation, Vector3d velocity, Vector3d angularVelocity, @NotNull Map<String, ControlSurfaceOrientation> orientations) {

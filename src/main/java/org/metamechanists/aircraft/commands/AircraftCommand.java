@@ -11,7 +11,7 @@ import co.aikar.commands.annotation.Syntax;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.metamechanists.aircraft.items.groups.Aircraft;
+import org.metamechanists.aircraft.items.Items;
 
 
 @CommandAlias("aircraft")
@@ -28,6 +28,6 @@ public class AircraftCommand extends BaseCommand {
     @Syntax("Reloads the plugin")
     @CommandPermission("aircraft.command.reload")
     public static void charge(Player player, String @NotNull [] args) {
-        Aircraft.reload();
+        Items.reload();
     }
 }

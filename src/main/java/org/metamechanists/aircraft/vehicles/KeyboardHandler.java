@@ -10,6 +10,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
+import org.metamechanists.aircraft.items.Items;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 
 public final class KeyboardHandler {
@@ -26,7 +27,7 @@ public final class KeyboardHandler {
             return;
         }
 
-        Vehicle vehicle = org.metamechanists.aircraft.items.groups.Aircraft.getVehicle(name);
+        Vehicle vehicle = Items.getVehicle(name);
         if (vehicle == null) {
             return;
         }
@@ -80,7 +81,7 @@ public final class KeyboardHandler {
                         return;
                     }
 
-                    Vehicle vehicle = org.metamechanists.aircraft.items.groups.Aircraft.getVehicle(name);
+                    Vehicle vehicle = Items.getVehicle(name);
                     if (vehicle == null) {
                         return;
                     }

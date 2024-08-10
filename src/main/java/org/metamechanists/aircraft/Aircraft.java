@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.commands.AircraftCommand;
-import org.metamechanists.aircraft.items.Groups;
+import org.metamechanists.aircraft.items.Items;
 import org.metamechanists.aircraft.vehicles.VehicleTicker;
 import org.metamechanists.aircraft.vehicles.KeyboardHandler;
 
@@ -33,7 +33,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
     @Override
     public void onEnable() {
         instance = this;
-        Groups.initialize();
+        Items.initialize();
         initializeListeners();
         initializeRunnables();
         initializeCommands();
