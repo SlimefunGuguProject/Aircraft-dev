@@ -82,13 +82,11 @@ public class Vehicle extends SlimefunItem {
         new PersistentDataTraverser(pig).unset("interactionId");
 
         player.setInvisible(true);
-        player.setGameMode(GameMode.SPECTATOR);
         pig.addPassenger(player);
     }
 
     public static void unMount(@NotNull Pig pig, @NotNull Player player) {
         createInteraction(pig);
-        player.setGameMode(GameMode.SURVIVAL);
         player.setInvisible(false);
     }
 
