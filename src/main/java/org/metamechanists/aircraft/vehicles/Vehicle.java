@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -20,6 +21,8 @@ import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
+import org.metamechanists.aircraft.utils.id.simple.InteractionId;
+import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.ModelBuilder;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 
@@ -68,6 +71,10 @@ public class Vehicle extends SlimefunItem {
     private void place(@NotNull Block block, @NotNull Player player) {
         DisplayGroup componentGroup = buildComponents(block.getLocation());
         DisplayGroup hudGroup = buildHud(block.getLocation(), new Vector3d());
+        Interaction interaction = new InteractionBuilder()
+                .width(2.0F)
+                .height(2.0F)
+                .build(block.getLocation());
 
         Pig seat = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
         seat.setInvulnerable(true);
@@ -77,6 +84,10 @@ public class Vehicle extends SlimefunItem {
 
         seat.addPassenger(componentGroup.getParentDisplay());
         seat.addPassenger(hudGroup.getParentDisplay());
+        seat.addPassenger(interaction);
+
+        new PersistentDataTraverser(interaction).set("seat", seat.getUniqueId());
+
         componentGroup.getDisplays().values().forEach(seat::addPassenger);
         hudGroup.getDisplays().values().forEach(seat::addPassenger);
         seat.addPassenger(player);
@@ -91,6 +102,7 @@ public class Vehicle extends SlimefunItem {
         traverser.set("player", player.getUniqueId());
         traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
         traverser.set("hudGroupId", new DisplayGroupId(hudGroup.getParentUUID()));
+        traverser.set("interactionId", new InteractionId(interaction.getUniqueId()));
         traverser.setControlSurfaceOrientations("orientations", description.initializeOrientations());
 
         Storage.add(seat.getUniqueId());

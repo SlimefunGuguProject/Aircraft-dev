@@ -9,6 +9,7 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.components.FixedComponent;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
+import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 

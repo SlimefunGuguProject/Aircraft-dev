@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.commands.AircraftCommand;
 import org.metamechanists.aircraft.items.Items;
-import org.metamechanists.aircraft.vehicles.UnmountHandler;
+import org.metamechanists.aircraft.vehicles.MountHandler;
 import org.metamechanists.aircraft.vehicles.VehicleTicker;
 import org.metamechanists.aircraft.vehicles.KeyboardHandler;
 
@@ -20,7 +20,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
 
     private void initializeListeners() {
         KeyboardHandler.addProtocolListener();
-        Bukkit.getServer().getPluginManager().registerEvents(new UnmountHandler(), this);
+        Bukkit.getServer().getPluginManager().registerEvents(new MountHandler(), this);
     }
 
     private void initializeRunnables() {

@@ -20,6 +20,23 @@ import java.util.stream.Collectors;
 public class Storage {
     private Set<UUID> seats = new HashSet<>();
 
+    public @Nullable Pig get(UUID uuid) {
+        Entity entity = Bukkit.getEntity(uuid);
+        if (entity == null) {
+            return null;
+        }
+
+        if (!(entity instanceof Pig pig)) {
+            return null;
+        }
+
+        if (!has(pig.getUniqueId())) {
+            return null;
+        }
+
+        return pig;
+    }
+
     public void add(UUID seatId) {
         seats.add(seatId);
     }
