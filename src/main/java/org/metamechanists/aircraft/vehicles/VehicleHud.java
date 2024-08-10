@@ -25,7 +25,7 @@ public final class VehicleHud {
     private VehicleHud() {}
 
     private static final TextColor HORIZON_ALTITUDE_INDICATOR_COLOR = TextColor.color(0, 255, 0);
-    private static final TextColor HORIZON_INDICATOR_COLOR = TextColor.color(100, 150, 100);
+    private static final TextColor HORIZON_INDICATOR_COLOR = TextColor.color(100, 255, 100);
     private static final TextColor HORIZON_MAJOR_COLOR = TextColor.color(0, 255, 255);
     private static final TextColor HORIZON_MINOR_COLOR = TextColor.color(0, 180, 255);
     private static final TextColor HORIZON_DETAIL_COLOR = TextColor.color(0, 150, 180);
@@ -34,7 +34,7 @@ public final class VehicleHud {
     private static final TextColor COMPASS_MINOR_COLOR = TextColor.color(0, 180, 255);
     private static final TextColor COMPASS_DETAIL_COLOR = TextColor.color(0, 150, 180);
     private static final TextColor COMPASS_DIRECTION_COLOR = TextColor.color(180, 180, 255);
-    private static final TextColor COMPASS_NOTCH_COLOR = TextColor.color(100, 150, 100);
+    private static final TextColor COMPASS_NOTCH_COLOR = TextColor.color(100, 255, 100);
 
     private static double getPitch(@NotNull Vector3d rotation) {
         Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
