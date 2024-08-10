@@ -23,7 +23,6 @@ import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
-import org.metamechanists.aircraft.utils.id.simple.InteractionId;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.ModelBuilder;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
@@ -87,6 +86,12 @@ public class Vehicle extends SlimefunItem {
     }
 
     public static void unMount(@NotNull Pig seat, @NotNull Player player) {
+        createInteraction(seat);
+        seat.addPassenger(player);
+        player.setInvisible(true);
+    }
+
+    private static void createInteraction(@NotNull Pig seat) {
         Interaction interaction = new InteractionBuilder()
                 .width(1.2F)
                 .height(1.2F)
@@ -96,8 +101,6 @@ public class Vehicle extends SlimefunItem {
         new PersistentDataTraverser(seat).set("interactionId", interaction.getUniqueId());
 
         seat.addPassenger(interaction);
-        seat.addPassenger(player);
-        player.setInvisible(true);
     }
 
     private void place(@NotNull Block block, @NotNull Player player) {
@@ -110,12 +113,13 @@ public class Vehicle extends SlimefunItem {
         seat.setGravity(false);
         seat.setInvisible(true);
         seat.setSilent(true);
-
         seat.addPassenger(componentGroup.getParentDisplay());
         seat.addPassenger(hudGroup.getParentDisplay());
 
         componentGroup.getDisplays().values().forEach(seat::addPassenger);
         hudGroup.getDisplays().values().forEach(seat::addPassenger);
+
+        createInteraction(seat);
 
         PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
         traverser.set("name", name);
