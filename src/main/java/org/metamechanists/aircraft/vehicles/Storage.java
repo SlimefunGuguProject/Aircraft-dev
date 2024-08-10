@@ -57,7 +57,7 @@ public class Storage {
                 return;
             }
 
-            if (new PersistentDataTraverser(pig).getString("velocity") == null) {
+            if (new PersistentDataTraverser(pig).getString("id") == null) {
                 continue;
             }
 
@@ -66,7 +66,7 @@ public class Storage {
     }
 
     private void tick(Pig pig) {
-        String name = new PersistentDataTraverser(pig).getString("velocity");
+        String name = new PersistentDataTraverser(pig).getString("id");
         if (name == null) {
             return;
         }
