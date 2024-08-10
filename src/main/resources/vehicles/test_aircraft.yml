@@ -1,7 +1,7 @@
 centerOfMass: 0.3
-mass: 0.006
+mass: 0.6
 momentOfInertia: 0.006
-velocityDampening: 0.05
+velocityDampening: 0.5
 angularVelocityDampening: 0.1
 
 groups:

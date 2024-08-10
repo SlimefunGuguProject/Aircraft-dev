@@ -6,6 +6,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import lombok.experimental.UtilityClass;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -46,8 +47,8 @@ public class Items {
         new ThrottleControl(
                 AIRCRAFT_GROUP,
                 new SlimefunItemStack(
-                        "THROTTLE_UP",
-                        new CustomItemStack(Material.GREEN_DYE, "Throttle up")
+                        "AIRCRAFT_THROTTLE_UP",
+                        new CustomItemStack(Material.LIME_DYE, ChatColor.WHITE + "Throttle up")
                 ),
                 RecipeType.NULL,
                 new ItemStack[]{},
@@ -57,8 +58,8 @@ public class Items {
         new ThrottleControl(
                 AIRCRAFT_GROUP,
                 new SlimefunItemStack(
-                        "THROTTLE_DOWN",
-                        new CustomItemStack(Material.GREEN_DYE, "Throttle down")
+                        "AIRCRAFT_THROTTLE_DOWN",
+                        new CustomItemStack(Material.RED_DYE, ChatColor.WHITE + "Throttle down")
                 ),
                 RecipeType.NULL,
                 new ItemStack[]{},
