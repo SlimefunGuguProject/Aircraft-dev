@@ -75,7 +75,7 @@ public final class VehicleHud {
                 .text(Component.text(HORIZON_INDICATOR_TEXT).color(HORIZON_INDICATOR_COLOR))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .scale(new Vector3f(0.4F, 0.4F, 0.001F))
+                .scale(new Vector3f(0.2F, 0.2F, 0.001F))
                 .translate(0.5F, 0.35F, 0.03F);
     }
     private static ModelAdvancedText getArtificialHorizonCenter(
@@ -104,7 +104,7 @@ public final class VehicleHud {
                 .translate(hudCenter)
                 .translate(barOffset)
                 .facing(BlockFace.WEST)
-                .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
+                .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
     }
     private static ModelAdvancedText getArtificialHorizonDegree(
@@ -119,7 +119,7 @@ public final class VehicleHud {
                 .translate(hudCenter)
                 .translate(new Vector3f(0, 0, 0.38F))
                 .facing(BlockFace.WEST)
-                .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
+                .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
     }
 
@@ -128,13 +128,13 @@ public final class VehicleHud {
         hudComponents.put("horizon", getHorizonIndicator(hudCenter, rotation));
 
         Vector3f horizonOffset = new Vector3f(0, (float) (2 * -getPitch(rotation)), 0);
-        final float horizonRadius = 0.4F;
+        final float horizonRadius = 0.2F;
         boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
 
         hudComponents.put("horizon_center", getArtificialHorizonCenter(hudCenter, rotation, horizonOffset, shouldRenderCenter));
 
         final int bars = 30;
-        final float verticalSpacing = (float) ((PI / 1.14) / (bars));
+        final float verticalSpacing = (float) ((PI / 1.28) / (bars));
         for (int i = -bars; i <= bars; i++) {
             if (i == 0) {
                 continue;
