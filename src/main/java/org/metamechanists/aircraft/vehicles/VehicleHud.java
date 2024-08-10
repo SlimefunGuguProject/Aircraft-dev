@@ -211,7 +211,7 @@ public final class VehicleHud {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F))
-                .translate(0.5F, -1.5F, -0.01F);
+                .translate(0.5F, -1.3F, -0.01F);
     }
 
     private static void addCompass(@NotNull Map<String, ModelComponent> hudComponents, @NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
@@ -219,7 +219,7 @@ public final class VehicleHud {
 
         final int bars = 60;
         final int extraBars = 8;
-        Vector3f compassOffset = new Vector3f((float) (0.5 * getYaw(rotation)), -0.3F, 0);
+        Vector3f compassOffset = new Vector3f((float) (0.5 * getYaw(rotation)), -0.2F, 0);
         final float compassRadius = 0.2F;
         final float horizontalSpacing = 0.5F * (float) (PI / (bars));
 
