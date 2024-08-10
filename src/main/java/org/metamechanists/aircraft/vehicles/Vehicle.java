@@ -100,7 +100,7 @@ public class Vehicle extends SlimefunItem {
         DisplayGroup hudGroup = buildHud(block.getLocation(), new Vector3d());
 
 
-        Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation().toCenterLocation(), EntityType.PIG);
+        Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation().clone().toCenterLocation().add(new Vector(0, 1, 0)), EntityType.PIG);
         pig.setInvulnerable(true);
         pig.setGravity(false);
         pig.setInvisible(true);

@@ -230,7 +230,7 @@ public final class VehicleHud {
 
     public static @NotNull Map<String, ModelComponent> getHud(@NotNull Vector3d rotation) {
         Map<String, ModelComponent> hudComponents = new HashMap<>();
-        Vector3f hudCenter = new Vector3f(1, 0, 0);
+        Vector3f hudCenter = new Vector3f(1, -0.3F, 0);
 
         addArtificialHorizon(hudComponents, hudCenter, rotation);
         addCompass(hudComponents, hudCenter, rotation);
