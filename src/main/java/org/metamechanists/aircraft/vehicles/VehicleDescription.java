@@ -9,7 +9,6 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.components.FixedComponent;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
-import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
@@ -28,6 +27,8 @@ public class VehicleDescription {
     private final String path;
     @Getter
     private final Vector3f relativeCenterOfMass;
+    @Getter
+    private final Vector3f seatLocation;
     @Getter
     private final double mass;
     @Getter
@@ -81,6 +82,7 @@ public class VehicleDescription {
     public VehicleDescription(String path) {
         this.path = path;
         YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), path);
+        seatLocation = getVector3f(traverser, "seat");
         relativeCenterOfMass = getVector3f(traverser, "centerOfMass");
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia");
