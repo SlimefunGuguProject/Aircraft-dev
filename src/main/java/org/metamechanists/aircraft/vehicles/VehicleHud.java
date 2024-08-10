@@ -117,7 +117,7 @@ public final class VehicleHud {
                 .rotate(rotation)
                 .translate(totalAdjustment)
                 .translate(hudCenter)
-                .translate(new Vector3f(0, 0, 0.38F))
+                .translate(new Vector3f(0, 0, 0.19F))
                 .facing(BlockFace.WEST)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
@@ -164,13 +164,13 @@ public final class VehicleHud {
         float size;
         if (i % 30 == 0) {
             color = COMPASS_MAJOR_COLOR;
-            size = 0.6F;
+            size = 0.3F;
         } else if (i % 10 == 0) {
             color = COMPASS_MINOR_COLOR;
-            size = 0.3F;
+            size = 0.15F;
         } else {
             color = COMPASS_DETAIL_COLOR;
-            size = 0.2F;
+            size = 0.1F;
         }
 
         return rollIndependentComponent(hudCenter, rotation)
@@ -219,7 +219,7 @@ public final class VehicleHud {
 
         final int bars = 60;
         final int extraBars = 8;
-        Vector3f compassOffset = new Vector3f((float) (getYaw(rotation)), -0.6F, 0);
+        Vector3f compassOffset = new Vector3f((float) (getYaw(rotation)), -0.3F, 0);
         final float compassRadius = 0.4F;
         final float horizontalSpacing = (float) (PI / (bars));
 
