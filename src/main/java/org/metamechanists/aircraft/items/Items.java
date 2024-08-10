@@ -39,7 +39,7 @@ public class Items {
             try {
                 String name = new YamlTraverser(Aircraft.getInstance(), file).get("name");
                 String translatedName = ChatColor.translateAlternateColorCodes('&', name);
-                String id = name.toLowerCase()
+                String id = "AIRCRAFT" + name.toUpperCase()
                         .replace(' ', '_')
                         .replaceAll("&.", "");
                 SlimefunItemStack itemStack = new SlimefunItemStack(id, Material.FEATHER, translatedName);
