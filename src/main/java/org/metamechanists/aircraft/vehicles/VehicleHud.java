@@ -134,7 +134,7 @@ public final class VehicleHud {
         hudComponents.put("horizon_center", getArtificialHorizonCenter(hudCenter, rotation, horizonOffset, shouldRenderCenter));
 
         final int bars = 30;
-        final float verticalSpacing = (float) ((PI / 1.28) / (bars));
+        final float verticalSpacing = (float) ((PI / 1.14) / (bars));
         for (int i = -bars; i <= bars; i++) {
             if (i == 0) {
                 continue;
