@@ -164,7 +164,7 @@ public final class VehicleHud {
         float size;
         if (i % 30 == 0) {
             color = COMPASS_MAJOR_COLOR;
-            size = 0.3F;
+            size = 0.2F;
         } else if (i % 10 == 0) {
             color = COMPASS_MINOR_COLOR;
             size = 0.15F;
@@ -219,7 +219,7 @@ public final class VehicleHud {
 
         final int bars = 60;
         final int extraBars = 8;
-        Vector3f compassOffset = new Vector3f((float) (0.5 * getYaw(rotation)), -0.2F, 0);
+        Vector3f compassOffset = new Vector3f((float) (0.5 * getYaw(rotation)), -0.25F, 0);
         final float compassRadius = 0.2F;
         final float horizontalSpacing = 0.5F * (float) (PI / (bars));
 
