@@ -2,6 +2,7 @@ package org.metamechanists.aircraft.vehicles;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Color;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Display;
@@ -67,16 +68,16 @@ public final class VehicleHud {
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, getYaw(rotation), getPitch(rotation)))
                 .facing(BlockFace.WEST)
-                .scale(new Vector3f(0.2F, 0.2F, 0.001F))
-                .translate(0.25F, 0.175F, 0.01F);
+                .scale(new Vector3f(0.4F, 0.4F, 0.001F))
+                .translate(0.5F, 0.35F, 0.03F);
     }
     private static ModelAdvancedText getHorizonIndicator(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
         return rollIndependentComponent(hudCenter, rotation)
                 .text(Component.text(HORIZON_INDICATOR_TEXT).color(HORIZON_INDICATOR_COLOR))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .scale(new Vector3f(0.2F, 0.2F, 0.001F))
-                .translate(0.25F, 0.175F, 0.01F);
+                .scale(new Vector3f(0.4F, 0.4F, 0.001F))
+                .translate(0.5F, 0.35F, 0.03F);
     }
     private static ModelAdvancedText getArtificialHorizonCenter(
             @NotNull Vector3f hudCenter, @NotNull Vector3d rotation, Vector3f horizonOffset, boolean shouldRender) {
@@ -88,8 +89,8 @@ public final class VehicleHud {
                 .translate(horizonOffset)
                 .translate(hudCenter)
                 .facing(BlockFace.WEST)
-                .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
-                .translate(0.25F, 0.155F, 0);
+                .scale(shouldRender ? new Vector3f(0.3F, 0.3F, 0.001F) : new Vector3f())
+                .translate(0.5F, 0.35F, 0);
     }
     private static ModelAdvancedText getArtificialHorizonBar(
             Component component,
@@ -104,8 +105,8 @@ public final class VehicleHud {
                 .translate(hudCenter)
                 .translate(barOffset)
                 .facing(BlockFace.WEST)
-                .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
-                .translate(0.25F, 0.175F, 0);
+                .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
+                .translate(0.5F, 0.35F, 0);
     }
     private static ModelAdvancedText getArtificialHorizonDegree(
             Component component,
@@ -117,10 +118,10 @@ public final class VehicleHud {
                 .rotate(rotation)
                 .translate(totalAdjustment)
                 .translate(hudCenter)
-                .translate(new Vector3f(0, 0, 0.19F))
+                .translate(new Vector3f(0, 0, 0.38F))
                 .facing(BlockFace.WEST)
-                .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
-                .translate(0.25F, 0.175F, 0);
+                .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
+                .translate(0.5F, 0.35F, 0);
     }
 
     private static void addArtificialHorizon(@NotNull Map<String, ModelComponent> hudComponents, @NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
@@ -128,7 +129,7 @@ public final class VehicleHud {
         hudComponents.put("horizon", getHorizonIndicator(hudCenter, rotation));
 
         Vector3f horizonOffset = new Vector3f(0, (float) (2 * -getPitch(rotation)), 0);
-        final float horizonRadius = 0.2F;
+        final float horizonRadius = 0.4F;
         boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
 
         hudComponents.put("horizon_center", getArtificialHorizonCenter(hudCenter, rotation, horizonOffset, shouldRenderCenter));
@@ -251,7 +252,7 @@ public final class VehicleHud {
 
     public static @NotNull Map<String, ModelComponent> getHud(@NotNull Vector3d rotation) {
         Map<String, ModelComponent> hudComponents = new HashMap<>();
-        Vector3f hudCenter = new Vector3f(0.25F, -0.1F, 0.0F);
+        Vector3f hudCenter = new Vector3f(0.5F, -0.2F, 0.0F);
 
         addArtificialHorizon(hudComponents, hudCenter, rotation);
         addCompass(hudComponents, hudCenter, rotation);
