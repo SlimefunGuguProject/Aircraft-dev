@@ -87,8 +87,7 @@ public class Vehicle extends SlimefunItem {
 
     public static void unMount(@NotNull Pig seat, @NotNull Player player) {
         createInteraction(seat);
-        seat.addPassenger(player);
-        player.setInvisible(true);
+        player.setInvisible(false);
     }
 
     private static void createInteraction(@NotNull Pig seat) {
