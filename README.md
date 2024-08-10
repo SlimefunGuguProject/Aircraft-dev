@@ -6,6 +6,7 @@
 * Hide player when on aircraft
 * Friction
 * Allow mounting
+- Fix broken unmounting when hit water
 - Fuel
 - Velocity indicator
 - Vertical/horizontal speed indicator
