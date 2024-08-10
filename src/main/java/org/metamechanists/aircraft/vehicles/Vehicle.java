@@ -169,7 +169,7 @@ public class Vehicle extends SlimefunItem {
         Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
 
-        return new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(20);
+        return new Vector3d(resultantTorque).div(description.getMomentOfInertia());
     }
 
     private static void cancelVelocity(Vector3d velocity, @NotNull Pig pig) {
@@ -268,9 +268,9 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
-        Vector3d pigLocation = new Vector3d(description.getAbsoluteCenterOfMass(rotation)).mul(-1); // todo maybe must be absolute?
-        Vector3d angularPigVelocityVector = new Vector3d(angularVelocity).cross(pigLocation).div(20);
-        Vector3d pigVelocity = new Vector3d(velocity).div(20).add(angularPigVelocityVector);
+//        Vector3d pigLocation = new Vector3d(description.getAbsoluteCenterOfMass(rotation)).mul(-1); // todo maybe must be absolute?
+//        Vector3d angularPigVelocityVector = new Vector3d(angularVelocity).cross(pigLocation).div(20);
+        Vector3d pigVelocity = new Vector3d(velocity).div(20);//.add(angularPigVelocityVector);
         if (pigVelocity.length() > 5) {
             pigVelocity.set(0);
         }
