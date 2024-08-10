@@ -247,7 +247,7 @@ public class Vehicle extends SlimefunItem {
 
                 Vector3d friction = new Vector3d(velocity)
                         .normalize()
-                        .mul(-frictionAmount);
+                        .mul(frictionAmount);
                 velocity.sub(friction);
             }
         }
