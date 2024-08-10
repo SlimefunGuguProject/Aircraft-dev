@@ -190,7 +190,7 @@ public final class VehicleHud {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
-                .scale(shouldRender ? new Vector3f(0.3F, 0.3F, 0.001F) : new Vector3f())
+                .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
                 .translate(0.5F, -0.15F, -0.01F);
     }
     private static ModelComponent getCompassDegree(
@@ -202,7 +202,7 @@ public final class VehicleHud {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
-                .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
+                .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, -0.04F, -0.01F);
     }
     private static ModelComponent getCompassNotch(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
@@ -211,7 +211,7 @@ public final class VehicleHud {
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F))
-                .translate(0.5F, -1.1F, -0.01F);
+                .translate(0.5F, -1.5F, -0.01F);
     }
 
     private static void addCompass(@NotNull Map<String, ModelComponent> hudComponents, @NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
