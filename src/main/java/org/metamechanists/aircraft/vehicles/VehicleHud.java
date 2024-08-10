@@ -29,9 +29,9 @@ public final class VehicleHud {
     private static final TextColor HORIZON_MINOR_COLOR = TextColor.color(0, 180, 255);
     private static final TextColor HORIZON_DETAIL_COLOR = TextColor.color(0, 150, 180);
     private static final String HORIZON_INDICATOR_TEXT = "= = [     ] = =";
-    private static final String HORIZON_MAJOR_TEXT = "----------";
-    private static final String HORIZON_MINOR_TEXT = "--------";
-    private static final String HORIZON_DETAIL_TEXT = "--------";
+    private static final String HORIZON_MAJOR_TEXT = "--------";
+    private static final String HORIZON_MINOR_TEXT = "-------";
+    private static final String HORIZON_DETAIL_TEXT = "------";
 
     private static final TextColor COMPASS_MAJOR_COLOR = TextColor.color(0, 255, 255);
     private static final TextColor COMPASS_MINOR_COLOR = TextColor.color(0, 180, 255);
@@ -67,7 +67,7 @@ public final class VehicleHud {
                 .rotateBackwards(rotation)
                 .rotate(new Vector3d(0, getYaw(rotation), getPitch(rotation)))
                 .facing(BlockFace.WEST)
-                .scale(new Vector3f(0.2F, 0.2F, 0.001F))
+                .scale(new Vector3f(0.15F, 0.15F, 0.001F))
                 .translate(0.5F, 0.35F, 0.03F);
     }
     private static ModelAdvancedText getHorizonIndicator(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
@@ -75,7 +75,7 @@ public final class VehicleHud {
                 .text(Component.text(HORIZON_INDICATOR_TEXT).color(HORIZON_INDICATOR_COLOR))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
-                .scale(new Vector3f(0.2F, 0.2F, 0.001F))
+                .scale(new Vector3f(0.15F, 0.15F, 0.001F))
                 .translate(0.5F, 0.35F, 0.03F);
     }
     private static ModelAdvancedText getArtificialHorizonCenter(
@@ -134,7 +134,7 @@ public final class VehicleHud {
         hudComponents.put("horizon_center", getArtificialHorizonCenter(hudCenter, rotation, horizonOffset, shouldRenderCenter));
 
         final int bars = 30;
-        final float verticalSpacing = 0.1F * (float) ((PI / 1.14) / (bars));
+        final float verticalSpacing = 0.5F * (float) ((PI / 1.14) / (bars));
         for (int i = -bars; i <= bars; i++) {
             if (i == 0) {
                 continue;
