@@ -223,7 +223,7 @@ public class Vehicle extends SlimefunItem {
             Vector3d acceleration = getAcceleration(forces);
             velocity.add(acceleration.div(200));
 
-            angularVelocity.add(getAngularAcceleration(forces));
+            angularVelocity.add(getAngularAcceleration(forces).div(200));
             description.applyAngularVelocityDampening(angularVelocity);
 
             Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(rotation);
