@@ -1,6 +1,5 @@
 package org.metamechanists.aircraft.items;
 
-import io.github.bakedlibs.dough.common.ChatColors;
 import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
@@ -22,8 +21,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.metamechanists.aircraft.vehicles.Vehicle.LIGHT_AIRCRAFT;
-
 
 @UtilityClass
 public class Items {
@@ -40,12 +37,12 @@ public class Items {
 
         for (File file : vehicleFiles) {
             try {
-                String rawName = new YamlTraverser(Aircraft.getInstance(), file).get("name");
-                String name = ChatColor.translateAlternateColorCodes('&', rawName);
-                String id = rawName.toLowerCase()
+                String name = new YamlTraverser(Aircraft.getInstance(), file).get("name");
+                String translatedName = ChatColor.translateAlternateColorCodes('&', name);
+                String id = name.toLowerCase()
                         .replace(' ', '_')
                         .replaceAll("&.", "");
-                SlimefunItemStack itemStack = new SlimefunItemStack(id, Material.FEATHER, name);
+                SlimefunItemStack itemStack = new SlimefunItemStack(id, Material.FEATHER, translatedName);
                 vehicles.put(id, new Vehicle(
                         AIRCRAFT_GROUP,
                         itemStack,
