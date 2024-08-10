@@ -203,7 +203,9 @@ public class Vehicle extends SlimefunItem {
 
         boolean isOnGround = seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
         if (isOnGround) {
-            velocity.y = 0.0;
+            if (velocity.y < 0.0) {
+                velocity.y = 0.0;
+            }
         }
 
         angularVelocity.add(getAngularAcceleration(forces));
