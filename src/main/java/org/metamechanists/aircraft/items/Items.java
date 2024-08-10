@@ -40,16 +40,18 @@ public class Items {
 
         for (File file : vehicleFiles) {
             try {
-                String name = new YamlTraverser(Aircraft.getInstance(), file).get("name");
-                String id = name.toLowerCase()
+                String rawName = new YamlTraverser(Aircraft.getInstance(), file).get("name");
+                String name = ChatColor.translateAlternateColorCodes('&', rawName);
+                String id = rawName.toLowerCase()
                         .replace(' ', '_')
                         .replaceAll("&.", "");
+                SlimefunItemStack itemStack = new SlimefunItemStack(id, Material.FEATHER, name);
                 vehicles.put(id, new Vehicle(
                         AIRCRAFT_GROUP,
-                        LIGHT_AIRCRAFT,
+                        itemStack,
                         RecipeType.NULL,
                         new ItemStack[]{},
-                        ChatColor.translateAlternateColorCodes('&', name),
+                        id,
                         new VehicleDescription("vehicles/" + file.getName())));
             } catch (RuntimeException e) {
                 Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + file.getName() + ": " + e);

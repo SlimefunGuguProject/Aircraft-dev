@@ -5,7 +5,7 @@
 * Throttle
 * Hide player when on aircraft
 * Friction
-Allow mounting
+* Allow mounting
 - Fuel
 - Velocity indicator
 - Vertical/horizontal speed indicator

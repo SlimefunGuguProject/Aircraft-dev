@@ -57,15 +57,16 @@ public class Storage {
                 return;
             }
 
-            if (new PersistentDataTraverser(pig).getString("name") == null) {
+            if (new PersistentDataTraverser(pig).getString("velocity") == null) {
                 continue;
             }
+
             tick(pig);
         }
     }
 
     private void tick(Pig pig) {
-        String name = new PersistentDataTraverser(pig).getString("name");
+        String name = new PersistentDataTraverser(pig).getString("velocity");
         if (name == null) {
             return;
         }

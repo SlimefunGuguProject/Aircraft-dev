@@ -38,18 +38,12 @@ import static java.lang.Math.toRadians;
 
 
 public class Vehicle extends SlimefunItem {
-    private final String name;
+    private final String id;
     private VehicleDescription description;
 
-    public static final SlimefunItemStack LIGHT_AIRCRAFT = new SlimefunItemStack(
-            "AIRCRAFT_LIGHT_AIRCRAFT",
-            Material.FEATHER,
-            "&4&ljustin don't hurt me",
-            "&cpls");
-
-    public Vehicle(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String name, VehicleDescription description) {
+    public Vehicle(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String id, VehicleDescription description) {
         super(itemGroup, item, recipeType, recipe);
-        this.name = name;
+        this.id = id;
         this.description = description;
         addItemHandler(onItemUse());
     }
