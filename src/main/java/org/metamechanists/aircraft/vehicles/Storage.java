@@ -98,7 +98,7 @@ public class Storage {
         }
 
         PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
-        String name = traverser.getString("name");
+        String name = traverser.getString("id");
         if (name == null) {
             return null;
         }

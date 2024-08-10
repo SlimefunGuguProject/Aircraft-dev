@@ -8,7 +8,6 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -115,7 +114,7 @@ public class Vehicle extends SlimefunItem {
         createInteraction(pig);
 
         PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
-        traverser.set("name", name);
+        traverser.set("id", id);
         traverser.set("throttle", 0);
         traverser.set("velocity", new Vector3d());
         traverser.set("angularVelocity", new Vector3d());
