@@ -4,6 +4,7 @@
 * Throttle buttons
 * Throttle
 * Hide player when on aircraft
+* Friction
 - Fuel
 - Velocity indicator
 - Vertical/horizontal speed indicator
@@ -13,6 +14,6 @@
 - Protection plugin integration
 - Allow mounting
 - Dismounting kills throttle
-- Friction
 - Persist over restarts
 - Taxiing
+- Dynamically load aircraft

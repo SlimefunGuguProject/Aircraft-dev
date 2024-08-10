@@ -10,11 +10,14 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Keys;
 import org.metamechanists.aircraft.vehicles.Vehicle;
 import org.metamechanists.aircraft.vehicles.VehicleDescription;
 import org.metamechanists.aircraft.vehicles.controls.ThrottleControl;
+import org.metamechanists.metalib.yaml.YamlTraverser;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,20 +31,35 @@ public class Items {
     private final ItemGroup AIRCRAFT_GROUP = new ItemGroup(Keys.AIRCRAFT,
             new CustomItemStack(Material.COMPASS, "&aAircraft"));
 
+    private void readVehicles() {
+        File[] vehicleFiles = new File(Aircraft.getInstance().getDataFolder(), "vehicles").listFiles();
+        if (vehicleFiles == null) {
+            return;
+        }
+
+        for (File file : vehicleFiles) {
+            try {
+                String name = new YamlTraverser(Aircraft.getInstance(), file).get("name");
+                String id = name.toLowerCase().replace(' ', '_');
+                vehicles.put(id, new Vehicle(
+                        AIRCRAFT_GROUP,
+                        LIGHT_AIRCRAFT,
+                        RecipeType.NULL,
+                        new ItemStack[]{},
+                        id,
+                        new VehicleDescription("vehicles/" + file.getName())));
+            } catch (RuntimeException e) {
+                Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + file.getName() + ": " + e);
+            }
+        }
+    }
+
     public void initialize() {
-        JavaPlugin plugin = org.metamechanists.aircraft.Aircraft.getInstance();
+        JavaPlugin plugin = Aircraft.getInstance();
         SlimefunAddon addon = (SlimefunAddon) plugin;
 
         plugin.saveResource("vehicles/test_aircraft.yml", false);
-
-        vehicles.put("test_aircraft", new Vehicle(
-                AIRCRAFT_GROUP,
-                LIGHT_AIRCRAFT,
-                RecipeType.NULL,
-                new ItemStack[]{},
-                "test_aircraft",
-                new VehicleDescription("vehicles/test_aircraft.yml")));
-
+        readVehicles();
         vehicles.values().forEach(vehicle -> vehicle.register(addon));
 
         new ThrottleControl(
