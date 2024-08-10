@@ -24,6 +24,18 @@ import static java.lang.Math.PI;
 public final class VehicleHud {
     private VehicleHud() {}
 
+    private static final TextColor HORIZON_ALTITUDE_INDICATOR_COLOR = TextColor.color(0, 255, 0);
+    private static final TextColor HORIZON_INDICATOR_COLOR = TextColor.color(100, 150, 100);
+    private static final TextColor HORIZON_MAJOR_COLOR = TextColor.color(0, 255, 255);
+    private static final TextColor HORIZON_MINOR_COLOR = TextColor.color(0, 180, 255);
+    private static final TextColor HORIZON_DETAIL_COLOR = TextColor.color(0, 150, 180);
+
+    private static final TextColor COMPASS_MAJOR_COLOR = TextColor.color(0, 255, 255);
+    private static final TextColor COMPASS_MINOR_COLOR = TextColor.color(0, 180, 255);
+    private static final TextColor COMPASS_DETAIL_COLOR = TextColor.color(0, 150, 180);
+    private static final TextColor COMPASS_DIRECTION_COLOR = TextColor.color(180, 180, 255);
+    private static final TextColor COMPASS_NOTCH_COLOR = TextColor.color(100, 150, 100);
+
     private static double getPitch(@NotNull Vector3d rotation) {
         Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
         double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
@@ -53,20 +65,21 @@ public final class VehicleHud {
                 .rotate(new Vector3d(0, getYaw(rotation), getPitch(rotation)))
                 .facing(BlockFace.WEST)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.35F, -0.01F);
+                .translate(0.5F, 0.35F, -0.03F);
     }
     private static ModelAdvancedText getHorizonIndicator(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
         return rollIndependentComponent(hudCenter, rotation)
-                .text(Component.text("[= =  [     ] = =").color(TextColor.color(170, 255, 170)))
+                .text(Component.text("= = [     ] = =").color(HORIZON_INDICATOR_COLOR))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.4F, 0.4F, 0.001F))
-                .translate(0.5F, 0.35F, -0.01F);
+                .translate(0.5F, 0.35F, -0.03F);
     }
-    private static ModelAdvancedText getArtificialHorizonCenter(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation, Vector3f horizonOffset, boolean shouldRender) {
+    private static ModelAdvancedText getArtificialHorizonCenter(
+            @NotNull Vector3f hudCenter, @NotNull Vector3d rotation, Vector3f horizonOffset, boolean shouldRender) {
         return new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
-                .text(Component.text("➖➖➖➖➖➖➖➖➖➖").color(TextColor.color(0, 255, 255)).decorate(TextDecoration.BOLD))
+                .text(Component.text("➖➖➖➖➖➖➖➖➖➖").color(HORIZON_MAJOR_COLOR).decorate(TextDecoration.BOLD))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .rotate(rotation)
                 .translate(horizonOffset)
@@ -75,9 +88,10 @@ public final class VehicleHud {
                 .scale(shouldRender ? new Vector3f(0.3F, 0.3F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
     }
-    private static ModelAdvancedText getArtificialHorizonBar(Component component,
-                                                             @NotNull Vector3f hudCenter, @NotNull Vector3d rotation, Vector3f horizonOffset,
-                                                             Vector3f barOffset, boolean shouldRender) {
+    private static ModelAdvancedText getArtificialHorizonBar(
+            Component component,
+            @NotNull Vector3f hudCenter, @NotNull Vector3d rotation, Vector3f horizonOffset,
+            Vector3f barOffset, boolean shouldRender) {
         return new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(component)
@@ -90,8 +104,9 @@ public final class VehicleHud {
                 .scale(shouldRender ? new Vector3f(0.2F, 0.2F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
     }
-    private static ModelAdvancedText getArtificialHorizonDegree(Component component,
-                                                                @NotNull Vector3f hudCenter, @NotNull Vector3d rotation, Vector3f totalAdjustment, boolean shouldRender) {
+    private static ModelAdvancedText getArtificialHorizonDegree(
+            Component component,
+            @NotNull Vector3f hudCenter, @NotNull Vector3d rotation, Vector3f totalAdjustment, boolean shouldRender) {
         return new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .text(component)
@@ -126,31 +141,32 @@ public final class VehicleHud {
             Vector3f totalAdjustment = new Vector3f(barOffset).add(horizonOffset);
             boolean longBar = i % 5 == 0;
             String text = "➖➖➖➖➖➖➖➖➖➖" + (longBar ? "➖➖➖" : "");
-            TextColor color = longBar ? TextColor.color(0, 180, 255) : TextColor.color(0, 150, 180);
+            TextColor color = longBar ? HORIZON_MINOR_COLOR : HORIZON_DETAIL_COLOR;
             Component component = Component.text(text).color(color).decorate(TextDecoration.BOLD);
             boolean shouldRender = Math.abs(totalAdjustment.length()) < horizonRadius;
 
             hudComponents.put("horizon_bar_" + i, getArtificialHorizonBar(component, hudCenter, rotation, horizonOffset, barOffset, shouldRender));
 
             if (longBar) {
-                Component degreeComponent = Component.text(i * (90 / (bars-1)));
+                Component degreeComponent = Component.text(i * (90 / (bars-1))).color(HORIZON_MINOR_COLOR);
                 hudComponents.put("horizon_degree_" + i, getArtificialHorizonDegree(degreeComponent, hudCenter, rotation, totalAdjustment, shouldRender));
             }
         }
     }
-    private static ModelComponent getCompassBar(@NotNull Vector3f hudCenter,
-                                                @NotNull Vector3d rotation, @NotNull Vector3f totalAdjustment, float compassRadius, int i) {
+    private static ModelComponent getCompassBar(
+            @NotNull Vector3f hudCenter,
+            @NotNull Vector3d rotation, @NotNull Vector3f totalAdjustment, float compassRadius, int i) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
         TextColor color;
         float size;
         if (i % 30 == 0) {
-            color = TextColor.color(0, 255, 255);
+            color = COMPASS_MAJOR_COLOR;
             size = 0.6F;
         } else if (i % 10 == 0) {
-            color = TextColor.color(0, 180, 255);
+            color = COMPASS_MINOR_COLOR;
             size = 0.3F;
         } else {
-            color = TextColor.color(0, 150, 180);
+            color = COMPASS_DETAIL_COLOR;
             size = 0.2F;
         }
 
@@ -162,22 +178,24 @@ public final class VehicleHud {
                 .scale(shouldRender ? new Vector3f(size, size, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, -0.01F);
     }
-    private static ModelComponent getCompassDirection(@NotNull Vector3f hudCenter,
-                                                      @NotNull Vector3d rotation, @NotNull Vector3f totalAdjustment, float compassRadius, String text) {
+    private static ModelComponent getCompassDirection(
+            @NotNull Vector3f hudCenter,
+            @NotNull Vector3d rotation, @NotNull Vector3f totalAdjustment, float compassRadius, String text) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
         return rollIndependentComponent(hudCenter, rotation)
-                .text(Component.text(text).color(TextColor.color(255, 0, 0)))
+                .text(Component.text(text).color(COMPASS_DIRECTION_COLOR))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.3F, 0.3F, 0.001F) : new Vector3f())
                 .translate(0.5F, -0.15F, -0.01F);
     }
-    private static ModelComponent getCompassDegree(@NotNull Vector3f hudCenter,
-                                                   @NotNull Vector3d rotation, @NotNull Vector3f totalAdjustment, float compassRadius, int degrees) {
+    private static ModelComponent getCompassDegree(
+            @NotNull Vector3f hudCenter,
+            @NotNull Vector3d rotation, @NotNull Vector3f totalAdjustment, float compassRadius, int degrees) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
         return rollIndependentComponent(hudCenter, rotation)
-                .text(Component.text(degrees).color(TextColor.color(0, 200, 255)))
+                .text(Component.text(degrees).color(COMPASS_MAJOR_COLOR))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
@@ -186,7 +204,7 @@ public final class VehicleHud {
     }
     private static ModelComponent getCompassNotch(@NotNull Vector3f hudCenter, @NotNull Vector3d rotation) {
         return rollIndependentComponent(hudCenter, rotation)
-                .text(Component.text("▼").color(TextColor.color(255, 255, 255)))
+                .text(Component.text("▼").color(COMPASS_NOTCH_COLOR))
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.2F, 0.2F, 0.001F))
@@ -244,6 +262,6 @@ public final class VehicleHud {
         hudComponents.forEach((name, component) -> displays.get(name).setTransformationMatrix(Utils.getHudMatrix(hudComponents.get(name))));
 
         TextDisplay altitudeText = (TextDisplay) displays.get("altitude");
-        altitudeText.text(Component.text(altitude).color(TextColor.color(0, 255, 0)));
+        altitudeText.text(Component.text(altitude).color(HORIZON_ALTITUDE_INDICATOR_COLOR));
     }
 }
