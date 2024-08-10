@@ -11,19 +11,18 @@ import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
-import org.metamechanists.aircraft.items.Items;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 
 public final class KeyboardHandler {
     private KeyboardHandler() {}
 
     private static void handleKey(@NotNull Player player, float rightLeft, float forwardbackwards) {
-        Pig seat = Storage.getSeat(player);
-        if (seat == null) {
+        Pig pig = Storage.getPig(player);
+        if (pig == null) {
             return;
         }
 
-        PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
+        PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
 
         Vehicle vehicle = Storage.getVehicle(player);
         if (vehicle == null) {
@@ -68,12 +67,12 @@ public final class KeyboardHandler {
                 PacketContainer packet = event.getPacket();
                 int type = packet.getIntegers().readSafely(0);
                 if (type == 7) {
-                    Pig seat = Storage.getSeat(event.getPlayer());
-                    if (seat == null) {
+                    Pig pig = Storage.getPig(event.getPlayer());
+                    if (pig == null) {
                         return;
                     }
 
-                    PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
+                    PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
 
                     Vehicle vehicle = Storage.getVehicle(event.getPlayer());
                     if (vehicle == null) {

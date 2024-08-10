@@ -70,8 +70,8 @@ public class Vehicle extends SlimefunItem {
         };
     }
 
-    public static void mount(@NotNull Pig seat, @NotNull Player player) {
-        UUID uuid = new PersistentDataTraverser(seat).getUuid("interactionId");
+    public static void mount(@NotNull Pig pig, @NotNull Player player) {
+        UUID uuid = new PersistentDataTraverser(pig).getUuid("interactionId");
         if (uuid != null) {
             Entity interaction = Bukkit.getEntity(uuid);
             if (interaction != null) {
@@ -79,28 +79,28 @@ public class Vehicle extends SlimefunItem {
             }
         }
 
-        new PersistentDataTraverser(seat).unset("interactionId");
-        DisplayGroup group = DisplayGroup.fromInteraction((Interaction) Bukkit.getEntity(new PersistentDataTraverser(seat).getUuid("componentGroupId")));
+        new PersistentDataTraverser(pig).unset("interactionId");
+        DisplayGroup group = DisplayGroup.fromInteraction((Interaction) Bukkit.getEntity(new PersistentDataTraverser(pig).getUuid("componentGroupId")));
 
         group.getDisplays().get("MainBody").addPassenger(player);
         player.setInvisible(true);
     }
 
-    public static void unMount(@NotNull Pig seat, @NotNull Player player) {
-        createInteraction(seat);
+    public static void unMount(@NotNull Pig pig, @NotNull Player player) {
+        createInteraction(pig);
         player.setInvisible(false);
     }
 
-    private static void createInteraction(@NotNull Pig seat) {
+    private static void createInteraction(@NotNull Pig pig) {
         Interaction interaction = new InteractionBuilder()
                 .width(1.2F)
                 .height(1.2F)
-                .build(seat.getLocation());
+                .build(pig.getLocation());
 
-        new PersistentDataTraverser(interaction).set("seatId", seat.getUniqueId());
-        new PersistentDataTraverser(seat).set("interactionId", interaction.getUniqueId());
+        new PersistentDataTraverser(interaction).set("pigId", pig.getUniqueId());
+        new PersistentDataTraverser(pig).set("interactionId", interaction.getUniqueId());
 
-        seat.addPassenger(interaction);
+        pig.addPassenger(interaction);
     }
 
     private void place(@NotNull Block block, @NotNull Player player) {
@@ -108,20 +108,20 @@ public class Vehicle extends SlimefunItem {
         DisplayGroup hudGroup = buildHud(block.getLocation(), new Vector3d());
 
 
-        Pig seat = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
-        seat.setInvulnerable(true);
-        seat.setGravity(false);
-        seat.setInvisible(true);
-        seat.setSilent(true);
-        seat.addPassenger(componentGroup.getParentDisplay());
-        seat.addPassenger(hudGroup.getParentDisplay());
+        Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation(), EntityType.PIG);
+        pig.setInvulnerable(true);
+        pig.setGravity(false);
+        pig.setInvisible(true);
+        pig.setSilent(true);
+        pig.addPassenger(componentGroup.getParentDisplay());
+        pig.addPassenger(hudGroup.getParentDisplay());
 
-        componentGroup.getDisplays().values().forEach(seat::addPassenger);
-        hudGroup.getDisplays().values().forEach(seat::addPassenger);
+        componentGroup.getDisplays().values().forEach(pig::addPassenger);
+        hudGroup.getDisplays().values().forEach(pig::addPassenger);
 
-        createInteraction(seat);
+        createInteraction(pig);
 
-        PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
+        PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         traverser.set("name", name);
         traverser.set("throttle", 0);
         traverser.set("velocity", new Vector3d());
@@ -132,7 +132,7 @@ public class Vehicle extends SlimefunItem {
         traverser.set("hudGroupId", new DisplayGroupId(hudGroup.getParentUUID()));
         traverser.setControlSurfaceOrientations("orientations", description.initializeOrientations());
 
-        Storage.add(seat.getUniqueId());
+        Storage.add(pig.getUniqueId());
     }
     private @NotNull DisplayGroup buildComponents(Location location) {
         ModelBuilder builder = new ModelBuilder();
@@ -145,25 +145,25 @@ public class Vehicle extends SlimefunItem {
         return builder.buildAtBlockCenter(location);
     }
 
-    private static @NotNull Optional<Player> getPilot(@NotNull Pig seat) {
-        return seat.getPassengers().stream()
+    private static @NotNull Optional<Player> getPilot(@NotNull Pig pig) {
+        return pig.getPassengers().stream()
                 .filter(entity -> entity instanceof Player)
                 .map(Player.class::cast)
                 .findFirst();
     }
 
-    private static void remove(@NotNull Pig seat, @NotNull Interaction interaction, @NotNull DisplayGroup componentGroup, @NotNull DisplayGroup hudGroup) {
+    private static void remove(@NotNull Pig pig, @NotNull Interaction interaction, @NotNull DisplayGroup componentGroup, @NotNull DisplayGroup hudGroup) {
         interaction.remove();
         componentGroup.remove();
         hudGroup.remove();
-        Storage.remove(seat.getUniqueId());
-        seat.getLocation().createExplosion(4);
-        getPilot(seat).ifPresent(pilot -> {
+        Storage.remove(pig.getUniqueId());
+        pig.getLocation().createExplosion(4);
+        getPilot(pig).ifPresent(pilot -> {
             pilot.setInvisible(false);
             pilot.eject();
             componentGroup.getParentDisplay().removePassenger(pilot);
         });
-        seat.remove();
+        pig.remove();
     }
 
     private Vector3d getAcceleration(@NotNull Set<SpatialForce> forces) {
@@ -180,34 +180,34 @@ public class Vehicle extends SlimefunItem {
         return new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(20);
     }
 
-    private static void cancelVelocity(Vector3d velocity, @NotNull Pig seat) {
-        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(-0.1, 0.0, 0.0)))) {
+    private static void cancelVelocity(Vector3d velocity, @NotNull Pig pig) {
+        if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(-0.1, 0.0, 0.0)))) {
             velocity.x = Math.max(velocity.x, 0.0);
         }
 
-        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.1, 0.0, 0.0)))) {
+        if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.1, 0.0, 0.0)))) {
             velocity.x = Math.min(velocity.x, 0.0);
         }
 
-        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)))) {
+        if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)))) {
             velocity.y = Math.max(velocity.y, 0.0);
         }
 
-        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, 0.1, 0.0)))) {
+        if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, 0.1, 0.0)))) {
             velocity.y = Math.min(velocity.y, 0.0);
         }
 
-        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, 0.0, -0.1)))) {
+        if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, 0.0, -0.1)))) {
             velocity.z = Math.max(velocity.z, 0.0);
         }
 
-        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, 0.0, 0.1)))) {
+        if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, 0.0, 0.1)))) {
             velocity.z = Math.min(velocity.z, 0.0);
         }
     }
 
-    public void tickAircraft(@NotNull Pig seat) {
-        PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
+    public void tickAircraft(@NotNull Pig pig) {
+        PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         int throttle = traverser.getInt("throttle");
         Vector3d velocity = traverser.getVector3d("velocity");
         Vector3d rotation = traverser.getVector3d("rotation");
@@ -229,9 +229,9 @@ public class Vehicle extends SlimefunItem {
         Vector3d acceleration = getAcceleration(forces);
         velocity.add(acceleration);
 
-        cancelVelocity(velocity, seat);
+        cancelVelocity(velocity, pig);
 
-        boolean isOnGround = seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
+        boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
         if (isOnGround) {
             if (velocity.length() > 0.0001) {
                 double horizontalForce = new Vector3d(acceleration.x, 0.0, acceleration.z)
@@ -271,21 +271,21 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
-        Vector3d seatLocation = new Vector3d(description.getAbsoluteCenterOfMass(rotation)).mul(-1); // todo maybe must be absolute?
-        Vector3d angularSeatVelocityVector = new Vector3d(angularVelocity).cross(seatLocation).div(20);
-        Vector3d seatVelocity = new Vector3d(velocity).div(20).add(angularSeatVelocityVector);
-        if (seatVelocity.length() > 5) {
-            seatVelocity.set(0);
+        Vector3d pigLocation = new Vector3d(description.getAbsoluteCenterOfMass(rotation)).mul(-1); // todo maybe must be absolute?
+        Vector3d angularPigVelocityVector = new Vector3d(angularVelocity).cross(pigLocation).div(20);
+        Vector3d pigVelocity = new Vector3d(velocity).div(20).add(angularPigVelocityVector);
+        if (pigVelocity.length() > 5) {
+            pigVelocity.set(0);
         }
-        seat.setVelocity(Vector.fromJOML(seatVelocity));
+        pig.setVelocity(Vector.fromJOML(pigVelocity));
         description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName)
                         .setTransformationMatrix(Utils.getComponentMatrix(cuboid, rotation, description.getAbsoluteCenterOfMass(rotation))));
-        VehicleHud.updateHud(rotation, seat.getLocation().getBlockY(), hudGroup);
+        VehicleHud.updateHud(rotation, pig.getLocation().getBlockY(), hudGroup);
 
-        getPilot(seat).ifPresent(pilot -> {});
+        getPilot(pig).ifPresent(pilot -> {});
 
-        if (seat.wouldCollideUsing(seat.getBoundingBox().expand(0.1, -0.1, 0.1))) {
-//            remove(seat, componentGroup, hudGroup);
+        if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
+//            remove(pig, componentGroup, hudGroup);
         }
     }
 

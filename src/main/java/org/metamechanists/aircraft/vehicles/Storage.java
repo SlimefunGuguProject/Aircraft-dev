@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class Storage {
-    private Set<UUID> seats = new HashSet<>();
+    private Set<UUID> pigs = new HashSet<>();
 
     public @Nullable Pig get(UUID uuid) {
         Entity entity = Bukkit.getEntity(uuid);
@@ -37,22 +37,22 @@ public class Storage {
         return pig;
     }
 
-    public void add(UUID seatId) {
-        seats.add(seatId);
+    public void add(UUID pigId) {
+        pigs.add(pigId);
     }
 
-    public void remove(UUID seatId) {
-        seats.remove(seatId);
+    public void remove(UUID pigId) {
+        pigs.remove(pigId);
     }
 
-    public boolean has(UUID seatId) {
-        return seats.contains(seatId);
+    public boolean has(UUID pigId) {
+        return pigs.contains(pigId);
     }
 
     public void tick() {
-        seats = seats.stream().filter(id -> Bukkit.getEntity(id) != null).collect(Collectors.toSet());
-        for (UUID seat : seats) {
-            Entity entity = Bukkit.getEntity(seat);
+        pigs = pigs.stream().filter(id -> Bukkit.getEntity(id) != null).collect(Collectors.toSet());
+        for (UUID uuid : pigs) {
+            Entity entity = Bukkit.getEntity(uuid);
             if (!(entity instanceof Pig pig)) {
                 return;
             }
@@ -64,16 +64,16 @@ public class Storage {
         }
     }
 
-    private void tick(Pig seat) {
-        String name = new PersistentDataTraverser(seat).getString("name");
+    private void tick(Pig pig) {
+        String name = new PersistentDataTraverser(pig).getString("name");
         if (name == null) {
             return;
         }
 
-        Items.getVehicle(name).tickAircraft(seat);
+        Items.getVehicle(name).tickAircraft(pig);
     }
 
-    public @Nullable Pig getSeat(@NotNull Player player) {
+    public @Nullable Pig getPig(@NotNull Player player) {
         Entity entity = player.getVehicle();
         if (entity == null) {
             return null;
@@ -91,12 +91,12 @@ public class Storage {
     }
 
     public @Nullable Vehicle getVehicle(@NotNull Player player) {
-        Pig seat = getSeat(player);
-        if (seat == null) {
+        Pig pig = getPig(player);
+        if (pig == null) {
             return null;
         }
 
-        PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
+        PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         String name = traverser.getString("name");
         if (name == null) {
             return null;

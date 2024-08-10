@@ -27,12 +27,12 @@ public class ThrottleControl extends SlimefunItem {
     private @NotNull ItemUseHandler onItemUse() {
         return event -> {
             Player player = event.getPlayer();
-            Pig seat = Storage.getSeat(player);
-            if (seat == null) {
+            Pig pig = Storage.getPig(player);
+            if (pig == null) {
                 return;
             }
 
-            PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
+            PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
             int newThrottle = traverser.getInt("throttle") + increment;
             if (newThrottle >= MIN_THROTTLE && newThrottle <= MAX_THROTTLE) {
                 traverser.set("throttle", newThrottle);

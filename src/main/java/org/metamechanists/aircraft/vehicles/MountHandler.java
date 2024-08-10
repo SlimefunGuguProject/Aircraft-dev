@@ -14,26 +14,26 @@ import java.util.UUID;
 public class MountHandler implements Listener {
     @EventHandler
     public static void onMount(@NotNull PlayerInteractEntityEvent e) {
-        UUID uuid = new PersistentDataTraverser(e.getRightClicked().getUniqueId()).getUuid("seatId");
+        UUID uuid = new PersistentDataTraverser(e.getRightClicked().getUniqueId()).getUuid("pigId");
         if (uuid == null) {
             return;
         }
 
-        Pig seat = Storage.get(uuid);
-        if (seat == null) {
+        Pig pig = Storage.get(uuid);
+        if (pig == null) {
             return;
         }
 
-        Vehicle.mount(seat, e.getPlayer());
+        Vehicle.mount(pig, e.getPlayer());
     }
 
     @EventHandler
     public static void onUnmount(@NotNull PlayerToggleSneakEvent e) {
-        Pig seat = Storage.getSeat(e.getPlayer());
-        if (seat == null) {
+        Pig pig = Storage.getPig(e.getPlayer());
+        if (pig == null) {
             return;
         }
 
-        Vehicle.unMount(seat, e.getPlayer());
+        Vehicle.unMount(pig, e.getPlayer());
     }
 }
