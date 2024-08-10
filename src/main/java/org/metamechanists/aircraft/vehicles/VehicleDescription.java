@@ -37,6 +37,8 @@ public class VehicleDescription {
     @Getter
     private final double thrust;
     @Getter
+    private final double frictionCoefficient;
+    @Getter
     private final double gravityAcceleration;
     @Getter
     private final double airDensity;
@@ -85,6 +87,7 @@ public class VehicleDescription {
         velocityDampening = traverser.get("velocityDampening");
         angularVelocityDampening = traverser.get("angularVelocityDampening");
         thrust = traverser.get("thrust");
+        frictionCoefficient = traverser.get("frictionCoefficient");
         gravityAcceleration = traverser.get("gravityAcceleration");
         airDensity = traverser.get("airDensity");
 

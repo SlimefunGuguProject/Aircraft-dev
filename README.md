@@ -3,9 +3,10 @@
 # Todo
 * Throttle buttons
 * Throttle
+* Hide player when on aircraft
 - Fuel
-- Hide player when on aircraft
 - Velocity indicator
+- Vertical/horizontal speed indicator
 - Try for thinner atmosphere?
 - Recipes
 - Only explode above velocity + explosion size depends on velocity
@@ -14,3 +15,4 @@
 - Dismounting kills throttle
 - Friction
 - Persist over restarts
+- Taxiing

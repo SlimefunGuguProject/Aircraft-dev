@@ -179,6 +179,32 @@ public class Vehicle extends SlimefunItem {
         return new Vector3d(resultantTorque).div(description.getMomentOfInertia()).div(20);
     }
 
+    private static void cancelVelocity(Vector3d velocity, @NotNull Pig seat) {
+        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(-0.1, 0.0, 0.0)))) {
+            velocity.x = Math.max(velocity.x, 0.0);
+        }
+
+        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.1, 0.0, 0.0)))) {
+            velocity.x = Math.min(velocity.x, 0.0);
+        }
+
+        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)))) {
+            velocity.y = Math.max(velocity.y, 0.0);
+        }
+
+        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, 0.1, 0.0)))) {
+            velocity.y = Math.min(velocity.y, 0.0);
+        }
+
+        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, 0.0, -0.1)))) {
+            velocity.z = Math.max(velocity.z, 0.0);
+        }
+
+        if (seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, 0.0, 0.1)))) {
+            velocity.z = Math.min(velocity.z, 0.0);
+        }
+    }
+
     public void tickAircraft(@NotNull Pig seat) {
         PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
         int throttle = traverser.getInt("throttle");
@@ -199,13 +225,19 @@ public class Vehicle extends SlimefunItem {
         Set<SpatialForce> forces = getForces(throttle, velocity, rotation, angularVelocity, orientations);
 
         description.applyVelocityDampening(velocity);
-        velocity.add(getAcceleration(forces));
+        Vector3d acceleration = getAcceleration(forces);
+        velocity.add(acceleration);
+
+        cancelVelocity(velocity, seat);
 
         boolean isOnGround = seat.wouldCollideUsing(seat.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
         if (isOnGround) {
-            if (velocity.y < 0.0) {
-                velocity.y = 0.0;
-            }
+            Vector3d friction = new Vector3d(velocity)
+                    .normalize()
+                    .mul(-1.0)
+                    .mul(Math.abs(acceleration.y))
+                    .mul(description.getFrictionCoefficient());
+            velocity.sub(friction);
         }
 
         angularVelocity.add(getAngularAcceleration(forces));
