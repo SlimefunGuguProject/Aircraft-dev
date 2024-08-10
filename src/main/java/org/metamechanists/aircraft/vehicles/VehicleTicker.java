@@ -8,6 +8,6 @@ public class VehicleTicker extends BukkitRunnable {
 
     @Override
     public void run() {
-        VehicleStorage.tick();
+        Storage.tick();
     }
 }

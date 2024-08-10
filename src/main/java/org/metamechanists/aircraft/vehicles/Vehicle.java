@@ -80,6 +80,7 @@ public class Vehicle extends SlimefunItem {
         componentGroup.getDisplays().values().forEach(seat::addPassenger);
         hudGroup.getDisplays().values().forEach(seat::addPassenger);
         seat.addPassenger(player);
+        player.setInvisible(true);
 
         PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
         traverser.set("name", name);
@@ -92,7 +93,7 @@ public class Vehicle extends SlimefunItem {
         traverser.set("hudGroupId", new DisplayGroupId(hudGroup.getParentUUID()));
         traverser.setControlSurfaceOrientations("orientations", description.initializeOrientations());
 
-        VehicleStorage.add(seat.getUniqueId());
+        Storage.add(seat.getUniqueId());
     }
     private @NotNull DisplayGroup buildComponents(Location location) {
         ModelBuilder builder = new ModelBuilder();
@@ -115,9 +116,10 @@ public class Vehicle extends SlimefunItem {
     private static void remove(@NotNull Pig seat, @NotNull DisplayGroup componentGroup, @NotNull DisplayGroup hudGroup) {
         componentGroup.remove();
         hudGroup.remove();
-        VehicleStorage.remove(seat.getUniqueId());
+        Storage.remove(seat.getUniqueId());
         seat.getLocation().createExplosion(4);
         getPilot(seat).ifPresent(pilot -> {
+            pilot.setInvisible(false);
             pilot.eject();
             componentGroup.getParentDisplay().removePassenger(pilot);
         });
@@ -192,7 +194,7 @@ public class Vehicle extends SlimefunItem {
         getPilot(seat).ifPresent(pilot -> {});
 
         if (seat.wouldCollideUsing(seat.getBoundingBox().expand(0.1, -0.1, 0.1))) {
-            remove(seat, componentGroup, hudGroup);
+//            remove(seat, componentGroup, hudGroup);
         }
     }
 

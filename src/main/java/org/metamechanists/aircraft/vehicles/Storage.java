@@ -4,6 +4,9 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Pig;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.items.Items;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 
@@ -14,7 +17,7 @@ import java.util.stream.Collectors;
 
 
 @UtilityClass
-public class VehicleStorage {
+public class Storage {
     private Set<UUID> seats = new HashSet<>();
 
     public void add(UUID seatId) {
@@ -51,5 +54,37 @@ public class VehicleStorage {
         }
 
         Items.getVehicle(name).tickAircraft(seat);
+    }
+
+    public @Nullable Pig getSeat(@NotNull Player player) {
+        Entity entity = player.getVehicle();
+        if (entity == null) {
+            return null;
+        }
+
+        if (!(entity instanceof Pig pig)) {
+            return null;
+        }
+
+        if (!has(pig.getUniqueId())) {
+            return null;
+        }
+
+        return pig;
+    }
+
+    public @Nullable Vehicle getVehicle(@NotNull Player player) {
+        Pig seat = getSeat(player);
+        if (seat == null) {
+            return null;
+        }
+
+        PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
+        String name = traverser.getString("name");
+        if (name == null) {
+            return null;
+        }
+
+        return Items.getVehicle(name);
     }
 }

@@ -7,6 +7,7 @@ import com.comphenix.protocol.events.ListenerPriority;
 import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
@@ -17,17 +18,14 @@ public final class KeyboardHandler {
     private KeyboardHandler() {}
 
     private static void handleKey(@NotNull Player player, float rightLeft, float forwardbackwards) {
-        if (player.getVehicle() == null) {
+        Pig seat = Storage.getSeat(player);
+        if (seat == null) {
             return;
         }
 
-        PersistentDataTraverser traverser = new PersistentDataTraverser(player.getVehicle());
-        String name = traverser.getString("name");
-        if (name == null) {
-            return;
-        }
+        PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
 
-        Vehicle vehicle = Items.getVehicle(name);
+        Vehicle vehicle = Storage.getVehicle(player);
         if (vehicle == null) {
             return;
         }
@@ -70,18 +68,14 @@ public final class KeyboardHandler {
                 PacketContainer packet = event.getPacket();
                 int type = packet.getIntegers().readSafely(0);
                 if (type == 7) {
-                    Player player = event.getPlayer();
-                    if (player.getVehicle() == null) {
+                    Pig seat = Storage.getSeat(event.getPlayer());
+                    if (seat == null) {
                         return;
                     }
 
-                    PersistentDataTraverser traverser = new PersistentDataTraverser(player.getVehicle());
-                    String name = traverser.getString("name");
-                    if (name == null) {
-                        return;
-                    }
+                    PersistentDataTraverser traverser = new PersistentDataTraverser(seat);
 
-                    Vehicle vehicle = Items.getVehicle(name);
+                    Vehicle vehicle = Storage.getVehicle(event.getPlayer());
                     if (vehicle == null) {
                         return;
                     }
