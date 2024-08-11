@@ -63,8 +63,8 @@ public final class Horizon {
         return Util.rollIndependentText(state, hudCenter)
                 .text(Component.text(HORIZON_VELOCITY_TEXT).color(HORIZON_VELOCITY_COLOR))
                 .translate(velocityOffset)
-                .translate(0.5F, 0.35F, 0.05F)
-                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
+                .scale(new Vector3f(0.15F, 0.15F, 0.001F))
+                .translate(0.5F, 0.35F, 0.05F);
     }
 
     private static ModelAdvancedText getArtificialHorizonDegree(
