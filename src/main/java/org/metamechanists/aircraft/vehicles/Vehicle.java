@@ -220,7 +220,7 @@ public class Vehicle extends SlimefunItem {
         }
     }
 
-    private void tickDebug(Pig pig, VehicleState state) {
+    private void tickDebug(Pig pig, VehicleState state, boolean isOnGround) {
         PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         DisplayGroupId forceArrowGroupId = traverser.getDisplayGroupId("forceArrowGroupId");
         DisplayGroup forceArrowGroup;
@@ -234,7 +234,7 @@ public class Vehicle extends SlimefunItem {
         }
 
         Set<String> notUpdated = new HashSet<>(forceArrowGroup.getDisplays().keySet());
-        for (SpatialForce force : getForces(pig, state)) {
+        for (SpatialForce force : getForces(isOnGround, state)) {
             String id = force.relativeLocation().toString() + force.type().toString();
             notUpdated.remove(id);
             Display display = forceArrowGroup.getDisplays().get(id);
@@ -280,15 +280,20 @@ public class Vehicle extends SlimefunItem {
             return;
         }
 
-        Set<SpatialForce> forces = getForces(pig, state);
+        boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
 
-        description.applyVelocityDampening(state);
+        Set<SpatialForce> forces = getForces(isOnGround, state);
+
+        state.velocity.mul(1.0 - description.getVelocityDamping());
         Vector3d acceleration = getAcceleration(forces);
         cancelVelocityAndAcceleration(state.velocity, acceleration, pig);
         state.velocity.add(new Vector3d(acceleration).div(20));
 
-        description.applyAngularVelocityDampening(state);
+        state.angularVelocity.mul(1.0 - description.getAngularVelocityDamping());
         Vector3d angularAcceleration = getAngularAcceleration(forces);
+        if (isOnGround) {
+            angularAcceleration.y -= description.getGroundYawDamping() * state.angularVelocity.y;
+        }
         state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
 
         Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(state.rotation);
@@ -300,7 +305,7 @@ public class Vehicle extends SlimefunItem {
                 .getEulerAnglesXYZ(new Vector3d()));
 
         if (ENABLE_DEBUG_ARROWS) {
-            tickDebug(pig, state);
+            tickDebug(pig, state, isOnGround);
         }
 
         description.moveHingeComponentsToCenter(state.orientations);
@@ -318,18 +323,18 @@ public class Vehicle extends SlimefunItem {
 
         VehicleHud.update(state, pig.getLocation(), acceleration.length(), angularAcceleration.length());
 
-        if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
+        if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, 0.1, 0.1))) {
 //            remove(pig, componentGroup, hudGroup);
         }
     }
 
-    private @NotNull Set<SpatialForce> getForces(Pig pig, VehicleState state) {
+    private @NotNull Set<SpatialForce> getForces(boolean isOnGround, VehicleState state) {
         Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce(state));
         forces.add(getThrustForce(state));
         forces.addAll(getDragForces(state));
         forces.addAll(getLiftForces(state));
-        forces.add(getFrictionForce(pig, state, getAcceleration(forces).mul(description.getMass())));
+        forces.add(getFrictionForce(isOnGround, state, getAcceleration(forces).mul(description.getMass())));
         return forces;
     }
 
@@ -341,8 +346,7 @@ public class Vehicle extends SlimefunItem {
                 Utils.rotateByEulerAngles(description.getWeightLocation(), state.rotation));
     }
 
-    private @NotNull SpatialForce getFrictionForce(@NotNull Pig pig, VehicleState state, Vector3d force) {
-        boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
+    private @NotNull SpatialForce getFrictionForce(boolean isOnGround, VehicleState state, Vector3d force) {
         if (!isOnGround || state.velocity.length() < 0.0001) {
             return new SpatialForce(SpatialForceType.FRICTION, new Vector3d(), new Vector3d(), new Vector3d());
         }

@@ -30,8 +30,10 @@ public class VehicleDescription {
     private final double mass;
     @Getter
     private final double momentOfInertia;
-    private final double velocityDampening;
-    private final double angularVelocityDampening;
+    @Getter
+    private final double velocityDamping;
+    @Getter
+    private final double angularVelocityDamping;
     @Getter
     private final Vector3d thrustLocation;
     @Getter
@@ -44,6 +46,10 @@ public class VehicleDescription {
     private final double gravityAcceleration;
     @Getter
     private final double airDensity;
+    @Getter
+    private final double groundPitchDamping;
+    @Getter
+    private final double groundYawDamping;
     private final Set<FixedComponent> fixedComponents = new HashSet<>();
     @Getter
     private final Set<HingeComponent> hingeComponents = new HashSet<>();
@@ -86,14 +92,16 @@ public class VehicleDescription {
         Vector3f translation = getVector3f(traverser, "translation");
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia");
-        velocityDampening = traverser.get("velocityDampening");
-        angularVelocityDampening = traverser.get("angularVelocityDampening");
+        velocityDamping = traverser.get("velocityDamping");
+        angularVelocityDamping = traverser.get("angularVelocityDamping");
         thrustLocation = getVector3d(traverser, "thrustLocation");
         weightLocation = getVector3d(traverser, "weightLocation");
         thrust = traverser.get("thrust");
         frictionCoefficient = traverser.get("frictionCoefficient");
         gravityAcceleration = traverser.get("gravityAcceleration");
         airDensity = traverser.get("airDensity");
+        groundPitchDamping = traverser.get("groundPitchDamping");
+        groundYawDamping = traverser.get("groundYawDamping");
 
         Map<String, ComponentGroup> groups = new HashMap<>();
         for (YamlTraverser group : traverser.getSection("groups").getSections()) {
@@ -131,13 +139,5 @@ public class VehicleDescription {
 
     public Map<String, ControlSurfaceOrientation> initializeOrientations() {
         return hingeComponents.stream().collect(Collectors.toMap(HingeComponent::getName, component -> new ControlSurfaceOrientation(), (name, orientation) -> orientation));
-    }
-
-    public void applyVelocityDampening(@NotNull VehicleState state) {
-        state.velocity.mul(1.0 - velocityDampening);
-    }
-
-    public void applyAngularVelocityDampening(@NotNull VehicleState state) {
-        state.angularVelocity.mul(1.0 - angularVelocityDampening);
     }
 }
