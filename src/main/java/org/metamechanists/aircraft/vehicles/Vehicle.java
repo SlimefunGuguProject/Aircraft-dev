@@ -111,8 +111,8 @@ public class Vehicle extends SlimefunItem {
         VehicleState state = new VehicleState(
                 0,
                 new Vector3d(),
-                new Vector3d(),
                 new Vector3d(0, toRadians(-90.0-player.getEyeLocation().getYaw()), 0),
+                new Vector3d(),
                 description.initializeOrientations(),
                 componentGroup,
                 null
