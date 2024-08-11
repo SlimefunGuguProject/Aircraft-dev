@@ -51,7 +51,8 @@ public class Items {
                         id,
                         new VehicleDescription("vehicles/" + file.getName())));
             } catch (RuntimeException e) {
-                Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + file.getName() + ": " + e);
+                Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + file.getName());
+                e.printStackTrace();
             }
         }
     }
