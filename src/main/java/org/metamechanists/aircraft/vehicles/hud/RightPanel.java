@@ -2,12 +2,14 @@ package org.metamechanists.aircraft.vehicles.hud;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.entity.TextDisplay.TextAlignment;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicles.VehicleState;
+import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedText;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 
@@ -77,7 +79,7 @@ public final class RightPanel {
                 .text(Component.text("AVL").color(KEY_COLOR))
                 .translate(panelCenter)
                 .translate(0.0F, 0.1F, 0.0F)
-                .scale(new Vector3f(0.15F, 0.1F, 0.001F));
+                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
     }
 
     private static ModelAdvancedText getAngularVelocityValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
@@ -85,7 +87,25 @@ public final class RightPanel {
                 .alignment(TextAlignment.LEFT)
                 .translate(panelCenter)
                 .translate(0.09F, 0.1F, 0.0F)
-                .scale(new Vector3f(0.15F, 0.1F, 0.001F));
+                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
+    }
+
+    private static ModelAdvancedCuboid getThrottleBackground(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
+        return Util.rollIndependentCuboid(state, hudCenter)
+                .material(Material.GRAY_CONCRETE)
+                .translate(panelCenter)
+                .translate(-0.1F, 0.0F, -0.001F)
+                .scale(new Vector3f(0.05F, 0.5F, 0.001F));
+    }
+
+    private static ModelAdvancedCuboid getThrottleForeground(@NotNull VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
+        float fraction = (float) (state.throttle / 100.0);
+        return Util.rollIndependentCuboid(state, hudCenter)
+                .material(Material.LIGHT_BLUE_CONCRETE)
+                .translate(panelCenter)
+                .translate(-0.1F, 0.0F, 0.0F)
+                .translate(0.0F, -0.5F * fraction, 0.0F)
+                .scale(new Vector3f(0.05F, fraction * 0.5F, 0.001F));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
@@ -102,6 +122,9 @@ public final class RightPanel {
 
         hudComponents.put("angular_velocity_key", getAngularVelocityKey(state, hudCenter, panelCenter));
         hudComponents.put("angular_velocity_value", getAngularVelocityValue(state, hudCenter, panelCenter));
+
+        hudComponents.put("throttle_background", getThrottleBackground(state, hudCenter, panelCenter));
+        hudComponents.put("throttle_foreground", getThrottleForeground(state, hudCenter, panelCenter));
     }
 
     public static void update(@NotNull VehicleState state, @NotNull Map<String, Display> displays, double acceleration, double angularAcceleration) {

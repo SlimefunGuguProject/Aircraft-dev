@@ -7,6 +7,7 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.VehicleState;
+import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedText;
 
 
@@ -31,6 +32,11 @@ public final class Util {
                 .brightness(Utils.BRIGHTNESS_ON);
     }
 
+    private static ModelAdvancedCuboid defaultCuboid() {
+        return new ModelAdvancedCuboid()
+                .brightness(Utils.BRIGHTNESS_ON);
+    }
+
     public static ModelAdvancedText rollText(@NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f offset) {
         return defaultText()
                 .rotate(state.rotation)
@@ -47,5 +53,13 @@ public final class Util {
                 .rotateBackwards(state.rotation)
                 .rotate(new Vector3d(0, getYaw(state), getPitch(state)))
                 .facing(BlockFace.WEST);
+    }
+
+    public static ModelAdvancedCuboid rollIndependentCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
+        return defaultCuboid()
+                .rotate(state.rotation)
+                .translate(hudCenter)
+                .rotateBackwards(state.rotation)
+                .rotate(new Vector3d(0, getYaw(state), getPitch(state)));
     }
 }
