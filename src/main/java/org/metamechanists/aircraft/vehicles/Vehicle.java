@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
-import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
@@ -189,29 +188,35 @@ public class Vehicle extends SlimefunItem {
         return new Vector3d(resultantTorque).div(description.getMomentOfInertia());
     }
 
-    private static void cancelVelocity(Vector3d velocity, @NotNull Pig pig) {
+    private static void cancelVelocityAndAcceleration(Vector3d velocity, Vector3d acceleration, @NotNull Pig pig) {
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(-0.1, 0.0, 0.0)))) {
             velocity.x = Math.max(velocity.x, 0.0);
+            acceleration.x = Math.max(acceleration.x, 0.0);
         }
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.1, 0.0, 0.0)))) {
             velocity.x = Math.min(velocity.x, 0.0);
+            acceleration.x = Math.min(acceleration.x, 0.0);
         }
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)))) {
             velocity.y = Math.max(velocity.y, 0.0);
+            acceleration.y = Math.max(acceleration.y, 0.0);
         }
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, 0.1, 0.0)))) {
             velocity.y = Math.min(velocity.y, 0.0);
+            acceleration.y = Math.min(acceleration.y, 0.0);
         }
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, 0.0, -0.1)))) {
             velocity.z = Math.max(velocity.z, 0.0);
+            acceleration.z = Math.max(acceleration.z, 0.0);
         }
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, 0.0, 0.1)))) {
             velocity.z = Math.min(velocity.z, 0.0);
+            acceleration.z = Math.min(acceleration.z, 0.0);
         }
     }
 
@@ -279,26 +284,20 @@ public class Vehicle extends SlimefunItem {
 
         description.applyVelocityDampening(state);
         Vector3d acceleration = getAcceleration(forces).div(20);
+        cancelVelocityAndAcceleration(state.velocity, acceleration, pig);
         state.velocity.add(acceleration);
 
         description.applyAngularVelocityDampening(state);
         Vector3d angularAcceleration = getAngularAcceleration(forces).div(20);
-        Aircraft.getInstance().getLogger().severe(angularAcceleration.toString());
         state.angularVelocity.add(angularAcceleration);
-        Aircraft.getInstance().getLogger().severe(state.angularVelocity.toString());
-        Aircraft.getInstance().getLogger().severe(state.rotation.toString());
 
         Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(state.rotation);
         Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
         Vector3d relativeAngularVelocity = new Vector3d(state.angularVelocity).rotate(negativeRotation);
 
-        Aircraft.getInstance().getLogger().severe(relativeAngularVelocity.toString());
-
         state.rotation.set(Utils.getRotationEulerAngles(state.rotation)
                 .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(20)))
                 .getEulerAnglesXYZ(new Vector3d()));
-
-        cancelVelocity(state.velocity, pig);
 
         boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
         if (isOnGround && state.velocity.length() > 0.0001) {
