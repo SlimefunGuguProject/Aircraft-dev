@@ -286,13 +286,13 @@ public class Vehicle extends SlimefunItem {
         Set<SpatialForce> forces = getForces(state);
 
         description.applyVelocityDampening(state);
-        Vector3d acceleration = getAcceleration(forces).div(20);
+        Vector3d acceleration = getAcceleration(forces);
         cancelVelocityAndAcceleration(state.velocity, acceleration, pig);
-        state.velocity.add(acceleration);
+        state.velocity.add(new Vector3d(acceleration).div(20));
 
         description.applyAngularVelocityDampening(state);
-        Vector3d angularAcceleration = getAngularAcceleration(forces).div(20);
-        state.angularVelocity.add(angularAcceleration);
+        Vector3d angularAcceleration = getAngularAcceleration(forces);
+        state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
 
         Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(state.rotation);
         Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
@@ -310,11 +310,11 @@ public class Vehicle extends SlimefunItem {
 
         state.write(pig);
 
-        Vector3d pigVelocity = new Vector3d(state.velocity).div(20);
+        Vector3d pigVelocity = new Vector3d(state.velocity);
         if (pigVelocity.length() > 5) {
             pigVelocity.set(0);
         }
-        pig.setVelocity(Vector.fromJOML(pigVelocity));
+        pig.setVelocity(Vector.fromJOML(new Vector3d(pigVelocity).div(20)));
 
         description.getCuboids(state.orientations).forEach((cuboidName, cuboid) -> state.componentGroup.getDisplays().get(cuboidName)
                         .setTransformationMatrix(Utils.getComponentMatrix(cuboid, state.rotation, description.getAbsoluteCenterOfMass(state.rotation))));

@@ -94,7 +94,7 @@ public final class RightPanel {
         return Util.rollIndependentCuboid(state, hudCenter)
                 .material(Material.GRAY_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.2F, 0.0F, 0.0F)
+                .translate(-0.13F, 0.0F, 0.0F)
                 .scale(new Vector3f(0.03F, 0.5F, 0.001F));
     }
 
@@ -103,7 +103,7 @@ public final class RightPanel {
         return Util.rollIndependentCuboid(state, hudCenter)
                 .material(Material.LIGHT_BLUE_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.2F, -0.5F * fraction, -0.001F)
+                .translate(-0.13F, -0.25F + 0.5F * fraction, 0.001F)
                 .scale(new Vector3f(0.03F, 0.5F * fraction, 0.001F));
     }
 
