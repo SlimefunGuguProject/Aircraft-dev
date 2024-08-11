@@ -291,16 +291,17 @@ public class Vehicle extends SlimefunItem {
 
         state.angularVelocity.mul(1.0 - description.getAngularVelocityDamping());
         Vector3d angularAcceleration = getAngularAcceleration(forces);
-        if (isOnGround) {
-            angularAcceleration.y -= description.getGroundYawDamping() * state.angularVelocity.y;
-            angularAcceleration.x -= //description.getGroundPitchDampingRotation() * state.rotation.x
-                    description.getGroundPitchDampingAngularVelocity() * state.angularVelocity.x;
-        }
         state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
 
         Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(state.rotation);
         Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
         Vector3d relativeAngularVelocity = new Vector3d(state.angularVelocity).rotate(negativeRotation);
+
+        if (isOnGround) {
+            angularAcceleration.y -= description.getGroundYawDamping() * state.angularVelocity.y;
+            relativeAngularVelocity.x -= //description.getGroundPitchDampingRotation() * state.rotation.x
+                    description.getGroundPitchDampingAngularVelocity() * relativeAngularVelocity.x;
+        }
 
         state.rotation.set(Utils.getRotationEulerAngles(state.rotation)
                 .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(20)))
