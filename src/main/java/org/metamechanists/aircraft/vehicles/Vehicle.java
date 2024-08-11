@@ -286,11 +286,13 @@ public class Vehicle extends SlimefunItem {
         Aircraft.getInstance().getLogger().severe(angularAcceleration.toString());
         state.angularVelocity.add(angularAcceleration);
         Aircraft.getInstance().getLogger().severe(state.angularVelocity.toString());
+        Aircraft.getInstance().getLogger().severe(state.rotation.toString());
 
         Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(state.rotation);
         Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
         Vector3d relativeAngularVelocity = new Vector3d(state.angularVelocity).rotate(negativeRotation);
 
+        Aircraft.getInstance().getLogger().severe(relativeAngularVelocity.toString());
 
         state.rotation.set(Utils.getRotationEulerAngles(state.rotation)
                 .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(20)))
