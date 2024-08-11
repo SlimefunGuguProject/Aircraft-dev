@@ -20,6 +20,11 @@ public final class Util {
         return lookingAtForward.y > 0 ? pitch : -pitch;
     }
 
+    public static double getPitch(@NotNull Vector3d lookingAtForward) {
+        double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
+        return lookingAtForward.y > 0 ? pitch : -pitch;
+    }
+
     public static double getYaw(@NotNull VehicleState state) {
         Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), state.rotation);
         double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
