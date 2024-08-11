@@ -299,8 +299,8 @@ public class Vehicle extends SlimefunItem {
 
         if (isOnGround) {
             angularAcceleration.y -= description.getGroundYawDamping() * state.angularVelocity.y;
-            relativeAngularVelocity.x -= //description.getGroundPitchDampingRotation() * state.rotation.x
-                    description.getGroundPitchDampingAngularVelocity() * relativeAngularVelocity.x;
+            relativeAngularVelocity.z -= //description.getGroundPitchDampingRotation() * state.rotation.x
+                    description.getGroundPitchDampingAngularVelocity() * relativeAngularVelocity.z;
         }
 
         state.rotation.set(Utils.getRotationEulerAngles(state.rotation)
