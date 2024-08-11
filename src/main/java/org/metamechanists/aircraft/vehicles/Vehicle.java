@@ -267,7 +267,7 @@ public class Vehicle extends SlimefunItem {
             }
         }
 
-        if (ENABLE_DEBUG_ARROWS && Bukkit.getCurrentTick() % 20 == 0) {
+        if (ENABLE_DEBUG_ARROWS) {
             DisplayGroupId forceArrowGroupId = traverser.getDisplayGroupId("forceArrowGroupId");
             DisplayGroup forceArrowGroup;
             if (forceArrowGroupId == null) {
@@ -284,7 +284,7 @@ public class Vehicle extends SlimefunItem {
 
             Set<String> notUpdated = new HashSet<>(forceArrowGroup.getDisplays().keySet());
             for (SpatialForce force : getForces(throttle, velocity, rotation, angularVelocity, orientations)) {
-                String id = force.relativeLocation().toString();
+                String id = force.relativeLocation().toString() + force.type().toString();
                 notUpdated.remove(id);
                 Display display = forceArrowGroup.getDisplays().get(id);
                 if (display == null) {
