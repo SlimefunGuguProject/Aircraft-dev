@@ -6,7 +6,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
-import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.components.FixedComponent;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
 import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
@@ -33,6 +32,8 @@ public class VehicleDescription {
     private final double momentOfInertia;
     private final double velocityDampening;
     private final double angularVelocityDampening;
+    @Getter
+    private final Vector3d thrustLocation;
     @Getter
     private final double thrust;
     @Getter
@@ -85,6 +86,7 @@ public class VehicleDescription {
         momentOfInertia = traverser.get("momentOfInertia");
         velocityDampening = traverser.get("velocityDampening");
         angularVelocityDampening = traverser.get("angularVelocityDampening");
+        thrustLocation = traverser.get("thrustlocation");
         thrust = traverser.get("thrust");
         frictionCoefficient = traverser.get("frictionCoefficient");
         gravityAcceleration = traverser.get("gravityAcceleration");

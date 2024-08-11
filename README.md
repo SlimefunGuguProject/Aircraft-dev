@@ -6,13 +6,14 @@
 * Hide player when on aircraft
 * Friction
 * Allow mounting
+* Better flight model parameters
+- Friction against angular velocity
 - Throttle indicator
 - Velocity indicator
 - Fix broken unmounting when hit water
 - Fuel
 - Fuel indicator
 - Vertical/horizontal speed indicator?
-- Better flight model parameters
 - Recipes
 - Only explode above velocity + explosion size depends on velocity
 - Protection plugin integration

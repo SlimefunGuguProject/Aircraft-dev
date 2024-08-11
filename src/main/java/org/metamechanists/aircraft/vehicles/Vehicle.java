@@ -370,8 +370,8 @@ public class Vehicle extends SlimefunItem {
         return new SpatialForce(
                 SpatialForceType.THRUST,
                 Utils.rotateByEulerAngles(new Vector3d(throttleFraction * description.getThrust(), 0, 0), state.rotation),
-                new Vector3d(),
-                new Vector3d());
+                description.getThrustLocation(),
+                Utils.rotateByEulerAngles(description.getThrustLocation(), state.rotation));
     }
 
     private Set<SpatialForce> getDragForces(@NotNull VehicleState state) {
