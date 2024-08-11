@@ -293,7 +293,7 @@ public class Vehicle extends SlimefunItem {
         Vector3d angularAcceleration = getAngularAcceleration(forces);
         if (isOnGround) {
             angularAcceleration.y -= description.getGroundYawDamping() * state.angularVelocity.y;
-            angularAcceleration.
+            angularAcceleration.x -= description.getGroundPitchDamping() * Utils.getRotationEulerAngles(state.rotation).x;
         }
         state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
 
