@@ -17,7 +17,7 @@ import static java.lang.Math.PI;
 
 
 public final class Horizon {
-    private static final TextColor HORIZON_ALTITUDE_COLOR = TextColor.color(200, 255, 200);
+    private static final TextColor HORIZON_ALTITUDE_COLOR = TextColor.color(200, 255, 255);
     private static final TextColor HORIZON_INDICATOR_COLOR = TextColor.color(0, 0, 255);
     private static final TextColor HORIZON_MAJOR_COLOR = TextColor.color(0, 255, 255);
     private static final TextColor HORIZON_MINOR_COLOR = TextColor.color(0, 180, 255);

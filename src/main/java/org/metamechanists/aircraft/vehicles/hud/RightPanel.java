@@ -24,21 +24,21 @@ public final class RightPanel {
         return Util.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
                 .text(Component.text("VEL").color(KEY_COLOR))
-                .scale(new Vector3f(0.1F, 0.1F, 0.001F))
                 .translate(panelCenter)
-                .translate(0.0F, 0.0F, 0.0F);
+                .translate(0.0F, 0.0F, 0.0F)
+                .scale(new Vector3f(0.2F, 0.2F, 0.001F));
     }
 
     private static ModelAdvancedText getVelocityValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         return Util.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
-                .scale(new Vector3f(0.1F, 0.1F, 0.001F))
                 .translate(panelCenter)
-                .translate(0.5F, 0.0F, 0.0F);
+                .translate(0.2F, 0.0F, 0.0F)
+                .scale(new Vector3f(0.1F, 0.1F, 0.001F));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f panelCenter = new Vector3f(5.0F, 5.0F, 0.0F);
+        Vector3f panelCenter = new Vector3f(1.0F, 0.5F, 0.0F);
 
         hudComponents.put("velocity_key", getVelocityKey(state, hudCenter, panelCenter));
         hudComponents.put("velocity_value", getVelocityValue(state, hudCenter, panelCenter));
