@@ -269,26 +269,29 @@ public class Vehicle extends SlimefunItem {
 
         if (ENABLE_DEBUG_ARROWS && Bukkit.getCurrentTick() % 20 == 0) {
             DisplayGroupId forceArrowGroupId = traverser.getDisplayGroupId("forceArrowGroupId");
+            DisplayGroup forceArrowGroup;
             if (forceArrowGroupId == null) {
-                DisplayGroup forceArrowGroup = new DisplayGroup(pig.getLocation());
+                forceArrowGroup = new DisplayGroup(pig.getLocation());
                 forceArrowGroupId = new DisplayGroupId(forceArrowGroup.getParentUUID());
                 new PersistentDataTraverser(pig).set("forceArrowGroupId", forceArrowGroupId);
+            } else {
+                forceArrowGroup = forceArrowGroupId.get().get();
             }
 
-            DisplayGroup forceArrowGroup = forceArrowGroupId.get().get();
             for (Display display : forceArrowGroup.getDisplays().values()) {
                 display.remove();
             }
 
+            Set<String> notUpdated = forceArrowGroup.getDisplays().keySet();
             for (SpatialForce force : getForces(throttle, velocity, rotation, angularVelocity, orientations)) {
                 String id = force.relativeLocation().toString();
+                notUpdated.remove(id);
                 Display display = forceArrowGroup.getDisplays().get(id);
                 if (display == null) {
                     ModelCuboid modelCuboid = new ModelCuboid()
                             .material(Material.PURPLE_CONCRETE)
                             .brightness(15)
                             .size(0.1F, 0.1F, 0.1F);
-                    //                        .facing(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z));
                     display = modelCuboid
                             .build(pig.getLocation());
                     forceArrowGroup.addDisplay(force.toString(), display);
@@ -296,10 +299,14 @@ public class Vehicle extends SlimefunItem {
                 }
 
                 display.setTransformationMatrix(new TransformationMatrixBuilder()
-                        .translate(new Vector3f((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z))
+                        .translate(new Vector3f((float) force.relativeLocation().x, (float) force.relativeLocation().y, (float) force.relativeLocation().z))
                         .scale(0.1F, 0.1F, 0.1F)
                         .lookAlong(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z))
                         .buildForBlockDisplay());
+            }
+
+            for (String id : notUpdated) {
+                forceArrowGroup.removeDisplay(id).remove();
             }
         }
 
