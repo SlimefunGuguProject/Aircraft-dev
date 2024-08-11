@@ -46,7 +46,7 @@ import static java.lang.Math.toRadians;
 public class Vehicle extends SlimefunItem {
     private final String id;
     private VehicleDescription description;
-    private static final boolean ENABLE_DEBUG_ARROWS = true;
+    private static final boolean ENABLE_DEBUG_ARROWS = false;
 
     public Vehicle(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String id, VehicleDescription description) {
         super(itemGroup, item, recipeType, recipe);
