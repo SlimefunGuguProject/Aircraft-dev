@@ -19,10 +19,12 @@ import static java.lang.Math.PI;
 public final class Horizon {
     private static final TextColor HORIZON_ALTITUDE_COLOR = TextColor.color(200, 255, 255);
     private static final TextColor HORIZON_INDICATOR_COLOR = TextColor.color(0, 0, 255);
+    private static final TextColor HORIZON_VELOCITY_COLOR = TextColor.color(130, 0, 255);
     private static final TextColor HORIZON_MAJOR_COLOR = TextColor.color(0, 255, 255);
     private static final TextColor HORIZON_MINOR_COLOR = TextColor.color(0, 180, 255);
     private static final TextColor HORIZON_DETAIL_COLOR = TextColor.color(0, 150, 180);
-    private static final String HORIZON_INDICATOR_TEXT = "= = [     ] = =";
+    private static final String HORIZON_ROTATION_TEXT = "[     ]";
+    private static final String HORIZON_VELOCITY_TEXT = "<--         -->";
     private static final String HORIZON_MAJOR_TEXT = "--------";
     private static final String HORIZON_MINOR_TEXT = "-------";
     private static final String HORIZON_DETAIL_TEXT = "------";
@@ -32,10 +34,10 @@ public final class Horizon {
     private static ModelAdvancedText getAltitudeIndicator(@NotNull VehicleState state, Vector3f hudCenter) {
         return Util.rollIndependentText(state, hudCenter)
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
-                .translate(0.5F, 0.35F, 0.03F);
+                .translate(0.5F, 0.35F, 0.05F);
     }
 
-    private static ModelAdvancedText getArtificialHorizonCenter(@NotNull VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, boolean shouldRender) {
+    private static ModelAdvancedText getArtificialHorizonMajor(@NotNull VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, boolean shouldRender) {
         return Util.rollText(state, hudCenter, horizonOffset)
                 .text(Component.text(HORIZON_MAJOR_TEXT).color(HORIZON_MAJOR_COLOR))
                 .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
@@ -50,11 +52,19 @@ public final class Horizon {
                 .translate(0.5F, 0.35F, 0);
     }
 
-    private static ModelAdvancedText getHorizonIndicator(@NotNull VehicleState state, Vector3f hudCenter) {
+    private static ModelAdvancedText getRotationIndicator(@NotNull VehicleState state, Vector3f hudCenter) {
         return Util.rollIndependentText(state, hudCenter)
-                .text(Component.text(HORIZON_INDICATOR_TEXT).color(HORIZON_INDICATOR_COLOR))
+                .text(Component.text(HORIZON_ROTATION_TEXT).color(HORIZON_INDICATOR_COLOR))
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
-                .translate(0.5F, 0.35F, 0.03F);
+                .translate(0.5F, 0.35F, 0.05F);
+    }
+
+    private static ModelAdvancedText getVelocityIndicator(@NotNull VehicleState state, Vector3f hudCenter, Vector3f velocityOffset) {
+        return Util.rollIndependentText(state, hudCenter)
+                .text(Component.text(HORIZON_VELOCITY_TEXT).color(HORIZON_VELOCITY_COLOR))
+                .scale(new Vector3f(0.15F, 0.15F, 0.001F))
+                .translate(velocityOffset)
+                .translate(0.5F, 0.35F, 0.05F);
     }
 
     private static ModelAdvancedText getArtificialHorizonDegree(
@@ -71,8 +81,11 @@ public final class Horizon {
         boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
 
         hudComponents.put("altitude", getAltitudeIndicator(state, hudCenter));
-        hudComponents.put("horizon", getHorizonIndicator(state, hudCenter));
-        hudComponents.put("horizon_center", getArtificialHorizonCenter(state, hudCenter, horizonOffset, shouldRenderCenter));
+        hudComponents.put("horizon", getRotationIndicator(state, hudCenter));
+        hudComponents.put("horizon_center", getArtificialHorizonMajor(state, hudCenter, horizonOffset, shouldRenderCenter));
+
+        Vector3f velocityOffset = new Vector3f(0, (float) (0.5 * -Util.getPitch(state)), 0);
+        hudComponents.put("velocity", getVelocityIndicator(state, hudCenter, velocityOffset));
 
         final int bars = 30;
         final float verticalSpacing = 0.25F * (float) ((PI / 1.14) / (bars));
