@@ -21,7 +21,8 @@ public final class VehicleHud {
         Vector3f hudCenter = new Vector3f(0.5F, -0.2F, 0.0F);
         Map<String, ModelComponent> hudComponents = new HashMap<>();
         Horizon.build(state, hudComponents, hudCenter);
-        Compass.update(state, hudComponents, hudCenter);
+        Compass.build(state, hudComponents, hudCenter);
+        RightPanel.build(state, hudComponents, hudCenter);
         return hudComponents;
     }
 
@@ -34,5 +35,6 @@ public final class VehicleHud {
         }
 
         Horizon.update(displays, location);
+        RightPanel.update(state, displays);
     }
 }

@@ -25,7 +25,7 @@ public final class Util {
         return lookingAtForward.z > 0 ? -yaw : yaw;
     }
 
-    public static ModelAdvancedText defaultText() {
+    private static ModelAdvancedText defaultText() {
         return new ModelAdvancedText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON);

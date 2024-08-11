@@ -2,10 +2,8 @@ package org.metamechanists.aircraft.vehicles.hud;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.Color;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
-import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 
@@ -72,7 +70,7 @@ public final class Compass {
                 .translate(0.5F, -1.57F, -0.01F);
     }
 
-    public static void update(@NotNull VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, @NotNull Vector3f hudCenter) {
+    public static void build(@NotNull VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, @NotNull Vector3f hudCenter) {
         hudComponents.put("compass_notch", getCompassNotch(state, hudCenter));
 
         final int bars = 60;
