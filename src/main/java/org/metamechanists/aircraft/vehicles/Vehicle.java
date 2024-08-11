@@ -298,7 +298,7 @@ public class Vehicle extends SlimefunItem {
         Vector3d relativeAngularVelocity = new Vector3d(state.angularVelocity).rotate(negativeRotation);
 
         if (isOnGround) {
-            relativeAngularVelocity.x -= description.getGroundRollDamping() * Math.signum(relativeAngularVelocity.x) * state.getRollMagnitude();
+            relativeAngularVelocity.x -= description.getGroundRollDamping() * Math.signum(relativeAngularVelocity.x) * state.rotation.x;
             angularAcceleration.y -= description.getGroundYawDamping() * state.getYaw();
             relativeAngularVelocity.z -= description.getGroundPitchDamping() * state.getPitch();
         }

@@ -76,13 +76,4 @@ public class VehicleState {
         double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
         return lookingAtForward.z > 0 ? -yaw : yaw;
     }
-
-    public double getRollMagnitude() {
-        // no idea how to get the direction tbh
-        Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
-        Vector3d withoutRoll = new Vector3d(1, 0, 0)
-                .rotateY(getYaw())
-                .rotateZ(getPitch());
-        return lookingAtForward.angle(withoutRoll);
-    }
 }
