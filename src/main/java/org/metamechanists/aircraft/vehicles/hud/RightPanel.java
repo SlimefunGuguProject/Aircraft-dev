@@ -94,8 +94,8 @@ public final class RightPanel {
         return Util.rollIndependentCuboid(state, hudCenter)
                 .material(Material.GRAY_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.1F, 0.0F, -0.001F)
-                .scale(new Vector3f(0.05F, 0.5F, 0.001F));
+                .translate(-0.001F, 0.0F, -0.1F)
+                .scale(new Vector3f(0.001F, 0.5F, 0.03F));
     }
 
     private static ModelAdvancedCuboid getThrottleForeground(@NotNull VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
@@ -103,9 +103,9 @@ public final class RightPanel {
         return Util.rollIndependentCuboid(state, hudCenter)
                 .material(Material.LIGHT_BLUE_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.1F, 0.0F, 0.0F)
-                .translate(0.0F, -0.5F * fraction, 0.0F)
-                .scale(new Vector3f(0.05F, fraction * 0.5F, 0.001F));
+                .translate(0.0F, 0.0F, -0.1F)
+                .translate(0.0F, -0.25F * fraction, 0.0F)
+                .scale(new Vector3f(0.001F, fraction * 0.5F, 0.03F));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
