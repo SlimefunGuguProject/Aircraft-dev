@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicles.hud;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Display;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
@@ -16,19 +17,22 @@ import java.util.Map.Entry;
 public final class VehicleHud {
     private VehicleHud() {}
 
-    public static @NotNull Map<String, ModelComponent> build(@NotNull VehicleState state, Location location) {
+    public static @NotNull Map<String, ModelComponent> build(@NotNull VehicleState state) {
         Vector3f hudCenter = new Vector3f(0.5F, -0.2F, 0.0F);
         Map<String, ModelComponent> hudComponents = new HashMap<>();
-        Horizon.update(state, hudComponents, hudCenter, location);
+        Horizon.build(state, hudComponents, hudCenter);
         Compass.update(state, hudComponents, hudCenter);
         return hudComponents;
     }
 
     public static void update(@NotNull VehicleState state, Location location) {
-        Map<String, ModelComponent> hudComponents = build(state, location);
+        Map<String, ModelComponent> hudComponents = build(state);
+        Map<String, Display> displays = state.hudGroup.getDisplays();
         for (Entry<String, ModelComponent> entry : hudComponents.entrySet()) {
             Matrix4f matrix = Utils.getHudMatrix(hudComponents.get(entry.getKey()));
-            state.hudGroup.getDisplays().get(entry.getKey()).setTransformationMatrix(matrix);
+            displays.get(entry.getKey()).setTransformationMatrix(matrix);
         }
+
+        Horizon.update(displays, location);
     }
 }

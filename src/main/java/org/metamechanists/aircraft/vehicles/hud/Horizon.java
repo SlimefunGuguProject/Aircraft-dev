@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
@@ -97,7 +98,7 @@ public final class Horizon {
                 .translate(0.5F, 0.35F, 0);
     }
 
-    public static void update(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter, Location location) {
+    public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
         Vector3f horizonOffset = new Vector3f(0, (float) (-Util.getPitch(state)), 0);
         final float horizonRadius = 0.2F;
         boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
@@ -128,8 +129,10 @@ public final class Horizon {
                 hudComponents.put("horizon_degree_" + i, getArtificialHorizonDegree(state, hudCenter, degreeComponent, totalAdjustment, shouldRender));
             }
         }
+    }
 
-        TextDisplay altitudeText = (TextDisplay) hudComponents.get("altitude");
+    public static void update(@NotNull Map<String, Display> displays, @NotNull Location location) {
+        TextDisplay altitudeText = (TextDisplay) displays.get("altitude");
         altitudeText.text(Component.text(location.getBlockY()).color(HORIZON_ALTITUDE_INDICATOR_COLOR));
     }
 }

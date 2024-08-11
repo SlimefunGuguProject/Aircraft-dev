@@ -149,7 +149,7 @@ public class Vehicle extends SlimefunItem {
 
     private static @NotNull DisplayGroup buildHud(VehicleState state, Location location) {
         ModelBuilder builder = new ModelBuilder();
-        VehicleHud.build(state, location).forEach(builder::add);
+        VehicleHud.build(state).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
 
