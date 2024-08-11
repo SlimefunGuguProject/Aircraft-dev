@@ -60,6 +60,7 @@ public final class Util {
                 .rotate(state.rotation)
                 .translate(hudCenter)
                 .rotateBackwards(state.rotation)
-                .rotate(new Vector3d(0, getYaw(state), getPitch(state)));
+                .rotate(new Vector3d(0, getYaw(state), getPitch(state)))
+                .facing(BlockFace.WEST);
     }
 }
