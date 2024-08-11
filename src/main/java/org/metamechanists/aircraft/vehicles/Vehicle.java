@@ -308,7 +308,7 @@ public class Vehicle extends SlimefunItem {
                         .translate(description.getRelativeCenterOfMass())
                         .translate(0.0F, 1.2F, 0.0F)
                         .lookAlong(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z))
-                        .translate(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z).mul(0.5F))
+                        .translate(0.0F, 0.0F, (float) force.force().length())
                         .scale(0.1F, 0.1F, 2.0F * (float) force.force().length())
                         .buildForBlockDisplay());
             }
