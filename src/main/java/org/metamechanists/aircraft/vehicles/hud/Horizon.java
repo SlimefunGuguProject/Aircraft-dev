@@ -76,7 +76,7 @@ public final class Horizon {
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f horizonOffset = new Vector3f(0, (float) (0.5 * -HudUtil.getPitch(state)), 0);
+        Vector3f horizonOffset = new Vector3f(0, (float) (0.5 * -state.getPitch()), 0);
         final float horizonRadius = 0.15F;
         boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
 

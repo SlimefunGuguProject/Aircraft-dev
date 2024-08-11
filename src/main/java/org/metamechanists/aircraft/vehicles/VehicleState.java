@@ -76,4 +76,8 @@ public class VehicleState {
         double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
         return lookingAtForward.z > 0 ? -yaw : yaw;
     }
+
+    public double getRoll() {
+        return rotation.x;
+    }
 }
