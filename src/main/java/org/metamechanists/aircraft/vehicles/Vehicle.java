@@ -327,9 +327,9 @@ public class Vehicle extends SlimefunItem {
         Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
         forces.add(getThrustForce(state));
-        forces.add(getFrictionForce(pig, state));
         forces.addAll(getDragForces(state));
         forces.addAll(getLiftForces(state));
+        forces.add(getFrictionForce(pig, state, getAcceleration(forces).mul(description.getMass())));
         return forces;
     }
 
@@ -341,9 +341,9 @@ public class Vehicle extends SlimefunItem {
                 new Vector3d());
     }
 
-    private @NotNull SpatialForce getFrictionForce(@NotNull Pig pig, VehicleState state) {
+    private @NotNull SpatialForce getFrictionForce(@NotNull Pig pig, VehicleState state, Vector3d force) {
         boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
-        if (!isOnGround || !(state.velocity.length() > 0.0001)) {
+        if (!isOnGround || state.velocity.length() < 0.0001) {
             return new SpatialForce(SpatialForceType.FRICTION, new Vector3d(), new Vector3d(), new Vector3d());
         }
 
@@ -353,7 +353,7 @@ public class Vehicle extends SlimefunItem {
         double horizontalVelocity = new Vector3d(state.velocity.x, 0.0, state.velocity.z)
                 .length();
 
-        double frictionAmount = Math.abs(state.velocity.y) * description.getFrictionCoefficient();
+        double frictionAmount = Math.abs(force.y) * description.getFrictionCoefficient();
         if (horizontalVelocity < 0.01) {
             // Stationary; limiting equilibrium
             frictionAmount = Math.min(frictionAmount, horizontalForce);
