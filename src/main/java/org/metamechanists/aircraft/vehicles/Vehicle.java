@@ -10,7 +10,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -23,10 +22,13 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
-import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
+import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
+import org.metamechanists.aircraft.vehicles.forces.SpatialForceType;
+import org.metamechanists.aircraft.vehicles.hud.VehicleHud;
+import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.ModelBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
@@ -105,7 +107,17 @@ public class Vehicle extends SlimefunItem {
 
     private void place(@NotNull Block block, @NotNull Player player) {
         DisplayGroup componentGroup = buildComponents(block.getLocation());
-        DisplayGroup hudGroup = buildHud(block.getLocation(), new Vector3d());
+        VehicleState state = new VehicleState(
+                0,
+                new Vector3d(),
+                new Vector3d(),
+                new Vector3d(0, toRadians(-90.0-player.getEyeLocation().getYaw()), 0),
+                description.initializeOrientations(),
+                componentGroup,
+                null
+        );
+
+        state.hudGroup = buildHud(state, block.getLocation());
 
         Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation().clone().toCenterLocation().add(new Vector(0, -0.5, 0)), EntityType.PIG);
         pig.setInvulnerable(true);
@@ -113,34 +125,31 @@ public class Vehicle extends SlimefunItem {
         pig.setInvisible(true);
         pig.setSilent(true);
         pig.addPassenger(componentGroup.getParentDisplay());
-        pig.addPassenger(hudGroup.getParentDisplay());
+        pig.addPassenger(state.hudGroup.getParentDisplay());
 
         componentGroup.getDisplays().values().forEach(pig::addPassenger);
-        hudGroup.getDisplays().values().forEach(pig::addPassenger);
+        state.hudGroup.getDisplays().values().forEach(pig::addPassenger);
 
         createInteraction(pig);
+        
+        state.write(pig);
 
         PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         traverser.set("id", id);
-        traverser.set("throttle", 0);
-        traverser.set("velocity", new Vector3d());
-        traverser.set("angularVelocity", new Vector3d());
-        traverser.set("rotation", new Vector3d(0, toRadians(-90.0-player.getEyeLocation().getYaw()), 0));
         traverser.set("player", player.getUniqueId());
-        traverser.set("componentGroupId", new DisplayGroupId(componentGroup.getParentUUID()));
-        traverser.set("hudGroupId", new DisplayGroupId(hudGroup.getParentUUID()));
-        traverser.setControlSurfaceOrientations("orientations", description.initializeOrientations());
 
         Storage.add(pig.getUniqueId());
     }
+
     private @NotNull DisplayGroup buildComponents(Location location) {
         ModelBuilder builder = new ModelBuilder();
         description.getCuboids(description.initializeOrientations()).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
-    private static @NotNull DisplayGroup buildHud(Location location, Vector3d rotation) {
+
+    private static @NotNull DisplayGroup buildHud(VehicleState state, Location location) {
         ModelBuilder builder = new ModelBuilder();
-        VehicleHud.getHud(rotation).forEach(builder::add);
+        VehicleHud.build(state, location).forEach(builder::add);
         return builder.buildAtBlockCenter(location);
     }
 
@@ -205,150 +214,139 @@ public class Vehicle extends SlimefunItem {
         }
     }
 
-    public void tickAircraft(@NotNull Pig pig) {
+    private void tickDebug(Pig pig, VehicleState state) {
         PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
-        int throttle = traverser.getInt("throttle");
-        Vector3d velocity = traverser.getVector3d("velocity");
-        Vector3d rotation = traverser.getVector3d("rotation");
-        Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
-        Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
-        DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
-        DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
-        if (velocity == null || angularVelocity == null || rotation == null || orientations == null
-                || componentGroupId == null || componentGroupId.get().isEmpty()
-                || hudGroupId == null || hudGroupId.get().isEmpty()) {
+        DisplayGroupId forceArrowGroupId = traverser.getDisplayGroupId("forceArrowGroupId");
+        DisplayGroup forceArrowGroup;
+        if (forceArrowGroupId == null || forceArrowGroupId.get().isEmpty()) {
+            forceArrowGroup = new DisplayGroup(pig.getLocation());
+            forceArrowGroupId = new DisplayGroupId(forceArrowGroup.getParentUUID());
+            traverser.set("forceArrowGroupId", forceArrowGroupId);
+            pig.addPassenger(forceArrowGroup.getParentDisplay());
+        } else {
+            forceArrowGroup = forceArrowGroupId.get().get();
+        }
+
+        Set<String> notUpdated = new HashSet<>(forceArrowGroup.getDisplays().keySet());
+        for (SpatialForce force : getForces(state)) {
+            String id = force.relativeLocation().toString() + force.type().toString();
+            notUpdated.remove(id);
+            Display display = forceArrowGroup.getDisplays().get(id);
+
+            if (display == null) {
+                Material material = switch (force.type()) {
+                    case DRAG -> Material.BLUE_CONCRETE;
+                    case LIFT -> Material.LIME_CONCRETE;
+                    case WEIGHT -> Material.ORANGE_CONCRETE;
+                    case THRUST -> Material.PURPLE_CONCRETE;
+                };
+
+                display = new ModelCuboid()
+                        .material(material)
+                        .brightness(15)
+                        .size(0.1F, 0.01F, 0.01F)
+                        .build(pig.getLocation());
+                forceArrowGroup.addDisplay(id, display);
+                pig.addPassenger(display);
+            }
+
+            display.setTransformationMatrix(new TransformationMatrixBuilder()
+                    .translate(new Vector3f((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z))
+                    .translate(description.getRelativeCenterOfMass())
+                    .translate(0.0F, 1.2F, 0.0F)
+                    .lookAlong(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z))
+                    .translate(0.0F, 0.0F, (float) force.force().length())
+                    .scale(0.1F, 0.1F, 2.0F * (float) force.force().length())
+                    .buildForBlockDisplay());
+        }
+
+        for (String id : notUpdated) {
+            Display display = forceArrowGroup.removeDisplay(id);
+            if (display != null) {
+                display.remove();
+            }
+        }
+    }
+
+    public void tickAircraft(@NotNull Pig pig) {
+        VehicleState state = VehicleState.fromPig(pig);
+        if (state == null) {
             return;
         }
 
-        DisplayGroup componentGroup = componentGroupId.get().get();
-        DisplayGroup hudGroup = hudGroupId.get().get();
+        Set<SpatialForce> forces = getForces(state);
 
-        for (int i = 0; i < 10; i++) {
-            Set<SpatialForce> forces = getForces(throttle, velocity, rotation, angularVelocity, orientations);
+        description.applyVelocityDampening(state);
+        Vector3d acceleration = getAcceleration(forces).div(20);
+        state.velocity.add(acceleration);
 
-            description.applyVelocityDampening(velocity);
-            Vector3d acceleration = getAcceleration(forces);
-            velocity.add(acceleration.div(200));
+        description.applyAngularVelocityDampening(state);
+        Vector3d angularAcceleration = getAngularAcceleration(forces).div(20);
+        state.angularVelocity.add(angularAcceleration);
 
-            angularVelocity.add(getAngularAcceleration(forces).div(200));
-            description.applyAngularVelocityDampening(angularVelocity);
+        Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(state.rotation);
+        Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
+        Vector3d relativeAngularVelocity = new Vector3d(state.angularVelocity).rotate(negativeRotation);
 
-            Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(rotation);
-            Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
-            Vector3d relativeAngularVelocity = new Vector3d(angularVelocity).rotate(negativeRotation);
+        state.rotation.set(Utils.getRotationEulerAngles(state.rotation)
+                .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(20)))
+                .getEulerAnglesXYZ(new Vector3d()));
 
-            rotation.set(Utils.getRotationEulerAngles(rotation)
-                    .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(200)))
-                    .getEulerAnglesXYZ(new Vector3d()));
-        }
-
-        cancelVelocity(velocity, pig);
+        cancelVelocity(state.velocity, pig);
 
         boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
-        Set<SpatialForce> forces = getForces(throttle, velocity, rotation, angularVelocity, orientations);
-        Vector3d acceleration = getAcceleration(forces);
-        if (isOnGround) {
-            if (velocity.length() > 0.0001) {
-                double horizontalForce = new Vector3d(acceleration.x, 0.0, acceleration.z)
-                        .mul(description.getMass())
-                        .length();
-                double horizontalVelocity = new Vector3d(velocity.x, 0.0, velocity.z)
-                        .length();
+        if (isOnGround && state.velocity.length() > 0.0001) {
+            double horizontalForce = new Vector3d(acceleration.x, 0.0, acceleration.z)
+                    .mul(description.getMass())
+                    .length();
+            double horizontalVelocity = new Vector3d(state.velocity.x, 0.0, state.velocity.z)
+                    .length();
 
-                double frictionAmount = Math.abs(acceleration.y) * description.getFrictionCoefficient();
-                if (horizontalVelocity < 0.01) {
-                    // Stationary; limiting equilibrium
-                    frictionAmount = Math.min(frictionAmount, horizontalForce);
-                }
-
-                Vector3d friction = new Vector3d(velocity)
-                        .normalize()
-                        .mul(frictionAmount);
-                velocity.sub(friction);
+            double frictionAmount = Math.abs(acceleration.y) * description.getFrictionCoefficient();
+            if (horizontalVelocity < 0.01) {
+                // Stationary; limiting equilibrium
+                frictionAmount = Math.min(frictionAmount, horizontalForce);
             }
+
+            Vector3d friction = new Vector3d(state.velocity)
+                    .normalize()
+                    .mul(frictionAmount);
+            state.velocity.sub(friction);
         }
 
         if (ENABLE_DEBUG_ARROWS) {
-            DisplayGroupId forceArrowGroupId = traverser.getDisplayGroupId("forceArrowGroupId");
-            DisplayGroup forceArrowGroup;
-            if (forceArrowGroupId == null || forceArrowGroupId.get().isEmpty()) {
-                forceArrowGroup = new DisplayGroup(pig.getLocation());
-                forceArrowGroupId = new DisplayGroupId(forceArrowGroup.getParentUUID());
-                traverser.set("forceArrowGroupId", forceArrowGroupId);
-                pig.addPassenger(forceArrowGroup.getParentDisplay());
-            } else {
-                forceArrowGroup = forceArrowGroupId.get().get();
-            }
-
-            Set<String> notUpdated = new HashSet<>(forceArrowGroup.getDisplays().keySet());
-            for (SpatialForce force : getForces(throttle, velocity, rotation, angularVelocity, orientations)) {
-                String id = force.relativeLocation().toString() + force.type().toString();
-                notUpdated.remove(id);
-                Display display = forceArrowGroup.getDisplays().get(id);
-
-                if (display == null) {
-                    Material material = switch (force.type()) {
-                        case DRAG -> Material.BLUE_CONCRETE;
-                        case LIFT -> Material.LIME_CONCRETE;
-                        case WEIGHT -> Material.ORANGE_CONCRETE;
-                        case THRUST -> Material.PURPLE_CONCRETE;
-                    };
-
-                    display = new ModelCuboid()
-                            .material(material)
-                            .brightness(15)
-                            .size(0.1F, 0.01F, 0.01F)
-                            .build(pig.getLocation());
-                    forceArrowGroup.addDisplay(id, display);
-                    pig.addPassenger(display);
-                }
-
-                display.setTransformationMatrix(new TransformationMatrixBuilder()
-                        .translate(new Vector3f((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z))
-                        .translate(description.getRelativeCenterOfMass())
-                        .translate(0.0F, 1.2F, 0.0F)
-                        .lookAlong(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z))
-                        .translate(0.0F, 0.0F, (float) force.force().length())
-                        .scale(0.1F, 0.1F, 2.0F * (float) force.force().length())
-                        .buildForBlockDisplay());
-            }
-
-            for (String id : notUpdated) {
-                forceArrowGroup.removeDisplay(id).remove();
-            }
+            tickDebug(pig, state);
         }
 
-        description.moveHingeComponentsToCenter(orientations);
+        description.moveHingeComponentsToCenter(state.orientations);
 
-        traverser.set("velocity", velocity);
-        traverser.set("angularVelocity", angularVelocity);
-        traverser.set("rotation", rotation);
-        traverser.setControlSurfaceOrientations("orientations", orientations);
+        state.write(pig);
 
-        Vector3d pigVelocity = new Vector3d(velocity).div(20);
+        Vector3d pigVelocity = new Vector3d(state.velocity).div(20);
         if (pigVelocity.length() > 5) {
             pigVelocity.set(0);
         }
         pig.setVelocity(Vector.fromJOML(pigVelocity));
-        description.getCuboids(orientations).forEach((cuboidName, cuboid) -> componentGroup.getDisplays().get(cuboidName)
-                        .setTransformationMatrix(Utils.getComponentMatrix(cuboid, rotation, description.getAbsoluteCenterOfMass(rotation))));
-        VehicleHud.updateHud(rotation, pig.getLocation().getBlockY(), hudGroup);
 
-        getPilot(pig).ifPresent(pilot -> {});
+        description.getCuboids(state.orientations).forEach((cuboidName, cuboid) -> state.componentGroup.getDisplays().get(cuboidName)
+                        .setTransformationMatrix(Utils.getComponentMatrix(cuboid, state.rotation, description.getAbsoluteCenterOfMass(state.rotation))));
+
+        VehicleHud.update(state, pig.getLocation());
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
 //            remove(pig, componentGroup, hudGroup);
         }
     }
 
-    private @NotNull Set<SpatialForce> getForces(int throttle, Vector3d velocity, Vector3d rotation, Vector3d angularVelocity, @NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    private @NotNull Set<SpatialForce> getForces(VehicleState state) {
         Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
-        forces.add(getThrustForce(throttle, rotation));
-        forces.addAll(getDragForces(rotation, velocity, angularVelocity, orientations));
-        forces.addAll(getLiftForces(rotation, velocity, angularVelocity, orientations));
+        forces.add(getThrustForce(state));
+        forces.addAll(getDragForces(state));
+        forces.addAll(getLiftForces(state));
         return forces;
     }
+
     private @NotNull SpatialForce getWeightForce() {
         return new SpatialForce(
                 SpatialForceType.WEIGHT,
@@ -356,23 +354,25 @@ public class Vehicle extends SlimefunItem {
                 new Vector3d(0, 0, 0),
                 new Vector3d(0, 0, 0));
     }
-    private @NotNull SpatialForce getThrustForce(int throttle, @NotNull Vector3d rotation) {
-        double throttleFraction = throttle / 100.0;
+
+    private @NotNull SpatialForce getThrustForce(@NotNull VehicleState state) {
+        double throttleFraction = state.throttle / 100.0;
         return new SpatialForce(
                 SpatialForceType.THRUST,
-                Utils.rotateByEulerAngles(new Vector3d(throttleFraction * description.getThrust(), 0, 0), rotation),
+                Utils.rotateByEulerAngles(new Vector3d(throttleFraction * description.getThrust(), 0, 0), state.rotation),
                 new Vector3d(0, 0, 0),
                 new Vector3d(0, 0, 0));
     }
-    private Set<SpatialForce> getDragForces(Vector3d rotation, Vector3d velocity, Vector3d angularVelocity, @NotNull Map<String, ControlSurfaceOrientation> orientations) {
-        return description.getSurfaces(orientations).stream()
-                .map(vehicleSurface -> vehicleSurface.getDragForce(description.getAirDensity(), rotation, velocity, angularVelocity))
+
+    private Set<SpatialForce> getDragForces(@NotNull VehicleState state) {
+        return description.getSurfaces(state.orientations).stream()
+                .map(vehicleSurface -> vehicleSurface.getDragForce(description.getAirDensity(), state))
                 .collect(Collectors.toSet());
     }
-    private @NotNull Set<SpatialForce> getLiftForces(
-            Vector3d rotation, Vector3d velocity, Vector3d angularVelocity, @NotNull Map<String, ControlSurfaceOrientation> orientations) {
-        return description.getSurfaces(orientations).stream()
-                .map(vehicleSurface -> vehicleSurface.getLiftForce(description.getAirDensity(), rotation, velocity, angularVelocity))
+
+    private @NotNull Set<SpatialForce> getLiftForces(@NotNull VehicleState state) {
+        return description.getSurfaces(state.orientations).stream()
+                .map(vehicleSurface -> vehicleSurface.getLiftForce(description.getAirDensity(), state))
                 .collect(Collectors.toSet());
     }
 

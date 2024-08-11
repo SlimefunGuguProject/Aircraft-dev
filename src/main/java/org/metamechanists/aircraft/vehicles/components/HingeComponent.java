@@ -3,8 +3,8 @@ package org.metamechanists.aircraft.vehicles.components;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
-import org.metamechanists.aircraft.vehicles.ControlSurfaceOrientation;
-import org.metamechanists.aircraft.vehicles.VehicleSurface;
+import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
+import org.metamechanists.aircraft.vehicles.surfaces.VehicleSurface;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 
 import java.util.Map;
@@ -32,9 +32,11 @@ public class HingeComponent {
 
     public void useKey(Map<String, ControlSurfaceOrientation> orientations, char key) {
         if (key == keyUp) {
-            orientations.get(fixedComponent.getName()).adjust(rotationRate, rotationMax);
+            orientations.get(fixedComponent.getName())
+                    .adjust(rotationRate, rotationMax);
         } else if (key == keyDown) {
-            orientations.get(fixedComponent.getName()).adjust(-rotationRate, rotationMax);
+            orientations.get(fixedComponent.getName())
+                    .adjust(-rotationRate, rotationMax);
         }
     }
 
@@ -53,10 +55,11 @@ public class HingeComponent {
     }
 
     private Vector3d getTranslation(@NotNull Map<String, ControlSurfaceOrientation> orientations) {
-        return new Vector3d(0.0, -fixedComponent.getSize().x / 2.0, 0.0).mul(sin(orientations.get(fixedComponent.getName()).getAngle()));
+        return new Vector3d(0.0, -fixedComponent.getSize().x / 2.0, 0.0)
+                .mul(sin(orientations.get(fixedComponent.getName()).getAngle()));
     }
 
-    public Set<VehicleSurface> getSurfaces(@NotNull Map<String, ControlSurfaceOrientation> orientations) {
+    public Set<VehicleSurface> getSurfaces(Map<String, ControlSurfaceOrientation> orientations) {
         return fixedComponent.getSurfaces(getRotation(orientations)); // Effect of translation is very small so we don't model it
     }
 

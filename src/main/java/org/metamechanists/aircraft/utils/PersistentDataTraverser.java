@@ -18,7 +18,7 @@ import org.metamechanists.aircraft.utils.id.simple.BlockDisplayId;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.utils.id.simple.InteractionId;
 import org.metamechanists.aircraft.utils.id.simple.TextDisplayId;
-import org.metamechanists.aircraft.vehicles.ControlSurfaceOrientation;
+import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
 
 import java.util.HashMap;
 import java.util.List;

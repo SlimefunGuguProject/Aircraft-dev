@@ -7,7 +7,7 @@ import org.joml.Matrix4f;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.joml.Vector4d;
-import org.metamechanists.aircraft.vehicles.VehicleSurface;
+import org.metamechanists.aircraft.vehicles.surfaces.VehicleSurface;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
 

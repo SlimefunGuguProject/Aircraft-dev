@@ -1,4 +1,4 @@
-package org.metamechanists.aircraft.vehicles;
+package org.metamechanists.aircraft.vehicles.controls;
 
 import org.bukkit.entity.Pig;
 import org.bukkit.event.EventHandler;
@@ -7,6 +7,8 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
+import org.metamechanists.aircraft.vehicles.Storage;
+import org.metamechanists.aircraft.vehicles.Vehicle;
 
 import java.util.UUID;
 

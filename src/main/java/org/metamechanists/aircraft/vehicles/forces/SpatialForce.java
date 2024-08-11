@@ -1,4 +1,4 @@
-package org.metamechanists.aircraft.vehicles;
+package org.metamechanists.aircraft.vehicles.forces;
 
 import org.joml.Vector3d;
 

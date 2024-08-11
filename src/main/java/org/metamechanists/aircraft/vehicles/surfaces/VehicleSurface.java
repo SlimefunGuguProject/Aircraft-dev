@@ -1,8 +1,11 @@
-package org.metamechanists.aircraft.vehicles;
+package org.metamechanists.aircraft.vehicles.surfaces;
 
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.Utils;
+import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
+import org.metamechanists.aircraft.vehicles.forces.SpatialForceType;
+import org.metamechanists.aircraft.vehicles.VehicleState;
 
 
 public class VehicleSurface {
@@ -25,15 +28,15 @@ public class VehicleSurface {
         return new Vector3d(normal).angleCos(airflowVelocity) * area;
     }
 
-    public SpatialForce getLiftForce(double airDensity, @NotNull Vector3d rotation, @NotNull Vector3d velocity, @NotNull Vector3d angularVelocity) {
-        Vector3d location = Utils.rotateByEulerAngles(new Vector3d(relativeLocation), rotation);
-        Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), rotation);
-        Vector3d angularVelocityVector = new Vector3d(angularVelocity).cross(location);
-        Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
+    public SpatialForce getLiftForce(double airDensity, @NotNull VehicleState state) {
+        Vector3d location = Utils.rotateByEulerAngles(new Vector3d(relativeLocation), state.rotation);
+        Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), state.rotation);
+        Vector3d angularVelocityVector = new Vector3d(state.angularVelocity).cross(location);
+        Vector3d airflowVelocity = new Vector3d(state.velocity).add(angularVelocityVector).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         // Also check that 1) airflow is not zero 2) airflow and normal are not in opposite directions - these cause NaN values
-        if (velocity.length() < 0.000001 || normal.angle(airflowVelocity) < Math.PI / 2 || normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
+        if (state.velocity.length() < 0.000001 || normal.angle(airflowVelocity) < Math.PI / 2 || normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
             return new SpatialForce(SpatialForceType.LIFT, new Vector3d(), location, relativeLocation);
         }
 
@@ -43,7 +46,7 @@ public class VehicleSurface {
         // ρ = air density
         // A = surface area facing airflow
         // V = aircraft velocity
-        double aircraftSpeed = velocity.length();
+        double aircraftSpeed = state.velocity.length();
         Vector3d perpendicularDirection = new Vector3d(normal).cross(airflowVelocity);
         Vector3d liftDirection = new Vector3d(perpendicularDirection).cross(airflowVelocity).normalize();
         Vector3d force = liftDirection.mul(
@@ -56,15 +59,15 @@ public class VehicleSurface {
         return new SpatialForce(SpatialForceType.LIFT, force, location, relativeLocation);
     }
 
-    public SpatialForce getDragForce(double airDensity, @NotNull Vector3d rotation, @NotNull Vector3d velocity, @NotNull Vector3d angularVelocity) {
-        Vector3d location = Utils.rotateByEulerAngles(new Vector3d(relativeLocation), rotation);
-        Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), rotation);
-        Vector3d angularVelocityVector = new Vector3d(angularVelocity).cross(location);
-        Vector3d airflowVelocity = new Vector3d(velocity).add(angularVelocityVector).mul(-1);
+    public SpatialForce getDragForce(double airDensity, @NotNull VehicleState state) {
+        Vector3d location = Utils.rotateByEulerAngles(new Vector3d(relativeLocation), state.rotation);
+        Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), state.rotation);
+        Vector3d angularVelocityVector = new Vector3d(state.angularVelocity).cross(location);
+        Vector3d airflowVelocity = new Vector3d(state.velocity).add(angularVelocityVector).mul(-1);
 
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         // Also check that 1) airflow is not zero 2) airflow and normal are not in opposite directions - these cause NaN values
-        if (velocity.length() < 0.000001 || normal.angle(airflowVelocity) < Math.PI / 2 || normal.angle(airflowVelocity) < 0.001) {
+        if (state.velocity.length() < 0.000001 || normal.angle(airflowVelocity) < Math.PI / 2 || normal.angle(airflowVelocity) < 0.001) {
             return new SpatialForce(SpatialForceType.DRAG, new Vector3d(), location, relativeLocation);
         }
 
@@ -74,7 +77,7 @@ public class VehicleSurface {
         // ρ = air density
         // A = surface area facing airflow
         // V = aircraft velocity
-        double aircraftSpeed = velocity.length();
+        double aircraftSpeed = state.velocity.length();
         Vector3d dragDirection = new Vector3d(airflowVelocity).mul(-1).normalize();
         Vector3d force = dragDirection.mul(
                 Math.sin(normal.angle(airflowVelocity))

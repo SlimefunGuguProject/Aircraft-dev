@@ -9,9 +9,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.commands.AircraftCommand;
 import org.metamechanists.aircraft.items.Items;
-import org.metamechanists.aircraft.vehicles.MountHandler;
+import org.metamechanists.aircraft.vehicles.controls.MountHandler;
 import org.metamechanists.aircraft.vehicles.VehicleTicker;
-import org.metamechanists.aircraft.vehicles.KeyboardHandler;
+import org.metamechanists.aircraft.vehicles.controls.KeyboardHandler;
 
 
 public final class Aircraft extends JavaPlugin implements SlimefunAddon {

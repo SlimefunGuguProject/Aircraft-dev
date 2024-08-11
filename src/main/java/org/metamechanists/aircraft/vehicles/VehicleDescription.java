@@ -9,6 +9,8 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.components.FixedComponent;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
+import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
+import org.metamechanists.aircraft.vehicles.surfaces.VehicleSurface;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
@@ -132,11 +134,11 @@ public class VehicleDescription {
         return hingeComponents.stream().collect(Collectors.toMap(HingeComponent::getName, component -> new ControlSurfaceOrientation(), (name, orientation) -> orientation));
     }
 
-    public void applyVelocityDampening(@NotNull Vector3d velocity) {
-        velocity.mul(1.0 - velocityDampening);
+    public void applyVelocityDampening(@NotNull VehicleState state) {
+        state.velocity.mul(1.0 - velocityDampening);
     }
 
-    public void applyAngularVelocityDampening(@NotNull Vector3d angularVelocity) {
-        angularVelocity.mul(1.0 - angularVelocityDampening);
+    public void applyAngularVelocityDampening(@NotNull VehicleState state) {
+        state.angularVelocity.mul(1.0 - angularVelocityDampening);
     }
 }
