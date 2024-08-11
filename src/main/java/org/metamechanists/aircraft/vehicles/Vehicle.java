@@ -271,10 +271,11 @@ public class Vehicle extends SlimefunItem {
         if (ENABLE_DEBUG_ARROWS) {
             DisplayGroupId forceArrowGroupId = traverser.getDisplayGroupId("forceArrowGroupId");
             DisplayGroup forceArrowGroup;
-            if (forceArrowGroupId == null) {
+            if (forceArrowGroupId == null || forceArrowGroupId.get().isEmpty()) {
                 forceArrowGroup = new DisplayGroup(pig.getLocation());
                 forceArrowGroupId = new DisplayGroupId(forceArrowGroup.getParentUUID());
                 traverser.set("forceArrowGroupId", forceArrowGroupId);
+                pig.addPassenger(forceArrowGroup.getParentDisplay());
             } else {
                 forceArrowGroup = forceArrowGroupId.get().get();
             }
@@ -288,7 +289,7 @@ public class Vehicle extends SlimefunItem {
                 if (display == null) {
                     Material material = switch (force.type()) {
                         case DRAG -> Material.BLUE_CONCRETE;
-                        case LIFT -> Material.GREEN_CONCRETE;
+                        case LIFT -> Material.LIME_CONCRETE;
                         case WEIGHT -> Material.ORANGE_CONCRETE;
                         case THRUST -> Material.PURPLE_CONCRETE;
                     };
@@ -303,10 +304,11 @@ public class Vehicle extends SlimefunItem {
                 }
 
                 display.setTransformationMatrix(new TransformationMatrixBuilder()
+                        .translate(new Vector3f((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z))
                         .translate(description.getRelativeCenterOfMass())
                         .translate(0.0F, 1.2F, 0.0F)
-                        .translate(new Vector3f((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z))
                         .lookAlong(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z))
+                        .translate(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z).mul(0.5F))
                         .scale(0.1F, 0.1F, 2.0F * (float) force.force().length())
                         .buildForBlockDisplay());
             }
