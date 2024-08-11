@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
@@ -177,7 +178,8 @@ public class Vehicle extends SlimefunItem {
     private Vector3d getAcceleration(@NotNull Set<SpatialForce> forces) {
         Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
-        return new Vector3d(resultantForce).div(description.getMass()).div(20);
+        Aircraft.getInstance().getLogger().severe(resultantForce.toString());
+        return new Vector3d(resultantForce).div(description.getMass());
     }
 
     private Vector3d getAngularAcceleration(@NotNull Set<SpatialForce> forces) {
