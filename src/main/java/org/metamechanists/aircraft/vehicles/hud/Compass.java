@@ -38,10 +38,8 @@ public final class Compass {
             size = 0.1F;
         }
 
-        return Util.rollIndependentComponent(state, hudCenter)
+        return Util.rollIndependentText(state, hudCenter)
                 .text(Component.text("|").color(color))
-                .background(Color.fromARGB(0, 0, 0, 0))
-                .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(size, size, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, -0.01F);
@@ -50,10 +48,8 @@ public final class Compass {
     private static ModelComponent getCompassDirection(
             @NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, String text) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
-        return Util.rollIndependentComponent(state, hudCenter)
+        return Util.rollIndependentText(state, hudCenter)
                 .text(Component.text(text).color(COMPASS_DIRECTION_COLOR))
-                .background(Color.fromARGB(0, 0, 0, 0))
-                .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
                 .translate(0.5F, -0.15F, -0.01F);
@@ -62,20 +58,16 @@ public final class Compass {
     private static ModelComponent getCompassDegree(
             @NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, int degrees) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
-        return Util.rollIndependentComponent(state, hudCenter)
+        return Util.rollIndependentText(state, hudCenter)
                 .text(Component.text(degrees).color(COMPASS_MAJOR_COLOR))
-                .background(Color.fromARGB(0, 0, 0, 0))
-                .brightness(Utils.BRIGHTNESS_ON)
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, -0.04F, -0.01F);
     }
 
     private static ModelComponent getCompassNotch(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
-        return Util.rollIndependentComponent(state, hudCenter)
+        return Util.rollIndependentText(state, hudCenter)
                 .text(Component.text("▼").color(COMPASS_NOTCH_COLOR))
-                .background(Color.fromARGB(0, 0, 0, 0))
-                .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F))
                 .translate(0.5F, -1.57F, -0.01F);
     }

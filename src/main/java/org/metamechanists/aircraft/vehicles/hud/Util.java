@@ -1,5 +1,6 @@
 package org.metamechanists.aircraft.vehicles.hud;
 
+import org.bukkit.Color;
 import org.bukkit.block.BlockFace;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
@@ -24,8 +25,23 @@ public final class Util {
         return lookingAtForward.z > 0 ? -yaw : yaw;
     }
 
-    public static ModelAdvancedText rollIndependentComponent(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
+    public static ModelAdvancedText defaultText() {
         return new ModelAdvancedText()
+                .background(Color.fromARGB(0, 0, 0, 0))
+                .brightness(Utils.BRIGHTNESS_ON);
+    }
+
+    public static ModelAdvancedText rollText(@NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f offset) {
+        return defaultText()
+                .rotate(state.rotation)
+                .translate(hudCenter)
+                .translate(offset)
+                .facing(BlockFace.WEST);
+
+    }
+
+    public static ModelAdvancedText rollIndependentText(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
+        return defaultText()
                 .rotate(state.rotation)
                 .translate(hudCenter)
                 .rotateBackwards(state.rotation)

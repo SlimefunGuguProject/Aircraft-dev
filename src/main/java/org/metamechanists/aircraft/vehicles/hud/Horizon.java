@@ -34,66 +34,37 @@ public final class Horizon {
     private Horizon() {}
 
     private static ModelAdvancedText getAltitudeIndicator(@NotNull VehicleState state, Vector3f hudCenter) {
-        return new ModelAdvancedText()
-                .background(Color.fromARGB(0, 0, 0, 0))
-                .brightness(Utils.BRIGHTNESS_ON)
-                .rotate(state.rotation)
-                .translate(hudCenter)
-                .rotateBackwards(state.rotation)
-                .rotate(new Vector3d(0, Util.getYaw(state), Util.getPitch(state)))
-                .facing(BlockFace.WEST)
+        return Util.rollIndependentText(state, hudCenter)
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
                 .translate(0.5F, 0.35F, 0.03F);
     }
 
     private static ModelAdvancedText getArtificialHorizonCenter(@NotNull VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, boolean shouldRender) {
-        return new ModelAdvancedText()
-                .background(Color.fromARGB(0, 0, 0, 0))
+        return Util.rollText(state, hudCenter, horizonOffset)
                 .text(Component.text(HORIZON_MAJOR_TEXT).color(HORIZON_MAJOR_COLOR))
-                .brightness(Utils.BRIGHTNESS_ON)
-                .rotate(state.rotation)
-                .translate(horizonOffset)
-                .translate(hudCenter)
-                .facing(BlockFace.WEST)
                 .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
     }
 
     private static ModelAdvancedText getArtificialHorizonBar(
             @NotNull VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, Component component, Vector3f barOffset, boolean shouldRender) {
-        return new ModelAdvancedText()
-                .background(Color.fromARGB(0, 0, 0, 0))
+        return Util.rollText(state, hudCenter, new Vector3f(horizonOffset).add(barOffset))
                 .text(component)
-                .brightness(Utils.BRIGHTNESS_ON)
-                .rotate(state.rotation)
-                .translate(horizonOffset)
-                .translate(hudCenter)
-                .translate(barOffset)
-                .facing(BlockFace.WEST)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
     }
 
     private static ModelAdvancedText getHorizonIndicator(@NotNull VehicleState state, Vector3f hudCenter) {
-        return Util.rollIndependentComponent(state, hudCenter)
+        return Util.rollIndependentText(state, hudCenter)
                 .text(Component.text(HORIZON_INDICATOR_TEXT).color(HORIZON_INDICATOR_COLOR))
-                .background(Color.fromARGB(0, 0, 0, 0))
-                .brightness(Utils.BRIGHTNESS_ON)
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
                 .translate(0.5F, 0.35F, 0.03F);
     }
 
     private static ModelAdvancedText getArtificialHorizonDegree(
             @NotNull VehicleState state, Vector3f hudCenter, Component component, Vector3f totalAdjustment, boolean shouldRender) {
-        return new ModelAdvancedText()
-                .background(Color.fromARGB(0, 0, 0, 0))
+        return Util.rollText(state, hudCenter, new Vector3f(totalAdjustment).add(new Vector3f(0, 0, 0.19F)))
                 .text(component)
-                .brightness(Utils.BRIGHTNESS_ON)
-                .rotate(state.rotation)
-                .translate(totalAdjustment)
-                .translate(hudCenter)
-                .translate(new Vector3f(0, 0, 0.19F))
-                .facing(BlockFace.WEST)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
     }
