@@ -325,9 +325,7 @@ public class Vehicle extends SlimefunItem {
         traverser.set("rotation", rotation);
         traverser.setControlSurfaceOrientations("orientations", orientations);
 
-//        Vector3d pigLocation = new Vector3d(description.getAbsoluteCenterOfMass(rotation)).mul(-1); // todo maybe must be absolute?
-//        Vector3d angularPigVelocityVector = new Vector3d(angularVelocity).cross(pigLocation).div(20);
-        Vector3d pigVelocity = new Vector3d(velocity).div(20);//.add(angularPigVelocityVector);
+        Vector3d pigVelocity = new Vector3d(velocity).div(20);
         if (pigVelocity.length() > 5) {
             pigVelocity.set(0);
         }
