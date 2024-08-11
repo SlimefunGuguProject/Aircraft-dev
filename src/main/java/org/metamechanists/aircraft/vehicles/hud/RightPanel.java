@@ -76,7 +76,7 @@ public final class RightPanel {
                 .alignment(TextAlignment.LEFT)
                 .text(Component.text("AVL").color(KEY_COLOR))
                 .translate(panelCenter)
-                .translate(0.0F, 0.15F, 0.0F)
+                .translate(0.0F, 0.1F, 0.0F)
                 .scale(new Vector3f(0.15F, 0.1F, 0.001F));
     }
 
@@ -84,7 +84,7 @@ public final class RightPanel {
         return Util.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
                 .translate(panelCenter)
-                .translate(0.09F, 0.15F, 0.0F)
+                .translate(0.09F, 0.1F, 0.0F)
                 .scale(new Vector3f(0.15F, 0.1F, 0.001F));
     }
 
