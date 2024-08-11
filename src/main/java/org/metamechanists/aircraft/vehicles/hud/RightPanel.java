@@ -137,6 +137,6 @@ public final class RightPanel {
         angularVelocityText.text(Component.text(Math.round(Math.toDegrees(state.angularVelocity.length()) * 1000.0) / 1000.0).color(VALUE_COLOR));
 
         TextDisplay angularAccelerationText = (TextDisplay) displays.get("angular_acceleration_value");
-        angularAccelerationText.text(Component.text(state.getRollMagnitude()).color(VALUE_COLOR));
+        angularAccelerationText.text(Component.text(state.rotation.x).color(VALUE_COLOR));
     }
 }
