@@ -303,7 +303,7 @@ public class Vehicle extends SlimefunItem {
                 }
 
                 display.setTransformationMatrix(new TransformationMatrixBuilder()
-                        .translate(description.getRelativeCenterOfMass().add(0.0F, 1.0F, 0.0F))
+                        .translate(description.getRelativeCenterOfMass())
                         .translate(0.0F, 1.1F, 0.0F)
                         .translate(new Vector3f((float) force.relativeLocation().x, (float) force.relativeLocation().y, (float) force.relativeLocation().z))
                         .lookAlong(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z))
