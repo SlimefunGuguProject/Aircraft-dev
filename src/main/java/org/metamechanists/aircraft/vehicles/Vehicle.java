@@ -282,7 +282,7 @@ public class Vehicle extends SlimefunItem {
                 display.remove();
             }
 
-            Set<String> notUpdated = forceArrowGroup.getDisplays().keySet();
+            Set<String> notUpdated = new HashSet<>(forceArrowGroup.getDisplays().keySet());
             for (SpatialForce force : getForces(throttle, velocity, rotation, angularVelocity, orientations)) {
                 String id = force.relativeLocation().toString();
                 notUpdated.remove(id);
