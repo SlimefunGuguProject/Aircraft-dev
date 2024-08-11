@@ -66,8 +66,8 @@ public final class Horizon {
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f horizonOffset = new Vector3f(0, (float) (-Util.getPitch(state)), 0);
-        final float horizonRadius = 0.2F;
+        Vector3f horizonOffset = new Vector3f(0, (float) (0.5 * -Util.getPitch(state)), 0);
+        final float horizonRadius = 0.15F;
         boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
 
         hudComponents.put("altitude", getAltitudeIndicator(state, hudCenter));
@@ -75,7 +75,7 @@ public final class Horizon {
         hudComponents.put("horizon_center", getArtificialHorizonCenter(state, hudCenter, horizonOffset, shouldRenderCenter));
 
         final int bars = 30;
-        final float verticalSpacing = 0.5F * (float) ((PI / 1.14) / (bars));
+        final float verticalSpacing = 0.25F * (float) ((PI / 1.14) / (bars));
         for (int i = -bars; i <= bars; i++) {
             if (i == 0) {
                 continue;

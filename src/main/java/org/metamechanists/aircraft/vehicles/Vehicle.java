@@ -311,7 +311,7 @@ public class Vehicle extends SlimefunItem {
         state.write(pig);
 
         Vector3d pigVelocity = new Vector3d(state.velocity);
-        if (pigVelocity.length() > 5) {
+        if (pigVelocity.length() > 100) {
             pigVelocity.set(0);
         }
         pig.setVelocity(Vector.fromJOML(new Vector3d(pigVelocity).div(20)));
