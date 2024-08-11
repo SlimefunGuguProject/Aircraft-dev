@@ -34,7 +34,7 @@ public class VehicleSurface {
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         // Also check that 1) airflow is not zero 2) airflow and normal are not in opposite directions - these cause NaN values
         if (velocity.length() < 0.000001 || normal.angle(airflowVelocity) < Math.PI / 2 || normal.angle(airflowVelocity) > (Math.PI - 0.001)) {
-            return new SpatialForce(new Vector3d(), location);
+            return new SpatialForce(new Vector3d(), location, relativeLocation);
         }
 
         // L = 0.5 * Cl * ρ * A * V^2,
@@ -53,7 +53,7 @@ public class VehicleSurface {
                         * airDensity
                         * getRelativeArea(normal, airflowVelocity)
                         * (aircraftSpeed * aircraftSpeed));
-        return new SpatialForce(force, location);
+        return new SpatialForce(force, location, relativeLocation);
     }
 
     public SpatialForce getDragForce(double airDensity, @NotNull Vector3d rotation, @NotNull Vector3d velocity, @NotNull Vector3d angularVelocity) {
@@ -65,7 +65,7 @@ public class VehicleSurface {
         // Check the airflow isn't coming *out* of the surface as opposed to going into it
         // Also check that 1) airflow is not zero 2) airflow and normal are not in opposite directions - these cause NaN values
         if (velocity.length() < 0.000001 || normal.angle(airflowVelocity) < Math.PI / 2 || normal.angle(airflowVelocity) < 0.001) {
-            return new SpatialForce(new Vector3d(), location);
+            return new SpatialForce(new Vector3d(), location, relativeLocation);
         }
 
         // D = 0.5 * Cd * ρ * A * V^2, where
@@ -83,6 +83,6 @@ public class VehicleSurface {
                         * airDensity
                         * getRelativeArea(normal, airflowVelocity)
                         * (aircraftSpeed * aircraftSpeed));
-        return new SpatialForce(force, location);
+        return new SpatialForce(force, location, relativeLocation);
     }
 }

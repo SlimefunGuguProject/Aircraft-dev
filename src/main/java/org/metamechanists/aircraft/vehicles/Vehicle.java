@@ -30,6 +30,7 @@ import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.ModelBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
+import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -280,16 +281,25 @@ public class Vehicle extends SlimefunItem {
             }
 
             for (SpatialForce force : getForces(throttle, velocity, rotation, angularVelocity, orientations)) {
-                ModelCuboid modelCuboid = new ModelCuboid()
-                        .material(Material.PURPLE_CONCRETE)
-                        .brightness(15)
-                        .size(1.0F, 0.1F, 0.1F)
-                        .location((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z)
-                        .facing(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z));
-                BlockDisplay display = modelCuboid
-                        .build(pig.getLocation());
-                forceArrowGroup.addDisplay(force.toString(), display);
-                pig.addPassenger(display);
+                String id = force.relativeLocation().toString();
+                Display display = forceArrowGroup.getDisplays().get(id);
+                if (display == null) {
+                    ModelCuboid modelCuboid = new ModelCuboid()
+                            .material(Material.PURPLE_CONCRETE)
+                            .brightness(15)
+                            .size(0.1F, 0.1F, 0.1F);
+                    //                        .facing(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z));
+                    display = modelCuboid
+                            .build(pig.getLocation());
+                    forceArrowGroup.addDisplay(force.toString(), display);
+                    pig.addPassenger(display);
+                }
+
+                display.setTransformationMatrix(new TransformationMatrixBuilder()
+                        .translate(new Vector3f((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z))
+                        .scale(0.1F, 0.1F, 0.1F)
+                        .lookAlong(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z))
+                        .buildForBlockDisplay());
             }
         }
 
@@ -329,12 +339,14 @@ public class Vehicle extends SlimefunItem {
     private @NotNull SpatialForce getWeightForce() {
         return new SpatialForce(
                 new Vector3d(0, description.getGravityAcceleration() * description.getMass(), 0),
+                new Vector3d(0, 0, 0),
                 new Vector3d(0, 0, 0));
     }
     private @NotNull SpatialForce getThrustForce(int throttle, @NotNull Vector3d rotation) {
         double throttleFraction = throttle / 100.0;
         return new SpatialForce(
                 Utils.rotateByEulerAngles(new Vector3d(throttleFraction * description.getThrust(), 0, 0), rotation),
+                new Vector3d(0, 0, 0),
                 new Vector3d(0, 0, 0));
     }
     private Set<SpatialForce> getDragForces(Vector3d rotation, Vector3d velocity, Vector3d angularVelocity, @NotNull Map<String, ControlSurfaceOrientation> orientations) {
