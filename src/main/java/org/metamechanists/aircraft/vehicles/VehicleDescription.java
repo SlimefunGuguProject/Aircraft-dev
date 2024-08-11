@@ -28,8 +28,6 @@ public class VehicleDescription {
     @Getter
     private final String path;
     @Getter
-    private final Vector3f relativeCenterOfMass;
-    @Getter
     private final double mass;
     @Getter
     private final double momentOfInertia;
@@ -60,14 +58,14 @@ public class VehicleDescription {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    private void processComponentFromTraverser(@NotNull YamlTraverser componentTraverser, @NotNull Map<String, ComponentGroup> groups) {
+    private void processComponentFromTraverser(@NotNull YamlTraverser componentTraverser, @NotNull Map<String, ComponentGroup> groups, Vector3f translation) {
         ComponentGroup group = groups.get(componentTraverser.get("group").toString());
         Material material = Material.valueOf(componentTraverser.get("material"));
         Vector3f size = getVector3f(componentTraverser, "size");
-        Vector3f location = getVector3f(componentTraverser, "location");
+        Vector3f location = getVector3f(componentTraverser, "location").sub(translation);
         Vector3d rotation = getVector3d(componentTraverser, "rotation");
         FixedComponent fixedComponent = new FixedComponent(componentTraverser.name(),
-                group.dragCoefficient, group.liftCoefficient, material, size, location, new Vector3f(location).sub(relativeCenterOfMass), rotation);
+                group.dragCoefficient, group.liftCoefficient, material, size, location, rotation);
 
         if (componentTraverser.get("controlSurface", false)) {
             hingeComponents.add(new HingeComponent(fixedComponent,
@@ -82,7 +80,7 @@ public class VehicleDescription {
     public VehicleDescription(String path) {
         this.path = path;
         YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), path);
-        relativeCenterOfMass = getVector3f(traverser, "centerOfMass");
+        Vector3f translation = getVector3f(traverser, "translation");
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia");
         velocityDampening = traverser.get("velocityDampening");
@@ -98,7 +96,7 @@ public class VehicleDescription {
         }
 
         for (YamlTraverser componentTraverser : traverser.getSection("components").getSections()) {
-            processComponentFromTraverser(componentTraverser, groups);
+            processComponentFromTraverser(componentTraverser, groups, translation);
         }
     }
 
@@ -116,10 +114,6 @@ public class VehicleDescription {
         fixedComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid()));
         hingeComponents.forEach(component -> cuboids.put(component.getName(), component.getCuboid(orientations)));
         return cuboids;
-    }
-
-    public Vector3f getAbsoluteCenterOfMass(Vector3d rotation) {
-        return Utils.rotateByEulerAngles(relativeCenterOfMass, rotation);
     }
 
     public void adjustHingeComponents(Map<String, ControlSurfaceOrientation> orientations, char key) {

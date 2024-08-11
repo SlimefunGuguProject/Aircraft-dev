@@ -72,7 +72,7 @@ public class Items {
                 ),
                 RecipeType.NULL,
                 new ItemStack[]{},
-                2
+                5
         ).register(addon);
 
         new ThrottleControl(
@@ -83,7 +83,7 @@ public class Items {
                 ),
                 RecipeType.NULL,
                 new ItemStack[]{},
-                -2
+                -5
         ).register(addon);
     }
 

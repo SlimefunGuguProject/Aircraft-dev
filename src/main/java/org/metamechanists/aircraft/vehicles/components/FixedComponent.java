@@ -23,21 +23,19 @@ public class FixedComponent {
     private final Material material;
     @Getter
     private final Vector3f size;
-    private final Vector3f locationRelativeToModelCenter;
-    private final Vector3f locationRelativeToCenterOfMass;
+    private final Vector3f location;
     @Getter
     private final Vector3d rotation;
 
     public FixedComponent(String name, double dragCoefficient, double liftCoefficient,
                           Material material, Vector3f size,
-                          Vector3f locationRelativeToModelCenter, Vector3f locationRelativeToCenterOfMass, Vector3d rotation) {
+                          Vector3f location, Vector3d rotation) {
         this.name = name;
         this.dragCoefficient = dragCoefficient;
         this.liftCoefficient = liftCoefficient;
         this.material = material;
         this.size = size;
-        this.locationRelativeToModelCenter = locationRelativeToModelCenter;
-        this.locationRelativeToCenterOfMass = locationRelativeToCenterOfMass;
+        this.location = location;
         this.rotation = rotation;
     }
 
@@ -48,7 +46,7 @@ public class FixedComponent {
         Vector4d relativeLocation4 = new Vector4d(startingLocation, 1.0).mul(rotationMatrix);
         Vector3d relativeLocation = new Vector3d(relativeLocation4.x, relativeLocation4.y, relativeLocation4.z);
         Vector3d normal = new Vector3d(relativeLocation).normalize();
-        return new VehicleSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(locationRelativeToCenterOfMass).add(relativeLocation));
+        return new VehicleSurface(dragCoefficient, liftCoefficient, area, normal, new Vector3d(location).add(relativeLocation));
     }
 
     public Set<VehicleSurface> getSurfaces(Vector3d rotation) {
@@ -73,7 +71,7 @@ public class FixedComponent {
     public ModelAdvancedCuboid getCuboid(Vector3d rotation, @NotNull Vector3d translation) {
         return new ModelAdvancedCuboid()
                 .material(material)
-                .translate(locationRelativeToCenterOfMass)
+                .translate(location)
                 .rotate(this.rotation)
                 .rotate(rotation)
                 .translate(new Vector3f((float) translation.x, (float) translation.y, (float) translation.z))

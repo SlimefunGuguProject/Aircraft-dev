@@ -69,9 +69,8 @@ public class Utils {
         return new Quaterniond().identity().rotateXYZ(rotation.x, rotation.y, rotation.z);
     }
 
-    public Matrix4f getComponentMatrix(@NotNull ModelComponent component, @NotNull Vector3d rotation, @NotNull Vector3f absoluteCenterOfMass) {
+    public Matrix4f getComponentMatrix(@NotNull ModelComponent component, @NotNull Vector3d rotation) {
         return new Matrix4f()
-                .translate(absoluteCenterOfMass)
                 .translate(PLAYER_HEAD_OFFSET)
                 .rotateXYZ(new Vector3f((float) rotation.x, (float) rotation.y, (float) rotation.z))
                 .mul(component.getMatrix());

@@ -261,7 +261,6 @@ public class Vehicle extends SlimefunItem {
 
             display.setTransformationMatrix(new TransformationMatrixBuilder()
                     .translate(new Vector3f((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z))
-                    .translate(description.getRelativeCenterOfMass())
                     .translate(0.0F, 1.2F, 0.0F)
                     .lookAlong(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z))
                     .translate(0.0F, 0.0F, (float) force.force().length())
@@ -317,7 +316,7 @@ public class Vehicle extends SlimefunItem {
         pig.setVelocity(Vector.fromJOML(new Vector3d(pigVelocity).div(20)));
 
         description.getCuboids(state.orientations).forEach((cuboidName, cuboid) -> state.componentGroup.getDisplays().get(cuboidName)
-                        .setTransformationMatrix(Utils.getComponentMatrix(cuboid, state.rotation, description.getAbsoluteCenterOfMass(state.rotation))));
+                        .setTransformationMatrix(Utils.getComponentMatrix(cuboid, state.rotation)));
 
         VehicleHud.update(state, pig.getLocation(), acceleration.length(), angularAcceleration.length());
 
