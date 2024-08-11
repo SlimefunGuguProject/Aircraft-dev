@@ -266,12 +266,12 @@ public class Vehicle extends SlimefunItem {
             }
         }
 
-        if (ENABLE_DEBUG_ARROWS) {
+        if (ENABLE_DEBUG_ARROWS && Bukkit.getCurrentTick() % 20 == 0) {
             DisplayGroupId forceArrowGroupId = traverser.getDisplayGroupId("forceArrowGroupId");
             if (forceArrowGroupId == null) {
                 DisplayGroup forceArrowGroup = new DisplayGroup(pig.getLocation());
                 forceArrowGroupId = new DisplayGroupId(forceArrowGroup.getParentUUID());
-                new PersistentDataTraverser(pig).set("forceArrowGroupId", forceArrowGroup.getParentDisplay().getUniqueId());
+                new PersistentDataTraverser(pig).set("forceArrowGroupId", forceArrowGroupId);
             }
 
             DisplayGroup forceArrowGroup = forceArrowGroupId.get().get();
