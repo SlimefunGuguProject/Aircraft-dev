@@ -47,7 +47,9 @@ public class VehicleDescription {
     @Getter
     private final double airDensity;
     @Getter
-    private final double groundPitchDamping;
+    private final double groundPitchDampingRotation;
+    @Getter
+    private final double groundPitchDampingAngularVelocity;
     @Getter
     private final double groundYawDamping;
     private final Set<FixedComponent> fixedComponents = new HashSet<>();
@@ -100,7 +102,8 @@ public class VehicleDescription {
         frictionCoefficient = traverser.get("frictionCoefficient");
         gravityAcceleration = traverser.get("gravityAcceleration");
         airDensity = traverser.get("airDensity");
-        groundPitchDamping = traverser.get("groundPitchDamping");
+        groundPitchDampingRotation = traverser.get("groundPitchDampingRotation");
+        groundPitchDampingAngularVelocity = traverser.get("groundPitchDampingAngularVelocity");
         groundYawDamping = traverser.get("groundYawDamping");
 
         Map<String, ComponentGroup> groups = new HashMap<>();
