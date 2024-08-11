@@ -9,6 +9,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.BlockDisplay;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Interaction;
@@ -19,11 +21,13 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
+import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.ModelBuilder;
+import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 
 import java.util.HashSet;
@@ -39,6 +43,7 @@ import static java.lang.Math.toRadians;
 public class Vehicle extends SlimefunItem {
     private final String id;
     private VehicleDescription description;
+    private static final boolean ENABLE_DEBUG_ARROWS = true;
 
     public Vehicle(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String id, VehicleDescription description) {
         super(itemGroup, item, recipeType, recipe);
@@ -98,7 +103,6 @@ public class Vehicle extends SlimefunItem {
     private void place(@NotNull Block block, @NotNull Player player) {
         DisplayGroup componentGroup = buildComponents(block.getLocation());
         DisplayGroup hudGroup = buildHud(block.getLocation(), new Vector3d());
-
 
         Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation().clone().toCenterLocation().add(new Vector(0, -0.5, 0)), EntityType.PIG);
         pig.setInvulnerable(true);
@@ -160,7 +164,7 @@ public class Vehicle extends SlimefunItem {
 
     private Vector3d getAcceleration(@NotNull Set<SpatialForce> forces) {
         Vector3d resultantForce = new Vector3d();
-        forces.stream().map(SpatialForce::getForce).forEach(resultantForce::add);
+        forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
         return new Vector3d(resultantForce).div(description.getMass()).div(20);
     }
 
@@ -238,10 +242,10 @@ public class Vehicle extends SlimefunItem {
         cancelVelocity(velocity, pig);
 
         boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
+        Set<SpatialForce> forces = getForces(throttle, velocity, rotation, angularVelocity, orientations);
+        Vector3d acceleration = getAcceleration(forces);
         if (isOnGround) {
             if (velocity.length() > 0.0001) {
-                Set<SpatialForce> forces = getForces(throttle, velocity, rotation, angularVelocity, orientations);
-                Vector3d acceleration = getAcceleration(forces);
                 double horizontalForce = new Vector3d(acceleration.x, 0.0, acceleration.z)
                         .mul(description.getMass())
                         .length();
@@ -258,6 +262,32 @@ public class Vehicle extends SlimefunItem {
                         .normalize()
                         .mul(frictionAmount);
                 velocity.sub(friction);
+            }
+        }
+
+        if (ENABLE_DEBUG_ARROWS) {
+            DisplayGroupId forceArrowGroupId = traverser.getDisplayGroupId("forceArrowGroupId");
+            if (forceArrowGroupId == null) {
+                DisplayGroup forceArrowGroup = new DisplayGroup(pig.getLocation());
+                forceArrowGroupId = new DisplayGroupId(forceArrowGroup.getParentUUID());
+                new PersistentDataTraverser(pig).set("forceArrowGroupId", forceArrowGroup.getParentDisplay().getUniqueId());
+            }
+
+            DisplayGroup forceArrowGroup = forceArrowGroupId.get().get();
+            for (Display display : forceArrowGroup.getDisplays().values()) {
+                display.remove();
+            }
+
+            for (SpatialForce force : getForces(throttle, velocity, rotation, angularVelocity, orientations)) {
+                ModelCuboid modelCuboid = new ModelCuboid();
+                modelCuboid.brightness(15);
+                modelCuboid.size(1.0F, 0.1F, 0.1F);
+                modelCuboid.location((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z);
+                modelCuboid.facing(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z));
+                BlockDisplay display = modelCuboid
+                        .build(pig.getLocation());
+                forceArrowGroup.addDisplay(force.toString(), display);
+                pig.addPassenger(display);
             }
         }
 
