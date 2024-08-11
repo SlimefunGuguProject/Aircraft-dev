@@ -78,6 +78,7 @@ public class VehicleState {
     }
 
     public double getRoll() {
-        return rotation.x;
+        double yaw = getYaw();
+        return rotation.x * Math.cos(yaw) + rotation.z * Math.sin(yaw);
     }
 }
