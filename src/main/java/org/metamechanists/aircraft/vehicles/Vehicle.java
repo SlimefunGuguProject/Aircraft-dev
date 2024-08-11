@@ -22,7 +22,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
-import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
@@ -178,7 +177,6 @@ public class Vehicle extends SlimefunItem {
     private Vector3d getAcceleration(@NotNull Set<SpatialForce> forces) {
         Vector3d resultantForce = new Vector3d();
         forces.stream().map(SpatialForce::force).forEach(resultantForce::add);
-        Aircraft.getInstance().getLogger().severe(resultantForce.toString());
         return new Vector3d(resultantForce).div(description.getMass());
     }
 
@@ -236,7 +234,7 @@ public class Vehicle extends SlimefunItem {
         }
 
         Set<String> notUpdated = new HashSet<>(forceArrowGroup.getDisplays().keySet());
-        for (SpatialForce force : getForces(state)) {
+        for (SpatialForce force : getForces(pig, state)) {
             String id = force.relativeLocation().toString() + force.type().toString();
             notUpdated.remove(id);
             Display display = forceArrowGroup.getDisplays().get(id);
@@ -282,7 +280,7 @@ public class Vehicle extends SlimefunItem {
             return;
         }
 
-        Set<SpatialForce> forces = getForces(state);
+        Set<SpatialForce> forces = getForces(pig, state);
 
         description.applyVelocityDampening(state);
         Vector3d acceleration = getAcceleration(forces);
@@ -325,10 +323,11 @@ public class Vehicle extends SlimefunItem {
         }
     }
 
-    private @NotNull Set<SpatialForce> getForces(VehicleState state) {
+    private @NotNull Set<SpatialForce> getForces(Pig pig, VehicleState state) {
         Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
         forces.add(getThrustForce(state));
+        forces.add(getFrictionForce(pig, state));
         forces.addAll(getDragForces(state));
         forces.addAll(getLiftForces(state));
         return forces;
@@ -342,19 +341,19 @@ public class Vehicle extends SlimefunItem {
                 new Vector3d());
     }
 
-    private SpatialForce getFrictionForce(@NotNull Pig pig, VehicleState state, Vector3d acceleration) {
+    private @NotNull SpatialForce getFrictionForce(@NotNull Pig pig, VehicleState state) {
         boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
         if (!isOnGround || !(state.velocity.length() > 0.0001)) {
             return new SpatialForce(SpatialForceType.FRICTION, new Vector3d(), new Vector3d(), new Vector3d());
         }
 
-        double horizontalForce = new Vector3d(acceleration.x, 0.0, acceleration.z)
+        double horizontalForce = new Vector3d(state.velocity.x, 0.0, state.velocity.z)
                 .mul(description.getMass())
                 .length();
         double horizontalVelocity = new Vector3d(state.velocity.x, 0.0, state.velocity.z)
                 .length();
 
-        double frictionAmount = Math.abs(acceleration.y) * description.getFrictionCoefficient();
+        double frictionAmount = Math.abs(state.velocity.y) * description.getFrictionCoefficient();
         if (horizontalVelocity < 0.01) {
             // Stationary; limiting equilibrium
             frictionAmount = Math.min(frictionAmount, horizontalForce);
