@@ -84,7 +84,7 @@ public final class Horizon {
         hudComponents.put("horizon", getRotationIndicator(state, hudCenter));
         hudComponents.put("horizon_center", getArtificialHorizonMajor(state, hudCenter, horizonOffset, shouldRenderCenter));
 
-        Vector3f velocityOffset = new Vector3f(0, (float) (0.5 * -Util.getPitch(state)), 0).add(horizonOffset);
+        Vector3f velocityOffset = new Vector3f(0, (float) (0.5 * -Util.getPitch(state)), 0).sub(horizonOffset);
         hudComponents.put("velocity", getVelocityIndicator(state, hudCenter, velocityOffset));
 
         final int bars = 30;
