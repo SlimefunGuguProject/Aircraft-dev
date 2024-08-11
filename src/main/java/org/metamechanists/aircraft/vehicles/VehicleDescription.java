@@ -35,6 +35,8 @@ public class VehicleDescription {
     @Getter
     private final Vector3d thrustLocation;
     @Getter
+    private final Vector3d weightLocation;
+    @Getter
     private final double thrust;
     @Getter
     private final double frictionCoefficient;
@@ -87,6 +89,7 @@ public class VehicleDescription {
         velocityDampening = traverser.get("velocityDampening");
         angularVelocityDampening = traverser.get("angularVelocityDampening");
         thrustLocation = getVector3d(traverser, "thrustLocation");
+        weightLocation = getVector3d(traverser, "weightLocation");
         thrust = traverser.get("thrust");
         frictionCoefficient = traverser.get("frictionCoefficient");
         gravityAcceleration = traverser.get("gravityAcceleration");

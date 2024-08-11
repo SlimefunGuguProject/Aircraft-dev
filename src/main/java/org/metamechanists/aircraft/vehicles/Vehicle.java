@@ -325,7 +325,7 @@ public class Vehicle extends SlimefunItem {
 
     private @NotNull Set<SpatialForce> getForces(Pig pig, VehicleState state) {
         Set<SpatialForce> forces = new HashSet<>();
-        forces.add(getWeightForce());
+        forces.add(getWeightForce(state));
         forces.add(getThrustForce(state));
         forces.addAll(getDragForces(state));
         forces.addAll(getLiftForces(state));
@@ -333,12 +333,12 @@ public class Vehicle extends SlimefunItem {
         return forces;
     }
 
-    private @NotNull SpatialForce getWeightForce() {
+    private @NotNull SpatialForce getWeightForce(@NotNull VehicleState state) {
         return new SpatialForce(
                 SpatialForceType.WEIGHT,
                 new Vector3d(0, description.getGravityAcceleration() * description.getMass(), 0),
-                new Vector3d(),
-                new Vector3d());
+                description.getWeightLocation(),
+                Utils.rotateByEulerAngles(description.getWeightLocation(), state.rotation));
     }
 
     private @NotNull SpatialForce getFrictionForce(@NotNull Pig pig, VehicleState state, Vector3d force) {
