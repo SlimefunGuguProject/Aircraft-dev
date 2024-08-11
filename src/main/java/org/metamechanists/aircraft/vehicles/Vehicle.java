@@ -301,25 +301,7 @@ public class Vehicle extends SlimefunItem {
                 .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(20)))
                 .getEulerAnglesXYZ(new Vector3d()));
 
-        boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
-        if (isOnGround && state.velocity.length() > 0.0001) {
-            double horizontalForce = new Vector3d(acceleration.x, 0.0, acceleration.z)
-                    .mul(description.getMass())
-                    .length();
-            double horizontalVelocity = new Vector3d(state.velocity.x, 0.0, state.velocity.z)
-                    .length();
-
-            double frictionAmount = Math.abs(acceleration.y) * description.getFrictionCoefficient();
-            if (horizontalVelocity < 0.01) {
-                // Stationary; limiting equilibrium
-                frictionAmount = Math.min(frictionAmount, horizontalForce);
-            }
-
-            Vector3d friction = new Vector3d(state.velocity)
-                    .normalize()
-                    .mul(frictionAmount);
-            state.velocity.sub(friction);
-        }
+        applyFriction(pig, state, acceleration);
 
         if (ENABLE_DEBUG_ARROWS) {
             tickDebug(pig, state);
@@ -358,8 +340,32 @@ public class Vehicle extends SlimefunItem {
         return new SpatialForce(
                 SpatialForceType.WEIGHT,
                 new Vector3d(0, description.getGravityAcceleration() * description.getMass(), 0),
-                new Vector3d(0, 0, 0),
-                new Vector3d(0, 0, 0));
+                new Vector3d(),
+                new Vector3d());
+    }
+
+    private SpatialForce getFrictionForce(@NotNull Pig pig, VehicleState state, Vector3d acceleration) {
+        boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
+        if (!isOnGround || !(state.velocity.length() > 0.0001)) {
+            return new SpatialForce(SpatialForceType.FRICTION, new Vector3d(), new Vector3d(), new Vector3d());
+        }
+
+        double horizontalForce = new Vector3d(acceleration.x, 0.0, acceleration.z)
+                .mul(description.getMass())
+                .length();
+        double horizontalVelocity = new Vector3d(state.velocity.x, 0.0, state.velocity.z)
+                .length();
+
+        double frictionAmount = Math.abs(acceleration.y) * description.getFrictionCoefficient();
+        if (horizontalVelocity < 0.01) {
+            // Stationary; limiting equilibrium
+            frictionAmount = Math.min(frictionAmount, horizontalForce);
+        }
+
+        Vector3d frictionForce = new Vector3d(state.velocity)
+                .normalize()
+                .mul(frictionAmount);
+        return new SpatialForce(SpatialForceType.FRICTION, frictionForce, new Vector3d(), new Vector3d());
     }
 
     private @NotNull SpatialForce getThrustForce(@NotNull VehicleState state) {
@@ -367,8 +373,8 @@ public class Vehicle extends SlimefunItem {
         return new SpatialForce(
                 SpatialForceType.THRUST,
                 Utils.rotateByEulerAngles(new Vector3d(throttleFraction * description.getThrust(), 0, 0), state.rotation),
-                new Vector3d(0, 0, 0),
-                new Vector3d(0, 0, 0));
+                new Vector3d(),
+                new Vector3d());
     }
 
     private Set<SpatialForce> getDragForces(@NotNull VehicleState state) {
@@ -382,6 +388,7 @@ public class Vehicle extends SlimefunItem {
                 .map(vehicleSurface -> vehicleSurface.getLiftForce(description.getAirDensity(), state))
                 .collect(Collectors.toSet());
     }
+
 
     public void onKey(@NotNull PersistentDataTraverser traverser, char key) {
         Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");

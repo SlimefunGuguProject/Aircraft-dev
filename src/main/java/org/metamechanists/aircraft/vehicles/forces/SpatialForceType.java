@@ -5,4 +5,5 @@ public enum SpatialForceType {
     DRAG,
     WEIGHT,
     THRUST,
+    FRICTION,
 }
