@@ -337,7 +337,7 @@ public class Vehicle extends SlimefunItem {
         description.getCuboids(state.orientations).forEach((cuboidName, cuboid) -> state.componentGroup.getDisplays().get(cuboidName)
                         .setTransformationMatrix(Utils.getComponentMatrix(cuboid, state.rotation, description.getAbsoluteCenterOfMass(state.rotation))));
 
-        VehicleHud.update(state, pig.getLocation());
+        VehicleHud.update(state, pig.getLocation(), acceleration.length(), angularAcceleration.length());
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, -0.1, 0.1))) {
 //            remove(pig, componentGroup, hudGroup);
