@@ -247,6 +247,7 @@ public class Vehicle extends SlimefunItem {
                     case LIFT -> Material.LIME_CONCRETE;
                     case WEIGHT -> Material.ORANGE_CONCRETE;
                     case THRUST -> Material.PURPLE_CONCRETE;
+                    case FRICTION -> Material.YELLOW_CONCRETE;
                 };
 
                 display = new ModelCuboid()
@@ -300,8 +301,6 @@ public class Vehicle extends SlimefunItem {
         state.rotation.set(Utils.getRotationEulerAngles(state.rotation)
                 .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(20)))
                 .getEulerAnglesXYZ(new Vector3d()));
-
-        applyFriction(pig, state, acceleration);
 
         if (ENABLE_DEBUG_ARROWS) {
             tickDebug(pig, state);
