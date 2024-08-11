@@ -345,6 +345,7 @@ public class Vehicle extends SlimefunItem {
     }
     private @NotNull SpatialForce getWeightForce() {
         return new SpatialForce(
+                SpatialForceType.WEIGHT,
                 new Vector3d(0, description.getGravityAcceleration() * description.getMass(), 0),
                 new Vector3d(0, 0, 0),
                 new Vector3d(0, 0, 0));
@@ -352,6 +353,7 @@ public class Vehicle extends SlimefunItem {
     private @NotNull SpatialForce getThrustForce(int throttle, @NotNull Vector3d rotation) {
         double throttleFraction = throttle / 100.0;
         return new SpatialForce(
+                SpatialForceType.THRUST,
                 Utils.rotateByEulerAngles(new Vector3d(throttleFraction * description.getThrust(), 0, 0), rotation),
                 new Vector3d(0, 0, 0),
                 new Vector3d(0, 0, 0));
