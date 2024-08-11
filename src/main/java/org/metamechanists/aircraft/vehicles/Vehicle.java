@@ -286,7 +286,6 @@ public class Vehicle extends SlimefunItem {
             Set<String> notUpdated = new HashSet<>(forceArrowGroup.getDisplays().keySet());
             for (SpatialForce force : getForces(throttle, velocity, rotation, angularVelocity, orientations)) {
                 String id = force.relativeLocation().toString() + force.type().toString();
-                Aircraft.getInstance().getLogger().severe(id);
                 notUpdated.remove(id);
                 Display display = forceArrowGroup.getDisplays().get(id);
                 Material material = switch (force.type()) {
@@ -295,6 +294,7 @@ public class Vehicle extends SlimefunItem {
                     case WEIGHT -> Material.ORANGE_CONCRETE;
                     case THRUST -> Material.PURPLE_CONCRETE;
                 };
+
                 if (display == null) {
                     ModelCuboid modelCuboid = new ModelCuboid()
                             .material(material)
@@ -302,7 +302,7 @@ public class Vehicle extends SlimefunItem {
                             .size(0.1F, 0.01F, 0.01F);
                     display = modelCuboid
                             .build(pig.getLocation());
-                    forceArrowGroup.addDisplay(force.toString(), display);
+                    forceArrowGroup.addDisplay(id, display);
                     pig.addPassenger(display);
                 }
 
