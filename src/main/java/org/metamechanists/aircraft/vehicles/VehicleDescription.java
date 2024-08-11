@@ -86,7 +86,7 @@ public class VehicleDescription {
         momentOfInertia = traverser.get("momentOfInertia");
         velocityDampening = traverser.get("velocityDampening");
         angularVelocityDampening = traverser.get("angularVelocityDampening");
-        thrustLocation = traverser.get("thrustLocation");
+        thrustLocation = getVector3d(traverser, "thrustLocation");
         thrust = traverser.get("thrust");
         frictionCoefficient = traverser.get("frictionCoefficient");
         gravityAcceleration = traverser.get("gravityAcceleration");
