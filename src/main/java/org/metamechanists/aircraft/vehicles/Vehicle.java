@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
@@ -287,6 +288,9 @@ public class Vehicle extends SlimefunItem {
         Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(state.rotation);
         Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
         Vector3d relativeAngularVelocity = new Vector3d(state.angularVelocity).rotate(negativeRotation);
+
+        Aircraft.getInstance().getLogger().severe(acceleration.toString());
+        Aircraft.getInstance().getLogger().severe(relativeAngularVelocity.toString());
 
         state.rotation.set(Utils.getRotationEulerAngles(state.rotation)
                 .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(20)))
