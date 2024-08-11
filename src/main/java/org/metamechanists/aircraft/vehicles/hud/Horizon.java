@@ -2,15 +2,11 @@ package org.metamechanists.aircraft.vehicles.hud;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.Color;
 import org.bukkit.Location;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3d;
 import org.joml.Vector3f;
-import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedText;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
@@ -21,8 +17,8 @@ import static java.lang.Math.PI;
 
 
 public final class Horizon {
-    private static final TextColor HORIZON_ALTITUDE_INDICATOR_COLOR = TextColor.color(0, 255, 0);
-    private static final TextColor HORIZON_INDICATOR_COLOR = TextColor.color(100, 255, 100);
+    private static final TextColor HORIZON_ALTITUDE_COLOR = TextColor.color(200, 255, 200);
+    private static final TextColor HORIZON_INDICATOR_COLOR = TextColor.color(0, 0, 255);
     private static final TextColor HORIZON_MAJOR_COLOR = TextColor.color(0, 255, 255);
     private static final TextColor HORIZON_MINOR_COLOR = TextColor.color(0, 180, 255);
     private static final TextColor HORIZON_DETAIL_COLOR = TextColor.color(0, 150, 180);
@@ -104,6 +100,6 @@ public final class Horizon {
 
     public static void update(@NotNull Map<String, Display> displays, @NotNull Location location) {
         TextDisplay altitudeText = (TextDisplay) displays.get("altitude");
-        altitudeText.text(Component.text(location.getBlockY()).color(HORIZON_ALTITUDE_INDICATOR_COLOR));
+        altitudeText.text(Component.text(location.getBlockY()).color(HORIZON_ALTITUDE_COLOR));
     }
 }

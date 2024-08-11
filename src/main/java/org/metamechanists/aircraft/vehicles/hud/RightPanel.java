@@ -2,7 +2,6 @@ package org.metamechanists.aircraft.vehicles.hud;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.entity.TextDisplay.TextAlignment;
@@ -35,11 +34,11 @@ public final class RightPanel {
                 .alignment(TextAlignment.LEFT)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F))
                 .translate(panelCenter)
-                .translate(0.2F, 0.0F, 0.0F);
+                .translate(0.5F, 0.0F, 0.0F);
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f panelCenter = new Vector3f(0.5F, 0.5F, 0.0F);
+        Vector3f panelCenter = new Vector3f(5.0F, 5.0F, 0.0F);
 
         hudComponents.put("velocity_key", getVelocityKey(state, hudCenter, panelCenter));
         hudComponents.put("velocity_value", getVelocityValue(state, hudCenter, panelCenter));
@@ -47,6 +46,6 @@ public final class RightPanel {
 
     public static void update(@NotNull VehicleState state, @NotNull Map<String, Display> displays) {
         TextDisplay velocityText = (TextDisplay) displays.get("velocity_value");
-        velocityText.text(Component.text(state.velocity.length()).color(VALUE_COLOR));
+        velocityText.text(Component.text(Math.round(state.velocity.length() * 10.0) / 10.0).color(VALUE_COLOR));
     }
 }

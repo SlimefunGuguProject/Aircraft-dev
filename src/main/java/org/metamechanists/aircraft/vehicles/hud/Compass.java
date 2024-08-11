@@ -17,7 +17,7 @@ public final class Compass {
     private static final TextColor COMPASS_MINOR_COLOR = TextColor.color(0, 180, 255);
     private static final TextColor COMPASS_DETAIL_COLOR = TextColor.color(0, 150, 180);
     private static final TextColor COMPASS_DIRECTION_COLOR = TextColor.color(180, 255, 255);
-    private static final TextColor COMPASS_NOTCH_COLOR = TextColor.color(100, 255, 100);
+    private static final TextColor COMPASS_NOTCH_COLOR = TextColor.color(0, 0, 255);
 
     private Compass() {}
 
