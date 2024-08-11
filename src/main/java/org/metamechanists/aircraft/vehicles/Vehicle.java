@@ -23,6 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
@@ -273,7 +274,7 @@ public class Vehicle extends SlimefunItem {
             if (forceArrowGroupId == null) {
                 forceArrowGroup = new DisplayGroup(pig.getLocation());
                 forceArrowGroupId = new DisplayGroupId(forceArrowGroup.getParentUUID());
-                new PersistentDataTraverser(pig).set("forceArrowGroupId", forceArrowGroupId);
+                traverser.set("forceArrowGroupId", forceArrowGroupId);
             } else {
                 forceArrowGroup = forceArrowGroupId.get().get();
             }
@@ -285,13 +286,20 @@ public class Vehicle extends SlimefunItem {
             Set<String> notUpdated = new HashSet<>(forceArrowGroup.getDisplays().keySet());
             for (SpatialForce force : getForces(throttle, velocity, rotation, angularVelocity, orientations)) {
                 String id = force.relativeLocation().toString() + force.type().toString();
+                Aircraft.getInstance().getLogger().severe(id);
                 notUpdated.remove(id);
                 Display display = forceArrowGroup.getDisplays().get(id);
+                Material material = switch (force.type()) {
+                    case DRAG -> Material.BLUE_CONCRETE;
+                    case LIFT -> Material.GREEN_CONCRETE;
+                    case WEIGHT -> Material.ORANGE_CONCRETE;
+                    case THRUST -> Material.PURPLE_CONCRETE;
+                };
                 if (display == null) {
                     ModelCuboid modelCuboid = new ModelCuboid()
-                            .material(Material.PURPLE_CONCRETE)
+                            .material(material)
                             .brightness(15)
-                            .size(0.1F, 0.1F, 0.1F);
+                            .size(0.1F, 0.01F, 0.01F);
                     display = modelCuboid
                             .build(pig.getLocation());
                     forceArrowGroup.addDisplay(force.toString(), display);
