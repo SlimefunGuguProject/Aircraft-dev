@@ -59,7 +59,7 @@ public final class Horizon {
 
     private static ModelAdvancedText getArtificialHorizonDegree(
             @NotNull VehicleState state, Vector3f hudCenter, Component component, Vector3f totalAdjustment, boolean shouldRender) {
-        return Util.rollText(state, hudCenter, new Vector3f(totalAdjustment).add(new Vector3f(0, 0, 0.19F)))
+        return Util.rollText(state, hudCenter, new Vector3f(totalAdjustment).add(new Vector3f(0, 0, 0.1F)))
                 .text(component)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);

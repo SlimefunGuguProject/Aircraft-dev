@@ -33,12 +33,12 @@ public final class RightPanel {
         return Util.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
                 .translate(panelCenter)
-                .translate(0.15F, 0.15F, 0.0F)
-                .scale(new Vector3f(0.2F, 0.2F, 0.001F));
+                .translate(0.12F, 0.2F, 0.0F)
+                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f panelCenter = new Vector3f(0.4F, 0.0F, 0.0F);
+        Vector3f panelCenter = new Vector3f(0.3F, 0.0F, 0.0F);
 
         hudComponents.put("velocity_key", getVelocityKey(state, hudCenter, panelCenter));
         hudComponents.put("velocity_value", getVelocityValue(state, hudCenter, panelCenter));
