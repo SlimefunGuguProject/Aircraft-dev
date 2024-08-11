@@ -36,7 +36,7 @@ public final class Compass {
             size = 0.1F;
         }
 
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .text(Component.text("|").color(color))
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(size, size, 0.001F) : new Vector3f())
@@ -46,7 +46,7 @@ public final class Compass {
     private static ModelComponent getCompassDirection(
             @NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, String text) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .text(Component.text(text).color(COMPASS_DIRECTION_COLOR))
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
@@ -56,7 +56,7 @@ public final class Compass {
     private static ModelComponent getCompassDegree(
             @NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, int degrees) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .text(Component.text(degrees).color(COMPASS_MAJOR_COLOR))
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
@@ -64,7 +64,7 @@ public final class Compass {
     }
 
     private static ModelComponent getCompassNotch(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .text(Component.text("▼").color(COMPASS_NOTCH_COLOR))
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F))
                 .translate(0.5F, -1.66F, -0.01F);
@@ -75,7 +75,7 @@ public final class Compass {
 
         final int bars = 60;
         final int extraBars = 8;
-        Vector3f compassOffset = new Vector3f((float) (0.5 * Util.getYaw(state)), -0.27F, 0);
+        Vector3f compassOffset = new Vector3f((float) (0.5 * state.getYaw()), -0.27F, 0);
         final float compassRadius = 0.2F;
         final float horizontalSpacing = 0.5F * (float) (PI / (bars));
 

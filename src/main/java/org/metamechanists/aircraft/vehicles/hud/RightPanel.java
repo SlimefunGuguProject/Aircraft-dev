@@ -23,7 +23,7 @@ public final class RightPanel {
     private RightPanel() {}
 
     private static ModelAdvancedText getAccelerationKey(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
                 .text(Component.text("ACC").color(KEY_COLOR))
                 .translate(panelCenter)
@@ -32,7 +32,7 @@ public final class RightPanel {
     }
 
     private static ModelAdvancedText getAccelerationValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
                 .translate(panelCenter)
                 .translate(0.09F, 0.25F, 0.0F)
@@ -40,7 +40,7 @@ public final class RightPanel {
     }
 
     private static ModelAdvancedText getVelocityKey(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
                 .text(Component.text("VEL").color(KEY_COLOR))
                 .translate(panelCenter)
@@ -49,7 +49,7 @@ public final class RightPanel {
     }
 
     private static ModelAdvancedText getVelocityValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
                 .translate(panelCenter)
                 .translate(0.09F, 0.2F, 0.0F)
@@ -57,7 +57,7 @@ public final class RightPanel {
     }
 
     private static ModelAdvancedText getAngularAccelerationKey(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
                 .text(Component.text("AAC").color(KEY_COLOR))
                 .translate(panelCenter)
@@ -66,7 +66,7 @@ public final class RightPanel {
     }
 
     private static ModelAdvancedText getAngularAccelerationValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
                 .translate(panelCenter)
                 .translate(0.09F, 0.15F, 0.0F)
@@ -74,7 +74,7 @@ public final class RightPanel {
     }
 
     private static ModelAdvancedText getAngularVelocityKey(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
                 .text(Component.text("AVL").color(KEY_COLOR))
                 .translate(panelCenter)
@@ -83,7 +83,7 @@ public final class RightPanel {
     }
 
     private static ModelAdvancedText getAngularVelocityValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .alignment(TextAlignment.LEFT)
                 .translate(panelCenter)
                 .translate(0.09F, 0.1F, 0.0F)
@@ -91,7 +91,7 @@ public final class RightPanel {
     }
 
     private static ModelAdvancedCuboid getThrottleBackground(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return Util.rollIndependentCuboid(state, hudCenter)
+        return HudUtil.rollIndependentCuboid(state, hudCenter)
                 .material(Material.GRAY_CONCRETE)
                 .translate(panelCenter)
                 .translate(-0.13F, 0.0F, 0.0F)
@@ -100,7 +100,7 @@ public final class RightPanel {
 
     private static ModelAdvancedCuboid getThrottleForeground(@NotNull VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         float fraction = (float) (state.throttle / 100.0);
-        return Util.rollIndependentCuboid(state, hudCenter)
+        return HudUtil.rollIndependentCuboid(state, hudCenter)
                 .material(Material.LIGHT_BLUE_CONCRETE)
                 .translate(panelCenter)
                 .translate(-0.13F, -0.2F + 0.2F * fraction, 0.001F)

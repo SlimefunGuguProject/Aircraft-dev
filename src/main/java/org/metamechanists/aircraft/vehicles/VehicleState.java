@@ -1,9 +1,11 @@
 package org.metamechanists.aircraft.vehicles;
 
 import org.bukkit.entity.Pig;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
+import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
@@ -61,5 +63,17 @@ public class VehicleState {
         traverser.setControlSurfaceOrientations("orientations", orientations);
         traverser.set("componentGroupId", componentGroup.getParentUUID());
         traverser.set("hudGroupId", hudGroup.getParentUUID());
+    }
+
+    public double getPitch() {
+        Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
+        double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
+        return lookingAtForward.y > 0 ? pitch : -pitch;
+    }
+
+    public double getYaw() {
+        Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
+        double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
+        return lookingAtForward.z > 0 ? -yaw : yaw;
     }
 }

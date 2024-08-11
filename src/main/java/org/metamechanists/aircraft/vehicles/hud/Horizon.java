@@ -32,13 +32,13 @@ public final class Horizon {
     private Horizon() {}
 
     private static ModelAdvancedText getAltitudeIndicator(@NotNull VehicleState state, Vector3f hudCenter) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
                 .translate(0.5F, 0.35F, 0.05F);
     }
 
     private static ModelAdvancedText getArtificialHorizonMajor(@NotNull VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, boolean shouldRender) {
-        return Util.rollText(state, hudCenter, horizonOffset)
+        return HudUtil.rollText(state, hudCenter, horizonOffset)
                 .text(Component.text(HORIZON_MAJOR_TEXT).color(HORIZON_MAJOR_COLOR))
                 .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
@@ -46,21 +46,21 @@ public final class Horizon {
 
     private static ModelAdvancedText getArtificialHorizonBar(
             @NotNull VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, Component component, Vector3f barOffset, boolean shouldRender) {
-        return Util.rollText(state, hudCenter, new Vector3f(horizonOffset).add(barOffset))
+        return HudUtil.rollText(state, hudCenter, new Vector3f(horizonOffset).add(barOffset))
                 .text(component)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
     }
 
     private static ModelAdvancedText getRotationIndicator(@NotNull VehicleState state, Vector3f hudCenter) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .text(Component.text(HORIZON_ROTATION_TEXT).color(HORIZON_INDICATOR_COLOR))
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
                 .translate(0.5F, 0.35F, 0.05F);
     }
 
     private static ModelAdvancedText getVelocityIndicator(@NotNull VehicleState state, Vector3f hudCenter, Vector3f velocityOffset) {
-        return Util.rollIndependentText(state, hudCenter)
+        return HudUtil.rollIndependentText(state, hudCenter)
                 .text(Component.text(HORIZON_VELOCITY_TEXT).color(HORIZON_VELOCITY_COLOR))
                 .translate(velocityOffset)
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
@@ -69,14 +69,14 @@ public final class Horizon {
 
     private static ModelAdvancedText getArtificialHorizonDegree(
             @NotNull VehicleState state, Vector3f hudCenter, Component component, Vector3f totalAdjustment, boolean shouldRender) {
-        return Util.rollText(state, hudCenter, new Vector3f(totalAdjustment).add(new Vector3f(0, 0, 0.08F)))
+        return HudUtil.rollText(state, hudCenter, new Vector3f(totalAdjustment).add(new Vector3f(0, 0, 0.08F)))
                 .text(component)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f horizonOffset = new Vector3f(0, (float) (0.5 * -Util.getPitch(state)), 0);
+        Vector3f horizonOffset = new Vector3f(0, (float) (0.5 * -HudUtil.getPitch(state)), 0);
         final float horizonRadius = 0.15F;
         boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
 
@@ -84,7 +84,7 @@ public final class Horizon {
         hudComponents.put("horizon", getRotationIndicator(state, hudCenter));
         hudComponents.put("horizon_center", getArtificialHorizonMajor(state, hudCenter, horizonOffset, shouldRenderCenter));
 
-        Vector3f velocityOffset = new Vector3f(0, (float) (0.5 * Util.getPitch(state.velocity)), 0).add(horizonOffset);
+        Vector3f velocityOffset = new Vector3f(0, (float) (0.5 * HudUtil.getPitch(state.velocity)), 0).add(horizonOffset);
         hudComponents.put("velocity", getVelocityIndicator(state, hudCenter, velocityOffset));
 
         final int bars = 30;

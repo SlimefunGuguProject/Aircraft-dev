@@ -11,24 +11,12 @@ import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedText;
 
 
-public final class Util {
-    private Util() {}
-
-    public static double getPitch(@NotNull VehicleState state) {
-        Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), state.rotation);
-        double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
-        return lookingAtForward.y > 0 ? pitch : -pitch;
-    }
+public final class HudUtil {
+    private HudUtil() {}
 
     public static double getPitch(@NotNull Vector3d lookingAtForward) {
         double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
         return lookingAtForward.y > 0 ? pitch : -pitch;
-    }
-
-    public static double getYaw(@NotNull VehicleState state) {
-        Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), state.rotation);
-        double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
-        return lookingAtForward.z > 0 ? -yaw : yaw;
     }
 
     private static ModelAdvancedText defaultText() {
@@ -56,7 +44,7 @@ public final class Util {
                 .rotate(state.rotation)
                 .translate(hudCenter)
                 .rotateBackwards(state.rotation)
-                .rotate(new Vector3d(0, getYaw(state), getPitch(state)))
+                .rotate(new Vector3d(0, state.getYaw(), state.getPitch()))
                 .facing(BlockFace.WEST);
     }
 
@@ -65,7 +53,7 @@ public final class Util {
                 .rotate(state.rotation)
                 .translate(hudCenter)
                 .rotateBackwards(state.rotation)
-                .rotate(new Vector3d(0, getYaw(state), getPitch(state)))
+                .rotate(new Vector3d(0, state.getYaw(), state.getPitch()))
                 .facing(BlockFace.WEST);
     }
 }
