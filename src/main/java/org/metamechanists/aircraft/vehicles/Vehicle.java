@@ -8,6 +8,7 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Display;
@@ -279,11 +280,12 @@ public class Vehicle extends SlimefunItem {
             }
 
             for (SpatialForce force : getForces(throttle, velocity, rotation, angularVelocity, orientations)) {
-                ModelCuboid modelCuboid = new ModelCuboid();
-                modelCuboid.brightness(15);
-                modelCuboid.size(1.0F, 0.1F, 0.1F);
-                modelCuboid.location((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z);
-                modelCuboid.facing(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z));
+                ModelCuboid modelCuboid = new ModelCuboid()
+                        .material(Material.PURPLE_CONCRETE)
+                        .brightness(15)
+                        .size(1.0F, 0.1F, 0.1F)
+                        .location((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z)
+                        .facing(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z));
                 BlockDisplay display = modelCuboid
                         .build(pig.getLocation());
                 forceArrowGroup.addDisplay(force.toString(), display);
