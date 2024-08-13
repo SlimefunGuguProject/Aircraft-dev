@@ -19,6 +19,7 @@ import java.util.Map;
 public final class RightPanel {
     private static final TextColor KEY_COLOR = TextColor.color(170, 255, 170);
     private static final TextColor VALUE_COLOR = TextColor.color(0, 255, 0);
+    private static final float THROTTLE_HEIGHT = 3.0F;
 
     private RightPanel() {}
 
@@ -92,10 +93,10 @@ public final class RightPanel {
 
     private static ModelAdvancedCuboid getThrottleBackground(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         return HudUtil.rollIndependentCuboid(state, hudCenter)
-                .material(Material.GRAY_CONCRETE)
+                .material(Material.BLACK_CONCRETE)
                 .translate(panelCenter)
                 .translate(-0.13F, 0.0F, 0.0F)
-                .scale(new Vector3f(0.01F, 0.4F, 0.001F));
+                .scale(new Vector3f(0.01F, THROTTLE_HEIGHT, 0.001F));
     }
 
     private static ModelAdvancedCuboid getThrottleForeground(@NotNull VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
@@ -103,8 +104,8 @@ public final class RightPanel {
         return HudUtil.rollIndependentCuboid(state, hudCenter)
                 .material(Material.LIGHT_BLUE_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.13F, -0.2F + 0.2F * fraction, 0.001F)
-                .scale(new Vector3f(0.01F, 0.4F * fraction, 0.001F));
+                .translate(-0.13F, -0.5F * THROTTLE_HEIGHT + 0.5F * THROTTLE_HEIGHT * fraction, 0.001F)
+                .scale(new Vector3f(0.01F, THROTTLE_HEIGHT * fraction, 0.001F));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {

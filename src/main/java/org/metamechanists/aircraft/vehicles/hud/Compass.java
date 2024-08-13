@@ -67,7 +67,7 @@ public final class Compass {
         return HudUtil.rollIndependentText(state, hudCenter)
                 .text(Component.text("▼").color(COMPASS_NOTCH_COLOR))
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F))
-                .translate(0.5F, -1.66F, -0.01F);
+                .translate(0.5F, -2.0F, -0.01F);
     }
 
     public static void build(@NotNull VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, @NotNull Vector3f hudCenter) {
