@@ -17,14 +17,14 @@ import java.util.Map;
 
 public final class BottomPanel {
     private static final TextColor THROTTLE_VALUE_COLOR = TextColor.color(0, 255, 0);
-    private static final float THROTTLE_HEIGHT = 0.2F;
+    private static final float THROTTLE_SIZE = 0.2F;
 
     private BottomPanel() {}
 
     private static ModelAdvancedText getThrotteValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         return HudUtil.rollText(state, hudCenter)
                 .translate(panelCenter)
-                .translate(-0.15F, -0.5F, 0.0F)
+                .translate(-0.15F, -0.2F, 0.0F)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F));
     }
 
@@ -32,8 +32,8 @@ public final class BottomPanel {
         return HudUtil.rollCuboid(state, hudCenter)
                 .material(Material.BLACK_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.05F, -0.5F , 0.0F)
-                .scale(new Vector3f(0.01F, THROTTLE_HEIGHT, 0.001F));
+                .translate(-0.05F, -0.2F , 0.0F)
+                .scale(new Vector3f(THROTTLE_SIZE, 0.01F, 0.001F));
     }
 
     private static ModelAdvancedCuboid getThrottleForeground(@NotNull VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
@@ -41,8 +41,8 @@ public final class BottomPanel {
         return HudUtil.rollCuboid(state, hudCenter)
                 .material(Material.LIGHT_BLUE_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.05F + 0.5F * THROTTLE_HEIGHT * fraction, -0.5F, 0.001F)
-                .scale(new Vector3f(THROTTLE_HEIGHT * fraction, 0.01F, 0.001F));
+                .translate(-0.05F + 0.5F * THROTTLE_SIZE * fraction, -0.2F, 0.001F)
+                .scale(new Vector3f(THROTTLE_SIZE * fraction, 0.01F, 0.001F));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
