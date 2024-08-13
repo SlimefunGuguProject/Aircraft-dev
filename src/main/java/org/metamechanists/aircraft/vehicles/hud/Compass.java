@@ -50,7 +50,7 @@ public final class Compass {
                 .text(Component.text(text).color(COMPASS_DIRECTION_COLOR))
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
-                .translate(0.5F, -0.15F, -0.01F);
+                .translate(0.5F, -0.05F, -0.01F);
     }
 
     private static ModelComponent getCompassDegree(
@@ -93,9 +93,7 @@ public final class Compass {
                     default -> "ERROR";
                 };
                 hudComponents.put("compass_direction_" + i, getCompassDirection(state, hudCenter, totalAdjustment, compassRadius, text));
-            }
-
-            if ((i+420) % 10 == 0) {
+            } else if ((i+420) % 10 == 0) {
                 int degrees = (i + 60) * 3 - 90;
                 if (degrees < 0) {
                     degrees += 360;
