@@ -31,12 +31,14 @@ import org.metamechanists.aircraft.vehicles.hud.VehicleHud;
 import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.ModelBuilder;
+import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
 
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -320,8 +322,12 @@ public class Vehicle extends SlimefunItem {
         }
         pig.setVelocity(Vector.fromJOML(new Vector3d(pigVelocity).div(20)));
 
-        description.getCuboids(state.orientations).forEach((cuboidName, cuboid) -> state.componentGroup.getDisplays().get(cuboidName)
-                        .setTransformationMatrix(Utils.getComponentMatrix(cuboid, state.rotation)));
+        for (Entry<String, ModelAdvancedCuboid> entry : description.getCuboids(state.orientations).entrySet()) {
+            Display display = state.componentGroup.getDisplays().get(entry.getKey());
+            if (display != null) {
+                display.setTransformationMatrix(Utils.getComponentMatrix(entry.getValue(), state.rotation));
+            }
+        }
 
         VehicleHud.update(state, pig.getLocation(), acceleration.length(), angularAcceleration.length());
 
