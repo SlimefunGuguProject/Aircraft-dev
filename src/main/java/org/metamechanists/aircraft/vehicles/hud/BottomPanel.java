@@ -30,7 +30,7 @@ public final class BottomPanel {
 
     private static ModelAdvancedCuboid getThrottleBackground(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         return HudUtil.rollCuboid(state, hudCenter)
-                .material(Material.BLACK_CONCRETE)
+                .material(Material.BLACK_TERRACOTTA)
                 .translate(panelCenter)
                 .translate(0.0F, 0.0F , 0.0F)
                 .scale(new Vector3f(THROTTLE_SIZE, 0.01F, 0.001F));
