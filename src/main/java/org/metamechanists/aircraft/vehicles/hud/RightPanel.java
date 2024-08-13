@@ -19,7 +19,7 @@ import java.util.Map;
 public final class RightPanel {
     private static final TextColor KEY_COLOR = TextColor.color(170, 255, 170);
     private static final TextColor VALUE_COLOR = TextColor.color(0, 255, 0);
-    private static final float THROTTLE_HEIGHT = 3.0F;
+    private static final float THROTTLE_HEIGHT = 0.3F;
 
     private RightPanel() {}
 
