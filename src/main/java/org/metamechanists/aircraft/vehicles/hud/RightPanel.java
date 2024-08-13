@@ -25,7 +25,7 @@ public final class RightPanel {
     private static ModelAdvancedText getThrotteValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         return HudUtil.rollText(state, hudCenter)
                 .translate(panelCenter)
-                .translate(0.0F, -0.05F, 0.0F)
+                .translate(-0.13F, -0.3F, 0.0F)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F));
     }
 
@@ -33,7 +33,7 @@ public final class RightPanel {
         return HudUtil.rollCuboid(state, hudCenter)
                 .material(Material.BLACK_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.13F, 0.1F, 0.0F)
+                .translate(-0.13F, -0.05F, 0.0F)
                 .scale(new Vector3f(0.01F, THROTTLE_HEIGHT, 0.001F));
     }
 
@@ -42,7 +42,7 @@ public final class RightPanel {
         return HudUtil.rollCuboid(state, hudCenter)
                 .material(Material.LIGHT_BLUE_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.13F, -0.6F * THROTTLE_HEIGHT + 0.5F * THROTTLE_HEIGHT * fraction, 0.001F)
+                .translate(-0.13F, -0.55F * THROTTLE_HEIGHT + 0.5F * THROTTLE_HEIGHT * fraction, 0.001F)
                 .scale(new Vector3f(0.01F, THROTTLE_HEIGHT * fraction, 0.001F));
     }
 
