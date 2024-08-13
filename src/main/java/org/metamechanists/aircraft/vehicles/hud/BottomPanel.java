@@ -24,7 +24,7 @@ public final class BottomPanel {
     private static ModelAdvancedText getThrotteValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         return HudUtil.rollText(state, hudCenter)
                 .translate(panelCenter)
-                .translate(-0.15F, 0.04F, 0.0F)
+                .translate(-0.08F, 0.04F, 0.0F)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F));
     }
 
@@ -32,7 +32,7 @@ public final class BottomPanel {
         return HudUtil.rollCuboid(state, hudCenter)
                 .material(Material.BLACK_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.05F, 0.0F , 0.0F)
+                .translate(-0.15F, 0.0F , 0.0F)
                 .scale(new Vector3f(THROTTLE_SIZE, 0.01F, 0.001F));
     }
 
@@ -46,7 +46,7 @@ public final class BottomPanel {
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f panelCenter = new Vector3f(0.0F, -0.25F, 0.0F);
+        Vector3f panelCenter = new Vector3f(0.0F, -0.35F, 0.0F);
 
         hudComponents.put("throttle_value", getThrotteValue(state, hudCenter, panelCenter));
         hudComponents.put("throttle_background", getThrottleBackground(state, hudCenter, panelCenter));
