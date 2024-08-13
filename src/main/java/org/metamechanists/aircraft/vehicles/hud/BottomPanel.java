@@ -24,7 +24,7 @@ public final class BottomPanel {
     private static ModelAdvancedText getThrotteValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         return HudUtil.rollText(state, hudCenter)
                 .translate(panelCenter)
-                .translate(-0.06F, 0.035F, 0.0F)
+                .translate(-0.08F, 0.035F, 0.0F)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F));
     }
 
