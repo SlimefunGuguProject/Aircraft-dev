@@ -22,7 +22,7 @@ public final class VehicleHud {
         Map<String, ModelComponent> hudComponents = new HashMap<>();
         Horizon.build(state, hudComponents, hudCenter);
         Compass.build(state, hudComponents, hudCenter);
-        RightPanel.build(state, hudComponents, hudCenter);
+        BottomPanel.build(state, hudComponents, hudCenter);
         return hudComponents;
     }
 
@@ -35,6 +35,6 @@ public final class VehicleHud {
         }
 
         Horizon.update(displays, location);
-        RightPanel.update(state, displays);
+        BottomPanel.update(state, displays);
     }
 }
