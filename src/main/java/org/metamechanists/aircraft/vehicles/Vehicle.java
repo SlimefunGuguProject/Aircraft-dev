@@ -329,7 +329,7 @@ public class Vehicle extends SlimefunItem {
             }
         }
 
-        VehicleHud.update(state, pig.getLocation(), acceleration.length(), angularAcceleration.length());
+        VehicleHud.update(state, pig.getLocation());
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, 0.1, 0.1))) {
 //            remove(pig, componentGroup, hudGroup);

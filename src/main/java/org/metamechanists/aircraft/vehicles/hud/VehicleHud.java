@@ -26,7 +26,7 @@ public final class VehicleHud {
         return hudComponents;
     }
 
-    public static void update(@NotNull VehicleState state, Location location, double acceleration, double angularAcceleration) {
+    public static void update(@NotNull VehicleState state, Location location) {
         Map<String, ModelComponent> hudComponents = build(state);
         Map<String, Display> displays = state.hudGroup.getDisplays();
         for (Entry<String, ModelComponent> entry : hudComponents.entrySet()) {
@@ -35,6 +35,6 @@ public final class VehicleHud {
         }
 
         Horizon.update(displays, location);
-        RightPanel.update(state, displays, acceleration, angularAcceleration);
+        RightPanel.update(state, displays);
     }
 }
