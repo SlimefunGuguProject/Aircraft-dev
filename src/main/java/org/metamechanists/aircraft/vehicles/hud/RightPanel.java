@@ -17,127 +17,45 @@ import java.util.Map;
 
 
 public final class RightPanel {
-    private static final TextColor KEY_COLOR = TextColor.color(170, 255, 170);
-    private static final TextColor VALUE_COLOR = TextColor.color(0, 255, 0);
+    private static final TextColor THROTTLE_VALUE_COLOR = TextColor.color(0, 255, 0);
     private static final float THROTTLE_HEIGHT = 0.3F;
 
     private RightPanel() {}
 
-    private static ModelAdvancedText getAccelerationKey(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return HudUtil.rollIndependentText(state, hudCenter)
-                .alignment(TextAlignment.LEFT)
-                .text(Component.text("ACC").color(KEY_COLOR))
+    private static ModelAdvancedText getThrotteValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
+        return HudUtil.rollText(state, hudCenter)
                 .translate(panelCenter)
-                .translate(0.0F, 0.25F, 0.0F)
-                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
-    }
-
-    private static ModelAdvancedText getAccelerationValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return HudUtil.rollIndependentText(state, hudCenter)
-                .alignment(TextAlignment.LEFT)
-                .translate(panelCenter)
-                .translate(0.09F, 0.25F, 0.0F)
-                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
-    }
-
-    private static ModelAdvancedText getVelocityKey(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return HudUtil.rollIndependentText(state, hudCenter)
-                .alignment(TextAlignment.LEFT)
-                .text(Component.text("VEL").color(KEY_COLOR))
-                .translate(panelCenter)
-                .translate(0.0F, 0.2F, 0.0F)
-                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
-    }
-
-    private static ModelAdvancedText getVelocityValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return HudUtil.rollIndependentText(state, hudCenter)
-                .alignment(TextAlignment.LEFT)
-                .translate(panelCenter)
-                .translate(0.09F, 0.2F, 0.0F)
-                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
-    }
-
-    private static ModelAdvancedText getAngularAccelerationKey(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return HudUtil.rollIndependentText(state, hudCenter)
-                .alignment(TextAlignment.LEFT)
-                .text(Component.text("AAC").color(KEY_COLOR))
-                .translate(panelCenter)
-                .translate(0.0F, 0.15F, 0.0F)
-                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
-    }
-
-    private static ModelAdvancedText getAngularAccelerationValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return HudUtil.rollIndependentText(state, hudCenter)
-                .alignment(TextAlignment.LEFT)
-                .translate(panelCenter)
-                .translate(0.09F, 0.15F, 0.0F)
-                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
-    }
-
-    private static ModelAdvancedText getAngularVelocityKey(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return HudUtil.rollIndependentText(state, hudCenter)
-                .alignment(TextAlignment.LEFT)
-                .text(Component.text("AVL").color(KEY_COLOR))
-                .translate(panelCenter)
-                .translate(0.0F, 0.1F, 0.0F)
-                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
-    }
-
-    private static ModelAdvancedText getAngularVelocityValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return HudUtil.rollIndependentText(state, hudCenter)
-                .alignment(TextAlignment.LEFT)
-                .translate(panelCenter)
-                .translate(0.09F, 0.1F, 0.0F)
-                .scale(new Vector3f(0.15F, 0.15F, 0.001F));
+                .translate(0.09F, -0.5F, 0.0F)
+                .scale(new Vector3f(0.1F, 0.1F, 0.001F));
     }
 
     private static ModelAdvancedCuboid getThrottleBackground(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
-        return HudUtil.rollIndependentCuboid(state, hudCenter)
+        return HudUtil.rollCuboid(state, hudCenter)
                 .material(Material.BLACK_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.13F, 0.0F, 0.0F)
+                .translate(-0.13F, 0.1F, 0.0F)
                 .scale(new Vector3f(0.01F, THROTTLE_HEIGHT, 0.001F));
     }
 
     private static ModelAdvancedCuboid getThrottleForeground(@NotNull VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         float fraction = (float) (state.throttle / 100.0);
-        return HudUtil.rollIndependentCuboid(state, hudCenter)
+        return HudUtil.rollCuboid(state, hudCenter)
                 .material(Material.LIGHT_BLUE_CONCRETE)
                 .translate(panelCenter)
-                .translate(-0.13F, -0.5F * THROTTLE_HEIGHT + 0.5F * THROTTLE_HEIGHT * fraction, 0.001F)
+                .translate(-0.13F, -0.4F * THROTTLE_HEIGHT + 0.5F * THROTTLE_HEIGHT * fraction, 0.001F)
                 .scale(new Vector3f(0.01F, THROTTLE_HEIGHT * fraction, 0.001F));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
         Vector3f panelCenter = new Vector3f(0.3F, 0.0F, 0.0F);
 
-        hudComponents.put("acceleration_key", getAccelerationKey(state, hudCenter, panelCenter));
-        hudComponents.put("acceleration_value", getAccelerationValue(state, hudCenter, panelCenter));
-
-        hudComponents.put("velocity_key", getVelocityKey(state, hudCenter, panelCenter));
-        hudComponents.put("velocity_value", getVelocityValue(state, hudCenter, panelCenter));
-
-        hudComponents.put("angular_acceleration_key", getAngularAccelerationKey(state, hudCenter, panelCenter));
-        hudComponents.put("angular_acceleration_value", getAngularAccelerationValue(state, hudCenter, panelCenter));
-
-        hudComponents.put("angular_velocity_key", getAngularVelocityKey(state, hudCenter, panelCenter));
-        hudComponents.put("angular_velocity_value", getAngularVelocityValue(state, hudCenter, panelCenter));
-
+        hudComponents.put("throttle_value", getThrotteValue(state, hudCenter, panelCenter));
         hudComponents.put("throttle_background", getThrottleBackground(state, hudCenter, panelCenter));
         hudComponents.put("throttle_foreground", getThrottleForeground(state, hudCenter, panelCenter));
     }
 
-    public static void update(@NotNull VehicleState state, @NotNull Map<String, Display> displays, double acceleration, double angularAcceleration) {
-        TextDisplay accelerationText = (TextDisplay) displays.get("acceleration_value");
-        accelerationText.text(Component.text(Math.round(acceleration * 1000.0) / 1000.0).color(VALUE_COLOR));
-
-        TextDisplay velocityText = (TextDisplay) displays.get("velocity_value");
-        velocityText.text(Component.text(Math.round(state.velocity.length() * 1000.0) / 1000.0).color(VALUE_COLOR));
-
-        TextDisplay angularVelocityText = (TextDisplay) displays.get("angular_velocity_value");
-        angularVelocityText.text(Component.text(Math.round(Math.toDegrees(state.angularVelocity.length()) * 1000.0) / 1000.0).color(VALUE_COLOR));
-
-        TextDisplay angularAccelerationText = (TextDisplay) displays.get("angular_acceleration_value");
-        angularAccelerationText.text(Component.text(state.rotation.x).color(VALUE_COLOR));
+    public static void update(@NotNull VehicleState state, @NotNull Map<String, Display> displays) {
+        TextDisplay throttleText = (TextDisplay) displays.get("throttle_value");
+        throttleText.text(Component.text(state.throttle).color(THROTTLE_VALUE_COLOR));
     }
 }

@@ -36,7 +36,7 @@ public final class Compass {
             size = 0.1F;
         }
 
-        return HudUtil.rollText(state, hudCenter, new Vector3f())
+        return HudUtil.rollText(state, hudCenter)
                 .text(Component.text("|").color(color))
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(size, size, 0.001F) : new Vector3f())
@@ -46,7 +46,7 @@ public final class Compass {
     private static ModelComponent getCompassDirection(
             @NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, String text) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
-        return HudUtil.rollText(state, hudCenter, new Vector3f())
+        return HudUtil.rollText(state, hudCenter)
                 .text(Component.text(text).color(COMPASS_DIRECTION_COLOR))
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
@@ -56,7 +56,7 @@ public final class Compass {
     private static ModelComponent getCompassDegree(
             @NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, int degrees) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
-        return HudUtil.rollText(state, hudCenter, new Vector3f())
+        return HudUtil.rollText(state, hudCenter)
                 .text(Component.text(degrees).color(COMPASS_MAJOR_COLOR))
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
@@ -64,7 +64,7 @@ public final class Compass {
     }
 
     private static ModelComponent getCompassNotch(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
-        return HudUtil.rollText(state, hudCenter, new Vector3f())
+        return HudUtil.rollText(state, hudCenter)
                 .text(Component.text("▼").color(COMPASS_NOTCH_COLOR))
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F))
                 .translate(0.5F, -2.0F, -0.01F);

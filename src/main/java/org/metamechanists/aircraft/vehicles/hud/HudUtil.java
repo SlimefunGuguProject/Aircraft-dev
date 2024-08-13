@@ -36,7 +36,17 @@ public final class HudUtil {
                 .translate(hudCenter)
                 .translate(offset)
                 .facing(BlockFace.WEST);
+    }
 
+    public static ModelAdvancedCuboid rollCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
+        return defaultCuboid()
+                .rotate(state.rotation)
+                .translate(hudCenter)
+                .facing(BlockFace.WEST);
+    }
+
+    public static ModelAdvancedText rollText(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
+        return rollText(state, hudCenter, new Vector3f());
     }
 
     public static ModelAdvancedText rollIndependentText(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
