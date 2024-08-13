@@ -46,7 +46,7 @@ public final class BottomPanel {
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f panelCenter = new Vector3f(0.0F, -0.35F, 0.0F);
+        Vector3f panelCenter = new Vector3f(0.0F, -0.38F, 0.0F);
 
         hudComponents.put("throttle_value", getThrotteValue(state, hudCenter, panelCenter));
         hudComponents.put("throttle_background", getThrottleBackground(state, hudCenter, panelCenter));
