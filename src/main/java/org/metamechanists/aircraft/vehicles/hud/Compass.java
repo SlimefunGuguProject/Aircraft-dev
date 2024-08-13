@@ -49,6 +49,7 @@ public final class Compass {
         return HudUtil.rollText(state, hudCenter)
                 .text(Component.text(text).color(COMPASS_DIRECTION_COLOR))
                 .translate(totalAdjustment)
+                .translate(0.0F, 0.05F, 0.0F)
                 .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.0F, -0.01F);
     }
@@ -59,7 +60,6 @@ public final class Compass {
         return HudUtil.rollText(state, hudCenter)
                 .text(Component.text(degrees).color(COMPASS_MAJOR_COLOR))
                 .translate(totalAdjustment)
-                .translate(0.0F, 0.03F, 0.0F)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.0F, -0.01F);
     }
