@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Keys;
 import org.metamechanists.aircraft.vehicles.Vehicle;
-import org.metamechanists.aircraft.vehicles.VehicleDescription;
+import org.metamechanists.aircraft.vehicles.config.VehicleConfig;
 import org.metamechanists.aircraft.vehicles.controls.ThrottleControl;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
@@ -49,7 +49,7 @@ public class Items {
                         RecipeType.NULL,
                         new ItemStack[]{},
                         id,
-                        new VehicleDescription("vehicles/" + file.getName())));
+                        new VehicleConfig("vehicles/" + file.getName())));
             } catch (RuntimeException e) {
                 Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + file.getName());
                 e.printStackTrace();

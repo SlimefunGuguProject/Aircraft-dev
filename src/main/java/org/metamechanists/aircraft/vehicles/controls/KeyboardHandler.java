@@ -25,23 +25,21 @@ public final class KeyboardHandler {
             return;
         }
 
-        PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
-
         Vehicle vehicle = Storage.getVehicle(player);
         if (vehicle == null) {
             return;
         }
 
         if (rightLeft < 0) {
-            vehicle.onKey(traverser, 'd');
+            vehicle.onKey(pig, 'd');
         } else if (rightLeft > 0) {
-            vehicle.onKey(traverser, 'a');
+            vehicle.onKey(pig, 'a');
         }
 
         if (forwardbackwards < 0) {
-            vehicle.onKey(traverser, 's');
+            vehicle.onKey(pig, 's');
         } else if (forwardbackwards > 0) {
-            vehicle.onKey(traverser, 'w');
+            vehicle.onKey(pig, 'w');
         }
     }
 
@@ -58,32 +56,6 @@ public final class KeyboardHandler {
                 float rightleft = packet.getFloat().readSafely(0);
                 float forwardbackwards = packet.getFloat().readSafely(1);
                 handleKey(event.getPlayer(), rightleft, forwardbackwards);
-            }
-        });
-
-        manager.addPacketListener(new PacketAdapter(
-                Aircraft.getInstance(),
-                ListenerPriority.NORMAL,
-                Client.ENTITY_ACTION) {
-            @Override
-            public void onPacketReceiving(PacketEvent event) {
-                PacketContainer packet = event.getPacket();
-                int type = packet.getIntegers().readSafely(0);
-                if (type == 7) {
-                    Pig pig = Storage.getPig(event.getPlayer());
-                    if (pig == null) {
-                        return;
-                    }
-
-                    PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
-
-                    Vehicle vehicle = Storage.getVehicle(event.getPlayer());
-                    if (vehicle == null) {
-                        return;
-                    }
-
-                    vehicle.onKey(traverser, 'e');
-                }
             }
         });
     }
