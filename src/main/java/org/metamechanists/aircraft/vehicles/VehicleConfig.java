@@ -74,7 +74,6 @@ public class VehicleConfig {
         thrustLocation = thrust.getVector3d("location", ErrorSetting.LOG_MISSING_KEY);
         thrustForce = thrust.get("force", ErrorSetting.LOG_MISSING_KEY);
 
-
         for (YamlTraverser componentSectionTraverser : traverser.getSection("aerodynamicComponents").getSections()) {
             for (YamlTraverser componentTraverser : componentSectionTraverser.getSections()) {
                 aerodynamicComponents.add(AerodynamicComponent.fromTraverser(componentTraverser, translation));

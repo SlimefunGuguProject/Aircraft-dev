@@ -22,7 +22,7 @@ public abstract class BaseComponent implements Component {
     private final Vector3d rotation;
 
     protected BaseComponent(@NotNull YamlTraverser traverser, Vector3f translation) {
-        name = traverser.name();
+        name = traverser.path();
         material = Material.valueOf(traverser.get("material", ErrorSetting.LOG_MISSING_KEY));
         size = traverser.getVector3f("size", ErrorSetting.LOG_MISSING_KEY);
         location = traverser.getVector3f("location", ErrorSetting.LOG_MISSING_KEY).sub(translation);
