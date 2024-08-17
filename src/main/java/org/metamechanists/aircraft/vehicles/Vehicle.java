@@ -126,8 +126,6 @@ public class Vehicle extends SlimefunItem {
         pig.addPassenger(state.componentGroup.getParentDisplay());
         pig.addPassenger(state.hudGroup.getParentDisplay());
 
-//        updateDisplayGroup(pig, config.getCuboids(state), state.componentGroup);
-//        updateDisplayGroup(pig, VehicleHud.build(state), state.hudGroup);
         createInteraction(pig);
         
         state.write(pig);
@@ -251,13 +249,6 @@ public class Vehicle extends SlimefunItem {
             pigVelocity.set(0);
         }
         pig.setVelocity(Vector.fromJOML(new Vector3d(pigVelocity).div(20)));
-
-        for (Entry<String, ModelComponent> entry : config.getCuboids(state).entrySet()) {
-            Display display = state.componentGroup.getDisplays().get(entry.getKey());
-            if (display != null) {
-                display.setTransformationMatrix(Utils.getComponentMatrix(entry.getValue(), state.rotation));
-            }
-        }
 
         VehicleHud.update(state, pig.getLocation());
 
