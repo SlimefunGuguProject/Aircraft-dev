@@ -149,7 +149,7 @@ public class Vehicle extends SlimefunItem {
 
         // Add new components that do not exist
         for (Entry<String, ModelComponent> entry : expected.entrySet()) {
-            if (actual.getDisplays().containsKey(entry.getKey())) {
+            if (!actual.getDisplays().containsKey(entry.getKey())) {
                 Display display = entry.getValue().build(pig.getLocation());
                 actual.addDisplay(entry.getKey(), display);
                 pig.addPassenger(display);
