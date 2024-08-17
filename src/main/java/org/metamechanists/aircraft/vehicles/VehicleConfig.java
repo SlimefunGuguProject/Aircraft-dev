@@ -71,8 +71,8 @@ public class VehicleConfig {
         gravityAcceleration = weight.get("acceleration", ErrorSetting.LOG_MISSING_KEY);
 
         YamlTraverser thrust = traverser.getSection("thrust", ErrorSetting.LOG_MISSING_KEY);
-        thrustLocation = thrust.getVector3d("thrustLocation", ErrorSetting.LOG_MISSING_KEY);
-        thrustForce = thrust.get("thrust", ErrorSetting.LOG_MISSING_KEY);
+        thrustLocation = thrust.getVector3d("location", ErrorSetting.LOG_MISSING_KEY);
+        thrustForce = thrust.get("force", ErrorSetting.LOG_MISSING_KEY);
 
 
         for (YamlTraverser componentSectionTraverser : traverser.getSection("aerodynamicComponents").getSections()) {
