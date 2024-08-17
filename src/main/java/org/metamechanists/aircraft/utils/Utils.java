@@ -22,15 +22,15 @@ public class Utils {
         return new Matrix4f()
                 .translate(PLAYER_HEAD_OFFSET)
                 .rotateY((float) rotation.y)
-                .rotateY((float) rotation.z)
-                .rotateY((float) rotation.x)
+                .rotateZ((float) rotation.z)
+                .rotateX((float) rotation.x)
                 .mul(component.getMatrix());
     }
 
     public Vector3d rotate(@NotNull Vector3d vector, @NotNull Vector3d rotation) {
         return new Vector3d(vector)
                 .rotateY((float) rotation.y)
-                .rotateY((float) rotation.z)
-                .rotateY((float) rotation.x);
+                .rotateZ((float) rotation.z)
+                .rotateX((float) rotation.x);
     }
 }
