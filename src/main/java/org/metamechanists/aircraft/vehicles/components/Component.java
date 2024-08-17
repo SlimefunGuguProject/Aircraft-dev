@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicles.VehicleState;
-import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 
 
 public interface Component {
@@ -12,7 +12,7 @@ public interface Component {
     Vector3f getSize();
     Vector3f getLocation();
     Vector3d getRotation();
-    ModelAdvancedCuboid getCuboid(@NotNull VehicleState state);
+    ModelCuboid getCuboid(@NotNull VehicleState state);
     void onKey(@NotNull VehicleState state, char key);
     void update(@NotNull VehicleState state);
 }

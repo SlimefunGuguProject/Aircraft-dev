@@ -7,8 +7,8 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.VehicleState;
-import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
-import org.metamechanists.displaymodellib.models.components.ModelAdvancedText;
+import org.metamechanists.displaymodellib.models.components.ModelCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelText;
 
 
 public final class HudUtil {
@@ -19,47 +19,47 @@ public final class HudUtil {
         return lookingAtForward.y > 0 ? pitch : -pitch;
     }
 
-    private static ModelAdvancedText defaultText() {
-        return new ModelAdvancedText()
+    private static ModelText defaultText() {
+        return new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
                 .brightness(Utils.BRIGHTNESS_ON);
     }
 
-    private static ModelAdvancedCuboid defaultCuboid() {
-        return new ModelAdvancedCuboid()
+    private static ModelCuboid defaultCuboid() {
+        return new ModelCuboid()
                 .brightness(Utils.BRIGHTNESS_ON);
     }
 
-    public static ModelAdvancedText rollText(@NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f offset) {
+    public static ModelText rollText(@NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f offset) {
         return defaultText()
                 .translate(hudCenter)
                 .translate(offset)
-                .facing(BlockFace.WEST);
+                .lookAlong(BlockFace.WEST);
     }
 
-    public static ModelAdvancedCuboid rollCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
+    public static ModelCuboid rollCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
         return defaultCuboid()
                 .translate(hudCenter)
-                .facing(BlockFace.WEST);
+                .lookAlong(BlockFace.WEST);
     }
 
-    public static ModelAdvancedText rollText(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
+    public static ModelText rollText(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
         return rollText(state, hudCenter, new Vector3f());
     }
 
-    public static ModelAdvancedText rollIndependentText(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
+    public static ModelText rollIndependentText(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
         return defaultText()
                 .translate(hudCenter)
-                .rotateBackwards(state.rotation)
+                .undoRotate(state.rotation)
                 .rotate(new Vector3d(0, state.getYaw(), state.getPitch()))
-                .facing(BlockFace.WEST);
+                .lookAlong(BlockFace.WEST);
     }
 
-    public static ModelAdvancedCuboid rollIndependentCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
+    public static ModelCuboid rollIndependentCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
         return defaultCuboid()
                 .translate(hudCenter)
-                .rotateBackwards(state.rotation)
+                .undoRotate(state.rotation)
                 .rotate(new Vector3d(0, state.getYaw(), state.getPitch()))
-                .facing(BlockFace.WEST);
+                .lookAlong(BlockFace.WEST);
     }
 }

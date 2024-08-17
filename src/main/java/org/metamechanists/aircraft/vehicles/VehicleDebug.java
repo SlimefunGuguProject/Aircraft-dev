@@ -62,7 +62,7 @@ public final class VehicleDebug {
             display = new ModelCuboid()
                     .material(material)
                     .brightness(15)
-                    .size(0.1F, 0.01F, 0.01F)
+                    .scale(0.1F, 0.01F, 0.01F)
                     .build(pig.getLocation());
             forceArrowGroup.addDisplay(id, display);
             pig.addPassenger(display);

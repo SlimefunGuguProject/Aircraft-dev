@@ -8,8 +8,8 @@ import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicles.VehicleState;
-import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
-import org.metamechanists.displaymodellib.models.components.ModelAdvancedText;
+import org.metamechanists.displaymodellib.models.components.ModelCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelText;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 
 import java.util.Map;
@@ -21,14 +21,14 @@ public final class BottomPanel {
 
     private BottomPanel() {}
 
-    private static ModelAdvancedText getThrotteValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
+    private static ModelText getThrotteValue(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         return HudUtil.rollText(state, hudCenter)
                 .translate(panelCenter)
                 .translate(-0.09F, 0.034F, 0.0F)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F));
     }
 
-    private static ModelAdvancedCuboid getThrottleBackground(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
+    private static ModelCuboid getThrottleBackground(VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         return HudUtil.rollCuboid(state, hudCenter)
                 .material(Material.BLACK_TERRACOTTA)
                 .translate(panelCenter)
@@ -36,7 +36,7 @@ public final class BottomPanel {
                 .scale(new Vector3f(THROTTLE_SIZE, 0.01F, 0.001F));
     }
 
-    private static ModelAdvancedCuboid getThrottleForeground(@NotNull VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
+    private static ModelCuboid getThrottleForeground(@NotNull VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
         float fraction = (float) (state.throttle / 100.0);
         return HudUtil.rollCuboid(state, hudCenter)
                 .material(Material.LIGHT_BLUE_CONCRETE)

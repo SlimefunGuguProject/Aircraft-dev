@@ -8,8 +8,8 @@ import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicles.VehicleState;
-import org.metamechanists.displaymodellib.models.components.ModelAdvancedText;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
+import org.metamechanists.displaymodellib.models.components.ModelText;
 
 import java.util.Map;
 
@@ -31,20 +31,20 @@ public final class Horizon {
 
     private Horizon() {}
 
-    private static ModelAdvancedText getAltitudeIndicator(@NotNull VehicleState state, Vector3f hudCenter) {
+    private static ModelText getAltitudeIndicator(@NotNull VehicleState state, Vector3f hudCenter) {
         return HudUtil.rollIndependentText(state, hudCenter)
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
                 .translate(0.5F, 0.35F, 0.05F);
     }
 
-    private static ModelAdvancedText getArtificialHorizonMajor(@NotNull VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, boolean shouldRender) {
+    private static ModelText getArtificialHorizonMajor(@NotNull VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, boolean shouldRender) {
         return HudUtil.rollText(state, hudCenter, horizonOffset)
                 .text(Component.text(HORIZON_MAJOR_TEXT).color(HORIZON_MAJOR_COLOR))
                 .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
     }
 
-    private static ModelAdvancedText getArtificialHorizonBar(
+    private static ModelText getArtificialHorizonBar(
             @NotNull VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, Component component, Vector3f barOffset, boolean shouldRender) {
         return HudUtil.rollText(state, hudCenter, new Vector3f(horizonOffset).add(barOffset))
                 .text(component)
@@ -52,14 +52,14 @@ public final class Horizon {
                 .translate(0.5F, 0.35F, 0);
     }
 
-    private static ModelAdvancedText getRotationIndicator(@NotNull VehicleState state, Vector3f hudCenter) {
+    private static ModelText getRotationIndicator(@NotNull VehicleState state, Vector3f hudCenter) {
         return HudUtil.rollIndependentText(state, hudCenter)
                 .text(Component.text(HORIZON_ROTATION_TEXT).color(HORIZON_INDICATOR_COLOR))
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
                 .translate(0.5F, 0.35F, 0.05F);
     }
 
-    private static ModelAdvancedText getVelocityIndicator(@NotNull VehicleState state, Vector3f hudCenter, Vector3f velocityOffset) {
+    private static ModelText getVelocityIndicator(@NotNull VehicleState state, Vector3f hudCenter, Vector3f velocityOffset) {
         return HudUtil.rollIndependentText(state, hudCenter)
                 .text(Component.text(HORIZON_VELOCITY_TEXT).color(HORIZON_VELOCITY_COLOR))
                 .translate(velocityOffset)
@@ -67,7 +67,7 @@ public final class Horizon {
                 .translate(0.5F, 0.35F, 0.05F);
     }
 
-    private static ModelAdvancedText getArtificialHorizonDegree(
+    private static ModelText getArtificialHorizonDegree(
             @NotNull VehicleState state, Vector3f hudCenter, Component component, Vector3f totalAdjustment, boolean shouldRender) {
         return HudUtil.rollText(state, hudCenter, new Vector3f(totalAdjustment).add(new Vector3f(0, 0, 0.08F)))
                 .text(component)

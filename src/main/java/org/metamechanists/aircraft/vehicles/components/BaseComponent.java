@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
-import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 import org.metamechanists.metalib.yaml.YamlTraverser.ErrorSetting;
 
@@ -37,8 +37,8 @@ public abstract class BaseComponent implements Component {
         return new FixedComponent(traverser, translation);
     }
 
-    protected ModelAdvancedCuboid getCuboid(Vector3d rotation, @NotNull Vector3d translation) {
-        return new ModelAdvancedCuboid()
+    protected ModelCuboid getCuboid(Vector3d rotation, @NotNull Vector3d translation) {
+        return new ModelCuboid()
                 .material(material)
                 .translate(location)
                 .rotate(this.rotation)

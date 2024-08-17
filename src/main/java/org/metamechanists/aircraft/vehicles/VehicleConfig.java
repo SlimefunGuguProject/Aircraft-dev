@@ -10,7 +10,6 @@ import org.metamechanists.aircraft.vehicles.components.Component;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
 import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
 import org.metamechanists.aircraft.vehicles.surfaces.VehicleSurface;
-import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 import org.metamechanists.metalib.yaml.YamlTraverser.ErrorSetting;
