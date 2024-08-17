@@ -7,7 +7,6 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
@@ -26,7 +25,6 @@ import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicles.hud.VehicleHud;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
-import org.metamechanists.displaymodellib.models.ModelBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
@@ -113,8 +111,8 @@ public class Vehicle extends SlimefunItem {
                 null
         );
 
-        state.componentGroup = buildComponents(state, block.getLocation());
-        state.hudGroup = buildHud(state, block.getLocation());
+        state.componentGroup = new DisplayGroup(block.getLocation());
+        state.hudGroup = new DisplayGroup(block.getLocation());
 
         Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation().clone().toCenterLocation().add(new Vector(0, -0.5, 0)), EntityType.PIG);
         pig.setInvulnerable(true);
@@ -162,18 +160,6 @@ public class Vehicle extends SlimefunItem {
         for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
             entry.getValue().setTransformationMatrix(expected.get(entry.getKey()).getMatrix());
         }
-    }
-
-    private @NotNull DisplayGroup buildComponents(VehicleState state, Location location) {
-        ModelBuilder builder = new ModelBuilder();
-        config.getCuboids(state).forEach(builder::add);
-        return builder.buildAtBlockCenter(location);
-    }
-
-    private static @NotNull DisplayGroup buildHud(VehicleState state, Location location) {
-        ModelBuilder builder = new ModelBuilder();
-        VehicleHud.build(state).forEach(builder::add);
-        return builder.buildAtBlockCenter(location);
     }
 
     private static @NotNull Optional<Player> getPilot(@NotNull Pig pig) {
