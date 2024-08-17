@@ -124,6 +124,9 @@ public class Vehicle extends SlimefunItem {
         pig.addPassenger(state.componentGroup.getParentDisplay());
         pig.addPassenger(state.hudGroup.getParentDisplay());
 
+        state.componentGroup.getDisplays().values().forEach(pig::addPassenger);
+        state.hudGroup.getDisplays().values().forEach(pig::addPassenger);
+
         createInteraction(pig);
         
         state.write(pig);
