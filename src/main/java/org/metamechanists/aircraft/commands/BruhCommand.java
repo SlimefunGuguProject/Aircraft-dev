@@ -6,7 +6,7 @@ import co.aikar.commands.annotation.Subcommand;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 
 
 @CommandAlias("bruh")
@@ -14,7 +14,7 @@ import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 public class BruhCommand extends BaseCommand {
     @Subcommand("bruh")
     public static void bruh(@NotNull Player player, String @NotNull [] args) {
-        new ModelAdvancedCuboid()
+        new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
                 .rotate(Double.parseDouble(args[0]), Double.parseDouble(args[1]), Double.parseDouble(args[2]))
                 .build(player.getLocation());
