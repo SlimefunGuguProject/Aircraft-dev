@@ -8,6 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.commands.AircraftCommand;
+import org.metamechanists.aircraft.commands.BruhCommand;
 import org.metamechanists.aircraft.items.Items;
 import org.metamechanists.aircraft.vehicles.controls.MountHandler;
 import org.metamechanists.aircraft.vehicles.VehicleTicker;
@@ -30,6 +31,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
     private void initializeCommands() {
         PaperCommandManager commandManager = new PaperCommandManager(this);
         commandManager.registerCommand(new AircraftCommand());
+        commandManager.registerCommand(new BruhCommand());
         commandManager.enableUnstableAPI("help");
     }
 
