@@ -10,12 +10,13 @@ import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
 
 
 @CommandAlias("bruh")
+@SuppressWarnings("unused")
 public class BruhCommand extends BaseCommand {
     @Subcommand("bruh")
     public static void bruh(@NotNull Player player, String @NotNull [] args) {
         new ModelAdvancedCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .rotate(Integer.parseInt(args[0], Integer.parseInt(args[1], Integer.parseInt(args[2]))))
+                .rotate(Double.parseDouble(args[1]), Double.parseDouble(args[2]), Double.parseDouble(args[3]))
                 .build(player.getLocation());
     }
 }
