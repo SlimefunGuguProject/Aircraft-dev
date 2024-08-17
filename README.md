@@ -12,7 +12,8 @@
 * Dynamically load aircraft
 * Don't specify group for body
 * Control surface becomes hinge section
-* message on reload
+* Message on reload
+* Reload entire model, including removing nonexistent parts and adding new parts
 - Velocity indicator
 - Fix broken unmounting when hit water
 - Fuel
@@ -27,4 +28,4 @@
 - HUD lights up (gradually?) when pilot enters
 
 - symmetry on some parts
-- reload entire model, including removing nonexistent parts and adding new parts
+- don't simulate insignificant forces

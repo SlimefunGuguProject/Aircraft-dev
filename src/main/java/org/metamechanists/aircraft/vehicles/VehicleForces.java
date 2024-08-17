@@ -24,7 +24,7 @@ public final class VehicleForces {
     }
 
     public static Vector3d getAngularAcceleration(@NotNull VehicleConfig config, @NotNull VehicleState state, @NotNull Set<SpatialForce> forces) {
-        Set<Vector3d> torqueVectors = forces.stream().map(force -> force.getTorqueVector(state)).collect(Collectors.toSet());
+        Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
         Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
 
@@ -76,13 +76,12 @@ public final class VehicleForces {
     private static @NotNull SpatialForce getWeightForce(@NotNull VehicleConfig config, @NotNull VehicleState state) {
         Vector3d force = new Vector3d(0, config.getGravityAcceleration() * config.getMass(), 0);
         Vector3d location = config.getWeightLocation();
-        Vector3d relativeLocation = Utils.rotate(config.getWeightLocation(), state.rotation);
-        return new SpatialForce(SpatialForceType.WEIGHT, force, location, relativeLocation);
+        return new SpatialForce(SpatialForceType.WEIGHT, force, location);
     }
 
     private static @NotNull SpatialForce getFrictionForce(@NotNull VehicleConfig config, VehicleState state, boolean isOnGround, Vector3d force) {
         if (!isOnGround || state.velocity.length() < 0.0001) {
-            return new SpatialForce(SpatialForceType.FRICTION, new Vector3d(), new Vector3d(), new Vector3d());
+            return new SpatialForce(SpatialForceType.FRICTION, new Vector3d(), new Vector3d());
         }
 
         double horizontalForce = new Vector3d(state.velocity.x, 0.0, state.velocity.z)
@@ -100,15 +99,14 @@ public final class VehicleForces {
         Vector3d frictionForce = new Vector3d(state.velocity)
                 .normalize()
                 .mul(-frictionAmount);
-        return new SpatialForce(SpatialForceType.FRICTION, frictionForce, new Vector3d(), new Vector3d());
+        return new SpatialForce(SpatialForceType.FRICTION, frictionForce, new Vector3d());
     }
 
     private static @NotNull SpatialForce getThrustForce(@NotNull VehicleConfig config, @NotNull VehicleState state) {
         double throttleFraction = state.throttle / 100.0;
-        Vector3d force = Utils.rotate(new Vector3d(throttleFraction * config.getThrustForce(), 0, 0), state.rotation);
+        Vector3d force = new Vector3d(throttleFraction * config.getThrustForce(), 0, 0);
         Vector3d location = config.getThrustLocation();
-        Vector3d relativeLocation = Utils.rotate(location, state.rotation);
-        return new SpatialForce(SpatialForceType.THRUST, force, location, relativeLocation);
+        return new SpatialForce(SpatialForceType.THRUST, force, location);
     }
 
     @SuppressWarnings("Convert2streamapi")

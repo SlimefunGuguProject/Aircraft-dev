@@ -239,7 +239,7 @@ public class Vehicle extends SlimefunItem {
         if (pigVelocity.length() > 100) {
             pigVelocity.set(0);
         }
-        pig.setVelocity(Vector.fromJOML(new Vector3d(pigVelocity).div(20)));
+        pig.setVelocity(Vector.fromJOML(Utils.rotate(pigVelocity, state.rotation).div(20)));
 
         VehicleHud.update(state, pig.getLocation());
 
