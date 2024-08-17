@@ -138,7 +138,7 @@ public class Vehicle extends SlimefunItem {
     }
 
     @SuppressWarnings("Convert2streamapi")
-    private static void updateDisplayGroup(Pig pig, Map<String, ModelComponent> expected, @NotNull DisplayGroup actual) {
+    private static void updateDisplayGroup(Pig pig, VehicleState state, Map<String, ModelComponent> expected, @NotNull DisplayGroup actual) {
         // Remove components that shouldn't exist any more
         List<String> toRemove = new ArrayList<>(); // to avoid modifying while iterating
         for (String displayName : actual.getDisplays().keySet()) {
@@ -162,7 +162,7 @@ public class Vehicle extends SlimefunItem {
 
         // Update transformations
         for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
-            entry.getValue().setTransformationMatrix(expected.get(entry.getKey()).getMatrix());
+            entry.getValue().setTransformationMatrix(Utils.getComponentMatrix(expected.get(entry.getKey()), state.rotation));
         }
     }
 
