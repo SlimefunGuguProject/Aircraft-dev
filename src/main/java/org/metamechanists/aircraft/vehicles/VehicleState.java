@@ -42,8 +42,6 @@ public class VehicleState {
         Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
-        Aircraft.getInstance().getLogger().warning(velocity.toString());
-        Aircraft.getInstance().getLogger().warning(componentGroupId.getUUID().toString());
         if (velocity == null || angularVelocity == null || rotation == null || orientations == null
                 || componentGroupId == null || componentGroupId.get().isEmpty()
                 || hudGroupId == null || hudGroupId.get().isEmpty()) {

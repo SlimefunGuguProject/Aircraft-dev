@@ -16,6 +16,7 @@ import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
@@ -168,14 +169,17 @@ public class Vehicle extends SlimefunItem {
     }
 
     public void onKey(@NotNull Pig pig, char key) {
-        VehicleState state = VehicleState.fromPig(pig);
-        if (state == null) {
-            Aircraft.getInstance().getLogger().warning("Failed to handle onKey: vehicle state of " + pig.getUniqueId() + " is null");
-            return;
-        }
+        // must be done on main thread
+        Bukkit.getScheduler().scheduleSyncDelayedTask(Aircraft.getInstance(), () -> {
+            VehicleState state = VehicleState.fromPig(pig);
+            if (state == null) {
+                Aircraft.getInstance().getLogger().warning("Failed to handle onKey: vehicle state of " + pig.getUniqueId() + " is null");
+                return;
+            }
 
-        config.onKey(state, key);
-        state.write(pig);
+            config.onKey(state, key);
+            state.write(pig);
+        });
     }
 
     public void tickAircraft(@NotNull Pig pig) {
