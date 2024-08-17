@@ -233,7 +233,7 @@ public class Vehicle extends SlimefunItem {
 //                .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(20)))
 //                .getEulerAnglesXYZ(new Vector3d()));
 
-        state.rotation.add(0.0, 0.1, 0);
+        state.rotation.add(0.0, 0.1, 0.1);
 
         if (ENABLE_DEBUG_ARROWS) {
             VehicleDebug.tickDebug(pig, config, state, isOnGround);
