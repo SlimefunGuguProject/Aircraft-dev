@@ -7,7 +7,6 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
@@ -16,7 +15,6 @@ import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
@@ -27,10 +25,13 @@ import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicles.hud.VehicleHud;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
-import org.metamechanists.displaymodellib.models.ModelBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
@@ -110,8 +111,8 @@ public class Vehicle extends SlimefunItem {
                 null
         );
 
-        state.componentGroup = buildComponents(state, block.getLocation());
-        state.hudGroup = buildHud(state, block.getLocation());
+        state.componentGroup = new DisplayGroup(block.getLocation());
+        state.hudGroup = new DisplayGroup(block.getLocation());
 
         Pig pig = (Pig) block.getWorld().spawnEntity(block.getLocation().clone().toCenterLocation().add(new Vector(0, -0.5, 0)), EntityType.PIG);
         pig.setInvulnerable(true);
@@ -120,9 +121,6 @@ public class Vehicle extends SlimefunItem {
         pig.setSilent(true);
         pig.addPassenger(state.componentGroup.getParentDisplay());
         pig.addPassenger(state.hudGroup.getParentDisplay());
-
-        state.componentGroup.getDisplays().values().forEach(pig::addPassenger);
-        state.hudGroup.getDisplays().values().forEach(pig::addPassenger);
 
         createInteraction(pig);
         
@@ -135,16 +133,33 @@ public class Vehicle extends SlimefunItem {
         Storage.add(pig.getUniqueId());
     }
 
-    private @NotNull DisplayGroup buildComponents(VehicleState state, Location location) {
-        ModelBuilder builder = new ModelBuilder();
-        config.getCuboids(state).forEach(builder::add);
-        return builder.buildAtBlockCenter(location);
-    }
+    @SuppressWarnings("Convert2streamapi")
+    private static void updateDisplayGroup(Pig pig, Map<String, ModelComponent> expected, @NotNull DisplayGroup actual) {
+        // Remove components that shouldn't exist any more
+        List<String> toRemove = new ArrayList<>(); // to avoid modifying while iterating
+        for (String displayName : actual.getDisplays().keySet()) {
+            if (!expected.containsKey(displayName)) {
+                toRemove.add(displayName);
+            }
+        }
 
-    private static @NotNull DisplayGroup buildHud(VehicleState state, Location location) {
-        ModelBuilder builder = new ModelBuilder();
-        VehicleHud.build(state).forEach(builder::add);
-        return builder.buildAtBlockCenter(location);
+        for (String displayName : toRemove) {
+            actual.removeDisplay(displayName);
+        }
+
+        // Add new components that do not exist
+        for (Entry<String, ModelComponent> entry : expected.entrySet()) {
+            if (actual.getDisplays().containsKey(entry.getKey())) {
+                Display display = entry.getValue().build(pig.getLocation());
+                actual.addDisplay(entry.getKey(), display);
+                pig.addPassenger(display);
+            }
+        }
+
+        // Update transformations
+        for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
+            entry.getValue().setTransformationMatrix(expected.get(entry.getKey()).getMatrix());
+        }
     }
 
     private static @NotNull Optional<Player> getPilot(@NotNull Pig pig) {
@@ -188,6 +203,10 @@ public class Vehicle extends SlimefunItem {
             return;
         }
 
+        updateDisplayGroup(pig, config.getCuboids(state), state.componentGroup);
+        updateDisplayGroup(pig, VehicleHud.build(state), state.hudGroup);
+        VehicleHud.update(state, pig.getLocation());
+
         boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
 
         Set<SpatialForce> forces = VehicleForces.getForces(config, state, isOnGround);
@@ -228,7 +247,7 @@ public class Vehicle extends SlimefunItem {
         }
         pig.setVelocity(Vector.fromJOML(new Vector3d(pigVelocity).div(20)));
 
-        for (Entry<String, ModelAdvancedCuboid> entry : config.getCuboids(state).entrySet()) {
+        for (Entry<String, ModelComponent> entry : config.getCuboids(state).entrySet()) {
             Display display = state.componentGroup.getDisplays().get(entry.getKey());
             if (display != null) {
                 display.setTransformationMatrix(Utils.getComponentMatrix(entry.getValue(), state.rotation));

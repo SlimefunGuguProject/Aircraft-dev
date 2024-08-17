@@ -14,6 +14,7 @@
 * Control surface becomes hinge section
 * message on reload
 - Velocity indicator
+- Taxiing
 - Fix broken unmounting when hit water
 - Fuel
 - Fuel indicator
@@ -23,8 +24,9 @@
 - Protection plugin integration
 - Dismounting kills throttle
 - Persist over restarts
-- Taxiing
 - HUD lights up (gradually?) when pilot enters
 
 - symmetry on some parts
 - reload entire model, including removing nonexistent parts and adding new parts
+- constant damping on ground
+- don't show velocity on HUD when too slow
