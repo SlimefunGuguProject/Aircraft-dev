@@ -126,8 +126,8 @@ public class Vehicle extends SlimefunItem {
         pig.addPassenger(state.componentGroup.getParentDisplay());
         pig.addPassenger(state.hudGroup.getParentDisplay());
 
-        updateDisplayGroup(pig, config.getCuboids(state), state.componentGroup);
-        updateDisplayGroup(pig, VehicleHud.build(state), state.hudGroup);
+//        updateDisplayGroup(pig, config.getCuboids(state), state.componentGroup);
+//        updateDisplayGroup(pig, VehicleHud.build(state), state.hudGroup);
         createInteraction(pig);
         
         state.write(pig);
@@ -208,6 +208,9 @@ public class Vehicle extends SlimefunItem {
         if (state == null) {
             return;
         }
+
+        updateDisplayGroup(pig, config.getCuboids(state), state.componentGroup);
+        updateDisplayGroup(pig, VehicleHud.build(state), state.hudGroup);
 
         boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
 
