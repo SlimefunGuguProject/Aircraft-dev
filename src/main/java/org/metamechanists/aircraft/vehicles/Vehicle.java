@@ -144,7 +144,8 @@ public class Vehicle extends SlimefunItem {
         }
 
         for (String displayName : toRemove) {
-            actual.removeDisplay(displayName);
+            //noinspection DataFlowIssue
+            actual.removeDisplay(displayName).remove();
         }
 
         // Add new components that do not exist
