@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicles;
 import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
@@ -41,6 +42,8 @@ public class VehicleState {
         Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
         DisplayGroupId hudGroupId = traverser.getDisplayGroupId("hudGroupId");
+        Aircraft.getInstance().getLogger().warning(velocity.toString());
+        Aircraft.getInstance().getLogger().warning(componentGroupId.getUUID().toString());
         if (velocity == null || angularVelocity == null || rotation == null || orientations == null
                 || componentGroupId == null || componentGroupId.get().isEmpty()
                 || hudGroupId == null || hudGroupId.get().isEmpty()) {
