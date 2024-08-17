@@ -216,24 +216,16 @@ public class Vehicle extends SlimefunItem {
         VehicleForces.cancelVelocityAndAcceleration(pig, state.velocity, acceleration);
         state.velocity.add(new Vector3d(acceleration).div(20));
 
-//        state.angularVelocity.mul(1.0 - config.getAngularVelocityDamping());
-//        Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, forces);
-//        state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
+        state.angularVelocity.mul(1.0 - config.getAngularVelocityDamping());
+        Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, forces);
+        state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
 
-//        Quaterniond rotationQuaternion = Utils.getRotationEulerAngles(state.rotation);
-//        Quaterniond negativeRotation = new Quaterniond().rotateAxis(-rotationQuaternion.angle(), rotationQuaternion.x, rotationQuaternion.y, rotationQuaternion.z);
-//        Vector3d relativeAngularVelocity = new Vector3d(state.angularVelocity).rotate(negativeRotation);
+        state.rotation.add(new Vector3d(state.angularVelocity).div(20));
 
 //        if (isOnGround) {
 ////            angularAcceleration.y -= config.getGroundYawDamping() * state.getYaw();
 //            relativeAngularVelocity.z -= config.getGroundPitchDamping() * state.getPitch();
 //        }
-
-//        state.rotation.set(Utils.getRotationEulerAngles(state.rotation)
-//                .mul(Utils.getRotationAngleAxis(new Vector3d(relativeAngularVelocity).div(20)))
-//                .getEulerAnglesXYZ(new Vector3d()));
-
-        state.rotation.add(0.0, 0.05, 0.01);
 
         if (ENABLE_DEBUG_ARROWS) {
             VehicleDebug.tickDebug(pig, config, state, isOnGround);
