@@ -65,15 +65,15 @@ public class VehicleState {
         traverser.set("hudGroupId", hudGroup.getParentUUID());
     }
 
+    public double getRoll() {
+        return rotation.x;
+    }
+
     public double getPitch() {
-        Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
-        double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
-        return lookingAtForward.y > 0 ? pitch : -pitch;
+        return rotation.z;
     }
 
     public double getYaw() {
-        Vector3d lookingAtForward = Utils.rotateByEulerAngles(new Vector3d(1, 0, 0), rotation);
-        double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
-        return lookingAtForward.z > 0 ? -yaw : yaw;
+        return rotation.y;
     }
 }

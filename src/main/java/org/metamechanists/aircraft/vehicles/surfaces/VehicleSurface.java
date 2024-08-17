@@ -29,8 +29,8 @@ public class VehicleSurface {
     }
 
     public SpatialForce getLiftForce(double airDensity, @NotNull VehicleState state) {
-        Vector3d location = Utils.rotateByEulerAngles(new Vector3d(relativeLocation), state.rotation);
-        Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), state.rotation);
+        Vector3d location = Utils.rotate(new Vector3d(relativeLocation), state.rotation);
+        Vector3d normal = Utils.rotate(new Vector3d(relativeNormal), state.rotation);
         Vector3d angularVelocityVector = new Vector3d(state.angularVelocity).cross(location);
         Vector3d airflowVelocity = new Vector3d(state.velocity).add(angularVelocityVector).mul(-1);
 
@@ -60,8 +60,8 @@ public class VehicleSurface {
     }
 
     public SpatialForce getDragForce(double airDensity, @NotNull VehicleState state) {
-        Vector3d location = Utils.rotateByEulerAngles(new Vector3d(relativeLocation), state.rotation);
-        Vector3d normal = Utils.rotateByEulerAngles(new Vector3d(relativeNormal), state.rotation);
+        Vector3d location = Utils.rotate(new Vector3d(relativeLocation), state.rotation);
+        Vector3d normal = Utils.rotate(new Vector3d(relativeNormal), state.rotation);
         Vector3d angularVelocityVector = new Vector3d(state.angularVelocity).cross(location);
         Vector3d airflowVelocity = new Vector3d(state.velocity).add(angularVelocityVector).mul(-1);
 

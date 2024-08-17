@@ -76,7 +76,7 @@ public final class VehicleForces {
     private static @NotNull SpatialForce getWeightForce(@NotNull VehicleConfig config, @NotNull VehicleState state) {
         Vector3d force = new Vector3d(0, config.getGravityAcceleration() * config.getMass(), 0);
         Vector3d location = config.getWeightLocation();
-        Vector3d relativeLocation = Utils.rotateByEulerAngles(config.getWeightLocation(), state.rotation);
+        Vector3d relativeLocation = Utils.rotate(config.getWeightLocation(), state.rotation);
         return new SpatialForce(SpatialForceType.WEIGHT, force, location, relativeLocation);
     }
 
@@ -105,9 +105,9 @@ public final class VehicleForces {
 
     private static @NotNull SpatialForce getThrustForce(@NotNull VehicleConfig config, @NotNull VehicleState state) {
         double throttleFraction = state.throttle / 100.0;
-        Vector3d force = Utils.rotateByEulerAngles(new Vector3d(throttleFraction * config.getThrustForce(), 0, 0), state.rotation);
+        Vector3d force = Utils.rotate(new Vector3d(throttleFraction * config.getThrustForce(), 0, 0), state.rotation);
         Vector3d location = config.getThrustLocation();
-        Vector3d relativeLocation = Utils.rotateByEulerAngles(location, state.rotation);
+        Vector3d relativeLocation = Utils.rotate(location, state.rotation);
         return new SpatialForce(SpatialForceType.THRUST, force, location, relativeLocation);
     }
 
