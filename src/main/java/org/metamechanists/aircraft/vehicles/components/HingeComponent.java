@@ -26,8 +26,8 @@ public class HingeComponent extends BaseComponent {
         rotationAxis = hingedTraverser.getVector3d("rotationAxis", ErrorSetting.LOG_MISSING_KEY);
         rotationRate = hingedTraverser.get("rotationRate", ErrorSetting.LOG_MISSING_KEY);
         rotationMax = hingedTraverser.get("rotationMax", ErrorSetting.LOG_MISSING_KEY);
-        keyUp = hingedTraverser.get("keyUp", ErrorSetting.LOG_MISSING_KEY);
-        keyDown = hingedTraverser.get("keyDown", ErrorSetting.LOG_MISSING_KEY);
+        keyUp = hingedTraverser.getChar("keyUp", ErrorSetting.LOG_MISSING_KEY);
+        keyDown = hingedTraverser.getChar("keyDown", ErrorSetting.LOG_MISSING_KEY);
     }
 
     protected Vector3d getRotation(@NotNull VehicleState state) {

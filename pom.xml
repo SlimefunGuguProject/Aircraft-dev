@@ -104,7 +104,7 @@
         <dependency>
             <groupId>org.metamechanists</groupId>
             <artifactId>MetaLib</artifactId>
-            <version>70</version>
+            <version>71</version>
             <scope>compile</scope>
         </dependency>
 
