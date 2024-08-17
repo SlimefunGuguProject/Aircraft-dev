@@ -217,7 +217,7 @@ public class Vehicle extends SlimefunItem {
         state.velocity.add(new Vector3d(acceleration).div(20));
 
         state.angularVelocity.mul(1.0 - config.getAngularVelocityDamping());
-        Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, forces);
+        Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, state, forces);
         state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
 
         state.rotation.add(new Vector3d(state.angularVelocity).div(20));

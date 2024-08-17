@@ -23,8 +23,8 @@ public final class VehicleForces {
         return new Vector3d(resultantForce).div(config.getMass());
     }
 
-    public static Vector3d getAngularAcceleration(@NotNull VehicleConfig config, @NotNull Set<SpatialForce> forces) {
-        Set<Vector3d> torqueVectors = forces.stream().map(SpatialForce::getTorqueVector).collect(Collectors.toSet());
+    public static Vector3d getAngularAcceleration(@NotNull VehicleConfig config, @NotNull VehicleState state, @NotNull Set<SpatialForce> forces) {
+        Set<Vector3d> torqueVectors = forces.stream().map(force -> force.getTorqueVector(state)).collect(Collectors.toSet());
         Vector3d resultantTorque = new Vector3d();
         torqueVectors.forEach(resultantTorque::add);
 
