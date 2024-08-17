@@ -74,7 +74,7 @@ public final class VehicleForces {
     }
 
     private static @NotNull SpatialForce getWeightForce(@NotNull VehicleConfig config, @NotNull VehicleState state) {
-        Vector3d force = new Vector3d(0, config.getGravityAcceleration() * config.getMass(), 0);
+        Vector3d force = Utils.rotate(new Vector3d(0, config.getGravityAcceleration() * config.getMass(), 0), state.rotation);
         Vector3d location = config.getWeightLocation();
         return new SpatialForce(SpatialForceType.WEIGHT, force, location);
     }
