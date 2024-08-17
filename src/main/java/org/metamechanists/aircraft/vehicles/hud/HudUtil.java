@@ -32,7 +32,6 @@ public final class HudUtil {
 
     public static ModelAdvancedText rollText(@NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f offset) {
         return defaultText()
-                .rotate(state.rotation)
                 .translate(hudCenter)
                 .translate(offset)
                 .facing(BlockFace.WEST);
@@ -40,7 +39,6 @@ public final class HudUtil {
 
     public static ModelAdvancedCuboid rollCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
         return defaultCuboid()
-                .rotate(state.rotation)
                 .translate(hudCenter)
                 .facing(BlockFace.WEST);
     }
@@ -51,7 +49,6 @@ public final class HudUtil {
 
     public static ModelAdvancedText rollIndependentText(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
         return defaultText()
-                .rotate(state.rotation)
                 .translate(hudCenter)
                 .rotateBackwards(state.rotation)
                 .rotate(new Vector3d(0, state.getYaw(), state.getPitch()))
@@ -60,7 +57,6 @@ public final class HudUtil {
 
     public static ModelAdvancedCuboid rollIndependentCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
         return defaultCuboid()
-                .rotate(state.rotation)
                 .translate(hudCenter)
                 .rotateBackwards(state.rotation)
                 .rotate(new Vector3d(0, state.getYaw(), state.getPitch()))
