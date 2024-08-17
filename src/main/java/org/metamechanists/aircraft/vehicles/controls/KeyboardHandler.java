@@ -11,7 +11,6 @@ import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
-import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.vehicles.Storage;
 import org.metamechanists.aircraft.vehicles.Vehicle;
 

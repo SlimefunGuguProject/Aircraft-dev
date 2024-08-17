@@ -7,7 +7,6 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
-import org.metamechanists.aircraft.vehicles.config.VehicleConfig;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;

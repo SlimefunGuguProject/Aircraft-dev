@@ -8,6 +8,7 @@ import co.aikar.commands.annotation.HelpCommand;
 import co.aikar.commands.annotation.Private;
 import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +28,8 @@ public class AircraftCommand extends BaseCommand {
     @Subcommand("reload")
     @Syntax("Reloads the plugin")
     @CommandPermission("aircraft.command.reload")
-    public static void charge(Player player, String @NotNull [] args) {
+    public static void charge(@NotNull Player player, String @NotNull [] args) {
+        player.sendMessage(ChatColor.GREEN + "Aircraft reloaded!");
         Items.reload();
     }
 }

@@ -13,7 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Keys;
 import org.metamechanists.aircraft.vehicles.Vehicle;
-import org.metamechanists.aircraft.vehicles.config.VehicleConfig;
+import org.metamechanists.aircraft.vehicles.VehicleConfig;
 import org.metamechanists.aircraft.vehicles.controls.ThrottleControl;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 

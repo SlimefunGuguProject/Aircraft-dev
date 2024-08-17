@@ -1,11 +1,11 @@
-package org.metamechanists.aircraft.vehicles.config;
+package org.metamechanists.aircraft.vehicles;
 
 import lombok.Getter;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
-import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.aircraft.vehicles.components.AerodynamicComponent;
+import org.metamechanists.aircraft.vehicles.components.BaseComponent;
 import org.metamechanists.aircraft.vehicles.components.Component;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
 import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
@@ -21,8 +21,6 @@ import java.util.Set;
 
 
 public class VehicleConfig {
-    private record ComponentGroup(double dragCoefficient, double liftCoefficient) {}
-
     @Getter
     private final String path;
     @Getter
@@ -38,7 +36,7 @@ public class VehicleConfig {
     @Getter
     private final Vector3d weightLocation;
     @Getter
-    private final double thrust;
+    private final double thrustForce;
     @Getter
     private final double frictionCoefficient;
     @Getter
@@ -50,32 +48,43 @@ public class VehicleConfig {
     @Getter
     private final double groundYawDamping;
     private final Set<AerodynamicComponent> aerodynamicComponents = new HashSet<>();
-    private final Set<Component> components = new HashSet<>();
+    private final Set<Component> baseComponents = new HashSet<>();
 
     @SuppressWarnings("DataFlowIssue")
     public VehicleConfig(String path) {
         this.path = path;
         YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), path);
-        Vector3f translation = Util.getVector3f(traverser, "translation");
+        Vector3f translation = traverser.getVector3f("translation", ErrorSetting.LOG_MISSING_KEY);
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia", ErrorSetting.LOG_MISSING_KEY);
-        velocityDamping = traverser.get("velocityDamping", ErrorSetting.LOG_MISSING_KEY);
-        angularVelocityDamping = traverser.get("angularVelocityDamping", ErrorSetting.LOG_MISSING_KEY);
-        thrustLocation = Util.getVector3d(traverser, "thrustLocation");
-        weightLocation = Util.getVector3d(traverser, "weightLocation");
-        thrust = traverser.get("thrust", ErrorSetting.LOG_MISSING_KEY);
-        frictionCoefficient = traverser.get("frictionCoefficient", ErrorSetting.LOG_MISSING_KEY);
-        gravityAcceleration = traverser.get("gravityAcceleration", ErrorSetting.LOG_MISSING_KEY);
         airDensity = traverser.get("airDensity", ErrorSetting.LOG_MISSING_KEY);
-        groundPitchDamping = traverser.get("groundPitchDamping", ErrorSetting.LOG_MISSING_KEY);
-        groundYawDamping = traverser.get("groundYawDamping", ErrorSetting.LOG_MISSING_KEY);
+        frictionCoefficient = traverser.get("frictionCoefficient", ErrorSetting.LOG_MISSING_KEY);
 
-        for (YamlTraverser componentTraverser : traverser.getSection("aerodynamicComponents").getSections()) {
-            aerodynamicComponents.add(AerodynamicComponent.fromTraverser(componentTraverser, translation));
+        YamlTraverser damping = traverser.getSection("damping", ErrorSetting.LOG_MISSING_KEY);
+        velocityDamping = damping.get("velocity", ErrorSetting.LOG_MISSING_KEY);
+        angularVelocityDamping = damping.get("angularVelocity", ErrorSetting.LOG_MISSING_KEY);
+        groundPitchDamping = damping.get("groundPitch", ErrorSetting.LOG_MISSING_KEY);
+        groundYawDamping = damping.get("groundYaw", ErrorSetting.LOG_MISSING_KEY);
+
+        YamlTraverser weight = traverser.getSection("weight", ErrorSetting.LOG_MISSING_KEY);
+        weightLocation = weight.getVector3d("location", ErrorSetting.LOG_MISSING_KEY);
+        gravityAcceleration = weight.get("acceleration", ErrorSetting.LOG_MISSING_KEY);
+
+        YamlTraverser thrust = traverser.getSection("thrust", ErrorSetting.LOG_MISSING_KEY);
+        thrustLocation = thrust.getVector3d("thrustLocation", ErrorSetting.LOG_MISSING_KEY);
+        thrustForce = thrust.get("thrust", ErrorSetting.LOG_MISSING_KEY);
+
+
+        for (YamlTraverser componentSectionTraverser : traverser.getSection("aerodynamicComponents").getSections()) {
+            for (YamlTraverser componentTraverser : componentSectionTraverser.getSections()) {
+                aerodynamicComponents.add(AerodynamicComponent.fromTraverser(componentTraverser, translation));
+            }
         }
 
-        for (YamlTraverser componentTraverser : traverser.getSection("components").getSections()) {
-            components.add(Component.fromTraverser(componentTraverser, translation));
+        for (YamlTraverser componentSectionTraverser : traverser.getSection("components").getSections()) {
+            for (YamlTraverser componentTraverser : componentSectionTraverser.getSections()) {
+                baseComponents.add(BaseComponent.fromTraverser(componentTraverser, translation));
+            }
         }
     }
 
@@ -89,32 +98,32 @@ public class VehicleConfig {
     @SuppressWarnings("SimplifyForEach")
     public Map<String, ModelAdvancedCuboid> getCuboids(VehicleState state) {
         Map<String, ModelAdvancedCuboid> cuboids = new HashMap<>();
-        components.forEach(component -> cuboids.put(component.getName(), component.getCuboid(state)));
+        baseComponents.forEach(baseComponent -> cuboids.put(baseComponent.getName(), baseComponent.getCuboid(state)));
         return cuboids;
     }
 
     public void onKey(VehicleState state, char key) {
-        components.forEach(component -> component.onKey(state, key));
-        aerodynamicComponents.forEach(component -> component.getComponent().onKey(state, key));
+        baseComponents.forEach(baseComponent -> baseComponent.onKey(state, key));
+        aerodynamicComponents.forEach(component -> component.onKey(state, key));
     }
 
     public void update(VehicleState state) {
-        components.forEach(component -> component.update(state));
-        aerodynamicComponents.forEach(component -> component.getComponent().update(state));
+        baseComponents.forEach(baseComponent -> baseComponent.update(state));
+        aerodynamicComponents.forEach(component -> component.update(state));
     }
 
     @SuppressWarnings("Convert2streamapi")
     public Map<String, ControlSurfaceOrientation> initializeOrientations() {
         Map<String, ControlSurfaceOrientation> map = new HashMap<>();
-        for (Component component : components) {
+        for (Component component : baseComponents) {
             if (component instanceof HingeComponent) {
                 map.put(component.getName(), new ControlSurfaceOrientation());
             }
         }
 
         for (AerodynamicComponent component : aerodynamicComponents) {
-            if (component.getComponent() instanceof HingeComponent) {
-                map.put(component.getComponent().getName(), new ControlSurfaceOrientation());
+            if (component instanceof HingeComponent) {
+                map.put(component.getName(), new ControlSurfaceOrientation());
             }
         }
         return map;

@@ -1,37 +1,55 @@
 package org.metamechanists.aircraft.vehicles.components;
 
-import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix4f;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.joml.Vector4d;
 import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.aircraft.vehicles.surfaces.VehicleSurface;
+import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 import org.metamechanists.metalib.yaml.YamlTraverser.ErrorSetting;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
-public final class AerodynamicComponent {
-    @Getter
-    private final Component component;
-    private final double dragCoefficient;
-    private final double liftCoefficient;
+public interface AerodynamicComponent extends Component {
+    @NotNull Set<VehicleSurface> getSurfaces(VehicleState state);
+    double getDragCoefficient();
+    double getLiftCoefficient();
 
-    private AerodynamicComponent(Component component, double dragCoefficient, double liftCoefficient) {
-        this.component = component;
-        this.dragCoefficient = dragCoefficient;
-        this.liftCoefficient = liftCoefficient;
+    static @NotNull AerodynamicComponent fromTraverser(@NotNull YamlTraverser traverser, Vector3f translation) {
+        YamlTraverser hingedTraverser = traverser.getSection("hinged", ErrorSetting.NO_BEHAVIOUR);
+        if (hingedTraverser != null) {
+            return new AerodynamicHingeComponent(traverser, hingedTraverser, translation);
+        }
+        return new AerodynamicFixedComponent(traverser, translation);
     }
 
-    @SuppressWarnings("DataFlowIssue")
-    public static @NotNull AerodynamicComponent fromTraverser(YamlTraverser traverser, Vector3f translation) {
-        Component component = Component.fromTraverser(traverser, translation);
-        double dragCoefficient = traverser.get("dragCoefficient", ErrorSetting.LOG_MISSING_KEY);
-        double liftCoefficient = traverser.get("liftCoefficient", ErrorSetting.LOG_MISSING_KEY);
-        return new AerodynamicComponent(component, dragCoefficient, liftCoefficient);
+    private @NotNull VehicleSurface getSurface(@NotNull Vector3d startingLocation, double surfaceWidth, double surfaceHeight, @NotNull Vector3d extraRotation) {
+        double area = surfaceWidth * surfaceHeight;
+        Matrix4f rotationMatrix = new TransformationMatrixBuilder().rotate(getRotation()).rotate(extraRotation).buildForItemDisplay();
+        Vector4d relativeLocation4 = new Vector4d(startingLocation, 1.0).mul(rotationMatrix);
+        Vector3d relativeLocation = new Vector3d(relativeLocation4.x, relativeLocation4.y, relativeLocation4.z);
+        Vector3d normal = new Vector3d(relativeLocation).normalize();
+        return new VehicleSurface(getDragCoefficient(), getLiftCoefficient(), area, normal, new Vector3d(getLocation()).add(relativeLocation));
     }
 
-    public Set<VehicleSurface> getSurfaces(@NotNull VehicleState state) {
-        return component.getSurfaces(state);
+    @SuppressWarnings("SuspiciousNameCombination")
+    default @NotNull Set<VehicleSurface> getSurfaces(Vector3d extraRotation) {
+        Set<VehicleSurface> surfaces = new HashSet<>();
+
+        surfaces.add(getSurface(new Vector3d(0, 0, getSize().z / 2), getSize().x, getSize().y, extraRotation));
+        surfaces.add(getSurface(new Vector3d(0, 0, -getSize().z / 2), getSize().x, getSize().y, extraRotation));
+
+        surfaces.add(getSurface(new Vector3d(0, getSize().y / 2, 0), getSize().x, getSize().z, extraRotation));
+        surfaces.add(getSurface(new Vector3d(0, -getSize().y / 2, 0), getSize().x, getSize().z, extraRotation));
+
+        surfaces.add(getSurface(new Vector3d(getSize().x / 2, 0, 0), getSize().y, getSize().z, extraRotation));
+        surfaces.add(getSurface(new Vector3d(-getSize().x / 2, 0, 0), getSize().y, getSize().z, extraRotation));
+
+        return surfaces;
     }
 }

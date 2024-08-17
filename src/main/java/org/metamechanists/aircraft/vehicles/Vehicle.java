@@ -8,7 +8,6 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
@@ -21,27 +20,20 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
-import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
-import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
-import org.metamechanists.aircraft.vehicles.config.VehicleConfig;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicles.hud.VehicleHud;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.ModelBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelAdvancedCuboid;
-import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
-import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
 
-import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static java.lang.Math.toRadians;
 

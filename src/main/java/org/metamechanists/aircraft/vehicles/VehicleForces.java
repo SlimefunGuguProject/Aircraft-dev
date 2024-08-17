@@ -5,7 +5,6 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.Utils;
-import org.metamechanists.aircraft.vehicles.config.VehicleConfig;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForceType;
 import org.metamechanists.aircraft.vehicles.surfaces.VehicleSurface;
@@ -106,7 +105,7 @@ public final class VehicleForces {
 
     private static @NotNull SpatialForce getThrustForce(@NotNull VehicleConfig config, @NotNull VehicleState state) {
         double throttleFraction = state.throttle / 100.0;
-        Vector3d force = Utils.rotateByEulerAngles(new Vector3d(throttleFraction * config.getThrust(), 0, 0), state.rotation);
+        Vector3d force = Utils.rotateByEulerAngles(new Vector3d(throttleFraction * config.getThrustForce(), 0, 0), state.rotation);
         Vector3d location = config.getThrustLocation();
         Vector3d relativeLocation = Utils.rotateByEulerAngles(location, state.rotation);
         return new SpatialForce(SpatialForceType.THRUST, force, location, relativeLocation);
