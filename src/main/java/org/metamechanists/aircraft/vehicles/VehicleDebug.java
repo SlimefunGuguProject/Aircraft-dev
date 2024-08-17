@@ -46,7 +46,7 @@ public final class VehicleDebug {
     }
 
     private static void processForce(Pig pig, @NotNull SpatialForce force, @NotNull Set<String> notUpdated, @NotNull DisplayGroup forceArrowGroup) {
-        String id = force.relativeLocation().toString() + force.type().toString();
+        String id = force.location().toString() + force.type().toString();
         notUpdated.remove(id);
         Display display = forceArrowGroup.getDisplays().get(id);
 
@@ -69,7 +69,7 @@ public final class VehicleDebug {
         }
 
         display.setTransformationMatrix(new TransformationMatrixBuilder()
-                .translate(new Vector3f((float) force.absoluteLocation().x, (float) force.absoluteLocation().y, (float) force.absoluteLocation().z))
+                .translate(new Vector3f((float) force.location().x, (float) force.location().y, (float) force.location().z))
                 .translate(0.0F, 1.2F, 0.0F)
                 .lookAlong(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z))
                 .translate(0.0F, 0.0F, (float) force.force().length())
