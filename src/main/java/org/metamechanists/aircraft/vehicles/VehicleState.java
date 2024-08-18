@@ -71,10 +71,14 @@ public class VehicleState {
     }
 
     public double pitch() {
-        return Math.asin(2.0 * (rotation.y * rotation.w - rotation.z * rotation.x));
+        Vector3d lookingAtForward = new Vector3d(1, 0, 0).rotate(rotation);
+        double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
+        return lookingAtForward.y > 0 ? pitch : -pitch;
     }
 
     public double yaw() {
-        return Math.atan2(2.0 * (rotation.z * rotation.w + rotation.x * rotation.y) , - 1.0 + 2.0 * (rotation.w * rotation.w + rotation.x * rotation.x));
+        Vector3d lookingAtForward = new Vector3d(1, 0, 0).rotate(rotation);
+        double yaw = new Vector3d(lookingAtForward.x, 0, lookingAtForward.z).angle(new Vector3d(1, 0, 0));
+        return lookingAtForward.z > 0 ? -yaw : yaw;
     }
 }
