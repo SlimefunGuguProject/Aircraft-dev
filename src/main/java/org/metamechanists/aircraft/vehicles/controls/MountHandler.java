@@ -1,5 +1,6 @@
 package org.metamechanists.aircraft.vehicles.controls;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
@@ -13,6 +14,7 @@ import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.vehicles.Storage;
 import org.metamechanists.aircraft.vehicles.Vehicle;
 import org.metamechanists.aircraft.vehicles.VehicleState;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.util.UUID;
 
@@ -34,8 +36,8 @@ public class MountHandler implements Listener {
     }
 
     @EventHandler
-    public static void onUnmount(@NotNull VehicleExitEvent e) {
-        LivingEntity exited = e.getExited();
+    public static void onUnmount(@NotNull EntityDismountEvent e) {
+        Entity exited = e.getDismounted();
         if (!(exited instanceof Player player)) {
             return;
         }
