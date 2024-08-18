@@ -243,7 +243,7 @@ public class Vehicle extends SlimefunItem {
 
         Entity e = pig.getPassengers().get(0);
         if (e != null) {
-            e.sendMessage(state.rotation.toString());
+            e.sendMessage(state.velocity.toString());
         }
 
         VehicleHud.update(state, pig.getLocation());
