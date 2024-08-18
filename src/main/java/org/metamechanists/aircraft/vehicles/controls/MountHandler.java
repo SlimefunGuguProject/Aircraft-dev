@@ -37,7 +37,7 @@ public class MountHandler implements Listener {
 
     @EventHandler
     public static void onUnmount(@NotNull EntityDismountEvent e) {
-        Entity exited = e.getDismounted();
+        Entity exited = e.getEntity();
         if (!(exited instanceof Player player)) {
             return;
         }
