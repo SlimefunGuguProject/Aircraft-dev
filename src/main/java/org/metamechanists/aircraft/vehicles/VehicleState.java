@@ -3,9 +3,7 @@ package org.metamechanists.aircraft.vehicles;
 import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
-import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
-import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
@@ -65,15 +63,15 @@ public class VehicleState {
         traverser.set("hudGroupId", hudGroup.getParentUUID());
     }
 
-    public double getRoll() {
+    public double roll() {
         return rotation.x;
     }
 
-    public double getPitch() {
+    public double pitch() {
         return rotation.z;
     }
 
-    public double getYaw() {
+    public double yaw() {
         return rotation.y;
     }
 }

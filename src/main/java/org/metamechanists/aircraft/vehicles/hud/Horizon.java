@@ -80,7 +80,7 @@ public final class Horizon {
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f horizonOffset = new Vector3f(0, (float) (0.5 * -state.getPitch()), 0);
+        Vector3f horizonOffset = new Vector3f(0, (float) (0.5 * -state.pitch()), 0);
         final float horizonRadius = 0.15F;
         boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
 
@@ -90,7 +90,8 @@ public final class Horizon {
 
         hudComponents.put("temp_debug", new ModelCuboid()
                 .material(Material.YELLOW_CONCRETE)
-                .lookAlong(Utils.rotate(state.velocity, state.rotation))
+                .lookAlong(Utils.rotate(new Vector3d(1.0, 0.0, 0.0), state.rotation))
+                .rotateZ(state.roll())
                 .scale(0.3, 0.3, 1.0));
 
         Vector3f velocityOffset = new Vector3f(0, (float) (0.5 * HudUtil.getPitch(state.velocity)), 0).add(horizonOffset);

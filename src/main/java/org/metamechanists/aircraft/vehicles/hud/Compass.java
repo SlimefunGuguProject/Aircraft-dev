@@ -76,7 +76,7 @@ public final class Compass {
 
         final int bars = 60;
         final int extraBars = 8;
-        Vector3f compassOffset = new Vector3f((float) (0.5 * state.getYaw()), -0.27F, 0);
+        Vector3f compassOffset = new Vector3f((float) (0.5 * state.yaw()), -0.27F, 0);
         final float compassRadius = 0.2F;
         final float horizontalSpacing = 0.5F * (float) (PI / (bars));
 
