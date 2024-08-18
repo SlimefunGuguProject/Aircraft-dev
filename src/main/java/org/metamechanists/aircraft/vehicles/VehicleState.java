@@ -67,19 +67,19 @@ public class VehicleState {
 
     public double roll() {
         Vector3d rotationVector = new Vector3d();
-        rotation.getEulerAnglesXYZ(rotationVector);
+        rotation.getEulerAnglesZYX(rotationVector);
         return rotationVector.x;
     }
 
     public double pitch() {
         Vector3d rotationVector = new Vector3d();
-        rotation.getEulerAnglesXYZ(rotationVector);
+        rotation.getEulerAnglesYXZ(rotationVector);
         return rotationVector.z;
     }
 
     public double yaw() {
         Vector3d rotationVector = new Vector3d();
-        rotation.getEulerAnglesXYZ(rotationVector);
+        rotation.getEulerAnglesZXY(rotationVector);
         return rotationVector.y;
     }
 }
