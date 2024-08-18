@@ -97,6 +97,10 @@ public class Storage {
             return null;
         }
 
+        return getVehicle(pig);
+    }
+
+    public @Nullable Vehicle getVehicle(@NotNull Pig pig) {
         PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         String name = traverser.getString("id");
         if (name == null) {

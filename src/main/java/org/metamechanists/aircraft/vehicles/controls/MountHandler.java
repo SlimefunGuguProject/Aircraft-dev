@@ -37,17 +37,19 @@ public class MountHandler implements Listener {
 
     @EventHandler
     public static void onUnmount(@NotNull EntityDismountEvent e) {
-        Entity exited = e.getEntity();
-        if (!(exited instanceof Player player)) {
+        Entity maybePlayer = e.getEntity();
+        if (!(maybePlayer instanceof Player player)) {
             return;
         }
 
-        Pig pig = Storage.getPig(player);
-        if (pig == null) {
+        Entity maybePig = e.getDismounted();
+        if (!(maybePig instanceof Pig pig)) {
             return;
         }
 
-        Vehicle.unMount(pig, player);
+        if (!Storage.has(pig.getUniqueId())) {
+            return;
+        }
 
         VehicleState state = VehicleState.fromPig(pig);
         if (state == null) {
@@ -56,5 +58,6 @@ public class MountHandler implements Listener {
 
         state.throttle = 0;
         state.write(pig);
+        Vehicle.unMount(pig, player);
     }
 }
