@@ -217,16 +217,14 @@ public class Vehicle extends SlimefunItem {
 
         state.angularVelocity.mul(1.0 - config.getAngularVelocityDamping());
         Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, state, forces);
-        state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
-
-        if (state.angularVelocity.length() > 0.00001) { // Check to avoid dividing by 0 in normalize
-            state.rotation.rotateAxis(state.angularVelocity.length() / 20, new Vector3d(state.angularVelocity).normalize());
-        }
-
         if (isOnGround) {
             angularAcceleration.x -= config.getGroundRollDamping() * state.roll();
             angularAcceleration.y -= config.getGroundYawDamping() * state.yaw();
             angularAcceleration.z -= config.getGroundPitchDamping() * state.pitch();
+        }
+        state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
+        if (state.angularVelocity.length() > 0.00001) { // Check to avoid dividing by 0 in normalize
+            state.rotation.rotateAxis(state.angularVelocity.length() / 20, new Vector3d(state.angularVelocity).normalize());
         }
 
         if (ENABLE_DEBUG_ARROWS) {
