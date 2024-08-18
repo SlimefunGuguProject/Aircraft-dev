@@ -41,6 +41,8 @@ public class ThrottleControl extends SlimefunItem {
             if (newThrottle >= MIN_THROTTLE && newThrottle <= MAX_THROTTLE) {
                 state.throttle = newThrottle;
             }
+
+            state.write(pig);
         };
     }
 }

@@ -41,11 +41,12 @@ public class SteerControl extends SlimefunItem {
                 return;
             }
 
-            if (Vehicle.isOnGround(pig)) {
+            if (!Vehicle.isOnGround(pig)) {
                 return;
             }
 
             state.angularVelocity.y += direction * vehicle.getConfig().getSteeringSpeed();
+            state.write(pig);
         };
     }
 }
