@@ -195,13 +195,13 @@ public class Vehicle extends SlimefunItem {
             }
 
             if (key == 'w') {
-                state.rotation.rotateAxis(0.02, new Vector3d(1, 0, 0));
+                state.rotation.rotateX(0.02);
             } else if (key == 's') {
-                state.rotation.rotateAxis(-0.02, new Vector3d(1, 0, 0));
+                state.rotation.rotateX(-0.02);
             } else if (key == 'a') {
-                state.rotation.rotateAxis(0.02, new Vector3d(0, 0, 1));
+                state.rotation.rotateZ(0.02);
             } else if (key == 'd') {
-                state.rotation.rotateAxis(-0.02, new Vector3d(0, 1, 0));
+                state.rotation.rotateY(-0.02);
             }
 
             config.onKey(state, key);
@@ -254,7 +254,7 @@ public class Vehicle extends SlimefunItem {
 
         Entity e = pig.getPassengers().get(0);
         if (e != null) {
-            e.sendMessage(state.rotation.toString());
+            e.sendMessage(new Vector3d(state.yaw(), state.pitch(), state.roll()).toString());
         }
 
         VehicleHud.update(state, pig.getLocation());
