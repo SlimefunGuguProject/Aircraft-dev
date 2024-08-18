@@ -22,19 +22,19 @@ public class Utils {
 
     public Matrix4f getComponentMatrix(@NotNull ModelComponent component, @NotNull Vector3d rotation) {
         Matrix3f roll = new Matrix3f(
-                (float) Math.cos(rotation.y), 0, (float) -Math.sin(rotation.y),
                 0, 1, 0,
+                (float) Math.cos(rotation.y), 0, (float) -Math.sin(rotation.y),
                 (float) Math.sin(rotation.y), 0, (float) Math.cos(rotation.y)
         );
         Matrix3f pitch = new Matrix3f(
-                0, 1, 0,
                 (float) Math.cos(rotation.z), 0, (float) -Math.sin(rotation.z),
+                0, 1, 0,
                 (float) Math.sin(rotation.z), 0, (float) Math.cos(rotation.z)
         );
         Matrix3f yaw = new Matrix3f(
                 (float) Math.cos(rotation.x), 0, (float) -Math.sin(rotation.x),
-                (float) Math.sin(rotation.x), 0, (float) Math.cos(rotation.x),
-                0, 1, 0
+                0, 1, 0,
+                (float) Math.sin(rotation.x), 0, (float) Math.cos(rotation.x)
         );
         Matrix3f rotationMatrix = new Matrix3f(roll).mul(pitch).mul(yaw);
         // https://msl.cs.uiuc.edu/planning/node102.html
