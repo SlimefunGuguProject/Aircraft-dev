@@ -25,16 +25,17 @@ public abstract class BaseComponent implements Component {
     @Getter
     private final Vector3d rotation;
 
-    protected BaseComponent(@NotNull YamlTraverser traverser, Vector3f location, Vector3d rotation, Vector3f translation) {
-        name = traverser.path();
-        material = Material.valueOf(traverser.get("material", ErrorSetting.LOG_MISSING_KEY));
-        size = traverser.getVector3f("size", ErrorSetting.LOG_MISSING_KEY);
+    protected BaseComponent(@NotNull YamlTraverser traverser, String name, Vector3f location, Vector3d rotation) {
+        this.name = name;
+        this.material = Material.valueOf(traverser.get("material", ErrorSetting.LOG_MISSING_KEY));
+        this.size = traverser.getVector3f("size", ErrorSetting.LOG_MISSING_KEY);
         this.location = location;
         this.rotation = rotation;
     }
 
     public static @NotNull List<BaseComponent> fromTraverser(@NotNull YamlTraverser traverser, Vector3f translation) {
         YamlTraverser hingedTraverser = traverser.getSection("hinged", ErrorSetting.NO_BEHAVIOUR);
+        String name = traverser.path();
         boolean mirror = traverser.get("mirror", false);
         Vector3f location = traverser.getVector3f("location", ErrorSetting.LOG_MISSING_KEY).sub(translation);
         Vector3d rotation = traverser.getVector3d("rotation", ErrorSetting.LOG_MISSING_KEY);
@@ -44,14 +45,14 @@ public abstract class BaseComponent implements Component {
         List<BaseComponent> components = new ArrayList<>();
         if (hingedTraverser != null) {
             if (mirror) {
-                components.add(new HingeComponent(traverser, hingedTraverser, mirrorLocation, mirrorRotation, translation));
+                components.add(new HingeComponent(traverser, hingedTraverser, name + "-mirror", mirrorLocation, mirrorRotation));
             }
-            components.add(new HingeComponent(traverser, hingedTraverser, location, rotation, translation));
+            components.add(new HingeComponent(traverser, hingedTraverser, name, location, rotation));
         } else {
             if (mirror) {
-                components.add(new FixedComponent(traverser, mirrorLocation, mirrorRotation, translation));
+                components.add(new FixedComponent(traverser, name + "-mirror", mirrorLocation, mirrorRotation));
             }
-            components.add(new FixedComponent(traverser, location, rotation, translation));
+            components.add(new FixedComponent(traverser, name, location, rotation));
         }
 
         return components;

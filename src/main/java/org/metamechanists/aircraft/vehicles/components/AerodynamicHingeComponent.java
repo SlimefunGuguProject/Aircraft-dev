@@ -18,8 +18,8 @@ public class AerodynamicHingeComponent extends HingeComponent implements Aerodyn
     private final double liftCoefficient;
 
     @SuppressWarnings("DataFlowIssue")
-    public AerodynamicHingeComponent(@NotNull YamlTraverser traverser, @NotNull YamlTraverser hingedTraverser, Vector3f location, Vector3d rotation, Vector3f translation) {
-        super(traverser, hingedTraverser, location, rotation, translation);
+    public AerodynamicHingeComponent(@NotNull YamlTraverser traverser, @NotNull YamlTraverser hingedTraverser, String name, Vector3f location, Vector3d rotation) {
+        super(traverser, hingedTraverser, name, location, rotation);
         dragCoefficient = traverser.get("dragCoefficient", ErrorSetting.LOG_MISSING_KEY);
         liftCoefficient = traverser.get("liftCoefficient", ErrorSetting.LOG_MISSING_KEY);
     }

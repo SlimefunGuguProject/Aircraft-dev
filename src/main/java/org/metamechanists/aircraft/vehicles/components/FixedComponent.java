@@ -9,8 +9,8 @@ import org.metamechanists.metalib.yaml.YamlTraverser;
 
 
 public class FixedComponent extends BaseComponent {
-    protected FixedComponent(@NotNull YamlTraverser traverser, Vector3f location, Vector3d rotation, Vector3f translation) {
-        super(traverser, location, rotation, translation);
+    protected FixedComponent(@NotNull YamlTraverser traverser, String name, Vector3f location, Vector3d rotation) {
+        super(traverser, name, location, rotation);
     }
 
     @Override

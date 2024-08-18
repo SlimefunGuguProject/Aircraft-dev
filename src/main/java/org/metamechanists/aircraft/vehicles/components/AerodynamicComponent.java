@@ -26,6 +26,7 @@ public interface AerodynamicComponent extends Component {
 
     static @NotNull List<AerodynamicComponent> fromTraverser(@NotNull YamlTraverser traverser, Vector3f translation) {
         YamlTraverser hingedTraverser = traverser.getSection("hinged", ErrorSetting.NO_BEHAVIOUR);
+        String name = traverser.path();
         boolean mirror = traverser.get("mirror", false);
         Vector3f location = traverser.getVector3f("location", ErrorSetting.LOG_MISSING_KEY).sub(translation);
         Vector3d rotation = traverser.getVector3d("rotation", ErrorSetting.LOG_MISSING_KEY);
@@ -35,14 +36,14 @@ public interface AerodynamicComponent extends Component {
         List<AerodynamicComponent> components = new ArrayList<>();
         if (hingedTraverser != null) {
             if (mirror) {
-                components.add(new AerodynamicHingeComponent(traverser, hingedTraverser, mirrorLocation, mirrorRotation, translation));
+                components.add(new AerodynamicHingeComponent(traverser, hingedTraverser, name + "mirror", mirrorLocation, mirrorRotation));
             }
-            components.add(new AerodynamicHingeComponent(traverser, hingedTraverser, location, rotation, translation));
+            components.add(new AerodynamicHingeComponent(traverser, hingedTraverser, name, location, rotation));
         } else {
             if (mirror) {
-                components.add(new AerodynamicFixedComponent(traverser, mirrorLocation, mirrorRotation, translation));
+                components.add(new AerodynamicFixedComponent(traverser, name + "mirror", mirrorLocation, mirrorRotation));
             }
-            components.add(new AerodynamicFixedComponent(traverser, location, rotation, translation));
+            components.add(new AerodynamicFixedComponent(traverser, name, location, rotation));
         }
 
         return components;

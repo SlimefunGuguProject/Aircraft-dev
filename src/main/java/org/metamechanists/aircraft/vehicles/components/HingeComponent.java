@@ -20,8 +20,8 @@ public class HingeComponent extends BaseComponent {
     private final char keyDown;
 
     @SuppressWarnings("DataFlowIssue")
-    protected HingeComponent(@NotNull YamlTraverser traverser, @NotNull YamlTraverser hingedTraverser, Vector3f location, Vector3d rotation, Vector3f translation) {
-        super(traverser, location, rotation, translation);
+    protected HingeComponent(@NotNull YamlTraverser traverser, @NotNull YamlTraverser hingedTraverser, String name, Vector3f location, Vector3d rotation) {
+        super(traverser, name, location, rotation);
 
         rotationAxis = hingedTraverser.getVector3d("rotationAxis", ErrorSetting.LOG_MISSING_KEY);
         rotationRate = hingedTraverser.get("rotationRate", ErrorSetting.LOG_MISSING_KEY);
