@@ -20,25 +20,11 @@ public class Utils {
         return Math.max(Math.min(value, max), min);
     }
 
-    public Matrix4f getComponentMatrix(@NotNull ModelComponent component, @NotNull Vector3d rotation) {
-        Matrix3f roll = new Matrix3f(
-                (float) Math.cos(rotation.z), (float) -Math.sin(rotation.z), 0,
-                (float) Math.sin(rotation.z), (float) Math.cos(rotation.z), 0,
-                0, 0, 1
-        );
-        Matrix3f pitch = new Matrix3f(
-                1, 0, 0,
-                0, (float) Math.cos(rotation.x), (float) -Math.sin(rotation.x),
-                0, (float) Math.sin(rotation.x), (float) Math.cos(rotation.x)
-        );
-        Matrix3f yaw = new Matrix3f(
-                (float) Math.cos(rotation.y), 0, (float) -Math.sin(rotation.y),
-                0, 1, 0,
-                (float) Math.sin(rotation.y), 0, (float) Math.cos(rotation.y)
-        );
-        Matrix3f rotationMatrix = new Matrix3f(roll).mul(yaw).mul(pitch);
-        // https://msl.cs.uiuc.edu/planning/node102.html
-        return new Matrix4f(rotationMatrix)
+    public Matrix4f getComponentMatrix(@NotNull ModelComponent component, @NotNull Quaterniond rotation) {
+        Quaternionf quaternionf = new Quaternionf();
+        rotation.get(quaternionf);
+        return new Matrix4f()
+                .rotate(quaternionf)
 //                .translate(PLAYER_HEAD_OFFSET)
 //                .rotateY((float) rotation.y)
 //                .rotateZ((float) rotation.z)
@@ -46,17 +32,11 @@ public class Utils {
                 .mul(component.getMatrix());
     }
 
-    public Vector3d rotate(@NotNull Vector3d vector, @NotNull Vector3d rotation) {
-        return new Vector3d(vector)
-                .rotateX((float) rotation.x)
-                .rotateY((float) rotation.y)
-                .rotateZ((float) rotation.z);
+    public Vector3d rotate(@NotNull Vector3d vector, @NotNull Quaterniond rotation) {
+        return new Vector3d(vector).rotate(rotation);
     }
 
-    public Vector3d rotateBackwards(@NotNull Vector3d vector, @NotNull Vector3d rotation) {
-        return new Vector3d(vector)
-                .rotateZ((float) -rotation.z)
-                .rotateY((float) -rotation.y)
-                .rotateX((float) -rotation.x);
+    public Vector3d rotateBackwards(@NotNull Vector3d vector, @NotNull Quaterniond rotation) {
+        return new Vector3d(vector).rotate(rotation);
     }
 }

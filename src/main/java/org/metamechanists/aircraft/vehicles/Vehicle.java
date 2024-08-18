@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
@@ -103,7 +104,7 @@ public class Vehicle extends SlimefunItem {
         VehicleState state = new VehicleState(
                 0,
                 new Vector3d(),
-                new Vector3d(0, toRadians(-90.0-player.getEyeLocation().getYaw()), 0),
+                new Quaterniond().rotationY(-90.0-player.getEyeLocation().getYaw()),
                 new Vector3d(),
                 config.initializeOrientations(),
                 null,
@@ -194,13 +195,13 @@ public class Vehicle extends SlimefunItem {
             }
 
             if (key == 'w') {
-                state.rotation.z -= 0.02;
+                state.rotation.rotateAxis(0.02, new Vector3d(1, 0, 0).rotate(state.rotation));
             } else if (key == 's') {
-                state.rotation.z += 0.02;
+                state.rotation.rotateAxis(-0.02, new Vector3d(1, 0, 0).rotate(state.rotation));
             } else if (key == 'a') {
-                state.rotation.x -= 0.02;
+                state.rotation.rotateAxis(0.02, new Vector3d(0, 0, 1).rotate(state.rotation));
             } else if (key == 'd') {
-                state.rotation.x += 0.02;
+                state.rotation.rotateAxis(-0.02, new Vector3d(0, 0, 1).rotate(state.rotation));
             }
 
             config.onKey(state, key);
@@ -230,7 +231,7 @@ public class Vehicle extends SlimefunItem {
         Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, state, forces);
         state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
 
-        state.rotation.add(Utils.rotate(state.angularVelocity, state.rotation).div(20));
+//        state.rotation.add(Utils.rotate(state.angularVelocity, state.rotation).div(20));
 
 //        if (isOnGround) {
 ////            angularAcceleration.y -= config.getGroundYawDamping() * state.getYaw();

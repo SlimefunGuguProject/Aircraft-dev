@@ -2,6 +2,8 @@ package org.metamechanists.aircraft.vehicles;
 
 import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix3d;
+import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
@@ -14,13 +16,13 @@ import java.util.Map;
 public class VehicleState {
     public int throttle;
     public Vector3d velocity;
-    public Vector3d rotation;
+    public Quaterniond rotation;
     public Vector3d angularVelocity;
     public Map<String, ControlSurfaceOrientation> orientations;
     public DisplayGroup componentGroup;
     public DisplayGroup hudGroup;
 
-    public VehicleState(int throttle, Vector3d velocity, Vector3d rotation, Vector3d angularVelocity,
+    public VehicleState(int throttle, Vector3d velocity, Quaterniond rotation, Vector3d angularVelocity,
                         Map<String, ControlSurfaceOrientation> orientations, DisplayGroup componentGroup, DisplayGroup hudGroup) {
         this.throttle = throttle;
         this.velocity = velocity;
@@ -35,7 +37,7 @@ public class VehicleState {
         PersistentDataTraverser traverser = new PersistentDataTraverser(pig);
         int throttle = traverser.getInt("throttle");
         Vector3d velocity = traverser.getVector3d("velocity");
-        Vector3d rotation = traverser.getVector3d("rotation");
+        Quaterniond rotation = traverser.getQuaterniond("rotation");
         Vector3d angularVelocity = traverser.getVector3d("angularVelocity");
         Map<String, ControlSurfaceOrientation> orientations = traverser.getControlSurfaceOrientations("orientations");
         DisplayGroupId componentGroupId = traverser.getDisplayGroupId("componentGroupId");
@@ -64,14 +66,20 @@ public class VehicleState {
     }
 
     public double roll() {
-        return rotation.z;
+        Vector3d rotationVector = new Vector3d();
+        rotation.getEulerAnglesXYZ(rotationVector);
+        return rotationVector.x;
     }
 
     public double pitch() {
-        return rotation.x;
+        Vector3d rotationVector = new Vector3d();
+        rotation.getEulerAnglesXYZ(rotationVector);
+        return rotationVector.z;
     }
 
     public double yaw() {
-        return rotation.y;
+        Vector3d rotationVector = new Vector3d();
+        rotation.getEulerAnglesXYZ(rotationVector);
+        return rotationVector.y;
     }
 }
