@@ -2,6 +2,7 @@ package org.metamechanists.aircraft.utils;
 
 import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3f;
 import org.joml.Matrix4f;
 import org.joml.Quaterniond;
 import org.joml.Quaternionf;
@@ -20,9 +21,24 @@ public class Utils {
     }
 
     public Matrix4f getComponentMatrix(@NotNull ModelComponent component, @NotNull Vector3d rotation) {
-        Quaternionf q = new Quaternionf().rotateXYZ((float) rotation.x, (float) rotation.y, (float) rotation.z);
-        return new Matrix4f()
-                .rotate(q)
+        Matrix3f roll = new Matrix3f(
+                (float) Math.cos(rotation.y), 0, (float) -Math.sin(rotation.y),
+                0, 1, 0,
+                (float) Math.sin(rotation.y), 0, (float) Math.cos(rotation.y)
+        );
+        Matrix3f pitch = new Matrix3f(
+                0, 1, 0,
+                (float) Math.cos(rotation.z), 0, (float) -Math.sin(rotation.z),
+                (float) Math.sin(rotation.z), 0, (float) Math.cos(rotation.z)
+        );
+        Matrix3f yaw = new Matrix3f(
+                (float) Math.cos(rotation.x), 0, (float) -Math.sin(rotation.x),
+                (float) Math.sin(rotation.x), 0, (float) Math.cos(rotation.x),
+                0, 1, 0
+        );
+        Matrix3f rotationMatrix = new Matrix3f(roll).mul(pitch).mul(yaw);
+        // https://msl.cs.uiuc.edu/planning/node102.html
+        return new Matrix4f(rotationMatrix)
 //                .translate(PLAYER_HEAD_OFFSET)
 //                .rotateY((float) rotation.y)
 //                .rotateZ((float) rotation.z)
