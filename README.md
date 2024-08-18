@@ -14,6 +14,7 @@
 * Control surface becomes hinge section
 * Message on reload
 * Reload entire model, including removing nonexistent parts and adding new parts
+* don't simulate insignificant forces
 - Velocity indicator
 - Fix broken unmounting when hit water
 - Fuel
@@ -27,7 +28,7 @@
 - Taxiing
 - HUD lights up (gradually?) when pilot enters
 - Replace HUD text with cuboids?
+- Caching
 
 - symmetry on some parts
-- don't simulate insignificant forces
 - repair orientations on reload

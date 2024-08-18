@@ -16,6 +16,7 @@ import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
@@ -25,17 +26,20 @@ import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicles.forces.VehicleForces;
 import org.metamechanists.aircraft.vehicles.hud.VehicleHud;
+import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 public class Vehicle extends SlimefunItem {
@@ -132,22 +136,20 @@ public class Vehicle extends SlimefunItem {
         Storage.add(pig.getUniqueId());
     }
 
-    @SuppressWarnings("Convert2streamapi")
     private static void updateDisplayGroup(Pig pig, VehicleState state, Map<String, ModelComponent> expected, @NotNull DisplayGroup actual) {
         // Remove components that shouldn't exist any more
-        List<String> toRemove = new ArrayList<>(); // to avoid modifying while iterating
-        for (String displayName : actual.getDisplays().keySet()) {
-            if (!expected.containsKey(displayName)) {
-                toRemove.add(displayName);
-            }
-        }
+        List<String> toRemove = actual.getDisplays()
+                .keySet()
+                .stream()
+                .filter(displayName -> !expected.containsKey(displayName))
+                .toList(); // to avoid modifying while iterating
 
         for (String displayName : toRemove) {
             //noinspection DataFlowIssue
             actual.removeDisplay(displayName).remove();
         }
 
-        // Add new components that do not exist
+        // Add new components that do not yet exist
         for (Entry<String, ModelComponent> entry : expected.entrySet()) {
             if (!actual.getDisplays().containsKey(entry.getKey())) {
                 Display display = entry.getValue().build(pig.getLocation());
@@ -159,6 +161,23 @@ public class Vehicle extends SlimefunItem {
         // Update transformations
         for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
             entry.getValue().setTransformationMatrix(Utils.getComponentMatrix(expected.get(entry.getKey()), state.rotation));
+        }
+    }
+
+    private void updateOrientations(@NotNull VehicleState state) {
+        // Remove orientations that no longer exist
+        Map<String, ControlSurfaceOrientation> expected = config.initializeOrientations();
+        List<String> toRemove = state.orientations.keySet()
+                .stream()
+                .filter(key -> !expected.containsKey(key))
+                .toList(); // to avoid modifying while iterating
+        toRemove.forEach(expected::remove);
+
+        // Add new orientations that do not yet exist
+        for (Entry<String, ControlSurfaceOrientation> entry : expected.entrySet()) {
+            if (!state.orientations.containsKey(entry.getKey())) {
+                state.orientations.put(entry.getKey(), entry.getValue());
+            }
         }
     }
 
@@ -205,6 +224,7 @@ public class Vehicle extends SlimefunItem {
 
         updateDisplayGroup(pig, state, config.getCuboids(state), state.componentGroup);
         updateDisplayGroup(pig, state, VehicleHud.build(state), state.hudGroup);
+        updateOrientations(state);
 
         boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
 
