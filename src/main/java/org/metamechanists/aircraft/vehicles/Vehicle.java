@@ -104,7 +104,7 @@ public class Vehicle extends SlimefunItem {
         VehicleState state = new VehicleState(
                 0,
                 new Vector3d(),
-                new Quaterniond().rotationY(-90.0-player.getEyeLocation().getYaw()),
+                new Quaterniond().rotationY(Math.toRadians(-90.0-player.getEyeLocation().getYaw())),
                 new Vector3d(),
                 config.initializeOrientations(),
                 null,
@@ -195,13 +195,13 @@ public class Vehicle extends SlimefunItem {
             }
 
             if (key == 'w') {
-                state.rotation.rotateAxis(0.02, new Vector3d(1, 0, 0).rotate(state.rotation));
+                state.rotation.rotateAxis(0.02, new Vector3d(1, 0, 0));
             } else if (key == 's') {
-                state.rotation.rotateAxis(-0.02, new Vector3d(1, 0, 0).rotate(state.rotation));
+                state.rotation.rotateAxis(-0.02, new Vector3d(1, 0, 0));
             } else if (key == 'a') {
-                state.rotation.rotateAxis(0.02, new Vector3d(0, 0, 1).rotate(state.rotation));
+                state.rotation.rotateAxis(0.02, new Vector3d(0, 0, 1));
             } else if (key == 'd') {
-                state.rotation.rotateAxis(-0.02, new Vector3d(0, 0, 1).rotate(state.rotation));
+                state.rotation.rotateAxis(-0.02, new Vector3d(0, 0, 1));
             }
 
             config.onKey(state, key);
