@@ -90,9 +90,9 @@ public final class Horizon {
 
         hudComponents.put("temp_debug", new ModelCuboid()
                 .material(Material.YELLOW_CONCRETE)
+                .rotateX(state.rotation.x)
                 .rotateY(state.rotation.y)
                 .rotateZ(state.rotation.z)
-                .rotateX(state.rotation.x)
                 .scale(0.3, 0.3, 1.0));
 
         Vector3f velocityOffset = new Vector3f(0, (float) (0.5 * HudUtil.getPitch(state.velocity)), 0).add(horizonOffset);

@@ -29,15 +29,15 @@ public class Utils {
 
     public Vector3d rotate(@NotNull Vector3d vector, @NotNull Vector3d rotation) {
         return new Vector3d(vector)
+                .rotateX((float) rotation.x)
                 .rotateY((float) rotation.y)
-                .rotateZ((float) rotation.z)
-                .rotateX((float) rotation.x);
+                .rotateZ((float) rotation.z);
     }
 
     public Vector3d rotateBackwards(@NotNull Vector3d vector, @NotNull Vector3d rotation) {
         return new Vector3d(vector)
-                .rotateX((float) -rotation.x)
                 .rotateZ((float) -rotation.z)
-                .rotateY((float) -rotation.y);
+                .rotateY((float) -rotation.y)
+                .rotateX((float) -rotation.x);
     }
 }
