@@ -85,7 +85,7 @@ public class VehicleConfig {
 
         for (YamlTraverser componentSectionTraverser : traverser.getSection("components").getSections()) {
             for (YamlTraverser componentTraverser : componentSectionTraverser.getSections()) {
-                baseComponents.add(BaseComponent.fromTraverser(componentTraverser, translation));
+                baseComponents.addAll(BaseComponent.fromTraverser(componentTraverser, translation));
             }
         }
     }
