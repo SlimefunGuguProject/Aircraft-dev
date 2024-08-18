@@ -14,11 +14,6 @@ import org.metamechanists.displaymodellib.models.components.ModelText;
 public final class HudUtil {
     private HudUtil() {}
 
-    public static double getPitch(@NotNull Vector3d lookingAtForward) {
-        double pitch = lookingAtForward.angle(new Vector3d(lookingAtForward.x, 0, lookingAtForward.z));
-        return lookingAtForward.y > 0 ? pitch : -pitch;
-    }
-
     private static ModelText defaultText() {
         return new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))
