@@ -22,12 +22,12 @@ public interface AerodynamicComponent extends Component {
     double getDragCoefficient();
     double getLiftCoefficient();
 
-    static @NotNull AerodynamicComponent fromTraverser(@NotNull YamlTraverser traverser, Vector3f translation) {
+    static @NotNull AerodynamicComponent fromTraverser(@NotNull YamlTraverser traverser, Vector3f location, Vector3d rotation, Vector3f translation) {
         YamlTraverser hingedTraverser = traverser.getSection("hinged", ErrorSetting.NO_BEHAVIOUR);
         if (hingedTraverser != null) {
-            return new AerodynamicHingeComponent(traverser, hingedTraverser, translation);
+            return new AerodynamicHingeComponent(traverser, hingedTraverser, location, rotation, translation);
         }
-        return new AerodynamicFixedComponent(traverser, translation);
+        return new AerodynamicFixedComponent(traverser, location, rotation, translation);
     }
 
     private @Nullable VehicleSurface getSurface(@NotNull Vector3d startingLocation, double surfaceWidth, double surfaceHeight, @NotNull Vector3d extraRotation) {

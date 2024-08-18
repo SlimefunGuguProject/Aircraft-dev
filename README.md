@@ -19,16 +19,16 @@
 * Dismounting kills throttle
 * Fix broken unmounting when hit water
 * Taxiing
+* Symmetry on some parts
+- Only explode above velocity + explosion size depends on velocity
 - Velocity indicator
 - Fuel
 - Fuel indicator
 - Recipes
-- Only explode above velocity + explosion size depends on velocity
 - Protection plugin integration
 - Persist over restarts
 - HUD lights up (gradually?) when pilot enters
 - Replace HUD text with cuboids?
 - Caching
 
-- symmetry on some parts
 - ufos that can abduct people
