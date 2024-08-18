@@ -18,8 +18,8 @@ public class AerodynamicFixedComponent extends FixedComponent implements Aerodyn
     private final double liftCoefficient;
 
     @SuppressWarnings("DataFlowIssue")
-    public AerodynamicFixedComponent(@NotNull YamlTraverser traverser, Vector3f translation) {
-        super(traverser, translation);
+    public AerodynamicFixedComponent(@NotNull YamlTraverser traverser, Vector3f location, Vector3d rotation, Vector3f translation) {
+        super(traverser, location, rotation, translation);
         dragCoefficient = traverser.get("dragCoefficient", ErrorSetting.LOG_MISSING_KEY);
         liftCoefficient = traverser.get("liftCoefficient", ErrorSetting.LOG_MISSING_KEY);
     }

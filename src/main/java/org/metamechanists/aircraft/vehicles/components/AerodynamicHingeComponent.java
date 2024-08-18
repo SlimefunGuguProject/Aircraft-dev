@@ -2,6 +2,7 @@ package org.metamechanists.aircraft.vehicles.components;
 
 import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.aircraft.vehicles.surfaces.VehicleSurface;
@@ -17,8 +18,8 @@ public class AerodynamicHingeComponent extends HingeComponent implements Aerodyn
     private final double liftCoefficient;
 
     @SuppressWarnings("DataFlowIssue")
-    public AerodynamicHingeComponent(@NotNull YamlTraverser traverser, @NotNull YamlTraverser hingedTraverser, Vector3f translation) {
-        super(traverser, hingedTraverser, translation);
+    public AerodynamicHingeComponent(@NotNull YamlTraverser traverser, @NotNull YamlTraverser hingedTraverser, Vector3f location, Vector3d rotation, Vector3f translation) {
+        super(traverser, hingedTraverser, location, rotation, translation);
         dragCoefficient = traverser.get("dragCoefficient", ErrorSetting.LOG_MISSING_KEY);
         liftCoefficient = traverser.get("liftCoefficient", ErrorSetting.LOG_MISSING_KEY);
     }
