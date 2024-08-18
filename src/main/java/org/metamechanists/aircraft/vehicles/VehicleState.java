@@ -64,11 +64,11 @@ public class VehicleState {
     }
 
     public double roll() {
-        return rotation.x;
+        return rotation.z;
     }
 
     public double pitch() {
-        return rotation.z;
+        return rotation.x;
     }
 
     public double yaw() {
