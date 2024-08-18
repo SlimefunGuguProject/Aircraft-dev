@@ -26,6 +26,7 @@
 - Persist over restarts
 - Taxiing
 - HUD lights up (gradually?) when pilot enters
+- Replace HUD text with cuboids?
 
 - symmetry on some parts
 - don't simulate insignificant forces
