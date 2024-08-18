@@ -47,8 +47,6 @@ public class VehicleConfig {
     private final double groundRollDamping;
     @Getter
     private final double groundPitchDamping;
-    @Getter
-    private final double groundYawDamping;
     private final Set<AerodynamicComponent> aerodynamicComponents = new HashSet<>();
     private final Set<Component> baseComponents = new HashSet<>();
 
@@ -67,7 +65,6 @@ public class VehicleConfig {
         angularVelocityDamping = damping.get("angularVelocity", ErrorSetting.LOG_MISSING_KEY);
         groundRollDamping = damping.get("groundRoll", ErrorSetting.LOG_MISSING_KEY);
         groundPitchDamping = damping.get("groundPitch", ErrorSetting.LOG_MISSING_KEY);
-        groundYawDamping = damping.get("groundYaw", ErrorSetting.LOG_MISSING_KEY);
 
         YamlTraverser weight = traverser.getSection("weight", ErrorSetting.LOG_MISSING_KEY);
         weightLocation = weight.getVector3d("location", ErrorSetting.LOG_MISSING_KEY);
