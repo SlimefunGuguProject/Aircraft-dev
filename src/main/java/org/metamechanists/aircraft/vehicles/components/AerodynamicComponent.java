@@ -12,7 +12,9 @@ import org.metamechanists.displaymodellib.transformations.TransformationMatrixBu
 import org.metamechanists.metalib.yaml.YamlTraverser;
 import org.metamechanists.metalib.yaml.YamlTraverser.ErrorSetting;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -22,12 +24,28 @@ public interface AerodynamicComponent extends Component {
     double getDragCoefficient();
     double getLiftCoefficient();
 
-    static @NotNull AerodynamicComponent fromTraverser(@NotNull YamlTraverser traverser, Vector3f location, Vector3d rotation, Vector3f translation) {
+    static @NotNull List<AerodynamicComponent> fromTraverser(@NotNull YamlTraverser traverser, Vector3f translation) {
         YamlTraverser hingedTraverser = traverser.getSection("hinged", ErrorSetting.NO_BEHAVIOUR);
+        boolean mirror = traverser.get("mirror", ErrorSetting.LOG_MISSING_KEY);
+        Vector3f location = traverser.getVector3f("location", ErrorSetting.LOG_MISSING_KEY).sub(translation);
+        Vector3d rotation = traverser.getVector3d("rotation", ErrorSetting.LOG_MISSING_KEY);
+        Vector3f mirrorLocation = new Vector3f(location.x, location.y, -location.z);
+        Vector3d mirrorRotation = new Vector3d(rotation.x, -rotation.y, -rotation.z);
+
+        List<AerodynamicComponent> components = new ArrayList<>();
         if (hingedTraverser != null) {
-            return new AerodynamicHingeComponent(traverser, hingedTraverser, location, rotation, translation);
+            if (mirror) {
+                components.add(new AerodynamicHingeComponent(traverser, hingedTraverser, mirrorLocation, mirrorRotation, translation));
+            }
+            components.add(new AerodynamicHingeComponent(traverser, hingedTraverser, location, rotation, translation));
+        } else {
+            if (mirror) {
+                components.add(new AerodynamicFixedComponent(traverser, mirrorLocation, mirrorRotation, translation));
+            }
+            components.add(new AerodynamicFixedComponent(traverser, location, rotation, translation));
         }
-        return new AerodynamicFixedComponent(traverser, location, rotation, translation);
+
+        return components;
     }
 
     private @Nullable VehicleSurface getSurface(@NotNull Vector3d startingLocation, double surfaceWidth, double surfaceHeight, @NotNull Vector3d extraRotation) {

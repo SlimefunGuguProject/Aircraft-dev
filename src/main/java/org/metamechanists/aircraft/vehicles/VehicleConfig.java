@@ -79,7 +79,7 @@ public class VehicleConfig {
 
         for (YamlTraverser componentSectionTraverser : traverser.getSection("aerodynamicComponents").getSections()) {
             for (YamlTraverser componentTraverser : componentSectionTraverser.getSections()) {
-                aerodynamicComponents.add(AerodynamicComponent.fromTraverser(componentTraverser, translation));
+                aerodynamicComponents.addAll(AerodynamicComponent.fromTraverser(componentTraverser, translation));
             }
         }
 
