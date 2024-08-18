@@ -194,13 +194,13 @@ public class Vehicle extends SlimefunItem {
             }
 
             if (key == 'w') {
-                state.angularVelocity.z -= 0.02;
+                state.rotation.z -= 0.02;
             } else if (key == 's') {
-                state.angularVelocity.z += 0.02;
+                state.rotation.z += 0.02;
             } else if (key == 'a') {
-                state.angularVelocity.x -= 0.02;
+                state.rotation.x -= 0.02;
             } else if (key == 'd') {
-                state.angularVelocity.x += 0.02;
+                state.rotation.x += 0.02;
             }
 
             config.onKey(state, key);
