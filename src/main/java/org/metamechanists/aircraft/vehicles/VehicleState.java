@@ -73,7 +73,7 @@ public class VehicleState {
     public double roll() {
         Vector3d lookingAtSide = new Vector3d(0, 0, 1).rotate(rotation);
         double roll = lookingAtSide.angle(new Vector3d(lookingAtSide.x, 0, lookingAtSide.z));
-        return lookingAtSide.y > 0 ? roll : -roll;
+        return lookingAtSide.y > 0 ? -roll : roll;
     }
 
     public double pitch() {
