@@ -201,7 +201,7 @@ public class Vehicle extends SlimefunItem {
             } else if (key == 'a') {
                 state.rotation.rotateAxis(0.02, new Vector3d(0, 0, 1));
             } else if (key == 'd') {
-                state.rotation.rotateAxis(-0.02, new Vector3d(0, 0, 1));
+                state.rotation.rotateAxis(-0.02, new Vector3d(0, 1, 0));
             }
 
             config.onKey(state, key);
