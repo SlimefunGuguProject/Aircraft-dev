@@ -71,7 +71,9 @@ public class VehicleState {
 
     // https://stackoverflow.com/questions/5782658/extracting-yaw-from-a-quaternion
     public double roll() {
-        return -Math.atan2(2.0 * (rotation.z * rotation.w - rotation.y * rotation.x) , 1.0 - 2.0 * (rotation.x * rotation.x + rotation.z * rotation.z));
+        Vector3d lookingAtSide = new Vector3d(0, 0, 1).rotate(rotation);
+        double roll = lookingAtSide.angle(new Vector3d(lookingAtSide.x, 0, lookingAtSide.z));
+        return lookingAtSide.y > 0 ? roll : -roll;
     }
 
     public double pitch() {
