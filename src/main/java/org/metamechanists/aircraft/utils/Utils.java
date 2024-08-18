@@ -37,6 +37,6 @@ public class Utils {
     }
 
     public Vector3d rotateBackwards(@NotNull Vector3d vector, @NotNull Quaterniond rotation) {
-        return new Vector3d(vector).rotate(rotation);
+        return new Vector3d(vector).rotate(new Quaterniond(rotation).invert());
     }
 }
