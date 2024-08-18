@@ -1,14 +1,18 @@
 package org.metamechanists.aircraft.vehicles.controls;
 
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Pig;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
+import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.vehicles.Storage;
 import org.metamechanists.aircraft.vehicles.Vehicle;
+import org.metamechanists.aircraft.vehicles.VehicleState;
 
 import java.util.UUID;
 
@@ -30,12 +34,25 @@ public class MountHandler implements Listener {
     }
 
     @EventHandler
-    public static void onUnmount(@NotNull PlayerToggleSneakEvent e) {
-        Pig pig = Storage.getPig(e.getPlayer());
+    public static void onUnmount(@NotNull VehicleExitEvent e) {
+        LivingEntity exited = e.getExited();
+        if (!(exited instanceof Player player)) {
+            return;
+        }
+
+        Pig pig = Storage.getPig(player);
         if (pig == null) {
             return;
         }
 
-        Vehicle.unMount(pig, e.getPlayer());
+        Vehicle.unMount(pig, player);
+
+        VehicleState state = VehicleState.fromPig(pig);
+        if (state == null) {
+            return;
+        }
+
+        state.throttle = 0;
+        state.write(pig);
     }
 }

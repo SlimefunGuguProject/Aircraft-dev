@@ -15,6 +15,7 @@
 * Message on reload
 * Reload entire model, including removing nonexistent parts and adding new parts
 * don't simulate insignificant forces
+* repair orientations on reload
 - Velocity indicator
 - Fix broken unmounting when hit water
 - Fuel
@@ -31,4 +32,3 @@
 - Caching
 
 - symmetry on some parts
-- repair orientations on reload
