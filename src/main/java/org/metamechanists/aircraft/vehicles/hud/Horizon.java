@@ -3,12 +3,16 @@ package org.metamechanists.aircraft.vehicles.hud;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
+import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.displaymodellib.models.components.ModelText;
 
 import java.util.Map;
@@ -83,6 +87,11 @@ public final class Horizon {
         hudComponents.put("altitude", getAltitudeIndicator(state, hudCenter));
         hudComponents.put("horizon", getRotationIndicator(state, hudCenter));
         hudComponents.put("horizon_center", getArtificialHorizonMajor(state, hudCenter, horizonOffset, shouldRenderCenter));
+
+        hudComponents.put("temp_debug", new ModelCuboid()
+                .material(Material.YELLOW_CONCRETE)
+                .lookAlong(Utils.rotate(new Vector3d(1, 0, 0), state.rotation))
+                .scale(1.0, 0.3, 0.3));
 
         Vector3f velocityOffset = new Vector3f(0, (float) (0.5 * HudUtil.getPitch(state.velocity)), 0).add(horizonOffset);
         hudComponents.put("velocity", getVelocityIndicator(state, hudCenter, velocityOffset));
