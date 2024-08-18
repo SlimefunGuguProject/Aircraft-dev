@@ -51,7 +51,7 @@ public final class HudUtil {
         return defaultText()
                 .translate(hudCenter)
                 .undoRotate(state.rotation)
-//                .rotate(new Vector3d(0, -state.yaw(), state.pitch()))
+                .rotate(new Vector3d(0, state.yaw(), state.pitch()))
                 .lookAlong(BlockFace.WEST);
     }
 
