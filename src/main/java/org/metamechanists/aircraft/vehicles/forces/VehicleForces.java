@@ -69,8 +69,8 @@ public final class VehicleForces {
         Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce(config, state));
         forces.add(getThrustForce(config, state));
-//        forces.addAll(getDragForces(config, state));
-//        forces.addAll(getLiftForces(config, state));
+        forces.addAll(getDragForces(config, state));
+        forces.addAll(getLiftForces(config, state));
         forces.add(getFrictionForce(config, state, isOnGround, getAcceleration(config, forces).mul(config.getMass())));
         return forces;
     }

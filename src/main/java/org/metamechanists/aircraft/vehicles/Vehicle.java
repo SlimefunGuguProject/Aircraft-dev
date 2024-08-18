@@ -37,8 +37,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-import static java.lang.Math.toRadians;
-
 
 public class Vehicle extends SlimefunItem {
     private final String id;
@@ -194,16 +192,6 @@ public class Vehicle extends SlimefunItem {
                 return;
             }
 
-            if (key == 'w') {
-                state.rotation.rotateX(0.02);
-            } else if (key == 's') {
-                state.rotation.rotateX(-0.02);
-            } else if (key == 'a') {
-                state.rotation.rotateZ(0.02);
-            } else if (key == 'd') {
-                state.rotation.rotateY(-0.02);
-            }
-
             config.onKey(state, key);
             state.write(pig);
         });
@@ -231,7 +219,7 @@ public class Vehicle extends SlimefunItem {
         Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, state, forces);
         state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
 
-//        state.rotation.add(Utils.rotate(state.angularVelocity, state.rotation).div(20));
+        state.rotation.rotateAxis(state.angularVelocity.length() / 20, new Vector3d(state.angularVelocity).normalize());
 
 //        if (isOnGround) {
 ////            angularAcceleration.y -= config.getGroundYawDamping() * state.getYaw();
