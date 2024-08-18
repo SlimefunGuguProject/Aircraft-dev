@@ -21,7 +21,7 @@ public final class Compass {
 
     private Compass() {}
 
-    private static ModelComponent getCompassBar(@NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, int i) {
+    private static ModelComponent getCompassBar(@NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, int i) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
         TextColor color;
         float size;
@@ -36,17 +36,16 @@ public final class Compass {
             size = 0.1F;
         }
 
-        return HudUtil.rollText(state, hudCenter)
+        return HudUtil.rollText(hudCenter)
                 .text(Component.text("|").color(color))
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(size, size, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, -0.01F);
     }
 
-    private static ModelComponent getCompassDirection(
-            @NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, String text) {
+    private static ModelComponent getCompassDirection(@NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, String text) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
-        return HudUtil.rollText(state, hudCenter)
+        return HudUtil.rollText(hudCenter)
                 .text(Component.text(text).color(COMPASS_DIRECTION_COLOR))
                 .translate(totalAdjustment)
                 .translate(0.0F, 0.007F, 0.0F)
@@ -54,25 +53,24 @@ public final class Compass {
                 .translate(0.5F, 0.0F, -0.01F);
     }
 
-    private static ModelComponent getCompassDegree(
-            @NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, int degrees) {
+    private static ModelComponent getCompassDegree(@NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, int degrees) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
-        return HudUtil.rollText(state, hudCenter)
+        return HudUtil.rollText(hudCenter)
                 .text(Component.text(degrees).color(COMPASS_MAJOR_COLOR))
                 .translate(totalAdjustment)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.0F, -0.01F);
     }
 
-    private static ModelComponent getCompassNotch(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
-        return HudUtil.rollText(state, hudCenter)
+    private static ModelComponent getCompassNotch(@NotNull Vector3f hudCenter) {
+        return HudUtil.rollText(hudCenter)
                 .text(Component.text("▼").color(COMPASS_NOTCH_COLOR))
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F))
                 .translate(0.5F, -2.0F, -0.01F);
     }
 
     public static void build(@NotNull VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, @NotNull Vector3f hudCenter) {
-        hudComponents.put("compass_notch", getCompassNotch(state, hudCenter));
+        hudComponents.put("compass_notch", getCompassNotch(hudCenter));
 
         final int bars = 60;
         final int extraBars = 8;
@@ -83,7 +81,7 @@ public final class Compass {
         for (int i = -bars-extraBars; i <= bars+extraBars; i++) {
             Vector3f barOffset = new Vector3f(horizontalSpacing * i, 0, 0);
             Vector3f totalAdjustment = new Vector3f(barOffset).add(compassOffset);
-            hudComponents.put("compass_bar_" + i, getCompassBar(state, hudCenter, totalAdjustment, compassRadius, i));
+            hudComponents.put("compass_bar_" + i, getCompassBar(hudCenter, totalAdjustment, compassRadius, i));
 
             if ((i+420) % 30 == 0) {
                 String text = switch (i) {
@@ -93,13 +91,13 @@ public final class Compass {
                     case 30 -> "S";
                     default -> "ERROR";
                 };
-                hudComponents.put("compass_direction_" + i, getCompassDirection(state, hudCenter, totalAdjustment, compassRadius, text));
+                hudComponents.put("compass_direction_" + i, getCompassDirection(hudCenter, totalAdjustment, compassRadius, text));
             } else if ((i+420) % 10 == 0) {
                 int degrees = (i + 60) * 3 - 90;
                 if (degrees < 0) {
                     degrees += 360;
                 }
-                hudComponents.put("compass_degree_" + i, getCompassDegree(state, hudCenter, totalAdjustment, compassRadius, degrees));
+                hudComponents.put("compass_degree_" + i, getCompassDegree(hudCenter, totalAdjustment, compassRadius, degrees));
             }
         }
     }

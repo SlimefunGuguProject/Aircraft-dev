@@ -30,28 +30,28 @@ public final class HudUtil {
                 .brightness(Utils.BRIGHTNESS_ON);
     }
 
-    public static ModelText rollText(@NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f offset) {
+    public static ModelText rollText(@NotNull Vector3f hudCenter, @NotNull Vector3f offset) {
         return defaultText()
                 .translate(hudCenter)
                 .translate(offset)
                 .lookAlong(BlockFace.WEST);
     }
 
-    public static ModelCuboid rollCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
+    public static ModelCuboid rollCuboid(@NotNull Vector3f hudCenter) {
         return defaultCuboid()
                 .translate(hudCenter)
                 .lookAlong(BlockFace.WEST);
     }
 
-    public static ModelText rollText(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
-        return rollText(state, hudCenter, new Vector3f());
+    public static ModelText rollText(@NotNull Vector3f hudCenter) {
+        return rollText(hudCenter, new Vector3f());
     }
 
     public static ModelText rollIndependentText(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
         return defaultText()
                 .translate(hudCenter)
                 .undoRotate(state.rotation)
-                .rotate(new Vector3d(0, state.yaw(), state.pitch()))
+                .rotate(new Vector3d(0, 90.0 - state.yaw(), state.pitch()))
                 .lookAlong(BlockFace.WEST);
     }
 

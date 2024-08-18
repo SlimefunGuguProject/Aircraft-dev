@@ -3,16 +3,12 @@ package org.metamechanists.aircraft.vehicles.hud;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Vector3d;
 import org.joml.Vector3f;
-import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
-import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.displaymodellib.models.components.ModelText;
 
 import java.util.Map;
@@ -41,16 +37,15 @@ public final class Horizon {
                 .translate(0.5F, 0.35F, 0.05F);
     }
 
-    private static ModelText getArtificialHorizonMajor(@NotNull VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, boolean shouldRender) {
-        return HudUtil.rollText(state, hudCenter, horizonOffset)
+    private static ModelText getArtificialHorizonMajor(Vector3f hudCenter, Vector3f horizonOffset, boolean shouldRender) {
+        return HudUtil.rollText(hudCenter, horizonOffset)
                 .text(Component.text(HORIZON_MAJOR_TEXT).color(HORIZON_MAJOR_COLOR))
                 .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
     }
 
-    private static ModelText getArtificialHorizonBar(
-            @NotNull VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, Component component, Vector3f barOffset, boolean shouldRender) {
-        return HudUtil.rollText(state, hudCenter, new Vector3f(horizonOffset).add(barOffset))
+    private static ModelText getArtificialHorizonBar(Vector3f hudCenter, Vector3f horizonOffset, Component component, Vector3f barOffset, boolean shouldRender) {
+        return HudUtil.rollText(hudCenter, new Vector3f(horizonOffset).add(barOffset))
                 .text(component)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
@@ -71,9 +66,8 @@ public final class Horizon {
                 .translate(0.5F, 0.35F, 0.05F);
     }
 
-    private static ModelText getArtificialHorizonDegree(
-            @NotNull VehicleState state, Vector3f hudCenter, Component component, Vector3f totalAdjustment, boolean shouldRender) {
-        return HudUtil.rollText(state, hudCenter, new Vector3f(totalAdjustment).add(new Vector3f(0, 0, 0.08F)))
+    private static ModelText getArtificialHorizonDegree(Vector3f hudCenter, Component component, Vector3f totalAdjustment, boolean shouldRender) {
+        return HudUtil.rollText(hudCenter, new Vector3f(totalAdjustment).add(new Vector3f(0, 0, 0.08F)))
                 .text(component)
                 .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
                 .translate(0.5F, 0.35F, 0);
@@ -86,14 +80,7 @@ public final class Horizon {
 
         hudComponents.put("altitude", getAltitudeIndicator(state, hudCenter));
         hudComponents.put("horizon", getRotationIndicator(state, hudCenter));
-        hudComponents.put("horizon_center", getArtificialHorizonMajor(state, hudCenter, horizonOffset, shouldRenderCenter));
-
-        hudComponents.put("temp_debug", new ModelCuboid()
-                .material(Material.YELLOW_CONCRETE)
-                .rotateX(state.rotation.x)
-                .rotateY(state.rotation.y)
-                .rotateZ(state.rotation.z)
-                .scale(0.3, 0.3, 1.0));
+        hudComponents.put("horizon_center", getArtificialHorizonMajor(hudCenter, horizonOffset, shouldRenderCenter));
 
         Vector3f velocityOffset = new Vector3f(0, (float) (0.5 * HudUtil.getPitch(state.velocity)), 0).add(horizonOffset);
         hudComponents.put("velocity", getVelocityIndicator(state, hudCenter, velocityOffset));
@@ -113,11 +100,11 @@ public final class Horizon {
             Component component = Component.text(text).color(color);
             boolean shouldRender = Math.abs(totalAdjustment.length()) < horizonRadius;
 
-            hudComponents.put("horizon_bar_" + i, getArtificialHorizonBar(state, hudCenter, horizonOffset, component, barOffset, shouldRender));
+            hudComponents.put("horizon_bar_" + i, getArtificialHorizonBar(hudCenter, horizonOffset, component, barOffset, shouldRender));
 
             if (longBar) {
                 Component degreeComponent = Component.text(i * (90 / (bars-1))).color(HORIZON_MINOR_COLOR);
-                hudComponents.put("horizon_degree_" + i, getArtificialHorizonDegree(state, hudCenter, degreeComponent, totalAdjustment, shouldRender));
+                hudComponents.put("horizon_degree_" + i, getArtificialHorizonDegree(hudCenter, degreeComponent, totalAdjustment, shouldRender));
             }
         }
     }
