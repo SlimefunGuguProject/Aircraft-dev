@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 import org.joml.Quaterniond;
+import org.joml.Quaternionf;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
@@ -19,7 +20,9 @@ public class Utils {
     }
 
     public Matrix4f getComponentMatrix(@NotNull ModelComponent component, @NotNull Vector3d rotation) {
+        Quaternionf q = new Quaternionf().rotateXYZ((float) rotation.x, (float) rotation.y, (float) rotation.z);
         return new Matrix4f()
+                .rotate(q)
 //                .translate(PLAYER_HEAD_OFFSET)
 //                .rotateY((float) rotation.y)
 //                .rotateZ((float) rotation.z)
