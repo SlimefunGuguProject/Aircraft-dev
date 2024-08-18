@@ -33,9 +33,7 @@ public final class HudUtil {
     public static ModelText rollText(@NotNull VehicleState state, @NotNull Vector3f hudCenter, @NotNull Vector3f offset) {
         return defaultText()
                 .translate(new Vector3f(0, 1.2F, 0))
-                .rotateY(state.rotation.y)
-                .rotateZ(state.rotation.z)
-                .rotateX(state.rotation.x)
+                .lookAlong(Utils.rotate(new Vector3d(1.0, 0.0, 0.0), state.rotation))
                 .translate(hudCenter)
                 .translate(offset)
                 .lookAlong(BlockFace.WEST);
@@ -44,9 +42,7 @@ public final class HudUtil {
     public static ModelCuboid rollCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
         return defaultCuboid()
                 .translate(new Vector3f(0, 1.2F, 0))
-                .rotateY(state.rotation.y)
-                .rotateZ(state.rotation.z)
-                .rotateX(state.rotation.x)
+                .lookAlong(Utils.rotate(new Vector3d(1.0, 0.0, 0.0), state.rotation))
                 .translate(hudCenter)
                 .lookAlong(BlockFace.WEST);
     }
