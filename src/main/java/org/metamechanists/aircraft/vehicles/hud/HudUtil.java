@@ -14,6 +14,12 @@ import org.metamechanists.displaymodellib.models.components.ModelText;
 public final class HudUtil {
     private HudUtil() {}
 
+    public static double getVelocityPitch(@NotNull VehicleState state) {
+        Vector3d absoluteVelocity = state.absoluteVelocity();
+        double pitch = absoluteVelocity.angle(new Vector3d(absoluteVelocity.x, 0, absoluteVelocity.z));
+        return absoluteVelocity.y > 0 ? pitch : -pitch;
+    }
+
     private static ModelText defaultText() {
         return new ModelText()
                 .background(Color.fromARGB(0, 0, 0, 0))

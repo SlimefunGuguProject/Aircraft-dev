@@ -29,10 +29,6 @@ public class Utils {
                 .mul(component.getMatrix());
     }
 
-    public Vector3d rotate(@NotNull Vector3d vector, @NotNull Quaterniond rotation) {
-        return new Vector3d(vector).rotate(rotation);
-    }
-
     public Vector3d rotateBackwards(@NotNull Vector3d vector, @NotNull Quaterniond rotation) {
         return new Vector3d(vector).rotate(new Quaterniond(rotation).invert());
     }
