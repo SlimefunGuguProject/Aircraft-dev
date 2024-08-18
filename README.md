@@ -16,15 +16,14 @@
 * Reload entire model, including removing nonexistent parts and adding new parts
 * don't simulate insignificant forces
 * repair orientations on reload
+* Dismounting kills throttle
+* Fix broken unmounting when hit water
 - Velocity indicator
-- Fix broken unmounting when hit water
 - Fuel
 - Fuel indicator
-- Vertical/horizontal speed indicator?
 - Recipes
 - Only explode above velocity + explosion size depends on velocity
 - Protection plugin integration
-- Dismounting kills throttle
 - Persist over restarts
 - Taxiing
 - HUD lights up (gradually?) when pilot enters

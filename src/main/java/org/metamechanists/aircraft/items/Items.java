@@ -14,6 +14,7 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Keys;
 import org.metamechanists.aircraft.vehicles.Vehicle;
 import org.metamechanists.aircraft.vehicles.VehicleConfig;
+import org.metamechanists.aircraft.vehicles.controls.SteerControl;
 import org.metamechanists.aircraft.vehicles.controls.ThrottleControl;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
@@ -85,6 +86,28 @@ public class Items {
                 RecipeType.NULL,
                 new ItemStack[]{},
                 -5
+        ).register(addon);
+
+        new SteerControl(
+                AIRCRAFT_GROUP,
+                new SlimefunItemStack(
+                        "AIRCRAFT_STEER_LEFT",
+                        new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer left")
+                ),
+                RecipeType.NULL,
+                new ItemStack[]{},
+                1
+        ).register(addon);
+
+        new SteerControl(
+                AIRCRAFT_GROUP,
+                new SlimefunItemStack(
+                        "AIRCRAFT_STEER_RIGHT",
+                        new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer right")
+                ),
+                RecipeType.NULL,
+                new ItemStack[]{},
+                -1
         ).register(addon);
     }
 

@@ -10,17 +10,16 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicles.Storage;
+import org.metamechanists.aircraft.vehicles.Vehicle;
 import org.metamechanists.aircraft.vehicles.VehicleState;
 
 
-public class ThrottleControl extends SlimefunItem {
-    private static final int MIN_THROTTLE = 0;
-    private static final int MAX_THROTTLE = 100;
-    private final int increment;
+public class SteerControl extends SlimefunItem {
+    private final int direction;
 
-    public ThrottleControl(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int increment) {
+    public SteerControl(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int direction) {
         super(itemGroup, item, recipeType, recipe);
-        this.increment = increment;
+        this.direction = direction;
         addItemHandler(onItemUse());
     }
 
@@ -37,10 +36,16 @@ public class ThrottleControl extends SlimefunItem {
                 return;
             }
 
-            int newThrottle = state.throttle + increment;
-            if (newThrottle >= MIN_THROTTLE && newThrottle <= MAX_THROTTLE) {
-                state.throttle = newThrottle;
+            Vehicle vehicle = Storage.getVehicle(pig);
+            if (vehicle == null) {
+                return;
             }
+
+            if (Vehicle.isOnGround(pig)) {
+                return;
+            }
+
+            state.angularVelocity.y += direction * vehicle.getConfig().getSteeringSpeed();
         };
     }
 }

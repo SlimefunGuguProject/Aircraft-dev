@@ -5,6 +5,7 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.block.Block;
@@ -16,7 +17,6 @@ import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
@@ -31,19 +31,17 @@ import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 public class Vehicle extends SlimefunItem {
     private final String id;
+    @Getter
     private VehicleConfig config;
     private static final boolean ENABLE_DEBUG_ARROWS = false;
 
@@ -216,6 +214,10 @@ public class Vehicle extends SlimefunItem {
         });
     }
 
+    public static boolean isOnGround(@NotNull Pig pig) {
+        return pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
+    }
+
     public void tickAircraft(@NotNull Pig pig) {
         VehicleState state = VehicleState.fromPig(pig);
         if (state == null) {
@@ -226,7 +228,7 @@ public class Vehicle extends SlimefunItem {
         updateDisplayGroup(pig, state, VehicleHud.build(state), state.hudGroup);
         updateOrientations(state);
 
-        boolean isOnGround = pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
+        boolean isOnGround = isOnGround(pig);
 
         Set<SpatialForce> forces = VehicleForces.getForces(config, state, isOnGround);
 

@@ -40,6 +40,8 @@ public class VehicleConfig {
     @Getter
     private final double frictionCoefficient;
     @Getter
+    private final double steeringSpeed;
+    @Getter
     private final double gravityAcceleration;
     @Getter
     private final double airDensity;
@@ -59,6 +61,7 @@ public class VehicleConfig {
         momentOfInertia = traverser.get("momentOfInertia", ErrorSetting.LOG_MISSING_KEY);
         airDensity = traverser.get("airDensity", ErrorSetting.LOG_MISSING_KEY);
         frictionCoefficient = traverser.get("frictionCoefficient", ErrorSetting.LOG_MISSING_KEY);
+        steeringSpeed = traverser.get("steeringSpeed", ErrorSetting.LOG_MISSING_KEY);
 
         YamlTraverser damping = traverser.getSection("damping", ErrorSetting.LOG_MISSING_KEY);
         velocityDamping = damping.get("velocity", ErrorSetting.LOG_MISSING_KEY);
