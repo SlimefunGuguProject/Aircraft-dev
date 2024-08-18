@@ -79,7 +79,7 @@ public class VehicleState {
 
     public double yaw() {
         Vector3d rotationVector = new Vector3d();
-        rotation.getEulerAnglesZXY(rotationVector);
+        rotation.getEulerAnglesYXZ(rotationVector);
         return rotationVector.y;
     }
 }
