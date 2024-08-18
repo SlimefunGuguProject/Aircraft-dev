@@ -241,6 +241,11 @@ public class Vehicle extends SlimefunItem {
         }
         pig.setVelocity(Vector.fromJOML(Utils.rotate(pigVelocity, state.rotation).div(20)));
 
+        Entity e = pig.getPassengers().get(0);
+        if (e != null) {
+            e.sendMessage(state.velocity.toString());
+        }
+
         VehicleHud.update(state, pig.getLocation());
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().expand(0.1, 0.1, 0.1))) {
