@@ -24,11 +24,8 @@ public class Utils {
         Quaternionf quaternionf = new Quaternionf();
         rotation.get(quaternionf);
         return new Matrix4f()
+                .translate(PLAYER_HEAD_OFFSET)
                 .rotate(quaternionf)
-//                .translate(PLAYER_HEAD_OFFSET)
-//                .rotateY((float) rotation.y)
-//                .rotateZ((float) rotation.z)
-//                .rotateX((float) rotation.x)
                 .mul(component.getMatrix());
     }
 
