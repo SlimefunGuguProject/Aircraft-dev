@@ -36,7 +36,7 @@ public class Utils {
                 0, 1, 0,
                 (float) Math.sin(rotation.y), 0, (float) Math.cos(rotation.y)
         );
-        Matrix3f rotationMatrix = new Matrix3f(yaw).mul(pitch).mul(roll);
+        Matrix3f rotationMatrix = new Matrix3f(roll).mul(yaw).mul(pitch);
         // https://msl.cs.uiuc.edu/planning/node102.html
         return new Matrix4f(rotationMatrix)
 //                .translate(PLAYER_HEAD_OFFSET)
