@@ -19,12 +19,12 @@ public class Utils {
     }
 
     public Matrix4f getComponentMatrix(@NotNull ModelComponent component, @NotNull Vector3d rotation) {
-        return new Matrix4f();
+        return new Matrix4f()
 //                .translate(PLAYER_HEAD_OFFSET)
 //                .rotateY((float) rotation.y)
 //                .rotateZ((float) rotation.z)
 //                .rotateX((float) rotation.x)
-//                .mul(component.getMatrix());
+                .mul(component.getMatrix());
     }
 
     public Vector3d rotate(@NotNull Vector3d vector, @NotNull Vector3d rotation) {
