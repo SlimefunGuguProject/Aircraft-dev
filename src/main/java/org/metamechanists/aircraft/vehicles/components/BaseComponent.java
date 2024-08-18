@@ -40,7 +40,7 @@ public abstract class BaseComponent implements Component {
         Vector3f location = traverser.getVector3f("location", ErrorSetting.LOG_MISSING_KEY).sub(translation);
         Vector3d rotation = traverser.getVector3d("rotation", ErrorSetting.LOG_MISSING_KEY);
         Vector3f mirrorLocation = new Vector3f(location.x, location.y, -location.z);
-        Vector3d mirrorRotation = new Vector3d(rotation.x, -rotation.y, -rotation.z);
+        Vector3d mirrorRotation = new Vector3d(-rotation.x, -rotation.y, rotation.z);
 
         List<BaseComponent> components = new ArrayList<>();
         if (hingedTraverser != null) {
