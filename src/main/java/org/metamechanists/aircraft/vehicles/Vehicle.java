@@ -224,9 +224,9 @@ public class Vehicle extends SlimefunItem {
             return;
         }
 
+        updateOrientations(state);
         updateDisplayGroup(pig, state, config.getCuboids(state), state.componentGroup);
         updateDisplayGroup(pig, state, VehicleHud.build(state), state.hudGroup);
-        updateOrientations(state);
 
         boolean isOnGround = isOnGround(pig);
 
@@ -261,11 +261,6 @@ public class Vehicle extends SlimefunItem {
             pigVelocity.set(0);
         }
         pig.setVelocity(Vector.fromJOML(state.absoluteVelocity().div(20)));
-
-        Entity e = pig.getPassengers().get(0);
-        if (e != null) {
-            e.sendMessage(new Vector3d(state.yaw(), state.pitch(), state.roll()).toString());
-        }
 
         VehicleHud.update(state, pig.getLocation());
 
