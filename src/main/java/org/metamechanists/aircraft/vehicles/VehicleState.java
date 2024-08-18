@@ -65,21 +65,16 @@ public class VehicleState {
         traverser.set("hudGroupId", hudGroup.getParentUUID());
     }
 
+    // https://stackoverflow.com/questions/5782658/extracting-yaw-from-a-quaternion
     public double roll() {
-        Vector3d rotationVector = new Vector3d();
-        rotation.getEulerAnglesZYX(rotationVector);
-        return rotationVector.x;
+        return Math.atan2(2.0 * (rotation.z * rotation.y + rotation.w * rotation.x) , 1.0 - 2.0 * (rotation.x * rotation.x + rotation.y * rotation.y));
     }
 
     public double pitch() {
-        Vector3d rotationVector = new Vector3d();
-        rotation.getEulerAnglesYXZ(rotationVector);
-        return rotationVector.z;
+        return Math.asin(2.0 * (rotation.y * rotation.w - rotation.z * rotation.x));
     }
 
     public double yaw() {
-        Vector3d rotationVector = new Vector3d();
-        rotation.getEulerAnglesYXZ(rotationVector);
-        return rotationVector.y;
+        return Math.atan2(2.0 * (rotation.z * rotation.w + rotation.x * rotation.y) , - 1.0 + 2.0 * (rotation.w * rotation.w + rotation.x * rotation.x));
     }
 }
