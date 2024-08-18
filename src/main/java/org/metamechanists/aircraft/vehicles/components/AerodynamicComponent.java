@@ -26,7 +26,7 @@ public interface AerodynamicComponent extends Component {
 
     static @NotNull List<AerodynamicComponent> fromTraverser(@NotNull YamlTraverser traverser, Vector3f translation) {
         YamlTraverser hingedTraverser = traverser.getSection("hinged", ErrorSetting.NO_BEHAVIOUR);
-        boolean mirror = traverser.get("mirror", ErrorSetting.LOG_MISSING_KEY);
+        boolean mirror = traverser.get("mirror", false);
         Vector3f location = traverser.getVector3f("location", ErrorSetting.LOG_MISSING_KEY).sub(translation);
         Vector3d rotation = traverser.getVector3d("rotation", ErrorSetting.LOG_MISSING_KEY);
         Vector3f mirrorLocation = new Vector3f(location.x, location.y, -location.z);
