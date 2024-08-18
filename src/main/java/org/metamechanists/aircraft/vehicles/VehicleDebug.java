@@ -8,6 +8,7 @@ import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
+import org.metamechanists.aircraft.vehicles.forces.VehicleForces;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;

@@ -1,10 +1,12 @@
-package org.metamechanists.aircraft.vehicles;
+package org.metamechanists.aircraft.vehicles.forces;
 
 import org.bukkit.entity.Pig;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.Utils;
+import org.metamechanists.aircraft.vehicles.VehicleConfig;
+import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForceType;
 import org.metamechanists.aircraft.vehicles.surfaces.VehicleSurface;
@@ -67,8 +69,8 @@ public final class VehicleForces {
         Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce(config, state));
         forces.add(getThrustForce(config, state));
-        forces.addAll(getDragForces(config, state));
-        forces.addAll(getLiftForces(config, state));
+//        forces.addAll(getDragForces(config, state));
+//        forces.addAll(getLiftForces(config, state));
         forces.add(getFrictionForce(config, state, isOnGround, getAcceleration(config, forces).mul(config.getMass())));
         return forces;
     }

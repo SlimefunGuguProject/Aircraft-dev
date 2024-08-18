@@ -17,12 +17,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
+import org.metamechanists.aircraft.vehicles.forces.VehicleForces;
 import org.metamechanists.aircraft.vehicles.hud.VehicleHud;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
@@ -191,6 +191,16 @@ public class Vehicle extends SlimefunItem {
             if (state == null) {
                 Aircraft.getInstance().getLogger().warning("Failed to handle onKey: vehicle state of " + pig.getUniqueId() + " is null");
                 return;
+            }
+
+            if (key == 'w') {
+                state.angularVelocity.z -= 0.02;
+            } else if (key == 's') {
+                state.angularVelocity.z += 0.02;
+            } else if (key == 'a') {
+                state.angularVelocity.x -= 0.02;
+            } else if (key == 'd') {
+                state.angularVelocity.x += 0.02;
             }
 
             config.onKey(state, key);
