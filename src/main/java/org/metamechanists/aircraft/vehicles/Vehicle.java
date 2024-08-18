@@ -220,7 +220,7 @@ public class Vehicle extends SlimefunItem {
         Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, state, forces);
         state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
 
-        state.rotation.add(new Vector3d(state.angularVelocity).div(20));
+        state.rotation.add(Utils.rotateBackwards(state.angularVelocity, state.rotation).div(20));
 
 //        if (isOnGround) {
 ////            angularAcceleration.y -= config.getGroundYawDamping() * state.getYaw();
