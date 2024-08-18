@@ -29,3 +29,4 @@
 
 - symmetry on some parts
 - don't simulate insignificant forces
+- repair orientations on reload

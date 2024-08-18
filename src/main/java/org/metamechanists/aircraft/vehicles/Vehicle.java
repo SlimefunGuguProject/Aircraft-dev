@@ -220,7 +220,7 @@ public class Vehicle extends SlimefunItem {
         Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, state, forces);
         state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
 
-        state.rotation.add(Utils.rotateBackwards(state.angularVelocity, state.rotation).div(20));
+        state.rotation.add(Utils.rotate(state.angularVelocity, state.rotation).div(20));
 
 //        if (isOnGround) {
 ////            angularAcceleration.y -= config.getGroundYawDamping() * state.getYaw();
@@ -239,7 +239,7 @@ public class Vehicle extends SlimefunItem {
         if (pigVelocity.length() > 100) {
             pigVelocity.set(0);
         }
-        pig.setVelocity(Vector.fromJOML(Utils.rotateBackwards(pigVelocity, state.rotation).div(20)));
+        pig.setVelocity(Vector.fromJOML(Utils.rotate(pigVelocity, state.rotation).div(20)));
 
         Entity e = pig.getPassengers().get(0);
         if (e != null) {
