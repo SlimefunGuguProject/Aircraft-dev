@@ -223,10 +223,11 @@ public class Vehicle extends SlimefunItem {
             state.rotation.rotateAxis(state.angularVelocity.length() / 20, new Vector3d(state.angularVelocity).normalize());
         }
 
-//        if (isOnGround) {
-////            angularAcceleration.y -= config.getGroundYawDamping() * state.getYaw();
-//            relativeAngularVelocity.z -= config.getGroundPitchDamping() * state.getPitch();
-//        }
+        if (isOnGround) {
+            angularAcceleration.x -= config.getGroundRollDamping() * state.roll();
+            angularAcceleration.y -= config.getGroundYawDamping() * state.yaw();
+            angularAcceleration.z -= config.getGroundPitchDamping() * state.pitch();
+        }
 
         if (ENABLE_DEBUG_ARROWS) {
             VehicleDebug.tickDebug(pig, config, state, isOnGround);

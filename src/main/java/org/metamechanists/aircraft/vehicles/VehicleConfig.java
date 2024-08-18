@@ -44,6 +44,8 @@ public class VehicleConfig {
     @Getter
     private final double airDensity;
     @Getter
+    private final double groundRollDamping;
+    @Getter
     private final double groundPitchDamping;
     @Getter
     private final double groundYawDamping;
@@ -63,6 +65,7 @@ public class VehicleConfig {
         YamlTraverser damping = traverser.getSection("damping", ErrorSetting.LOG_MISSING_KEY);
         velocityDamping = damping.get("velocity", ErrorSetting.LOG_MISSING_KEY);
         angularVelocityDamping = damping.get("angularVelocity", ErrorSetting.LOG_MISSING_KEY);
+        groundRollDamping = damping.get("groundRoll", ErrorSetting.LOG_MISSING_KEY);
         groundPitchDamping = damping.get("groundPitch", ErrorSetting.LOG_MISSING_KEY);
         groundYawDamping = damping.get("groundYaw", ErrorSetting.LOG_MISSING_KEY);
 
