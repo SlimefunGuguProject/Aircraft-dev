@@ -73,7 +73,7 @@ public final class RadarPanel {
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f center = new Vector3f(-0.2F, 0.0F, -0.3F).add(hudCenter);
+        Vector3f center = new Vector3f(-0.3F, 0.0F, -0.2F).add(hudCenter);
         double rotation = 0.785;
 
         addOctagon(hudComponents, "outer-octagon", center, rotation, Material.GREEN_CONCRETE, 0.3);
