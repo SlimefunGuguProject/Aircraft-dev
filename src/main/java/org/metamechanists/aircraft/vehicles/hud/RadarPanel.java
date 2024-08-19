@@ -26,25 +26,25 @@ public final class RadarPanel {
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(0.0)
-                .translate(0, 0, diameter / 2)
+                .translate(diameter / 2, 0, 0)
                 .scale(new Vector3d(sideSize, RADAR_LINE_SIZE, 0.00001)));
         hudComponents.put(name + "-2", HudUtil.rollCuboid(center)
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(PI / 4)
-                .translate(0, 0, diameter / 2)
+                .translate(diameter / 2, 0, 0)
                 .scale(new Vector3d(sideSize, RADAR_LINE_SIZE, 0.00001)));
         hudComponents.put(name + "-3", HudUtil.rollCuboid(center)
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(PI / 2)
-                .translate(0, 0, diameter / 2)
+                .translate(diameter / 2, 0, 0)
                 .scale(new Vector3d(sideSize, RADAR_LINE_SIZE, 0.00001)));
         hudComponents.put(name + "-4", HudUtil.rollCuboid(center)
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(PI * 3 / 4)
-                .translate(0, 0, diameter / 2)
+                .translate(diameter / 2, 0, 0)
                 .scale(new Vector3d(sideSize, RADAR_LINE_SIZE, 0.00001)));
     }
 
