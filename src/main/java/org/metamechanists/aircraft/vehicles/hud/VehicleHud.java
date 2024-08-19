@@ -20,6 +20,7 @@ public final class VehicleHud {
         Horizon.build(state, hudComponents, hudCenter);
         Compass.build(state, hudComponents, hudCenter);
         BottomPanel.build(state, hudComponents, hudCenter);
+        RadarPanel.build(state, hudComponents, hudCenter);
         return hudComponents;
     }
 
