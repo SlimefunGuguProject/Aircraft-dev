@@ -26,26 +26,26 @@ public final class RadarPanel {
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(0.0)
-                .translate(diameter / 2 + RADAR_LINE_SIZE / 2, 0, 0)
-                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize, 0.0001)));
+                .translate(diameter / 2, 0, 0)
+                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize + RADAR_LINE_SIZE / 2, 0.0001)));
         hudComponents.put(name + "-2", HudUtil.rollCuboid(center)
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(PI / 4)
-                .translate(diameter / 2 + RADAR_LINE_SIZE / 2, 0, 0)
-                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize, 0.00001)));
+                .translate(diameter / 2, 0, 0)
+                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize + RADAR_LINE_SIZE / 2, 0.00001)));
         hudComponents.put(name + "-3", HudUtil.rollCuboid(center)
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(PI / 2)
-                .translate(diameter / 2 + RADAR_LINE_SIZE / 2, 0, 0)
-                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize, 0.0001)));
+                .translate(diameter / 2, 0, 0)
+                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize + RADAR_LINE_SIZE / 2, 0.0001)));
         hudComponents.put(name + "-4", HudUtil.rollCuboid(center)
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(PI * 3 / 4)
-                .translate(diameter / 2 + RADAR_LINE_SIZE / 2, 0, 0)
-                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize, 0.00001)));
+                .translate(diameter / 2, 0, 0)
+                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize + RADAR_LINE_SIZE / 2, 0.00001)));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
