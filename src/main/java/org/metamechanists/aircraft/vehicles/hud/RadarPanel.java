@@ -76,8 +76,8 @@ public final class RadarPanel {
         Vector3f center = new Vector3f(-0.1F, 0.0F, -0.3F).add(hudCenter);
         double rotation = 0.785;
 
-        addOctagon(hudComponents, "outer-octagon", center, rotation, Material.GREEN_CONCRETE, 0.3);
-        addOctagon(hudComponents, "middle-octagon", center, rotation, Material.LIME_TERRACOTTA, 0.2);
-        addOctagon(hudComponents, "inner-octagon", center, rotation, Material.LIME_CONCRETE, 0.1);
+        addOctagon(hudComponents, "outer-octagon", center, rotation, Material.GREEN_CONCRETE, 0.24);
+        addOctagon(hudComponents, "middle-octagon", center, rotation, Material.LIME_TERRACOTTA, 0.16);
+        addOctagon(hudComponents, "inner-octagon", center, rotation, Material.LIME_CONCRETE, 0.08);
     }
 }
