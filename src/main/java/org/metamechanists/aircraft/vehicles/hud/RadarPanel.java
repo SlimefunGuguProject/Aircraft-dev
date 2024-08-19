@@ -26,25 +26,25 @@ public final class RadarPanel {
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(0.0)
-                .translate(diameter / 2, 0, 0)
-                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize, 0.00001)));
+                .translate(diameter / 2 + RADAR_LINE_SIZE / 2, 0, 0)
+                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize, 0.0001)));
         hudComponents.put(name + "-2", HudUtil.rollCuboid(center)
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(PI / 4)
-                .translate(diameter / 2, 0, 0)
+                .translate(diameter / 2 + RADAR_LINE_SIZE / 2, 0, 0)
                 .scale(new Vector3d(RADAR_LINE_SIZE, sideSize, 0.00001)));
         hudComponents.put(name + "-3", HudUtil.rollCuboid(center)
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(PI / 2)
-                .translate(diameter / 2, 0, 0)
-                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize, 0.00001)));
+                .translate(diameter / 2 + RADAR_LINE_SIZE / 2, 0, 0)
+                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize, 0.0001)));
         hudComponents.put(name + "-4", HudUtil.rollCuboid(center)
                 .rotateY(rotation)
                 .material(material)
                 .rotateZ(PI * 3 / 4)
-                .translate(diameter / 2, 0, 0)
+                .translate(diameter / 2 + RADAR_LINE_SIZE / 2, 0, 0)
                 .scale(new Vector3d(RADAR_LINE_SIZE, sideSize, 0.00001)));
     }
 
@@ -52,8 +52,8 @@ public final class RadarPanel {
         Vector3f center = new Vector3f(0.0F, 0.0F, -0.4F).add(hudCenter);
         double rotation = 0.785;
 
-        addOctagon(hudComponents, "outer-octagon", center, rotation, Material.GREEN_TERRACOTTA, 0.3);
-        addOctagon(hudComponents, "middle-octagon", center, rotation, Material.GREEN_CONCRETE, 0.2);
-        addOctagon(hudComponents, "inner-octagon", center, rotation, Material.LIME_TERRACOTTA, 0.1);
+        addOctagon(hudComponents, "outer-octagon", center, rotation, Material.GREEN_CONCRETE, 0.3);
+        addOctagon(hudComponents, "middle-octagon", center, rotation, Material.LIME_TERRACOTTA, 0.2);
+        addOctagon(hudComponents, "inner-octagon", center, rotation, Material.LIME_CONCRETE, 0.1);
     }
 }
