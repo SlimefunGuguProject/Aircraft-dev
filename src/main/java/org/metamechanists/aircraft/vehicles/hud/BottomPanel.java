@@ -21,36 +21,33 @@ public final class BottomPanel {
 
     private BottomPanel() {}
 
-    private static ModelText getThrotteValue(Vector3f hudCenter, Vector3f panelCenter) {
-        return HudUtil.rollText(hudCenter)
-                .translate(panelCenter)
+    private static ModelText getThrotteValue(Vector3f center) {
+        return HudUtil.rollText(center)
                 .translate(-0.09F, 0.034F, 0.0F)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F));
     }
 
-    private static ModelCuboid getThrottleBackground(Vector3f hudCenter, Vector3f panelCenter) {
-        return HudUtil.rollCuboid(hudCenter)
+    private static ModelCuboid getThrottleBackground(Vector3f center) {
+        return HudUtil.rollCuboid(center)
                 .material(Material.BLACK_TERRACOTTA)
-                .translate(panelCenter)
                 .translate(0.0F, 0.0F , 0.0F)
                 .scale(new Vector3f(THROTTLE_SIZE, 0.01F, 0.001F));
     }
 
-    private static ModelCuboid getThrottleForeground(@NotNull VehicleState state, Vector3f hudCenter, Vector3f panelCenter) {
+    private static ModelCuboid getThrottleForeground(@NotNull VehicleState state, Vector3f center) {
         float fraction = (float) (state.throttle / 100.0);
-        return HudUtil.rollCuboid(hudCenter)
+        return HudUtil.rollCuboid(center)
                 .material(Material.LIGHT_BLUE_CONCRETE)
-                .translate(panelCenter)
                 .translate(-0.1F + 0.5F * THROTTLE_SIZE * fraction, 0.0F, 0.001F)
                 .scale(new Vector3f(THROTTLE_SIZE * fraction, 0.01F, 0.001F));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f panelCenter = new Vector3f(0.0F, -0.36F, 0.0F);
+        Vector3f center = new Vector3f(0.0F, -0.36F, 0.0F).add(hudCenter);
 
-        hudComponents.put("throttle_value", getThrotteValue(hudCenter, panelCenter));
-        hudComponents.put("throttle_background", getThrottleBackground(hudCenter, panelCenter));
-        hudComponents.put("throttle_foreground", getThrottleForeground(state, hudCenter, panelCenter));
+        hudComponents.put("throttle_value", getThrotteValue(center));
+        hudComponents.put("throttle_background", getThrottleBackground(center));
+        hudComponents.put("throttle_foreground", getThrottleForeground(state, center));
     }
 
     public static void update(@NotNull VehicleState state, @NotNull Map<String, Display> displays) {
