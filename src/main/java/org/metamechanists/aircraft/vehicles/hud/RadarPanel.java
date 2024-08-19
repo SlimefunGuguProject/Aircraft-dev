@@ -17,32 +17,36 @@ public final class RadarPanel {
 
     private static void addOctagon(
             VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, String name,
-            Vector3f center, Material material, double diameter, double width) {
+            Vector3f center, Material material, double diameter, double offset) {
         double sideSize = diameter / (1.0 + Math.sqrt(2));
 
         hudComponents.put(name + "-1", HudUtil.rollIndependentCuboid(state, center)
+                .translate(0, 0, -offset)
                 .material(material)
                 .rotateZ(0.0)
-                .scale(new Vector3d(sideSize, diameter, width)));
+                .scale(new Vector3d(sideSize, diameter, 0.0001)));
         hudComponents.put(name + "-2", HudUtil.rollIndependentCuboid(state, center)
+                .translate(0, 0, -offset)
                 .material(material)
                 .rotateZ(PI / 4)
-                .scale(new Vector3d(sideSize, diameter, width)));
+                .scale(new Vector3d(sideSize, diameter, 0.0001)));
         hudComponents.put(name + "-3", HudUtil.rollIndependentCuboid(state, center)
+                .translate(0, 0, -offset)
                 .material(material)
                 .rotateZ(PI / 2)
-                .scale(new Vector3d(sideSize, diameter, width)));
+                .scale(new Vector3d(sideSize, diameter, 0.0001)));
         hudComponents.put(name + "-4", HudUtil.rollIndependentCuboid(state, center)
+                .translate(0, 0, -offset)
                 .material(material)
                 .rotateZ(PI * 3 / 4)
-                .scale(new Vector3d(sideSize, diameter, width)));
+                .scale(new Vector3d(sideSize, diameter, 0.001)));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f center = new Vector3f(0.0F, 0.0F, -1.0F).add(hudCenter);
+        Vector3f center = new Vector3f(0.0F, 0.0F, -0.4F).add(hudCenter);
 
-        addOctagon(state, hudComponents, "outer-octagon", center, Material.GREEN_TERRACOTTA, 0.6, 0.0002);
-        addOctagon(state, hudComponents, "middle-octagon", center, Material.GREEN_CONCRETE, 0.4, 0.0004);
-        addOctagon(state, hudComponents, "inner-octagon", center, Material.LIME_TERRACOTTA, 0.2, 0.0006);
+        addOctagon(state, hudComponents, "outer-octagon", center, Material.GREEN_STAINED_GLASS, 0.3, 0.09);
+        addOctagon(state, hudComponents, "middle-octagon", center, Material.GREEN_STAINED_GLASS, 0.2, 0.06);
+        addOctagon(state, hudComponents, "inner-octagon", center, Material.GREEN_STAINED_GLASS, 0.1, 0.03);
     }
 }
