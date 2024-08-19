@@ -46,10 +46,34 @@ public final class RadarPanel {
                 .rotateZ(PI * 3 / 4)
                 .translate(diameter / 2, 0, 0)
                 .scale(new Vector3d(RADAR_LINE_SIZE, sideSize + RADAR_LINE_SIZE / 2, 0.00001)));
+        hudComponents.put(name + "-5", HudUtil.rollCuboid(center)
+                .rotateY(rotation)
+                .material(material)
+                .rotateZ(PI)
+                .translate(diameter / 2, 0, 0)
+                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize + RADAR_LINE_SIZE / 2, 0.0001)));
+        hudComponents.put(name + "-6", HudUtil.rollCuboid(center)
+                .rotateY(rotation)
+                .material(material)
+                .rotateZ(PI * 5 / 4)
+                .translate(diameter / 2, 0, 0)
+                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize + RADAR_LINE_SIZE / 2, 0.00001)));
+        hudComponents.put(name + "-7", HudUtil.rollCuboid(center)
+                .rotateY(rotation)
+                .material(material)
+                .rotateZ(PI * 3 / 2)
+                .translate(diameter / 2, 0, 0)
+                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize + RADAR_LINE_SIZE / 2, 0.0001)));
+        hudComponents.put(name + "-8", HudUtil.rollCuboid(center)
+                .rotateY(rotation)
+                .material(material)
+                .rotateZ(PI * 7 / 4)
+                .translate(diameter / 2, 0, 0)
+                .scale(new Vector3d(RADAR_LINE_SIZE, sideSize + RADAR_LINE_SIZE / 2, 0.00001)));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
-        Vector3f center = new Vector3f(0.0F, 0.0F, -0.4F).add(hudCenter);
+        Vector3f center = new Vector3f(-0.4F, 0.0F, -0.4F).add(hudCenter);
         double rotation = 0.785;
 
         addOctagon(hudComponents, "outer-octagon", center, rotation, Material.GREEN_CONCRETE, 0.3);
