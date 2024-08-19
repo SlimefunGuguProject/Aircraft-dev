@@ -25,25 +25,25 @@ public final class RadarPanel {
                 .translate(0, 0, -offset)
                 .material(material)
                 .rotateZ(0.0)
-                .scale(new Vector3d(sideSize, diameter, 0.002)));
+                .scale(new Vector3d(sideSize, diameter, 0.00001)));
         hudComponents.put(name + "-2", HudUtil.rollIndependentCuboid(state, center)
                 .rotateY(rotation)
                 .translate(0, 0, -offset - 0.0003)
                 .material(material)
                 .rotateZ(PI / 4)
-                .scale(new Vector3d(sideSize, diameter, 0.004)));
+                .scale(new Vector3d(sideSize, diameter, 0.00001)));
         hudComponents.put(name + "-3", HudUtil.rollIndependentCuboid(state, center)
                 .rotateY(rotation)
                 .translate(0, 0, -offset - 0.0006)
                 .material(material)
                 .rotateZ(PI / 2)
-                .scale(new Vector3d(sideSize, diameter, 0.006)));
+                .scale(new Vector3d(sideSize, diameter, 0.00001)));
         hudComponents.put(name + "-4", HudUtil.rollIndependentCuboid(state, center)
                 .rotateY(rotation)
                 .translate(0, 0, -offset - 0.0009)
                 .material(material)
                 .rotateZ(PI * 3 / 4)
-                .scale(new Vector3d(sideSize, diameter, 0.08)));
+                .scale(new Vector3d(sideSize, diameter, 0.00001)));
     }
 
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
