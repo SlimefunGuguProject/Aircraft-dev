@@ -72,8 +72,8 @@ public abstract class BaseComponent implements Component {
                 .material(material)
                 .translate(location)
                 .rotate(this.rotation)
-                .rotate(rotation)
                 .translate(new Vector3f((float) translation.x, (float) translation.y, (float) translation.z))
+                .rotate(rotation)
                 .scale(size);
     }
 }
