@@ -8,6 +8,7 @@ import org.metamechanists.aircraft.vehicles.components.AerodynamicComponent;
 import org.metamechanists.aircraft.vehicles.components.BaseComponent;
 import org.metamechanists.aircraft.vehicles.components.Component;
 import org.metamechanists.aircraft.vehicles.components.HingeComponent;
+import org.metamechanists.aircraft.vehicles.components.PropellerComponent;
 import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
 import org.metamechanists.aircraft.vehicles.surfaces.VehicleSurface;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
@@ -119,6 +120,9 @@ public class VehicleConfig {
         Map<String, ControlSurfaceOrientation> map = new HashMap<>();
         for (Component component : baseComponents) {
             if (component instanceof HingeComponent) {
+                map.put(component.getName(), new ControlSurfaceOrientation());
+            }
+            if (component instanceof PropellerComponent) {
                 map.put(component.getName(), new ControlSurfaceOrientation());
             }
         }
