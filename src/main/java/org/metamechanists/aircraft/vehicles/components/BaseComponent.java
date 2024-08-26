@@ -35,6 +35,8 @@ public abstract class BaseComponent implements Component {
 
     public static @NotNull List<BaseComponent> fromTraverser(@NotNull YamlTraverser traverser, Vector3f translation) {
         YamlTraverser hingedTraverser = traverser.getSection("hinged", ErrorSetting.NO_BEHAVIOUR);
+        YamlTraverser propellerTraverser = traverser.getSection("propeller", ErrorSetting.NO_BEHAVIOUR);
+
         String name = traverser.path();
         boolean mirror = traverser.get("mirror", false);
         Vector3f location = traverser.getVector3f("location", ErrorSetting.LOG_MISSING_KEY).sub(translation);
@@ -48,6 +50,13 @@ public abstract class BaseComponent implements Component {
                 components.add(new HingeComponent(traverser, hingedTraverser, name + "-mirror", mirrorLocation, mirrorRotation));
             }
             components.add(new HingeComponent(traverser, hingedTraverser, name, location, rotation));
+
+        } else if (propellerTraverser != null) {
+            if (mirror) {
+                components.add(new PropellerComponent(traverser, propellerTraverser, name + "-mirror", mirrorLocation, mirrorRotation));
+            }
+            components.add(new PropellerComponent(traverser, propellerTraverser, name, location, rotation));
+
         } else {
             if (mirror) {
                 components.add(new FixedComponent(traverser, name + "-mirror", mirrorLocation, mirrorRotation));

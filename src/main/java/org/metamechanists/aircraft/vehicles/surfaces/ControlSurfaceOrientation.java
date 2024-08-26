@@ -3,6 +3,9 @@ package org.metamechanists.aircraft.vehicles.surfaces;
 import lombok.Getter;
 import org.metamechanists.aircraft.utils.Utils;
 
+import static java.lang.Math.PI;
+
+
 @Getter
 public class ControlSurfaceOrientation {
     private double angle;
@@ -18,6 +21,11 @@ public class ControlSurfaceOrientation {
     public void adjust(double rotationRate, double rotationMax) {
         angle = Utils.clampToRange(angle + rotationRate, -rotationMax, rotationMax);
         ticksUntilReturn = 1;
+    }
+
+    public void spin(double delta) {
+        angle += delta;
+        angle %= 2.0 * PI;
     }
 
     public void moveTowardsCenter(double rotationRate) {
