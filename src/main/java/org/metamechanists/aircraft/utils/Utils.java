@@ -14,7 +14,7 @@ import org.metamechanists.displaymodellib.models.components.ModelComponent;
 @UtilityClass
 public class Utils {
     public final int BRIGHTNESS_ON = 15;
-    private final Vector3f PLAYER_HEAD_OFFSET = new Vector3f(0, 1.2F, 0);
+    private final Vector3f PLAYER_HEAD_OFFSET = new Vector3f(0, 0.0F, 0);
 
     public double clampToRange(double value, double min, double max) {
         return Math.max(Math.min(value, max), min);
