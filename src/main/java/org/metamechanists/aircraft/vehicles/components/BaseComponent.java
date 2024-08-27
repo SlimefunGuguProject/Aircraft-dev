@@ -69,6 +69,7 @@ public abstract class BaseComponent implements Component {
 
     protected ModelCuboid getCuboid(Vector3d rotation, @NotNull Vector3d translation) {
         return new ModelCuboid()
+                .interpolationDuration(1)
                 .material(material)
                 .translate(location)
                 .rotate(this.rotation)
