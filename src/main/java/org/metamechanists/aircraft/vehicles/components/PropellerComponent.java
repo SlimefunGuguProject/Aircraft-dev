@@ -32,9 +32,9 @@ public class PropellerComponent extends BaseComponent {
 
     @Override
     public ModelCuboid getCuboid(@NotNull VehicleState state) {
-        Vector3d translation = new Vector3d(0.0, -size.x / 2.0, 0.0)
-                .mul(sin(state.orientations.get(name).getAngle()));
-        return getCuboid(getRotation(state), translation);
+//        Vector3d translation = new Vector3d(0.0, -size.x / 2.0, 0.0)
+//                .mul(sin(state.orientations.get(name).getAngle()));
+        return getCuboid(getRotation(state), new Vector3d());
     }
 
     @Override
