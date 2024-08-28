@@ -75,7 +75,7 @@ public abstract class BaseComponent implements Component {
                 .translate(location)
                 .rotate(this.rotation)
                 .translate(new Vector3f((float) translation.x, (float) translation.y, (float) translation.z))
-                .rotate(rotation)
-                .scale(size);
+                .scale(size)
+                .rotate(rotation);
     }
 }
