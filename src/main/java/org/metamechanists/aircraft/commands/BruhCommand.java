@@ -29,7 +29,7 @@ public class BruhCommand extends BaseCommand {
             x.setInterpolationDelay(0);
             x.setInterpolationDuration(4);
             x.setTransformationMatrix(new TransformationMatrixBuilder()
-                    .rotate(0.0, PI / 4 * Bukkit.getServer().getCurrentTick(), 0.0)
+                    .rotate(0.0, PI / 16 * Bukkit.getServer().getCurrentTick(), 0.0)
                     .scale(1.0F, 0.2F, 0.2F)
                     .buildForBlockDisplay());
         }, 0, 4);
