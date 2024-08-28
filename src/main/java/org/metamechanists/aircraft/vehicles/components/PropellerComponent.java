@@ -5,11 +5,9 @@ import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicles.VehicleState;
-import org.metamechanists.displaymodellib.models.components.ModelCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 import org.metamechanists.metalib.yaml.YamlTraverser.ErrorSetting;
-
-import static java.lang.Math.sin;
 
 
 public class PropellerComponent extends BaseComponent {
@@ -31,7 +29,7 @@ public class PropellerComponent extends BaseComponent {
     }
 
     @Override
-    public ModelCuboid getCuboid(@NotNull VehicleState state) {
+    public ModelItem getCuboid(@NotNull VehicleState state) {
         return getCuboid(getRotation(state), new Vector3d());
     }
 

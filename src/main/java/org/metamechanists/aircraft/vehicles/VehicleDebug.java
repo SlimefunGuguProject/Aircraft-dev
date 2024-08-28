@@ -9,7 +9,7 @@ import org.metamechanists.aircraft.utils.PersistentDataTraverser;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicles.forces.VehicleForces;
-import org.metamechanists.displaymodellib.models.components.ModelCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
 
@@ -60,7 +60,7 @@ public final class VehicleDebug {
                 case FRICTION -> Material.YELLOW_CONCRETE;
             };
 
-            display = new ModelCuboid()
+            display = new ModelItem()
                     .material(material)
                     .brightness(15)
                     .scale(0.1F, 0.01F, 0.01F)
@@ -75,6 +75,6 @@ public final class VehicleDebug {
                 .lookAlong(new Vector3f((float) force.force().x, (float) force.force().y, (float) force.force().z))
                 .translate(0.0F, 0.0F, (float) force.force().length())
                 .scale(0.1F, 0.1F, 2.0F * (float) force.force().length())
-                .buildForBlockDisplay());
+                .buildForItemDisplay());
     }
 }

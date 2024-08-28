@@ -100,9 +100,9 @@ public class VehicleConfig {
 
     @SuppressWarnings("SimplifyForEach")
     public Map<String, ModelComponent> getCuboids(VehicleState state) {
-        Map<String, ModelComponent> cuboids = new HashMap<>();
-        baseComponents.forEach(baseComponent -> cuboids.put(baseComponent.getName(), baseComponent.getCuboid(state)));
-        return cuboids;
+        Map<String, ModelComponent> components = new HashMap<>();
+        baseComponents.forEach(baseComponent -> components.put(baseComponent.getName(), baseComponent.getCuboid(state)));
+        return components;
     }
 
     public void onKey(VehicleState state, char key) {

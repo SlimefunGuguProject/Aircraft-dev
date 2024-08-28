@@ -2,12 +2,10 @@ package org.metamechanists.aircraft.vehicles.components;
 
 import lombok.Getter;
 import org.bukkit.Material;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
-import org.metamechanists.aircraft.vehicles.Vehicle;
-import org.metamechanists.displaymodellib.models.components.ModelCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 import org.metamechanists.metalib.yaml.YamlTraverser.ErrorSetting;
 
@@ -68,8 +66,8 @@ public abstract class BaseComponent implements Component {
         return components;
     }
 
-    protected ModelCuboid getCuboid(Vector3d rotation, @NotNull Vector3d translation) {
-        return new ModelCuboid()
+    protected ModelItem getCuboid(Vector3d rotation, @NotNull Vector3d translation) {
+        return new ModelItem()
                 .material(material)
                 .translate(location)
                 .rotate(this.rotation)

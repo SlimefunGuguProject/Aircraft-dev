@@ -8,9 +8,9 @@ import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicles.VehicleState;
-import org.metamechanists.displaymodellib.models.components.ModelCuboid;
-import org.metamechanists.displaymodellib.models.components.ModelText;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
+import org.metamechanists.displaymodellib.models.components.ModelItem;
+import org.metamechanists.displaymodellib.models.components.ModelText;
 
 import java.util.Map;
 
@@ -27,14 +27,14 @@ public final class BottomPanel {
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F));
     }
 
-    private static ModelCuboid getThrottleBackground(Vector3f center) {
+    private static ModelItem getThrottleBackground(Vector3f center) {
         return HudUtil.rollCuboid(center)
                 .material(Material.BLACK_TERRACOTTA)
                 .translate(0.0F, 0.0F , 0.0F)
                 .scale(new Vector3f(THROTTLE_SIZE, 0.01F, 0.001F));
     }
 
-    private static ModelCuboid getThrottleForeground(@NotNull VehicleState state, Vector3f center) {
+    private static ModelItem getThrottleForeground(@NotNull VehicleState state, Vector3f center) {
         float fraction = (float) (state.throttle / 100.0);
         return HudUtil.rollCuboid(center)
                 .material(Material.LIGHT_BLUE_CONCRETE)

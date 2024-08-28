@@ -7,7 +7,7 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicles.VehicleState;
-import org.metamechanists.displaymodellib.models.components.ModelCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.displaymodellib.models.components.ModelText;
 
 
@@ -26,8 +26,8 @@ public final class HudUtil {
                 .brightness(Utils.BRIGHTNESS_ON);
     }
 
-    private static ModelCuboid defaultCuboid() {
-        return new ModelCuboid()
+    private static ModelItem defaultCuboid() {
+        return new ModelItem()
                 .brightness(Utils.BRIGHTNESS_ON);
     }
 
@@ -38,7 +38,7 @@ public final class HudUtil {
                 .lookAlong(BlockFace.WEST);
     }
 
-    public static ModelCuboid rollCuboid(@NotNull Vector3f hudCenter) {
+    public static ModelItem rollCuboid(@NotNull Vector3f hudCenter) {
         return defaultCuboid()
                 .translate(hudCenter)
                 .lookAlong(BlockFace.WEST);
@@ -56,7 +56,7 @@ public final class HudUtil {
                 .lookAlong(BlockFace.WEST);
     }
 
-    public static ModelCuboid rollIndependentCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
+    public static ModelItem rollIndependentCuboid(@NotNull VehicleState state, @NotNull Vector3f hudCenter) {
         return defaultCuboid()
                 .translate(hudCenter)
                 .undoRotate(state.rotation)
