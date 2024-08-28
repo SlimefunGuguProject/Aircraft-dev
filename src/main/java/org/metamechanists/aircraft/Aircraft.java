@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.commands.AircraftCommand;
 import org.metamechanists.aircraft.commands.BruhCommand;
 import org.metamechanists.aircraft.items.Items;
+import org.metamechanists.aircraft.vehicles.Vehicle;
 import org.metamechanists.aircraft.vehicles.controls.MountHandler;
 import org.metamechanists.aircraft.vehicles.VehicleTicker;
 import org.metamechanists.aircraft.vehicles.controls.KeyboardHandler;
@@ -25,7 +26,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
     }
 
     private void initializeRunnables() {
-        new VehicleTicker().runTaskTimer(this, 0, VehicleTicker.INTERVAL_TICKS);
+        new VehicleTicker().runTaskTimer(this, 0, 20 / Vehicle.TICK_RATE);
     }
 
     private void initializeCommands() {

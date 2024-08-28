@@ -45,6 +45,8 @@ public class Vehicle extends SlimefunItem {
     private VehicleConfig config;
     private static final boolean ENABLE_DEBUG_ARROWS = false;
 
+    public static final int TICK_RATE = 4;
+
     public Vehicle(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String id, VehicleConfig config) {
         super(itemGroup, item, recipeType, recipe);
         this.id = id;
@@ -235,7 +237,7 @@ public class Vehicle extends SlimefunItem {
         state.velocity.mul(1.0 - config.getVelocityDamping());
         Vector3d acceleration = VehicleForces.getAcceleration(config, forces);
         VehicleForces.cancelVelocityAndAcceleration(pig, state.velocity, acceleration);
-        state.velocity.add(new Vector3d(acceleration).div(20));
+        state.velocity.add(new Vector3d(acceleration).div(TICK_RATE));
 
         state.angularVelocity.mul(1.0 - config.getAngularVelocityDamping());
         Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, state, forces);
@@ -243,9 +245,9 @@ public class Vehicle extends SlimefunItem {
             angularAcceleration.x -= config.getGroundRollDamping() * state.roll();
             angularAcceleration.z -= config.getGroundPitchDamping() * state.pitch();
         }
-        state.angularVelocity.add(new Vector3d(angularAcceleration).div(20));
+        state.angularVelocity.add(new Vector3d(angularAcceleration).div(TICK_RATE));
         if (state.angularVelocity.length() > 0.00001) { // Check to avoid dividing by 0 in normalize
-            state.rotation.rotateAxis(state.angularVelocity.length() / 20, new Vector3d(state.angularVelocity).normalize());
+            state.rotation.rotateAxis(state.angularVelocity.length() / TICK_RATE, new Vector3d(state.angularVelocity).normalize());
         }
 
         if (ENABLE_DEBUG_ARROWS) {
@@ -260,7 +262,7 @@ public class Vehicle extends SlimefunItem {
         if (pigVelocity.length() > 100) {
             pigVelocity.set(0);
         }
-        pig.setVelocity(Vector.fromJOML(state.absoluteVelocity().div(20)));
+        pig.setVelocity(Vector.fromJOML(state.absoluteVelocity().div(TICK_RATE)));
 
         VehicleHud.update(state, pig.getLocation());
 
