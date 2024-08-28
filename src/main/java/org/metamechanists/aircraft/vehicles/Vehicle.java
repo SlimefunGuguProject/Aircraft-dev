@@ -163,6 +163,7 @@ public class Vehicle extends SlimefunItem {
         // Update transformations + interoplations
         for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
             entry.getValue().setTransformationMatrix(Utils.getComponentMatrix(expected.get(entry.getKey()), state.rotation));
+            entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
         }
     }
 
