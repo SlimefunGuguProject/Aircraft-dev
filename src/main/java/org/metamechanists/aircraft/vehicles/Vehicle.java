@@ -45,7 +45,9 @@ public class Vehicle extends SlimefunItem {
     private VehicleConfig config;
     private static final boolean ENABLE_DEBUG_ARROWS = false;
 
-    public static final int TICK_RATE = 4;
+    public static final int PHYSICS_UPDATES_PER_SECOND = 20;
+    public static final int AIRCRAFT_TICK_INTERVAL = 4;
+    public static final int PHYSICS_UPDATES_PER_AIRCRAFT_TICK = PHYSICS_UPDATES_PER_SECOND / AIRCRAFT_TICK_INTERVAL;
 
     public Vehicle(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String id, VehicleConfig config) {
         super(itemGroup, item, recipeType, recipe);
@@ -220,6 +222,28 @@ public class Vehicle extends SlimefunItem {
         return pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
     }
 
+    private void doPhysicsUpdate(Pig pig, VehicleState state) {
+        boolean isOnGround = isOnGround(pig);
+
+        Set<SpatialForce> forces = VehicleForces.getForces(config, state, isOnGround);
+
+        state.velocity.mul(1.0 - config.getVelocityDamping());
+        Vector3d acceleration = VehicleForces.getAcceleration(config, forces);
+        VehicleForces.cancelVelocityAndAcceleration(pig, state.velocity, acceleration);
+        state.velocity.add(new Vector3d(acceleration).div(PHYSICS_UPDATES_PER_SECOND));
+
+        state.angularVelocity.mul(1.0 - config.getAngularVelocityDamping());
+        Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, state, forces);
+        if (isOnGround) {
+            angularAcceleration.x -= config.getGroundRollDamping() * state.roll();
+            angularAcceleration.z -= config.getGroundPitchDamping() * state.pitch();
+        }
+        state.angularVelocity.add(new Vector3d(angularAcceleration).div(PHYSICS_UPDATES_PER_SECOND));
+        if (state.angularVelocity.length() > 0.00001) { // Check to avoid dividing by 0 in normalize
+            state.rotation.rotateAxis(state.angularVelocity.length() / PHYSICS_UPDATES_PER_SECOND, new Vector3d(state.angularVelocity).normalize());
+        }
+    }
+
     public void tickAircraft(@NotNull Pig pig) {
         VehicleState state = VehicleState.fromPig(pig);
         if (state == null) {
@@ -230,28 +254,12 @@ public class Vehicle extends SlimefunItem {
         updateDisplayGroup(pig, state, config.getCuboids(state), state.componentGroup);
         updateDisplayGroup(pig, state, VehicleHud.build(state), state.hudGroup);
 
-        boolean isOnGround = isOnGround(pig);
-
-        Set<SpatialForce> forces = VehicleForces.getForces(config, state, isOnGround);
-
-        state.velocity.mul(1.0 - config.getVelocityDamping());
-        Vector3d acceleration = VehicleForces.getAcceleration(config, forces);
-        VehicleForces.cancelVelocityAndAcceleration(pig, state.velocity, acceleration);
-        state.velocity.add(new Vector3d(acceleration).div(TICK_RATE));
-
-        state.angularVelocity.mul(1.0 - config.getAngularVelocityDamping());
-        Vector3d angularAcceleration = VehicleForces.getAngularAcceleration(config, state, forces);
-        if (isOnGround) {
-            angularAcceleration.x -= config.getGroundRollDamping() * state.roll();
-            angularAcceleration.z -= config.getGroundPitchDamping() * state.pitch();
-        }
-        state.angularVelocity.add(new Vector3d(angularAcceleration).div(TICK_RATE));
-        if (state.angularVelocity.length() > 0.00001) { // Check to avoid dividing by 0 in normalize
-            state.rotation.rotateAxis(state.angularVelocity.length() / TICK_RATE, new Vector3d(state.angularVelocity).normalize());
+        for (int i = 0; i < PHYSICS_UPDATES_PER_AIRCRAFT_TICK; i++) {
+            doPhysicsUpdate(pig, state);
         }
 
         if (ENABLE_DEBUG_ARROWS) {
-            VehicleDebug.tickDebug(pig, config, state, isOnGround);
+            VehicleDebug.tickDebug(pig, config, state, isOnGround(pig));
         }
 
         config.update(state);
@@ -262,7 +270,7 @@ public class Vehicle extends SlimefunItem {
         if (pigVelocity.length() > 100) {
             pigVelocity.set(0);
         }
-        pig.setVelocity(Vector.fromJOML(state.absoluteVelocity().div(TICK_RATE)));
+        pig.setVelocity(Vector.fromJOML(state.absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND)));
 
         VehicleHud.update(state, pig.getLocation());
 

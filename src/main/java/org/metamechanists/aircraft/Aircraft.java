@@ -15,6 +15,8 @@ import org.metamechanists.aircraft.vehicles.controls.MountHandler;
 import org.metamechanists.aircraft.vehicles.VehicleTicker;
 import org.metamechanists.aircraft.vehicles.controls.KeyboardHandler;
 
+import static org.metamechanists.aircraft.vehicles.Vehicle.AIRCRAFT_TICK_INTERVAL;
+
 
 public final class Aircraft extends JavaPlugin implements SlimefunAddon {
     @Getter
@@ -26,7 +28,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
     }
 
     private void initializeRunnables() {
-        new VehicleTicker().runTaskTimer(this, 0, 20 / Vehicle.TICK_RATE);
+        new VehicleTicker().runTaskTimer(this, 0, AIRCRAFT_TICK_INTERVAL);
     }
 
     private void initializeCommands() {
