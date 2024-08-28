@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
 
 import static java.lang.Math.PI;
@@ -21,7 +22,7 @@ import static java.lang.Math.PI;
 public class BruhCommand extends BaseCommand {
     @Subcommand("bruh")
     public static void bruh(@NotNull Player player, String @NotNull [] args) {
-        Display x = new ModelCuboid()
+        Display x = new ModelItem()
                 .material(Material.GRAY_CONCRETE)
                 .interpolationDuration(4)
                 .build(player.getLocation());
@@ -29,7 +30,6 @@ public class BruhCommand extends BaseCommand {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Aircraft.getInstance(), () -> {
             x.setTransformationMatrix(new TransformationMatrixBuilder()
                     .rotate(0.0, PI / 4 * Bukkit.getServer().getCurrentTick(), 0.0)
-                    .translate(-0.5F, -0.1F, 0.1F)
                     .scale(1.0F, 0.2F, 0.2F)
                     .buildForItemDisplay());
             x.setInterpolationDelay(0);
