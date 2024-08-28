@@ -111,7 +111,7 @@
         <dependency>
             <groupId>org.metamechanists</groupId>
             <artifactId>DisplayModelLib</artifactId>
-            <version>29</version>
+            <version>30</version>
             <scope>compile</scope>
         </dependency>
 
