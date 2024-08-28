@@ -27,14 +27,9 @@ public class BruhCommand extends BaseCommand {
                 .interpolationDuration(5)
                 .build(player.getLocation());
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(Aircraft.getInstance(), new BukkitRunnable() {
-            @Override
-            public void run() {
-                x.setTransformationMatrix(new TransformationMatrixBuilder()
-                        .rotate(0.0, PI / 4 * Bukkit.getServer().getCurrentTick(),0.0)
-                        .scale(1.0F, 0.2F, 0.2F)
-                        .buildForBlockDisplay());
-            }
-        }, 0, 5);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Aircraft.getInstance(), () -> x.setTransformationMatrix(new TransformationMatrixBuilder()
+                .rotate(0.0, PI / 4 * Bukkit.getServer().getCurrentTick(),0.0)
+                .scale(1.0F, 0.2F, 0.2F)
+                .buildForBlockDisplay()), 0, 5);
     }
 }
