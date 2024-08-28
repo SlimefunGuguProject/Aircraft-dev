@@ -29,6 +29,7 @@ public class BruhCommand extends BaseCommand {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Aircraft.getInstance(), () -> {
             x.setTransformationMatrix(new TransformationMatrixBuilder()
                     .rotate(0.0, PI / 4 * Bukkit.getServer().getCurrentTick(), 0.0)
+                    .translate(-0.5F, -0.1F, 0.1F)
                     .scale(1.0F, 0.2F, 0.2F)
                     .buildForItemDisplay());
             x.setInterpolationDelay(0);
