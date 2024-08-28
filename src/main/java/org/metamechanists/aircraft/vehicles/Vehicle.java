@@ -47,7 +47,6 @@ public class Vehicle extends SlimefunItem {
 
     public static final int PHYSICS_UPDATES_PER_SECOND = 20;
     public static final int AIRCRAFT_TICK_INTERVAL = 2;
-    public static final int PHYSICS_UPDATES_PER_AIRCRAFT_TICK = PHYSICS_UPDATES_PER_SECOND / AIRCRAFT_TICK_INTERVAL;
 
     public Vehicle(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String id, VehicleConfig config) {
         super(itemGroup, item, recipeType, recipe);
@@ -256,7 +255,7 @@ public class Vehicle extends SlimefunItem {
         updateDisplayGroup(pig, state, config.getCuboids(state), state.componentGroup);
         updateDisplayGroup(pig, state, VehicleHud.build(state), state.hudGroup);
 
-        for (int i = 0; i < PHYSICS_UPDATES_PER_AIRCRAFT_TICK; i++) {
+        for (int i = 0; i < AIRCRAFT_TICK_INTERVAL; i++) {
             doPhysicsUpdate(pig, state);
         }
 
