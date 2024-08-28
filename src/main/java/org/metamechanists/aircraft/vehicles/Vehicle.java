@@ -46,7 +46,7 @@ public class Vehicle extends SlimefunItem {
     private static final boolean ENABLE_DEBUG_ARROWS = false;
 
     public static final int PHYSICS_UPDATES_PER_SECOND = 20;
-    public static final int AIRCRAFT_TICK_INTERVAL = 4;
+    public static final int AIRCRAFT_TICK_INTERVAL = 2;
     public static final int PHYSICS_UPDATES_PER_AIRCRAFT_TICK = PHYSICS_UPDATES_PER_SECOND / AIRCRAFT_TICK_INTERVAL;
 
     public Vehicle(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String id, VehicleConfig config) {
