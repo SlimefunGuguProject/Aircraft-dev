@@ -23,15 +23,15 @@ public class BruhCommand extends BaseCommand {
     public static void bruh(@NotNull Player player, String @NotNull [] args) {
         Display x = new ModelCuboid()
                 .material(Material.GRAY_CONCRETE)
-                .interpolationDuration(4)
                 .build(player.getLocation());
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Aircraft.getInstance(), () -> {
+            x.setInterpolationDelay(0);
+            x.setInterpolationDuration(4);
             x.setTransformationMatrix(new TransformationMatrixBuilder()
                     .rotate(0.0, PI / 4 * Bukkit.getServer().getCurrentTick(), 0.0)
                     .scale(1.0F, 0.2F, 0.2F)
                     .buildForBlockDisplay());
-            x.setInterpolationDelay(0);
         }, 0, 4);
     }
 }
