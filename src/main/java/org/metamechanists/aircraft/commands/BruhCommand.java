@@ -27,7 +27,7 @@ public class BruhCommand extends BaseCommand {
                 .interpolationDuration(5)
                 .build(player.getLocation());
 
-        Bukkit.getScheduler().runTaskTimer(Aircraft.getInstance(), new BukkitRunnable() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Aircraft.getInstance(), new BukkitRunnable() {
             @Override
             public void run() {
                 x.setTransformationMatrix(new TransformationMatrixBuilder()
