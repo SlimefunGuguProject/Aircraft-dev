@@ -8,7 +8,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Transformation;
 import org.jetbrains.annotations.NotNull;
+import org.joml.AxisAngle4f;
+import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
@@ -28,10 +31,7 @@ public class BruhCommand extends BaseCommand {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Aircraft.getInstance(), () -> {
             x.setInterpolationDelay(0);
             x.setInterpolationDuration(4);
-            x.setTransformationMatrix(new TransformationMatrixBuilder()
-                    .rotate(0.0, PI / 16 * Bukkit.getServer().getCurrentTick(), 0.0)
-                    .scale(1.0F, 0.2F, 0.2F)
-                    .buildForBlockDisplay());
+            x.setTransformation(new Transformation(new Vector3f(), new AxisAngle4f((float) (PI / 8 * Bukkit.getServer().getCurrentTick()), 0.0F, 1.0F, 0.0F), new Vector3f(1.0F, 0.2F, 0.2F), new AxisAngle4f()));
         }, 0, 4);
     }
 }
