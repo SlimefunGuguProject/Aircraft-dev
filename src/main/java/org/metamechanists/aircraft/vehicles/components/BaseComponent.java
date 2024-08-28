@@ -70,12 +70,11 @@ public abstract class BaseComponent implements Component {
 
     protected ModelCuboid getCuboid(Vector3d rotation, @NotNull Vector3d translation) {
         return new ModelCuboid()
-                .interpolationDuration(Vehicle.AIRCRAFT_TICK_INTERVAL)
                 .material(material)
                 .translate(location)
                 .rotate(this.rotation)
                 .translate(new Vector3f((float) translation.x, (float) translation.y, (float) translation.z))
-                .scale(size)
-                .rotate(rotation);
+                .rotate(rotation)
+                .scale(size);
     }
 }

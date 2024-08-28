@@ -46,7 +46,7 @@ public class Vehicle extends SlimefunItem {
     private static final boolean ENABLE_DEBUG_ARROWS = false;
 
     public static final int PHYSICS_UPDATES_PER_SECOND = 20;
-    public static final int AIRCRAFT_TICK_INTERVAL = 2;
+    public static final int AIRCRAFT_TICK_INTERVAL = 4;
 
     public Vehicle(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String id, VehicleConfig config) {
         super(itemGroup, item, recipeType, recipe);
@@ -161,9 +161,9 @@ public class Vehicle extends SlimefunItem {
 
         // Update transformations + interoplations
         for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
-            entry.getValue().setTransformationMatrix(Utils.getComponentMatrix(expected.get(entry.getKey()), state.rotation));
             entry.getValue().setInterpolationDelay(0);
             entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
+            entry.getValue().setTransformationMatrix(Utils.getComponentMatrix(expected.get(entry.getKey()), state.rotation));
         }
     }
 
