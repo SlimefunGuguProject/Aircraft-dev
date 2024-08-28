@@ -6,6 +6,7 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.vehicles.Vehicle;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 import org.metamechanists.metalib.yaml.YamlTraverser.ErrorSetting;
@@ -69,7 +70,7 @@ public abstract class BaseComponent implements Component {
 
     protected ModelCuboid getCuboid(Vector3d rotation, @NotNull Vector3d translation) {
         return new ModelCuboid()
-                .interpolationDuration(1)
+                .interpolationDuration(Vehicle.AIRCRAFT_TICK_INTERVAL)
                 .material(material)
                 .translate(location)
                 .rotate(this.rotation)

@@ -160,7 +160,7 @@ public class Vehicle extends SlimefunItem {
             }
         }
 
-        // Update transformations
+        // Update transformations + interoplations
         for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
             entry.getValue().setTransformationMatrix(Utils.getComponentMatrix(expected.get(entry.getKey()), state.rotation));
         }
