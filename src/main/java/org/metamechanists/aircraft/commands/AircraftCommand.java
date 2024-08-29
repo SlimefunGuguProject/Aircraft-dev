@@ -11,12 +11,17 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.items.Items;
 import org.metamechanists.aircraft.vehicles.Storage;
 import org.metamechanists.aircraft.vehicles.VehicleState;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 
 @CommandAlias("aircraft")
@@ -53,7 +58,37 @@ public class AircraftCommand extends BaseCommand {
             return;
         }
 
+        Map<String, Integer> groupCounts = new HashMap<>();
+
+        for (String key : state.componentGroup.getDisplays().keySet()) {
+            String group = key.split("\\.")[0];
+            if (groupCounts.containsKey(key)) {
+                groupCounts.put(key, groupCounts.get(key) + 1);
+            } else {
+                groupCounts.put(key, 0);
+            }
+        }
+
+        for (String key : state.hudGroup.getDisplays().keySet()) {
+            String group = key.split("\\.")[0];
+            if (groupCounts.containsKey(key)) {
+                groupCounts.put(key, groupCounts.get(key) + 1);
+            } else {
+                groupCounts.put(key, 0);
+            }
+        }
+
+        player.sendMessage(ChatColor.GRAY + "Total components: " + state.componentGroup.getDisplays().size() + state.hudGroup.getDisplays().size());
+
+        player.sendMessage(ChatColor.YELLOW + "-----------");
+
         player.sendMessage(ChatColor.GRAY + "Model components: " + state.componentGroup.getDisplays().size());
-        player.sendMessage(ChatColor.GRAY + "HUD components: " + state.componentGroup.getDisplays().size());
+        player.sendMessage(ChatColor.GRAY + "HUD components: " + state.hudGroup.getDisplays().size());
+
+        player.sendMessage(ChatColor.YELLOW + "-----------");
+
+        for (Entry<String, Integer> entry : groupCounts.entrySet()) {
+            player.sendMessage(ChatColor.GRAY + entry.getKey() + ": " + entry.getValue());
+        }
     }
 }
