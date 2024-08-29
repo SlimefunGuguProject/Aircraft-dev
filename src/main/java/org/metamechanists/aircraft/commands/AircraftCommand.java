@@ -79,19 +79,19 @@ public class AircraftCommand extends BaseCommand {
 
         for (String key : state.componentGroup.getDisplays().keySet()) {
             String group = key.split("[.]")[0] + "." + key.split("[.]")[1];
-            if (groupCounts.containsKey(key)) {
-                groupCounts.put(key, groupCounts.get(key) + 1);
+            if (groupCounts.containsKey(group)) {
+                groupCounts.put(group, groupCounts.get(group) + 1);
             } else {
-                groupCounts.put(key, 0);
+                groupCounts.put(group, 1);
             }
         }
 
         for (String key : state.hudGroup.getDisplays().keySet()) {
             String group = key.split("[.]")[0] + "." + key.split("[.]")[1];
-            if (groupCounts.containsKey(key)) {
-                groupCounts.put(key, groupCounts.get(key) + 1);
+            if (groupCounts.containsKey(group)) {
+                groupCounts.put(group, groupCounts.get(group) + 1);
             } else {
-                groupCounts.put(key, 1);
+                groupCounts.put(group, 1);
             }
         }
         return groupCounts;
