@@ -11,7 +11,6 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Display;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -58,25 +57,7 @@ public class AircraftCommand extends BaseCommand {
             return;
         }
 
-        Map<String, Integer> groupCounts = new HashMap<>();
-
-        for (String key : state.componentGroup.getDisplays().keySet()) {
-            String group = key.split("\\.")[0];
-            if (groupCounts.containsKey(key)) {
-                groupCounts.put(key, groupCounts.get(key) + 1);
-            } else {
-                groupCounts.put(key, 0);
-            }
-        }
-
-        for (String key : state.hudGroup.getDisplays().keySet()) {
-            String group = key.split("\\.")[0];
-            if (groupCounts.containsKey(key)) {
-                groupCounts.put(key, groupCounts.get(key) + 1);
-            } else {
-                groupCounts.put(key, 0);
-            }
-        }
+        Map<String, Integer> groupCounts = getGroupCounts(state);
 
         player.sendMessage(ChatColor.GRAY + "Total components: " + state.componentGroup.getDisplays().size() + state.hudGroup.getDisplays().size());
 
@@ -90,5 +71,29 @@ public class AircraftCommand extends BaseCommand {
         for (Entry<String, Integer> entry : groupCounts.entrySet()) {
             player.sendMessage(ChatColor.GRAY + entry.getKey() + ": " + entry.getValue());
         }
+    }
+
+    @NotNull
+    private static Map<String, Integer> getGroupCounts(@NotNull VehicleState state) {
+        Map<String, Integer> groupCounts = new HashMap<>();
+
+        for (String key : state.componentGroup.getDisplays().keySet()) {
+            String group = key.split("[.]")[0] + "." + key.split("[.]")[1];
+            if (groupCounts.containsKey(key)) {
+                groupCounts.put(key, groupCounts.get(key) + 1);
+            } else {
+                groupCounts.put(key, 0);
+            }
+        }
+
+        for (String key : state.hudGroup.getDisplays().keySet()) {
+            String group = key.split("[.]")[0] + "." + key.split("[.]")[1];
+            if (groupCounts.containsKey(key)) {
+                groupCounts.put(key, groupCounts.get(key) + 1);
+            } else {
+                groupCounts.put(key, 1);
+            }
+        }
+        return groupCounts;
     }
 }
