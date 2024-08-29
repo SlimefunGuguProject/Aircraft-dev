@@ -18,7 +18,11 @@ import org.metamechanists.aircraft.items.Items;
 import org.metamechanists.aircraft.vehicles.Storage;
 import org.metamechanists.aircraft.vehicles.VehicleState;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -58,6 +62,8 @@ public class AircraftCommand extends BaseCommand {
         }
 
         Map<String, Integer> groupCounts = getGroupCounts(state);
+        List<String> sorted = new ArrayList<>(groupCounts.keySet().stream().toList());
+        sorted.sort(Comparator.comparingInt(groupCounts::get));
 
         player.sendMessage(ChatColor.GRAY + "Total components: " + state.componentGroup.getDisplays().size() + state.hudGroup.getDisplays().size());
 
@@ -68,8 +74,8 @@ public class AircraftCommand extends BaseCommand {
 
         player.sendMessage(ChatColor.YELLOW + "-----------");
 
-        for (Entry<String, Integer> entry : groupCounts.entrySet()) {
-            player.sendMessage(ChatColor.GRAY + entry.getKey() + ": " + entry.getValue());
+        for (String key : sorted) {
+            player.sendMessage(ChatColor.GRAY + key + ": " + groupCounts.get(key));
         }
     }
 
