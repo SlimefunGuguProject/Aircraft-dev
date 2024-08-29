@@ -70,7 +70,7 @@ public final class Compass {
     }
 
     public static void build(@NotNull VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, @NotNull Vector3f hudCenter) {
-        hudComponents.put("compass_notch", getCompassNotch(hudCenter));
+        hudComponents.put("compass.notch", getCompassNotch(hudCenter));
 
         final int bars = 60;
         final int extraBars = 8;
@@ -81,7 +81,7 @@ public final class Compass {
         for (int i = -bars-extraBars; i <= bars+extraBars; i++) {
             Vector3f barOffset = new Vector3f(horizontalSpacing * i, 0, 0);
             Vector3f totalAdjustment = new Vector3f(barOffset).add(compassOffset);
-            hudComponents.put("compass_bar_" + i, getCompassBar(hudCenter, totalAdjustment, compassRadius, i));
+            hudComponents.put("compass.bar." + i, getCompassBar(hudCenter, totalAdjustment, compassRadius, i));
 
             if ((i+420) % 30 == 0) {
                 String text = switch (i) {
@@ -91,13 +91,13 @@ public final class Compass {
                     case 30 -> "S";
                     default -> "ERROR";
                 };
-                hudComponents.put("compass_direction_" + i, getCompassDirection(hudCenter, totalAdjustment, compassRadius, text));
+                hudComponents.put("compass.direction." + i, getCompassDirection(hudCenter, totalAdjustment, compassRadius, text));
             } else if ((i+420) % 10 == 0) {
                 int degrees = (i + 60) * 3 - 90;
                 if (degrees < 0) {
                     degrees += 360;
                 }
-                hudComponents.put("compass_degree_" + i, getCompassDegree(hudCenter, totalAdjustment, compassRadius, degrees));
+                hudComponents.put("compass.degree." + i, getCompassDegree(hudCenter, totalAdjustment, compassRadius, degrees));
             }
         }
     }

@@ -45,13 +45,13 @@ public final class BottomPanel {
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
         Vector3f center = new Vector3f(0.0F, -0.36F, 0.0F).add(hudCenter);
 
-        hudComponents.put("throttle_value", getThrotteValue(center));
-        hudComponents.put("throttle_background", getThrottleBackground(center));
-        hudComponents.put("throttle_foreground", getThrottleForeground(state, center));
+        hudComponents.put("bottom-panel.throttle.value", getThrotteValue(center));
+        hudComponents.put("bottom-panel.throttle.background", getThrottleBackground(center));
+        hudComponents.put("bottom-panel.throttle.foreground", getThrottleForeground(state, center));
     }
 
     public static void update(@NotNull VehicleState state, @NotNull Map<String, Display> displays) {
-        TextDisplay throttleText = (TextDisplay) displays.get("throttle_value");
+        TextDisplay throttleText = (TextDisplay) displays.get("hud.throttle.value");
         throttleText.text(Component.text(state.throttle).color(THROTTLE_VALUE_COLOR));
     }
 }

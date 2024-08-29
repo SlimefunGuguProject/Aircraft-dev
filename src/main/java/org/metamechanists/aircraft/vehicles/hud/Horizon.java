@@ -73,17 +73,17 @@ public final class Horizon {
                 .translate(0.5F, 0.35F, 0);
     }
 
-    public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
+    public static void build(@NotNull VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
         Vector3f horizonOffset = new Vector3f(0, (float) (0.5 * -state.pitch()), 0);
         final float horizonRadius = 0.15F;
         boolean shouldRenderCenter = Math.abs(horizonOffset.y) < horizonRadius;
 
-        hudComponents.put("altitude", getAltitudeIndicator(state, hudCenter));
-        hudComponents.put("horizon", getRotationIndicator(state, hudCenter));
-        hudComponents.put("horizon_center", getArtificialHorizonMajor(hudCenter, horizonOffset, shouldRenderCenter));
+        hudComponents.put("horizon.altitude", getAltitudeIndicator(state, hudCenter));
+        hudComponents.put("horizon.horizon", getRotationIndicator(state, hudCenter));
+        hudComponents.put("horizon.horizon_center", getArtificialHorizonMajor(hudCenter, horizonOffset, shouldRenderCenter));
 
         Vector3f velocityOffset = new Vector3f(0, (float) (0.5 * HudUtil.getVelocityPitch(state)), 0).add(horizonOffset);
-        hudComponents.put("velocity", getVelocityIndicator(state, hudCenter, velocityOffset));
+        hudComponents.put("horizon.velocity", getVelocityIndicator(state, hudCenter, velocityOffset));
 
         final int bars = 30;
         final float verticalSpacing = 0.25F * (float) ((PI / 1.14) / (bars));
@@ -100,17 +100,17 @@ public final class Horizon {
             Component component = Component.text(text).color(color);
             boolean shouldRender = Math.abs(totalAdjustment.length()) < horizonRadius;
 
-            hudComponents.put("horizon_bar_" + i, getArtificialHorizonBar(hudCenter, horizonOffset, component, barOffset, shouldRender));
+            hudComponents.put("horizon.bar." + i, getArtificialHorizonBar(hudCenter, horizonOffset, component, barOffset, shouldRender));
 
             if (longBar) {
                 Component degreeComponent = Component.text(i * (90 / (bars-1))).color(HORIZON_MINOR_COLOR);
-                hudComponents.put("horizon_degree_" + i, getArtificialHorizonDegree(hudCenter, degreeComponent, totalAdjustment, shouldRender));
+                hudComponents.put("horizon.degree." + i, getArtificialHorizonDegree(hudCenter, degreeComponent, totalAdjustment, shouldRender));
             }
         }
     }
 
     public static void update(@NotNull Map<String, Display> displays, @NotNull Location location) {
-        TextDisplay altitudeText = (TextDisplay) displays.get("altitude");
+        TextDisplay altitudeText = (TextDisplay) displays.get("horizon.altitude");
         altitudeText.text(Component.text(location.getBlockY()).color(HORIZON_ALTITUDE_COLOR));
     }
 }
