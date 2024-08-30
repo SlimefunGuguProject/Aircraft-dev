@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 
@@ -46,6 +47,7 @@ public final class Compass {
 
     private static ModelComponent getCompassDirection(@NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, String text) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
+        Aircraft.getInstance().getLogger().warning(String.valueOf(shouldRender));
         return HudUtil.rollText(hudCenter)
                 .viewRange(shouldRender ? 1 : 0)
                 .text(Component.text(text).color(COMPASS_DIRECTION_COLOR))
