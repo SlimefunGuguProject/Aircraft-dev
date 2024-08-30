@@ -103,7 +103,6 @@ public final class Compass {
                     degrees += 360;
                 }
                 hudComponents.put("compass.degree." + i, getCompassDegree(hudCenter, totalAdjustment, compassRadius, degrees));
-                Aircraft.getInstance().getLogger().warning(String.valueOf(((ModelText) getCompassDegree(hudCenter, totalAdjustment, compassRadius, degrees)).getMain().getViewRange()));
             }
         }
     }
