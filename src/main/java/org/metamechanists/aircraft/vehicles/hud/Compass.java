@@ -7,6 +7,7 @@ import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
+import org.metamechanists.displaymodellib.models.components.ModelText;
 
 import java.util.Map;
 
@@ -102,6 +103,7 @@ public final class Compass {
                     degrees += 360;
                 }
                 hudComponents.put("compass.degree." + i, getCompassDegree(hudCenter, totalAdjustment, compassRadius, degrees));
+                Aircraft.getInstance().getLogger().warning(String.valueOf(((ModelText) getCompassDegree(hudCenter, totalAdjustment, compassRadius, degrees)).getMain().getViewRange()));
             }
         }
     }
