@@ -166,7 +166,7 @@ public class Vehicle extends SlimefunItem {
         for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
             ModelComponent expectedComponent = expected.get(entry.getKey());
 
-            float viewRange = 0;
+            float viewRange = 1;
             if (expectedComponent instanceof ModelItem text) {
                 if (text.getMain().getViewRange() != null) {
                     viewRange = text.getMain().getViewRange();
@@ -178,6 +178,8 @@ public class Vehicle extends SlimefunItem {
                     viewRange = item.getMain().getViewRange();
                 }
             }
+
+            Aircraft.getInstance().getLogger().warning(String.valueOf(viewRange));
 
             entry.getValue().setInterpolationDelay(0);
             entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
