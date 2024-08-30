@@ -29,6 +29,9 @@ import org.metamechanists.aircraft.vehicles.hud.VehicleHud;
 import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
+import org.metamechanists.displaymodellib.models.components.ModelCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelItem;
+import org.metamechanists.displaymodellib.models.components.ModelText;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
 
 import java.util.List;
@@ -161,12 +164,24 @@ public class Vehicle extends SlimefunItem {
 
         // Update transformations + interoplations
         for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
+            ModelComponent component = expected.get(entry.getKey());
+
+            float viewRange = 0;
+            if (component instanceof ModelItem text) {
+                viewRange = text.getMain().getViewRange();
+            }
+
+            if (component instanceof ModelItem item) {
+                viewRange = item.getMain().getViewRange();
+            }
+
             entry.getValue().setInterpolationDelay(0);
             entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
-            if (entry.getValue().getViewRange() != 0.0) {
+            entry.getValue().setViewRange(viewRange);
+
+            if (viewRange != 0) {
                 entry.getValue().setTransformationMatrix(Utils.getComponentMatrix(expected.get(entry.getKey()), state.rotation));
             }
-            entry.getValue().setViewRange(entry.getValue().getViewRange());
         }
     }
 
