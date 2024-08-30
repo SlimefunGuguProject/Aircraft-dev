@@ -164,16 +164,16 @@ public class Vehicle extends SlimefunItem {
 
         // Update transformations + interoplations
         for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
-            ModelComponent component = expected.get(entry.getKey());
+            ModelComponent expectedComponent = expected.get(entry.getKey());
 
-            float viewRange = 1;
-            if (component instanceof ModelItem text) {
+            float viewRange = 0;
+            if (expectedComponent instanceof ModelItem text) {
                 if (text.getMain().getViewRange() != null) {
                     viewRange = text.getMain().getViewRange();
                 }
             }
 
-            if (component instanceof ModelItem item) {
+            if (expectedComponent instanceof ModelItem item) {
                 if (item.getMain().getViewRange() != null) {
                     viewRange = item.getMain().getViewRange();
                 }
@@ -184,7 +184,7 @@ public class Vehicle extends SlimefunItem {
             entry.getValue().setViewRange(viewRange);
 
             if (viewRange != 0) {
-                entry.getValue().setTransformationMatrix(Utils.getComponentMatrix(expected.get(entry.getKey()), state.rotation));
+                entry.getValue().setTransformationMatrix(Utils.getComponentMatrix(expectedComponent, state.rotation));
             }
         }
     }
