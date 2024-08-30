@@ -179,8 +179,6 @@ public class Vehicle extends SlimefunItem {
                 }
             }
 
-            Aircraft.getInstance().getLogger().warning(String.valueOf(viewRange));
-
             entry.getValue().setInterpolationDelay(0);
             entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
             entry.getValue().setViewRange(viewRange);
