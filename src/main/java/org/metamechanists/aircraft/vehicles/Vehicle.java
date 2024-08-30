@@ -167,7 +167,7 @@ public class Vehicle extends SlimefunItem {
             ModelComponent expectedComponent = expected.get(entry.getKey());
 
             float viewRange = 1;
-            if (expectedComponent instanceof ModelItem text) {
+            if (expectedComponent instanceof ModelText text) {
                 if (text.getMain().getViewRange() != null) {
                     viewRange = text.getMain().getViewRange();
                 }
