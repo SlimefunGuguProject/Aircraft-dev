@@ -65,7 +65,7 @@ public class AircraftCommand extends BaseCommand {
         List<String> sorted = new ArrayList<>(groupCounts.keySet().stream().toList());
         sorted.sort(Comparator.comparingInt(groupCounts::get));
 
-        player.sendMessage(ChatColor.GRAY + "Total components: " + state.componentGroup.getDisplays().size() + state.hudGroup.getDisplays().size());
+        player.sendMessage(ChatColor.GRAY + "Total components: " + (state.componentGroup.getDisplays().size() + state.hudGroup.getDisplays().size()));
 
         player.sendMessage(ChatColor.YELLOW + "-----------");
 

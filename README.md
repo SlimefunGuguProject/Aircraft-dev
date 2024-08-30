@@ -27,7 +27,6 @@
 - Recipes
 - Protection plugin integration
 - Persist over restarts
-- HUD lights up (gradually?) when pilot enters
 - Replace HUD text with cuboids?
 - Caching
 

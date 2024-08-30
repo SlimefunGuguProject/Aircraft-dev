@@ -39,15 +39,17 @@ public final class Horizon {
 
     private static ModelText getArtificialHorizonMajor(Vector3f hudCenter, Vector3f horizonOffset, boolean shouldRender) {
         return HudUtil.rollText(hudCenter, horizonOffset)
+                .viewRange(shouldRender ? 1 : 0)
                 .text(Component.text(HORIZON_MAJOR_TEXT).color(HORIZON_MAJOR_COLOR))
-                .scale(shouldRender ? new Vector3f(0.15F, 0.15F, 0.001F) : new Vector3f())
+                .scale(new Vector3f(0.15F, 0.15F, 0.001F))
                 .translate(0.5F, 0.35F, 0);
     }
 
     private static ModelText getArtificialHorizonBar(Vector3f hudCenter, Vector3f horizonOffset, Component component, Vector3f barOffset, boolean shouldRender) {
         return HudUtil.rollText(hudCenter, new Vector3f(horizonOffset).add(barOffset))
+                .viewRange(shouldRender ? 1 : 0)
                 .text(component)
-                .scale(shouldRender ? new Vector3f(0.1F, 0.1F, 0.001F) : new Vector3f())
+                .scale(new Vector3f(0.1F, 0.1F, 0.001F))
                 .translate(0.5F, 0.35F, 0);
     }
 
