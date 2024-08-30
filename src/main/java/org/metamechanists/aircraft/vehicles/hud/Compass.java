@@ -47,7 +47,6 @@ public final class Compass {
 
     private static ModelComponent getCompassDirection(@NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, String text) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
-        Aircraft.getInstance().getLogger().warning(String.valueOf(shouldRender));
         return HudUtil.rollText(hudCenter)
                 .viewRange(shouldRender ? 1 : 0)
                 .text(Component.text(text).color(COMPASS_DIRECTION_COLOR))

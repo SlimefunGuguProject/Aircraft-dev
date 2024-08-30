@@ -51,7 +51,7 @@ public final class BottomPanel {
     }
 
     public static void update(@NotNull VehicleState state, @NotNull Map<String, Display> displays) {
-        TextDisplay throttleText = (TextDisplay) displays.get("hud.throttle.value");
+        TextDisplay throttleText = (TextDisplay) displays.get("bottom-panel.throttle.value");
         throttleText.text(Component.text(state.throttle).color(THROTTLE_VALUE_COLOR));
     }
 }
