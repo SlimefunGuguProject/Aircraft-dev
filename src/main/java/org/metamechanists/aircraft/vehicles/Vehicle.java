@@ -220,7 +220,7 @@ public class Vehicle extends SlimefunItem {
 
             if (previousExpectedComponent != null) {
                 float matrixDifference = computeMatrixDifference(expectedComponent.getMatrix(), previousExpectedComponent.getMatrix());
-                if (matrixDifference < 1.0e-3) {
+                if (matrixDifference < 1.0e-5) {
                     continue;
                 }
             }
