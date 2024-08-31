@@ -223,10 +223,8 @@ public class Vehicle extends SlimefunItem {
             if (viewRange != null && previousViewRange != null && viewRange == 1 && previousViewRange == 0) {
                 if (entry.getValue() instanceof ItemDisplay display) {
                     display.setItemStack(new ItemStack(Material.AIR));
-                }
-
-                if (entry.getValue() instanceof TextDisplay display) {
-                    display.setText("");
+                } else if (entry.getValue() instanceof TextDisplay display) {
+                    display.setText("bruh");
                 }
             } else {
                 if (entry.getValue() instanceof ItemDisplay display) {
@@ -237,9 +235,7 @@ public class Vehicle extends SlimefunItem {
                             display.setItemStack(item.getMain().getItemStack());
                         }
                     }
-                }
-
-                if (entry.getValue() instanceof TextDisplay display) {
+                } else if (entry.getValue() instanceof TextDisplay display) {
                     if (entry.getValue() instanceof ModelText text) {
                         if (text.getMain().getTextString() != null) {
                             display.setText(text.getMain().getTextString());
