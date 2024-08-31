@@ -300,8 +300,8 @@ public class Vehicle extends SlimefunItem {
         Map<String, ModelComponent> hudComponents = VehicleHud.build(state);
 
         updateOrientations(state);
-        updateDisplayGroup(pig, state, aircraftComponents, Storage.previousAircraftComponents(pig), state.componentGroup);
-        updateDisplayGroup(pig, state, hudComponents, Storage.previousHudComponents(pig), state.hudGroup);
+        updateDisplayGroup(pig, state, Storage.previousAircraftComponents(pig), aircraftComponents, state.componentGroup);
+        updateDisplayGroup(pig, state, Storage.previousHudComponents(pig), hudComponents, state.hudGroup);
 
         Storage.updatePreviousComponents(pig, aircraftComponents, hudComponents);
 
