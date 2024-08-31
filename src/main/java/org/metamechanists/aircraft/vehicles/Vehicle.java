@@ -230,11 +230,20 @@ public class Vehicle extends SlimefunItem {
                 }
             } else {
                 if (entry.getValue() instanceof ItemDisplay display) {
-                    display.setItemStack(((ModelItem) expectedComponent).getMain().getItemStack());
+                    if (expectedComponent instanceof ModelItem item) {
+                        if (item.getMain().getMaterial() != null) {
+                            display.setItemStack(new ItemStack(item.getMain().getMaterial()));
+                        }
+                        if (item.getMain().getItemStack() != null) {
+                            display.setItemStack(item.getMain().getItemStack());
+                        }
+                    }
                 }
 
                 if (entry.getValue() instanceof TextDisplay display) {
-                    display.setText(((ModelText) expectedComponent).getMain().getTextString());
+                    if (entry.getValue() instanceof ModelText text) {
+                        display.setText(text.getMain().getTextString());
+                    }
                 }
             }
 
