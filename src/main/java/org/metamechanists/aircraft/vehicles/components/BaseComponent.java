@@ -5,6 +5,9 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.Aircraft;
+import org.metamechanists.aircraft.utils.Utils;
+import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.metalib.yaml.YamlTraverser;
@@ -67,8 +70,8 @@ public abstract class BaseComponent implements Component {
         return components;
     }
 
-    protected ModelComponent getAircraftModelComponent(Vector3d rotation, @NotNull Vector3d translation) {
-        return new ModelItem()
+    protected ModelComponent getAircraftModelComponent(VehicleState state, Vector3d rotation, @NotNull Vector3d translation) {
+        return Utils.getDefaultModelItem(state)
                 .material(material)
                 .translate(location)
                 .rotate(this.rotation)

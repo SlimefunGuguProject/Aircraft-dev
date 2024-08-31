@@ -21,14 +21,14 @@ public final class BottomPanel {
 
     private BottomPanel() {}
 
-    private static ModelText getThrotteValue(Vector3f center) {
-        return HudUtil.rollText(center)
+    private static ModelText getThrotteValue(VehicleState state, Vector3f center) {
+        return HudUtil.rollText(state, center)
                 .translate(-0.09F, 0.034F, 0.0F)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F));
     }
 
-    private static ModelItem getThrottleBackground(Vector3f center) {
-        return HudUtil.rollCuboid(center)
+    private static ModelItem getThrottleBackground(VehicleState state, Vector3f center) {
+        return HudUtil.rollCuboid(state, center)
                 .material(Material.BLACK_TERRACOTTA)
                 .translate(0.0F, 0.0F , 0.0F)
                 .scale(new Vector3f(THROTTLE_SIZE, 0.01F, 0.001F));
@@ -36,7 +36,7 @@ public final class BottomPanel {
 
     private static ModelItem getThrottleForeground(@NotNull VehicleState state, Vector3f center) {
         float fraction = (float) (state.throttle / 100.0);
-        return HudUtil.rollCuboid(center)
+        return HudUtil.rollCuboid(state, center)
                 .material(Material.LIGHT_BLUE_CONCRETE)
                 .translate(-0.1F + 0.5F * THROTTLE_SIZE * fraction, 0.0F, 0.001F)
                 .scale(new Vector3f(THROTTLE_SIZE * fraction, 0.01F, 0.001F));
@@ -45,8 +45,8 @@ public final class BottomPanel {
     public static void build(VehicleState state, @NotNull Map<String, ModelComponent> hudComponents, Vector3f hudCenter) {
         Vector3f center = new Vector3f(0.0F, -0.36F, 0.0F).add(hudCenter);
 
-        hudComponents.put("bottom-panel.throttle.value", getThrotteValue(center));
-        hudComponents.put("bottom-panel.throttle.background", getThrottleBackground(center));
+        hudComponents.put("bottom-panel.throttle.value", getThrotteValue(state, center));
+        hudComponents.put("bottom-panel.throttle.background", getThrottleBackground(state, center));
         hudComponents.put("bottom-panel.throttle.foreground", getThrottleForeground(state, center));
     }
 

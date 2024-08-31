@@ -31,7 +31,7 @@ public class PropellerComponent extends BaseComponent {
 
     @Override
     public ModelComponent getAircraftModelComponent(@NotNull VehicleState state) {
-        return getAircraftModelComponent(getRotation(state), new Vector3d());
+        return getAircraftModelComponent(state, getRotation(state), new Vector3d());
     }
 
     @Override

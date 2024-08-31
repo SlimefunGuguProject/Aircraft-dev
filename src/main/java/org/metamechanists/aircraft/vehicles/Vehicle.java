@@ -220,7 +220,7 @@ public class Vehicle extends SlimefunItem {
 
             if (previousExpectedComponent != null) {
                 float matrixDifference = computeMatrixDifference(expectedComponent.getMatrix(), previousExpectedComponent.getMatrix());
-                if (matrixDifference < 1.0e-22) {
+                if (matrixDifference < 1.0e-4) {
                     Bukkit.getLogger().warning("bruh");
                     continue;
                 }
@@ -232,7 +232,7 @@ public class Vehicle extends SlimefunItem {
             }
 
             if (viewRange == null || viewRange != 0) {
-                entry.getValue().setTransformationMatrix(Utils.getComponentMatrix(expectedComponent, state.rotation));
+                entry.getValue().setTransformationMatrix(expectedComponent.getMatrix());
             }
         }
     }

@@ -15,7 +15,7 @@ public class FixedComponent extends BaseComponent {
 
     @Override
     public ModelComponent getAircraftModelComponent(@NotNull VehicleState state) {
-        return getAircraftModelComponent(new Vector3d(), new Vector3d());
+        return getAircraftModelComponent(state, new Vector3d(), new Vector3d());
     }
 
     @Override

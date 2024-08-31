@@ -8,7 +8,10 @@ import org.joml.Quaterniond;
 import org.joml.Quaternionf;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.vehicles.VehicleState;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
+import org.metamechanists.displaymodellib.models.components.ModelItem;
+import org.metamechanists.displaymodellib.models.components.ModelText;
 
 
 @UtilityClass
@@ -20,13 +23,20 @@ public class Utils {
         return Math.max(Math.min(value, max), min);
     }
 
-    public Matrix4f getComponentMatrix(@NotNull ModelComponent component, @NotNull Quaterniond rotation) {
+    public ModelItem getDefaultModelItem(@NotNull VehicleState state) {
         Quaternionf quaternionf = new Quaternionf();
-        rotation.get(quaternionf);
-        return new Matrix4f()
+        state.rotation.get(quaternionf);
+        return new ModelItem()
                 .translate(PLAYER_HEAD_OFFSET)
-                .rotate(quaternionf)
-                .mul(component.getMatrix());
+                .rotate(quaternionf);
+    }
+
+    public ModelText getDefaultModelText(@NotNull VehicleState state) {
+        Quaternionf quaternionf = new Quaternionf();
+        state.rotation.get(quaternionf);
+        return new ModelText()
+                .translate(PLAYER_HEAD_OFFSET)
+                .rotate(quaternionf);
     }
 
     public Vector3d rotateBackwards(@NotNull Vector3d vector, @NotNull Quaterniond rotation) {

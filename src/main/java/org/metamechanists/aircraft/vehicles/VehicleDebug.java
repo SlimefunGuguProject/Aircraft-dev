@@ -6,6 +6,7 @@ import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
+import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.utils.id.simple.DisplayGroupId;
 import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicles.forces.VehicleForces;
@@ -60,7 +61,12 @@ public final class VehicleDebug {
                 case FRICTION -> Material.YELLOW_CONCRETE;
             };
 
-            display = new ModelItem()
+            VehicleState state = VehicleState.fromPig(pig);
+            if (state == null) {
+                return;
+            }
+
+            display = Utils.getDefaultModelItem(state)
                     .material(material)
                     .brightness(15)
                     .scale(0.1F, 0.01F, 0.01F)
