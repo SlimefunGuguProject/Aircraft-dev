@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.Aircraft;
@@ -30,6 +31,7 @@ import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
+import org.metamechanists.displaymodellib.models.components.ModelDiamond;
 import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.displaymodellib.models.components.ModelText;
 import org.metamechanists.displaymodellib.sefilib.entity.display.DisplayGroup;
@@ -140,7 +142,30 @@ public class Vehicle extends SlimefunItem {
         Storage.add(pig.getUniqueId());
     }
 
-    private static void updateDisplayGroup(Pig pig, VehicleState state, Map<String, ModelComponent> expected, @NotNull DisplayGroup actual) {
+    private static @Nullable Float modelComponentviewRange(ModelComponent component) {
+        if (component instanceof ModelCuboid cuboid) {
+            return cuboid.getMain().getViewRange();
+        }
+
+        if (component instanceof ModelDiamond diamond) {
+            return diamond.getMain().getViewRange();
+        }
+
+        if (component instanceof ModelText text) {
+            return text.getMain().getViewRange();
+        }
+
+        if (component instanceof ModelItem item) {
+            return item.getMain().getViewRange();
+        }
+
+        return null;
+    }
+
+    private static void updateDisplayGroup(Pig pig, VehicleState state,
+                                           Map<String, ModelComponent> previousExpected,
+                                           Map<String, ModelComponent> expected,
+                                           @NotNull DisplayGroup actual) {
         // Remove components that shouldn't exist any more
         List<String> toRemove = actual.getDisplays()
                 .keySet()
@@ -165,27 +190,23 @@ public class Vehicle extends SlimefunItem {
         // Update transformations + interoplations
         for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
             ModelComponent expectedComponent = expected.get(entry.getKey());
+            ModelComponent previousExpectedComponent = previousExpected.get(entry.getKey());
 
-            float viewRange = 1;
-            if (expectedComponent instanceof ModelText text) {
-                if (text.getMain().getViewRange() != null) {
-                    viewRange = text.getMain().getViewRange();
-                }
-            }
-
-            if (expectedComponent instanceof ModelItem item) {
-                if (item.getMain().getViewRange() != null) {
-                    viewRange = item.getMain().getViewRange();
-                }
-            }
+            Float viewRange = modelComponentviewRange(expectedComponent);
+            Float previousViewRange = modelComponentviewRange(previousExpectedComponent);
 
             Aircraft.getInstance().getLogger().warning(String.valueOf(viewRange));
 
-            entry.getValue().setInterpolationDelay(0);
-            entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
-            entry.getValue().setViewRange(viewRange);
+            if (viewRange != null) {
+                entry.getValue().setViewRange(viewRange);
+            }
 
-            if (viewRange != 0) {
+            if (viewRange == null || previousViewRange != null && viewRange != 0 && previousViewRange != 0) {
+                entry.getValue().setInterpolationDelay(0);
+                entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
+            }
+
+            if (viewRange == null || viewRange != 0) {
                 entry.getValue().setTransformationMatrix(Utils.getComponentMatrix(expectedComponent, state.rotation));
             }
         }
@@ -275,9 +296,14 @@ public class Vehicle extends SlimefunItem {
             return;
         }
 
+        Map<String, ModelComponent> aircraftComponents = config.getCuboids(state);
+        Map<String, ModelComponent> hudComponents = VehicleHud.build(state);
+
         updateOrientations(state);
-        updateDisplayGroup(pig, state, config.getCuboids(state), state.componentGroup);
-        updateDisplayGroup(pig, state, VehicleHud.build(state), state.hudGroup);
+        updateDisplayGroup(pig, state, aircraftComponents, Storage.previousAircraftComponents(pig), state.componentGroup);
+        updateDisplayGroup(pig, state, hudComponents, Storage.previousHudComponents(pig), state.hudGroup);
+
+        Storage.updatePreviousComponents(pig, aircraftComponents, hudComponents);
 
         for (int i = 0; i < AIRCRAFT_TICK_INTERVAL; i++) {
             doPhysicsUpdate(pig, state);

@@ -60,7 +60,7 @@ public final class Compass {
     private static ModelComponent getCompassDegree(@NotNull Vector3f hudCenter, @NotNull Vector3f totalAdjustment, float compassRadius, int degrees) {
         boolean shouldRender = Math.abs(totalAdjustment.x) < compassRadius;
         return HudUtil.rollText(hudCenter)
-                .viewRange(2)
+                .viewRange(shouldRender ? 1 : 0)
                 .text(Component.text(degrees).color(COMPASS_MAJOR_COLOR))
                 .translate(totalAdjustment)
                 .scale(new Vector3f(0.1F, 0.1F, 0.001F))

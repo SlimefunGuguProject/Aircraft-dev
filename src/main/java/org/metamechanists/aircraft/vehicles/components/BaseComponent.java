@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 import org.metamechanists.metalib.yaml.YamlTraverser.ErrorSetting;
@@ -66,7 +67,7 @@ public abstract class BaseComponent implements Component {
         return components;
     }
 
-    protected ModelItem getCuboid(Vector3d rotation, @NotNull Vector3d translation) {
+    protected ModelComponent getAircraftModelComponent(Vector3d rotation, @NotNull Vector3d translation) {
         return new ModelItem()
                 .material(material)
                 .translate(location)

@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicles.VehicleState;
-import org.metamechanists.displaymodellib.models.components.ModelItem;
+import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 
@@ -14,8 +14,8 @@ public class FixedComponent extends BaseComponent {
     }
 
     @Override
-    public ModelItem getCuboid(@NotNull VehicleState state) {
-        return getCuboid(new Vector3d(), new Vector3d());
+    public ModelComponent getAircraftModelComponent(@NotNull VehicleState state) {
+        return getAircraftModelComponent(new Vector3d(), new Vector3d());
     }
 
     @Override

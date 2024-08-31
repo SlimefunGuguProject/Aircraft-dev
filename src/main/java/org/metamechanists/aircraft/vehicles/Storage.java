@@ -9,8 +9,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.items.Items;
 import org.metamechanists.aircraft.utils.PersistentDataTraverser;
+import org.metamechanists.displaymodellib.models.components.ModelComponent;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -19,6 +22,8 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class Storage {
     private Set<UUID> pigs = new HashSet<>();
+    private final Map<UUID, Map<String, ModelComponent>> previousAircraftComponents = new HashMap<>();
+    private final Map<UUID, Map<String, ModelComponent>> previousHudComponents = new HashMap<>();
 
     public @Nullable Pig get(UUID uuid) {
         Entity entity = Bukkit.getEntity(uuid);
@@ -108,5 +113,20 @@ public class Storage {
         }
 
         return Items.getVehicle(name);
+    }
+
+    public void updatePreviousComponents(@NotNull Pig pig,
+                                         @NotNull Map<String, ModelComponent> newPreviousAircraftComponents,
+                                         @NotNull Map<String, ModelComponent> newPreviousHudComponents) {
+        previousAircraftComponents.put(pig.getUniqueId(), newPreviousAircraftComponents);
+        previousHudComponents.put(pig.getUniqueId(), newPreviousHudComponents);
+    }
+
+    public Map<String, ModelComponent> previousAircraftComponents(@NotNull Pig pig) {
+        return previousAircraftComponents.get(pig.getUniqueId());
+    }
+
+    public Map<String, ModelComponent> previousHudComponents(@NotNull Pig pig) {
+        return previousHudComponents.get(pig.getUniqueId());
     }
 }

@@ -5,6 +5,7 @@ import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicles.VehicleState;
+import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 import org.metamechanists.metalib.yaml.YamlTraverser.ErrorSetting;
@@ -37,11 +38,11 @@ public class HingeComponent extends BaseComponent {
     }
 
     @Override
-    public ModelItem getCuboid(@NotNull VehicleState state) {
+    public ModelComponent getAircraftModelComponent(@NotNull VehicleState state) {
         // Translation to hinge around the front of the component
         Vector3d translation = new Vector3d(0.0, -size.x / 2.0, 0.0)
                 .mul(sin(state.orientations.get(name).getAngle()));
-        return getCuboid(getRotation(state), new Vector3d());
+        return getAircraftModelComponent(getRotation(state), new Vector3d());
     }
 
     @Override
