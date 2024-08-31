@@ -224,7 +224,7 @@ public class Vehicle extends SlimefunItem {
                 if (entry.getValue() instanceof ItemDisplay display) {
                     display.setItemStack(new ItemStack(Material.AIR));
                 } else if (entry.getValue() instanceof TextDisplay display) {
-                    display.setText("bruh");
+                    display.setText("");
                 }
             } else {
                 if (entry.getValue() instanceof ItemDisplay display) {
@@ -236,7 +236,7 @@ public class Vehicle extends SlimefunItem {
                         }
                     }
                 } else if (entry.getValue() instanceof TextDisplay display) {
-                    if (entry.getValue() instanceof ModelText text) {
+                    if (expectedComponent instanceof ModelText text) {
                         if (text.getMain().getTextString() != null) {
                             display.setText(text.getMain().getTextString());
                         } else if (text.getMain().getTextComponent() != null) {
