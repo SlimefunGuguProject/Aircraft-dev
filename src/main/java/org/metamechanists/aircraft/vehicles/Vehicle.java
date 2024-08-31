@@ -40,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -206,7 +207,7 @@ public class Vehicle extends SlimefunItem {
                 Aircraft.getInstance().getLogger().warning("screw you mojang");
             }
 
-            if (viewRange == null || previousViewRange != null && viewRange != 0 && previousViewRange != 0) {
+            if (new Random().nextInt(0, 10) == 4) {
                 entry.getValue().setInterpolationDelay(0);
                 entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
             }
