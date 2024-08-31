@@ -229,6 +229,9 @@ public class Vehicle extends SlimefunItem {
             if (viewRange == null || previousViewRange != null && viewRange != 0 && previousViewRange != 0) {
                 entry.getValue().setInterpolationDelay(0);
                 entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
+            } else {
+                entry.getValue().setInterpolationDelay(-1);
+                entry.getValue().setInterpolationDuration(0);
             }
 
             if (viewRange == null || viewRange != 0) {
