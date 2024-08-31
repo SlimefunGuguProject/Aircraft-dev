@@ -216,7 +216,6 @@ public class Vehicle extends SlimefunItem {
             Float viewRange = modelComponentviewRange(expectedComponent);
             Float previousViewRange = modelComponentviewRange(previousExpectedComponent);
 
-            // Keep one behind to avoid interpolation artifacts when we update the matrix for the first time
             if (viewRange != null) {
                 entry.getValue().setViewRange(viewRange);
             }
@@ -239,18 +238,15 @@ public class Vehicle extends SlimefunItem {
                 }
             }
 
-            if (previousExpectedComponent != null) {
-                float matrixDifference = computeMatrixDifference(expectedComponent.getMatrix(), previousExpectedComponent.getMatrix());
-                if (matrixDifference < 1.0e-4) {
-                    Bukkit.getLogger().warning("bruh");
-                    continue;
-                }
-            }
-
             if (viewRange == null || viewRange != 0) {
-                entry.getValue().setInterpolationDelay(0);
-                entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
-                entry.getValue().setTransformationMatrix(expectedComponent.getMatrix());
+                if (previousExpectedComponent != null) {
+                    float matrixDifference = computeMatrixDifference(expectedComponent.getMatrix(), previousExpectedComponent.getMatrix());
+                    if (matrixDifference > 1.0e-4) {
+                        entry.getValue().setInterpolationDelay(0);
+                        entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
+                        entry.getValue().setTransformationMatrix(expectedComponent.getMatrix());
+                    }
+                }
             }
         }
     }
