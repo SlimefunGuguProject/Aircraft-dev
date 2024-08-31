@@ -142,7 +142,7 @@ public class Vehicle extends SlimefunItem {
         Storage.add(pig.getUniqueId());
     }
 
-    private static @Nullable Float modelComponentviewRange(ModelComponent component) {
+    private static @Nullable Float modelComponentviewRange(@Nullable ModelComponent component) {
         if (component instanceof ModelCuboid cuboid) {
             return cuboid.getMain().getViewRange();
         }
@@ -190,7 +190,10 @@ public class Vehicle extends SlimefunItem {
         // Update transformations + interoplations
         for (Entry<String, Display> entry : actual.getDisplays().entrySet()) {
             ModelComponent expectedComponent = expected.get(entry.getKey());
-            ModelComponent previousExpectedComponent = previousExpected.get(entry.getKey());
+            ModelComponent previousExpectedComponent = null;
+            if (previousExpected != null) {
+                previousExpectedComponent = previousExpected.get(entry.getKey());
+            }
 
             Float viewRange = modelComponentviewRange(expectedComponent);
             Float previousViewRange = modelComponentviewRange(previousExpectedComponent);
