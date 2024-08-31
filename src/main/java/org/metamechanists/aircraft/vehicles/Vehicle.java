@@ -168,7 +168,7 @@ public class Vehicle extends SlimefunItem {
 
     // Heuristic for checking the 'difference' between two subsequent matrices
     private static float computeMatrixDifference(@NotNull Matrix4f a, @NotNull Matrix4f b) {
-        Matrix4f difference = a.sub(b);
+        Matrix4f difference = new Matrix4f(a).sub(b);
         float matrixDifference = 0.0F;
         for (int x = 0; x < 4; x++) {
             for (int y = 0; y < 4; y++) {
