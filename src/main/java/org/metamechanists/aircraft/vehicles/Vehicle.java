@@ -8,7 +8,9 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.BlockDisplay;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -19,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Matrix4f;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.Aircraft;
@@ -28,6 +31,7 @@ import org.metamechanists.aircraft.vehicles.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicles.forces.VehicleForces;
 import org.metamechanists.aircraft.vehicles.hud.VehicleHud;
 import org.metamechanists.aircraft.vehicles.surfaces.ControlSurfaceOrientation;
+import org.metamechanists.displaymodellib.builders.BlockDisplayBuilder;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.displaymodellib.models.components.ModelComponent;
 import org.metamechanists.displaymodellib.models.components.ModelCuboid;
@@ -40,7 +44,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 
@@ -163,6 +166,18 @@ public class Vehicle extends SlimefunItem {
         return null;
     }
 
+    // Heuristic for checking the 'difference' between two subsequent matrices
+    private static float computeMatrixDifference(@NotNull Matrix4f a, @NotNull Matrix4f b) {
+        Matrix4f difference = a.sub(b);
+        float matrixDifference = 0.0F;
+        for (int x = 0; x < 4; x++) {
+            for (int y = 0; y < 4; y++) {
+                matrixDifference += Math.abs(difference.get(x, y));
+            }
+        }
+        return matrixDifference;
+    }
+
     private static void updateDisplayGroup(Pig pig, VehicleState state,
                                            Map<String, ModelComponent> previousExpected,
                                            Map<String, ModelComponent> expected,
@@ -203,11 +218,14 @@ public class Vehicle extends SlimefunItem {
                 entry.getValue().setViewRange(viewRange);
             }
 
-            if (viewRange != null && previousViewRange != null && viewRange != 0 && previousViewRange == 0) {
-                Aircraft.getInstance().getLogger().warning("screw you mojang");
+            if (previousExpectedComponent != null) {
+                float matrixDifference = computeMatrixDifference(expectedComponent.getMatrix(), previousExpectedComponent.getMatrix());
+                if (matrixDifference < 0.1) {
+                    return;
+                }
             }
 
-            if (new Random().nextInt(0, 10) == 4) {
+            if (viewRange == null || previousViewRange != null && viewRange != 0 && previousViewRange != 0) {
                 entry.getValue().setInterpolationDelay(0);
                 entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
             }
