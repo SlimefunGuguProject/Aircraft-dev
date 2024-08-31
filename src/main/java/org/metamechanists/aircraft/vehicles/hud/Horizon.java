@@ -38,7 +38,7 @@ public final class Horizon {
     }
 
     private static ModelText getArtificialHorizonMajor(VehicleState state, Vector3f hudCenter, Vector3f horizonOffset, boolean shouldRender) {
-        return HudUtil.rollText(state, horizonOffset)
+        return HudUtil.rollText(state, hudCenter, horizonOffset)
                 .viewRange(shouldRender ? 1 : 0)
                 .text(Component.text(HORIZON_MAJOR_TEXT).color(HORIZON_MAJOR_COLOR))
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))

@@ -15,8 +15,10 @@ import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Interaction;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -215,8 +217,26 @@ public class Vehicle extends SlimefunItem {
             Float previousViewRange = modelComponentviewRange(previousExpectedComponent);
 
             // Keep one behind to avoid interpolation artifacts when we update the matrix for the first time
-            if (previousViewRange != null) {
-                entry.getValue().setViewRange(previousViewRange);
+            if (viewRange != null) {
+                entry.getValue().setViewRange(viewRange);
+            }
+
+            if (viewRange != null && previousViewRange != null && viewRange == 1 && previousViewRange == 0) {
+                if (entry.getValue() instanceof ItemDisplay display) {
+                    display.setItemStack(new ItemStack(Material.AIR));
+                }
+
+                if (entry.getValue() instanceof TextDisplay display) {
+                    display.setText("");
+                }
+            } else {
+                if (entry.getValue() instanceof ItemDisplay display) {
+                    display.setItemStack(((ItemDisplay) expectedComponent).getItemStack());
+                }
+
+                if (entry.getValue() instanceof TextDisplay display) {
+                    display.setText(((TextDisplay) expectedComponent).getText());
+                }
             }
 
             if (previousExpectedComponent != null) {
@@ -227,9 +247,11 @@ public class Vehicle extends SlimefunItem {
                 }
             }
 
-            entry.getValue().setInterpolationDelay(0);
-            entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
-            entry.getValue().setTransformationMatrix(expectedComponent.getMatrix());
+            if (viewRange == null || viewRange != 0) {
+                entry.getValue().setInterpolationDelay(0);
+                entry.getValue().setInterpolationDuration(AIRCRAFT_TICK_INTERVAL);
+                entry.getValue().setTransformationMatrix(expectedComponent.getMatrix());
+            }
         }
     }
 
