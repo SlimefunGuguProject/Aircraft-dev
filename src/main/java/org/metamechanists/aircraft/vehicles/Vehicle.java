@@ -198,10 +198,12 @@ public class Vehicle extends SlimefunItem {
             Float viewRange = modelComponentviewRange(expectedComponent);
             Float previousViewRange = modelComponentviewRange(previousExpectedComponent);
 
-            Aircraft.getInstance().getLogger().warning(String.valueOf(viewRange));
-
             if (viewRange != null) {
                 entry.getValue().setViewRange(viewRange);
+            }
+
+            if (viewRange != null && previousViewRange != null && viewRange != 0 && previousViewRange == 0) {
+                Aircraft.getInstance().getLogger().warning("screw you mojang");
             }
 
             if (viewRange == null || previousViewRange != null && viewRange != 0 && previousViewRange != 0) {
