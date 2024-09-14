@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicle.component.base;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.displaymodellib.models.components.ModelText;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
@@ -38,6 +39,7 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
 
         // Update matrix
         if (visible && computeMatrixDifference(matrixLastUpdate, modelText.getMatrix()) > MATRIX_DIFFERENCE_THRESHOLD) {
+            Aircraft.getInstance().getLogger().severe("2");
             display.setTransformationMatrix(modelText.getMatrix());
             display.setInterpolationDelay(0);
             display.setInterpolationDuration(VehicleEntity.TICK_INTERVAL);
@@ -45,6 +47,7 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
 
         // Update text if changed
         if (display.getText() != null) {
+            Aircraft.getInstance().getLogger().severe("1");
             if (modelText.getMain().getTextString() != null && !display.getText().equals(modelText.getMain().getTextString())) {
                 display.setText(modelText.getMain().getTextString());
             }
@@ -52,6 +55,7 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
 
         // Set text visible
         if (visible && visibleLastUpdate && display.getText() == null) {
+            Aircraft.getInstance().getLogger().severe("2");
             display.setText(modelText.getMain().getTextString());
         }
 
