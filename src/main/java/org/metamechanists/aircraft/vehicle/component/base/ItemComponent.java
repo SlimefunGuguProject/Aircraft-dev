@@ -48,13 +48,10 @@ public abstract class ItemComponent<T extends KinematicEntitySchema> extends Kin
         }
 
         // Update itemstack / material if changed
-        if (display.getItemStack() != null) {
-            if (modelItem.getMain().getItemStack() != null && display.getItemStack().getType() != modelItem.getMain().getItemStack().getType()) {
-                display.setItemStack(modelItem.getMain().getItemStack());
-            }
-            if (modelItem.getMain().getMaterial() != null && display.getItemStack().getType() != modelItem.getMain().getMaterial()) {
-                display.setItemStack(new ItemStack(modelItem.getMain().getMaterial()));
-            }
+        if (display.getItemStack() != null
+                && modelItem.getMain().getItemStack() != null
+                && display.getItemStack().getType() != modelItem.getMain().getItemStack().getType()) {
+            display.setItemStack(modelItem.getMain().getItemStack());
         }
 
         // Set stack visible

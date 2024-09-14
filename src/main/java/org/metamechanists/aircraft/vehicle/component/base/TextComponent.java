@@ -3,7 +3,6 @@ package org.metamechanists.aircraft.vehicle.component.base;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
-import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.displaymodellib.models.components.ModelText;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
@@ -45,25 +44,15 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
         }
 
         // Update text if changed
-        if (display.getText() != null) {
-            if (modelText.getMain().getTextComponent() != null && !display.text().equals(modelText.getMain().getTextComponent())) {
-                Aircraft.getInstance().getLogger().severe("bruh");
-                display.text(modelText.getMain().getTextComponent());
-            }
-            if (modelText.getMain().getTextString() != null && !display.getText().equals(modelText.getMain().getTextString())) {
-                Aircraft.getInstance().getLogger().severe("bruh");
-                display.setText(modelText.getMain().getTextString());
-            }
+        if (display.getText() != null
+                && modelText.getMain().getText() != null
+                && !display.text().equals(modelText.getMain().getText())) {
+            display.text(modelText.getMain().getText());
         }
 
         // Set text visible
-        if (visible && visibleLastUpdate && display.getText() == null) {
-            if (modelText.getMain().getTextComponent() != null) {
-                display.text(modelText.getMain().getTextComponent());
-            }
-            if (modelText.getMain().getTextString() != null) {
-                display.setText(modelText.getMain().getTextString());
-            }
+        if (visible && visibleLastUpdate && display.getText() == null && modelText.getMain().getText() != null) {
+            display.text(modelText.getMain().getText());
         }
 
         // Set text invisible

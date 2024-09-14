@@ -1,6 +1,5 @@
 package org.metamechanists.aircraft.vehicle;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
