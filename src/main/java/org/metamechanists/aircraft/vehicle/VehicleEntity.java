@@ -11,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicle.component.base.ItemComponent;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
@@ -147,9 +148,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
         // Update pig velocity
         Vector pigVelocity = Vector.fromJOML(absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND));
-        if (isOnGround(pig)) {
-            pigVelocity.setY(0);
-        }
         pig.setVelocity(pigVelocity);
     }
 
@@ -173,7 +171,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public static boolean isOnGround(@NotNull Pig pig) {
-        return pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.05, 0.0)));
+        return pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
     }
 
     private void updatePhysics(Pig pig) {
@@ -226,6 +224,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)))) {
             velocity.y = Math.max(velocity.y, 0.0);
             acceleration.y = Math.max(acceleration.y, 0.0);
+            Aircraft.getInstance().getLogger().severe(velocity.toString());
         }
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, 0.1, 0.0)))) {
