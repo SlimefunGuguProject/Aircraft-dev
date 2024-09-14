@@ -37,7 +37,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     public VehicleEntitySchema(@NotNull String id) {
         super(id, Aircraft.class, VehicleEntity.class, Pig.class);
 
-        YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), id + ".yml");
+        YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), "vehicles/" + id + ".yml");
         Vector3f translation = traverser.getVector3f("translation");
         mass = traverser.get("mass");
         momentOfInertia = traverser.get("momentOfInertia");
