@@ -84,7 +84,6 @@ public final class Items {
         try {
             VehicleEntitySchema schema = new VehicleEntitySchema(id);
             loadedAircraft.add(schema.getId());
-            schema.register();
             return schema;
         } catch (RuntimeException e) {
             Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + id);
@@ -114,7 +113,7 @@ public final class Items {
                 schema.unregister();
             }
             // hacky but works
-            new VehicleEntitySchema(id.replaceAll("aircraft:", "")).register();
+            new VehicleEntitySchema(id.replaceAll("aircraft:", ""));
         }
     }
 }

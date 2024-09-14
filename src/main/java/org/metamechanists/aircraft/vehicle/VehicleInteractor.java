@@ -57,8 +57,6 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
             player.eject();
         }
 
-        Bukkit.getLogger().severe("bruh");
-
         VehicleEntity vehicleEntity = (VehicleEntity) EntityStorage.kinematicEntity(this.vehicleEntity);
         assert vehicleEntity != null;
         vehicleEntity.mount(player);

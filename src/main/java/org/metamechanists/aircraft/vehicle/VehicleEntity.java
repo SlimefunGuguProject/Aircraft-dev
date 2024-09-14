@@ -184,7 +184,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
         angularVelocity.mul(1.0 - schema().getAngularVelocityDamping());
         Vector3d angularAcceleration = angularAcceleration(forces);
-        Aircraft.getInstance().getLogger().severe(angularVelocity.toString());
         if (isOnGround) {
             angularAcceleration.x -= schema().getGroundRollDamping() * roll();
             angularAcceleration.z -= schema().getGroundPitchDamping() * pitch();
@@ -352,7 +351,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public void mount(@NotNull Player player) {
-        Bukkit.getLogger().severe("oh no");
         Pig pig = entity();
         assert pig != null;
         player.setInvisible(true);
