@@ -93,7 +93,7 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
         super(schema, () -> {
             Entity entity = vehicleEntity.entity();
             assert entity != null;
-            return (Interaction) entity.getLocation().getWorld().spawnEntity(entity.getLocation(), EntityType.ITEM_DISPLAY);
+            return (Interaction) entity.getLocation().getWorld().spawnEntity(entity.getLocation(), EntityType.INTERACTION);
         });
         components = buildComponents(vehicleEntity);
     }
