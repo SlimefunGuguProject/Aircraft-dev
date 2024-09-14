@@ -6,6 +6,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Interaction;
+import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
@@ -91,9 +92,11 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
 
     protected HudSection(@NotNull T schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, () -> {
-            Entity entity = vehicleEntity.entity();
-            assert entity != null;
-            return (Interaction) entity.getLocation().getWorld().spawnEntity(entity.getLocation(), EntityType.INTERACTION);
+            Pig pig = vehicleEntity.entity();
+            assert pig != null;
+            Interaction interaction =(Interaction) pig.getLocation().getWorld().spawnEntity(pig.getLocation(), EntityType.INTERACTION);
+            pig.addPassenger(interaction);
+            return interaction;
         });
         components = buildComponents(vehicleEntity);
     }

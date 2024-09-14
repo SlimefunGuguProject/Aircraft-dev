@@ -139,6 +139,7 @@ public abstract class VehicleComponent<T extends KinematicEntitySchema> extends 
             return new FixedComponent.FixedComponentSchema(traverser, translation, mirror);
         }
     }
+
     protected VehicleComponent(@NotNull StateReader reader) {
         super(reader);
     }

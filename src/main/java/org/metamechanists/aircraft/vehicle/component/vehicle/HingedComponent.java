@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicle.component.vehicle;
 
 import lombok.Getter;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaterniond;
@@ -60,7 +61,9 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
         super(schema, () -> {
             Pig pig = vehicleEntity.entity();
             assert pig != null;
-            return schema.modelItem(vehicleEntity, new Vector3d(), new Vector3d()).build(pig.getLocation());
+            ItemDisplay item = schema.modelItem(vehicleEntity, new Vector3d(), new Vector3d()).build(pig.getLocation());
+            pig.addPassenger(item);
+            return item;
         });
     }
 

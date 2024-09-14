@@ -1,5 +1,6 @@
 package org.metamechanists.aircraft.vehicle.component.vehicle;
 
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3d;
@@ -33,7 +34,9 @@ public class FixedComponent extends VehicleComponent<VehicleComponent.VehicleCom
         super(vehicleComponentSchema, () -> {
             Pig pig = vehicleEntity.entity();
             assert pig != null;
-            return vehicleComponentSchema.modelItem(vehicleEntity, new Vector3d(), new Vector3d()).build(pig.getLocation());
+            ItemDisplay item = vehicleComponentSchema.modelItem(vehicleEntity, new Vector3d(), new Vector3d()).build(pig.getLocation());
+            pig.addPassenger(item);
+            return item;
         });
     }
 

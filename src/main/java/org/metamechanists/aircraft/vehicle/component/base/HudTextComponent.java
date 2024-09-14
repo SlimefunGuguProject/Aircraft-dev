@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicle.component.base;
 import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
@@ -31,9 +32,11 @@ public abstract class HudTextComponent<T extends HudTextComponent.HudTextCompone
 
     protected HudTextComponent(@NotNull T schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, () -> {
-            Entity entity = vehicleEntity.entity();
-            assert entity != null;
-            return (TextDisplay) entity.getLocation().getWorld().spawnEntity(entity.getLocation(), EntityType.TEXT_DISPLAY);
+            Pig pig = vehicleEntity.entity();
+            assert pig != null;
+            TextDisplay text = (TextDisplay) pig.getLocation().getWorld().spawnEntity(pig.getLocation(), EntityType.TEXT_DISPLAY);
+            pig.addPassenger(text);
+            return text;
         });
     }
 

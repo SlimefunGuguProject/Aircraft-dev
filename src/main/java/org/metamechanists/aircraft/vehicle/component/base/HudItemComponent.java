@@ -4,6 +4,7 @@ import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
+import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -31,9 +32,11 @@ public abstract class HudItemComponent<T extends HudItemComponent.HudItemCompone
 
     protected HudItemComponent(@NotNull T schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, () -> {
-            Entity entity = vehicleEntity.entity();
-            assert entity != null;
-            return (ItemDisplay) entity.getLocation().getWorld().spawnEntity(entity.getLocation(), EntityType.ITEM_DISPLAY);
+            Pig pig = vehicleEntity.entity();
+            assert pig != null;
+            ItemDisplay item = (ItemDisplay) pig.getLocation().getWorld().spawnEntity(pig.getLocation(), EntityType.ITEM_DISPLAY);
+            pig.addPassenger(item);
+            return item;
         });
     }
 
