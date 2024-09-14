@@ -104,6 +104,10 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
     @Override
     public void tick(@NotNull Pig pig, long tick) {
+        if (tick % TICK_INTERVAL != 0) {
+            return;
+        }
+
         Map<String, VehicleComponent.VehicleComponentSchema> expectedComponents = schema().getComponents();
 
         // Remove any additional vehicle components

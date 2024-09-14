@@ -53,7 +53,7 @@ public abstract class VehicleComponent<T extends KinematicEntitySchema> extends 
             location = traverser.getVector3f("location").sub(translation);
             rotation = traverser.getVector3d("rotation");
 
-            YamlTraverser aerodynamicSection = traverser.getSection("aerodynamic");
+            YamlTraverser aerodynamicSection = traverser.getSection("aerodynamic", YamlTraverser.ErrorSetting.NO_BEHAVIOUR);
             if (aerodynamicSection != null) {
                 aerodynamicCoefficients = new AerodynamicCoefficients(
                         aerodynamicSection.get("dragCoefficient"),

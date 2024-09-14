@@ -35,7 +35,6 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
                 boolean mirror
         ) {
             super(PropellerComponent.class, traverser, translation, mirror);
-
             rotationAxis = propellerTraverser.getVector3d("rotationAxis", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             maxRotationRate = propellerTraverser.get("maxRotationRate");
         }
