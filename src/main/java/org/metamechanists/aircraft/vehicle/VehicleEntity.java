@@ -365,5 +365,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     public void unmount(@NotNull Player player) {
         throttle = 0;
         interaction = new VehicleInteractor(this).uuid();
+        player.setInvisible(false);
     }
 }
