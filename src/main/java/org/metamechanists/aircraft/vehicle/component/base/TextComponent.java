@@ -9,6 +9,7 @@ import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.kinematiccore.api.storage.StateReader;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 
@@ -48,6 +49,11 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
                 && modelText.getMain().getText() != null
                 && !display.text().equals(modelText.getMain().getText())) {
             display.text(modelText.getMain().getText());
+        }
+
+        // Update background if changed
+        if (!Objects.equals(display.getBackgroundColor(), modelText.getMain().getBackgroundColor())) {
+            display.setBackgroundColor(modelText.getMain().getBackgroundColor());
         }
 
         // Set text visible
