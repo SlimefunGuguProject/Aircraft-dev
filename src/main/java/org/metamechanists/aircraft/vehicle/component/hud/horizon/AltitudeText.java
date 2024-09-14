@@ -23,11 +23,11 @@ public class AltitudeText extends HudTextComponent<AltitudeText.AltitudeTextSche
         }
     }
 
-    protected AltitudeText(@NotNull AltitudeTextSchema schema, @NotNull VehicleEntity vehicleEntity) {
+    public AltitudeText(@NotNull AltitudeTextSchema schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, vehicleEntity);
     }
 
-    protected AltitudeText(@NotNull StateReader reader) {
+    public AltitudeText(@NotNull StateReader reader) {
         super(reader);
     }
 

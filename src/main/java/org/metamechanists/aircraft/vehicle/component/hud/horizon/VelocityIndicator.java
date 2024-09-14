@@ -24,11 +24,11 @@ public class VelocityIndicator extends HudTextComponent<VelocityIndicator.Veloci
         }
     }
 
-    protected VelocityIndicator(@NotNull VelocityIndicator.VelocityIndicatorSchema schema, @NotNull VehicleEntity vehicleEntity) {
+    public VelocityIndicator(@NotNull VelocityIndicator.VelocityIndicatorSchema schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, vehicleEntity);
     }
 
-    protected VelocityIndicator(@NotNull StateReader reader) {
+    public VelocityIndicator(@NotNull StateReader reader) {
         super(reader);
     }
 

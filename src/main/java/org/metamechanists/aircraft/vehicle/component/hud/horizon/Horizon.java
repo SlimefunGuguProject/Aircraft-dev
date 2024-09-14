@@ -33,7 +33,7 @@ public class Horizon extends HudSection<Horizon.HorizonSchema> {
         super(schema, vehicleEntity);
     }
 
-    protected Horizon(@NotNull StateReader reader) {
+    public Horizon(@NotNull StateReader reader) {
         super(reader);
     }
 

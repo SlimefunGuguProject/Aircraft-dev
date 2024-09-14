@@ -25,11 +25,11 @@ public class AltitudeBrackets extends HudTextComponent<AltitudeBrackets.Altitude
         }
     }
 
-    protected AltitudeBrackets(@NotNull AltitudeBrackets.AltitudeBracketsSchema schema, @NotNull VehicleEntity vehicleEntity) {
+    public AltitudeBrackets(@NotNull AltitudeBrackets.AltitudeBracketsSchema schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, vehicleEntity);
     }
 
-    protected AltitudeBrackets(@NotNull StateReader reader) {
+    public AltitudeBrackets(@NotNull StateReader reader) {
         super(reader);
     }
 
