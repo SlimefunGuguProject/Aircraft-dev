@@ -26,6 +26,7 @@ public class Horizon extends HudSection<Horizon.HorizonSchema> {
 
         @Override
         public void unregister() {
+            super.unregister();
             altitudeTextSchema.unregister();
             altitudeBracketsSchema.unregister();
             velocityIndicatorSchema.unregister();
