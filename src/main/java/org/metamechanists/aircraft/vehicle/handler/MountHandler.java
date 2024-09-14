@@ -1,5 +1,6 @@
 package org.metamechanists.aircraft.vehicle.handler;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,6 +14,15 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 
 
 public class MountHandler implements Listener {
+    @EventHandler
+    public static void onMount(@NotNull PlayerInteractEntityEvent e) {
+        Bukkit.getLogger().severe("oh my god");
+        if (!(EntityStorage.kinematicEntity(e.getRightClicked().getUniqueId()) instanceof VehicleInteractor interactor)) {
+            return;
+        }
+
+    }
+
     @EventHandler
     public static void onUnmount(@NotNull EntityDismountEvent e) {
         Entity maybePlayer = e.getEntity();
