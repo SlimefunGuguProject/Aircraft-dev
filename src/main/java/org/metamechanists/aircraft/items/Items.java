@@ -113,7 +113,8 @@ public final class Items {
             if (EntitySchemas.schema(id) instanceof VehicleEntitySchema schema) {
                 schema.unregister();
             }
-            new VehicleEntitySchema(id).register();
+            // hacky but works
+            new VehicleEntitySchema(id.replaceAll("aircraft:", "")).register();
         }
     }
 }
