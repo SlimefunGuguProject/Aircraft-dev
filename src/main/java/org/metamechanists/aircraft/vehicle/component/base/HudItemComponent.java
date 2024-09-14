@@ -25,7 +25,7 @@ public abstract class HudItemComponent<T extends HudItemComponent.HudItemCompone
                 @NotNull YamlTraverser traverser,
                 @NotNull Class<? extends KinematicEntity<?, ?>> kinematicClass,
                 @NotNull Class<? extends Entity> entityClass) {
-            super(sectionSchema.getId(), Aircraft.class, kinematicClass, entityClass);
+            super(sectionSchema.getId() + "_" + id, Aircraft.class, kinematicClass, entityClass);
             this.sectionSchema = sectionSchema;
         }
     }

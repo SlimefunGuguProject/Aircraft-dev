@@ -24,6 +24,13 @@ public class Horizon extends HudSection<Horizon.HorizonSchema> {
             velocityIndicatorSchema = new VelocityIndicator.VelocityIndicatorSchema(this, traverser);
         }
 
+        @Override
+        public void unregister() {
+            altitudeTextSchema.unregister();
+            altitudeBracketsSchema.unregister();
+            velocityIndicatorSchema.unregister();
+        }
+
         public static float offset(@NotNull VehicleEntity vehicleEntity) {
             return (float) (0.5F * -vehicleEntity.pitch());
         }

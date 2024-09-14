@@ -9,6 +9,8 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
 import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
+import org.metamechanists.kinematiccore.api.storage.EntitySchemas;
+import org.metamechanists.kinematiccore.api.storage.EntityStorage;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashMap;
@@ -74,5 +76,14 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
 
         YamlTraverser hudTraverser = traverser.getSection("hud");
         horizonSchema = new Horizon.HorizonSchema(id + "_horizon", hudTraverser.getSection("horizon"));
+    }
+
+    @Override
+    public void unregister() {
+        for (VehicleComponent.VehicleComponentSchema schema : components.values()) {
+            EntitySchemas.unregister(schema.getId());
+        }
+        horizonSchema.unregister();
+        EntitySchemas.unregister(getId());
     }
 }

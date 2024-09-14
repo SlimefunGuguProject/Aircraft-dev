@@ -58,7 +58,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
     public VehicleEntity(@NotNull VehicleEntitySchema schema, @NotNull Block block, @NotNull Player player) {
         super(schema, () -> {
-            Location location = block.getLocation().clone().toCenterLocation().add(new Vector(0, -0.5, 0));
+            Location location = block.getLocation().clone().toCenterLocation().add(new Vector(0, 0.5, 0));
             Pig pig = (Pig) block.getWorld().spawnEntity(location, EntityType.PIG);
             pig.setInvulnerable(true);
             pig.setGravity(false);
@@ -184,7 +184,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
         angularVelocity.mul(1.0 - schema().getAngularVelocityDamping());
         Vector3d angularAcceleration = angularAcceleration(forces);
-        Aircraft.getInstance().getLogger().severe(angularAcceleration.toString());
+        Aircraft.getInstance().getLogger().severe(angularVelocity.toString());
         if (isOnGround) {
             angularAcceleration.x -= schema().getGroundRollDamping() * roll();
             angularAcceleration.z -= schema().getGroundPitchDamping() * pitch();

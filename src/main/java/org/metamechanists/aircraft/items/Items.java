@@ -82,8 +82,8 @@ public final class Items {
 
     private static @Nullable VehicleEntitySchema loadVehicle(@NotNull String id) {
         try {
-            loadedAircraft.add(id);
             VehicleEntitySchema schema = new VehicleEntitySchema(id);
+            loadedAircraft.add(schema.getId());
             schema.register();
             return schema;
         } catch (RuntimeException e) {
@@ -110,7 +110,9 @@ public final class Items {
 
     public static void reload() {
         for (String id : loadedAircraft) {
-            EntitySchemas.unregister(id);
+            if (EntitySchemas.schema(id) instanceof VehicleEntitySchema schema) {
+                schema.unregister();
+            }
             new VehicleEntitySchema(id).register();
         }
     }
