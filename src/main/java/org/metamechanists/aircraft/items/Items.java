@@ -94,6 +94,7 @@ public final class Items {
         THROTTLE_DOWN.register(addon);
         STEER_LEFT.register(addon);
         STEER_RIGHT.register(addon);
+        CRUDE_AIRCRAFT.register(addon);
 
         loadVehicle("crude_aircraft");
     }
