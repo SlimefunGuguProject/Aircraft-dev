@@ -5,6 +5,7 @@ import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
 import org.metamechanists.aircraft.vehicle.component.base.HudTextComponent;
@@ -35,6 +36,7 @@ public class AltitudeBrackets extends HudTextComponent<AltitudeBrackets.Altitude
 
     @Override
     protected @NotNull ModelText modelText(@NotNull VehicleEntity vehicleEntity) {
+        Aircraft.getInstance().getLogger().severe(schema().text);
         return schema().getSectionSchema().rollIndependentText(vehicleEntity)
                 .text(Component.text(schema().text).color(schema().color))
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))

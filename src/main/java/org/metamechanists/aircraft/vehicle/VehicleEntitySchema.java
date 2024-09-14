@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicle;
 import lombok.Getter;
 import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
@@ -10,7 +11,6 @@ import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
 import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.kinematiccore.api.storage.EntitySchemas;
-import org.metamechanists.kinematiccore.api.storage.EntityStorage;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     private final double groundRollDamping;
     private final double groundPitchDamping;
     private final Map<String, VehicleComponent.VehicleComponentSchema> components = new HashMap<>();
-    private final Horizon.HorizonSchema horizonSchema;
+    private final @Nullable Horizon.HorizonSchema horizonSchema;
 
     @SuppressWarnings("DataFlowIssue")
     public VehicleEntitySchema(@NotNull String id) {
@@ -75,7 +75,13 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         }
 
         YamlTraverser hudTraverser = traverser.getSection("hud");
-        horizonSchema = new Horizon.HorizonSchema(id + "_horizon", hudTraverser.getSection("horizon"));
+
+        YamlTraverser horizonSection = hudTraverser.getSection("horizon", YamlTraverser.ErrorSetting.NO_BEHAVIOUR);
+        if (horizonSection == null) {
+            horizonSchema = null;
+        } else {
+            horizonSchema = new Horizon.HorizonSchema(id + "_horizon", horizonSection);
+        }
     }
 
     @Override
