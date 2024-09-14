@@ -144,7 +144,13 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         for (int i = 0; i < PHYSICS_UPDATES_PER_AIRCRAFT_UPDATE; i++) {
             updatePhysics(pig);
         }
-        pig.setVelocity(Vector.fromJOML(absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND)));
+
+        // Update pig velocity
+        Vector pigVelocity = Vector.fromJOML(absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND));
+        if (isOnGround(pig)) {
+            pigVelocity.setY(0);
+        }
+        pig.setVelocity(pigVelocity);
     }
 
     public void onKey(char key) {
@@ -167,7 +173,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public static boolean isOnGround(@NotNull Pig pig) {
-        return pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)));
+        return pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.05, 0.0)));
     }
 
     private void updatePhysics(Pig pig) {
