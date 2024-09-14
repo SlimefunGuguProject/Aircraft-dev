@@ -181,7 +181,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         velocity.mul(1.0 - schema().getVelocityDamping());
         Vector3d acceleration = acceleration(forces);
         velocity.add(new Vector3d(acceleration).div(PHYSICS_UPDATES_PER_SECOND));
+        velocity.rotate(rotation);
         cancelVelocityAndAcceleration(pig, velocity, acceleration);
+        velocity.rotate(new Quaterniond(rotation).invert());
 
         angularVelocity.mul(1.0 - schema().getAngularVelocityDamping());
         Vector3d angularAcceleration = angularAcceleration(forces);
