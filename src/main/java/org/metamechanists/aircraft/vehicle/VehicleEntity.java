@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicle;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
@@ -349,6 +350,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public void mount(@NotNull Player player) {
+        Bukkit.getLogger().severe("oh no");
         Pig pig = entity();
         assert pig != null;
         player.setInvisible(true);

@@ -1,5 +1,6 @@
 package org.metamechanists.aircraft.vehicle;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
@@ -55,6 +56,8 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
         if (player.isInsideVehicle()) {
             player.eject();
         }
+
+        Bukkit.getLogger().severe("bruh");
 
         VehicleEntity vehicleEntity = (VehicleEntity) EntityStorage.kinematicEntity(this.vehicleEntity);
         assert vehicleEntity != null;
