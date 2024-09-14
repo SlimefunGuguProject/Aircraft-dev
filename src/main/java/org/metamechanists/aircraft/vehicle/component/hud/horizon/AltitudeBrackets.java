@@ -36,10 +36,9 @@ public class AltitudeBrackets extends HudTextComponent<AltitudeBrackets.Altitude
 
     @Override
     protected @NotNull ModelText modelText(@NotNull VehicleEntity vehicleEntity) {
-        Aircraft.getInstance().getLogger().severe(schema().text);
         return schema().getSectionSchema().rollIndependentText(vehicleEntity)
                 .text(Component.text(schema().text).color(schema().color))
-                .scale(new Vector3f(0.15F, 0.15F, 0.001F))
+                .scale(new Vector3f(5.15F, 5.15F, 5.001F))
                 .translate(0.5F, 0.35F, 0.05F);
     }
 }
