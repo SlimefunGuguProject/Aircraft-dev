@@ -103,10 +103,10 @@ public final class Items {
         STEER_LEFT.register(addon);
         STEER_RIGHT.register(addon);
 
-
-        CRUDE_AIRCRAFT.register(addon);
-
-        loadVehicle("crude_aircraft");
+        VehicleEntitySchema schema = loadVehicle("crude_aircraft");
+        if (schema != null) {
+            crudeAircraft(schema).register(addon);
+        }
     }
 
     public static void reload() {

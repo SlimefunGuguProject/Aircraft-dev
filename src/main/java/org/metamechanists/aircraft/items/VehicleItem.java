@@ -8,7 +8,6 @@ import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.VehicleEntitySchema;
