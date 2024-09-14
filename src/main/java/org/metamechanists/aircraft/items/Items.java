@@ -5,117 +5,103 @@ import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import lombok.experimental.UtilityClass;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Keys;
-import org.metamechanists.aircraft.vehicles.Vehicle;
-import org.metamechanists.aircraft.vehicles.VehicleConfig;
-import org.metamechanists.aircraft.vehicles.controls.SteerControl;
-import org.metamechanists.aircraft.vehicles.controls.ThrottleControl;
-import org.metamechanists.metalib.yaml.YamlTraverser;
+import org.metamechanists.aircraft.vehicle.VehicleEntitySchema;
+import org.metamechanists.kinematiccore.api.storage.EntitySchemas;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 
-@UtilityClass
-public class Items {
-    private final Map<String, Vehicle> vehicles = new HashMap<>();
-
-    private final ItemGroup AIRCRAFT_GROUP = new ItemGroup(Keys.AIRCRAFT,
+public final class Items {
+    private static final ItemGroup AIRCRAFT_GROUP = new ItemGroup(Keys.AIRCRAFT,
             new CustomItemStack(Material.COMPASS, "&aAircraft"));
 
-    private void readVehicles() {
-        File[] vehicleFiles = new File(Aircraft.getInstance().getDataFolder(), "vehicles").listFiles();
-        if (vehicleFiles == null) {
-            return;
-        }
+    private static final SlimefunItemStack THROTTLE_UP_STACK = new SlimefunItemStack(
+                    "AIRCRAFT_THROTTLE_UP",
+                    new CustomItemStack(Material.LIME_DYE, ChatColor.WHITE + "Throttle up"));
+    private static final ThrottleControl THROTTLE_UP = new ThrottleControl(
+            AIRCRAFT_GROUP,
+            THROTTLE_UP_STACK,
+            RecipeType.NULL,
+            new ItemStack[]{},
+            5);
 
-        for (File file : vehicleFiles) {
-            try {
-                String name = new YamlTraverser(Aircraft.getInstance(), file).get("name");
-                String translatedName = ChatColor.translateAlternateColorCodes('&', name);
-                String id = "AIRCRAFT_" + name.toUpperCase()
-                        .replace(' ', '_')
-                        .replaceAll("&.", "");
-                SlimefunItemStack itemStack = new SlimefunItemStack(id, Material.FEATHER, translatedName);
-                vehicles.put(id, new Vehicle(
-                        AIRCRAFT_GROUP,
-                        itemStack,
-                        RecipeType.NULL,
-                        new ItemStack[]{},
-                        id,
-                        new VehicleConfig("vehicles/" + file.getName())));
-            } catch (RuntimeException e) {
-                Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + file.getName());
-                e.printStackTrace();
-            }
+    private static final SlimefunItemStack THROTTLE_DOWN_STACK = new SlimefunItemStack(
+            "AIRCRAFT_THROTTLE_DOWN",
+            new CustomItemStack(Material.RED_DYE, ChatColor.WHITE + "Throttle down"));
+    private static final ThrottleControl THROTTLE_DOWN = new ThrottleControl(
+            AIRCRAFT_GROUP,
+            THROTTLE_DOWN_STACK,
+            RecipeType.NULL,
+            new ItemStack[]{},
+            -5);
+
+    private static final SlimefunItemStack STEER_LEFT_STACK = new SlimefunItemStack(
+                        "AIRCRAFT_STEER_LEFT",
+                        new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer left"));
+    private static final SteerControl STEER_LEFT = new SteerControl(
+            AIRCRAFT_GROUP,
+            STEER_LEFT_STACK,
+            RecipeType.NULL,
+            new ItemStack[]{},
+            1);
+
+    private static final SlimefunItemStack STEER_RIGHT_STACK = new SlimefunItemStack(
+                        "AIRCRAFT_STEER_RIGHT",
+                        new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer right"));
+    private static final SteerControl STEER_RIGHT = new SteerControl(
+            AIRCRAFT_GROUP,
+            STEER_RIGHT_STACK,
+            RecipeType.NULL,
+            new ItemStack[]{},
+            -1);
+
+    private static final SlimefunItemStack CRUDE_AIRCRAFT_STACK = new SlimefunItemStack(
+            "AIRCRAFT_CRUDE_AIRCRAFT",
+            new CustomItemStack(Material.FEATHER, ChatColor.WHITE + "Crude Aircraft"));
+    private static final VehicleItem CRUDE_AIRCRAFT = new VehicleItem(
+            AIRCRAFT_GROUP,
+            CRUDE_AIRCRAFT_STACK,
+            RecipeType.NULL,
+            new ItemStack[]{});
+
+    private static final Set<String> loadedAircraft = new HashSet<>();
+
+    private Items() {}
+
+    private static void loadVehicle(@NotNull String id) {
+        try {
+            loadedAircraft.add(id);
+            new VehicleEntitySchema(id).register();
+        } catch (RuntimeException e) {
+            Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + id);
+            e.printStackTrace();
         }
     }
 
-    public void initialize() {
+    public static void initialize() {
         JavaPlugin plugin = Aircraft.getInstance();
         SlimefunAddon addon = (SlimefunAddon) plugin;
 
-        plugin.saveResource("vehicles/test_aircraft.yml", false);
-        readVehicles();
-        vehicles.values().forEach(vehicle -> vehicle.register(addon));
+        THROTTLE_UP.register(addon);
+        THROTTLE_DOWN.register(addon);
+        STEER_LEFT.register(addon);
+        STEER_RIGHT.register(addon);
 
-        new ThrottleControl(
-                AIRCRAFT_GROUP,
-                new SlimefunItemStack(
-                        "AIRCRAFT_THROTTLE_UP",
-                        new CustomItemStack(Material.LIME_DYE, ChatColor.WHITE + "Throttle up")
-                ),
-                RecipeType.NULL,
-                new ItemStack[]{},
-                5
-        ).register(addon);
-
-        new ThrottleControl(
-                AIRCRAFT_GROUP,
-                new SlimefunItemStack(
-                        "AIRCRAFT_THROTTLE_DOWN",
-                        new CustomItemStack(Material.RED_DYE, ChatColor.WHITE + "Throttle down")
-                ),
-                RecipeType.NULL,
-                new ItemStack[]{},
-                -5
-        ).register(addon);
-
-        new SteerControl(
-                AIRCRAFT_GROUP,
-                new SlimefunItemStack(
-                        "AIRCRAFT_STEER_LEFT",
-                        new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer left")
-                ),
-                RecipeType.NULL,
-                new ItemStack[]{},
-                1
-        ).register(addon);
-
-        new SteerControl(
-                AIRCRAFT_GROUP,
-                new SlimefunItemStack(
-                        "AIRCRAFT_STEER_RIGHT",
-                        new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer right")
-                ),
-                RecipeType.NULL,
-                new ItemStack[]{},
-                -1
-        ).register(addon);
+        loadVehicle("crude_aircraft");
     }
 
-    public void reload() {
-        vehicles.values().forEach(Vehicle::reload);
-    }
-
-    public Vehicle getVehicle(String name) {
-        return vehicles.get(name);
+    public static void reload() {
+        for (String id : loadedAircraft) {
+            EntitySchemas.unregister(id);
+            new VehicleEntitySchema(id).register();
+        }
     }
 }

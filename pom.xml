@@ -104,7 +104,7 @@
         <dependency>
             <groupId>org.metamechanists</groupId>
             <artifactId>MetaLib</artifactId>
-            <version>71</version>
+            <version>73</version>
             <scope>compile</scope>
         </dependency>
 
@@ -112,6 +112,13 @@
             <groupId>org.metamechanists</groupId>
             <artifactId>DisplayModelLib</artifactId>
             <version>32</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.metamechanists</groupId>
+            <artifactId>KinematicCore</artifactId>
+            <version>13</version>
             <scope>compile</scope>
         </dependency>
 
@@ -148,12 +155,6 @@
             <artifactId>acf-paper</artifactId>
             <version>0.5.1-SNAPSHOT</version>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.dataformat</groupId>
-            <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>2.13.0</version>
         </dependency>
     </dependencies>
 </project>

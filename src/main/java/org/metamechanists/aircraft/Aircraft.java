@@ -8,17 +8,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.commands.AircraftCommand;
-import org.metamechanists.aircraft.commands.BruhCommand;
 import org.metamechanists.aircraft.items.Items;
-import org.metamechanists.aircraft.vehicles.Vehicle;
-import org.metamechanists.aircraft.vehicles.controls.MountHandler;
-import org.metamechanists.aircraft.vehicles.VehicleTicker;
-import org.metamechanists.aircraft.vehicles.controls.KeyboardHandler;
-
-import static org.metamechanists.aircraft.vehicles.Vehicle.AIRCRAFT_TICK_INTERVAL;
+import org.metamechanists.aircraft.vehicle.handler.MountHandler;
+import org.metamechanists.aircraft.vehicle.handler.KeyboardHandler;
+import org.metamechanists.kinematiccore.api.KinematicAddon;
 
 
-public final class Aircraft extends JavaPlugin implements SlimefunAddon {
+public final class Aircraft extends JavaPlugin implements SlimefunAddon, KinematicAddon {
     @Getter
     private static Aircraft instance;
 
@@ -27,14 +23,9 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
         Bukkit.getServer().getPluginManager().registerEvents(new MountHandler(), this);
     }
 
-    private void initializeRunnables() {
-        new VehicleTicker().runTaskTimer(this, 0, AIRCRAFT_TICK_INTERVAL);
-    }
-
     private void initializeCommands() {
         PaperCommandManager commandManager = new PaperCommandManager(this);
         commandManager.registerCommand(new AircraftCommand());
-        commandManager.registerCommand(new BruhCommand());
         commandManager.enableUnstableAPI("help");
     }
 
@@ -43,7 +34,6 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon {
         instance = this;
         Items.initialize();
         initializeListeners();
-        initializeRunnables();
         initializeCommands();
     }
 

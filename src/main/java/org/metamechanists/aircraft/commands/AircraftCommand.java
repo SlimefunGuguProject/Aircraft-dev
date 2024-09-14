@@ -11,20 +11,18 @@ import co.aikar.commands.annotation.Subcommand;
 import co.aikar.commands.annotation.Syntax;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Pig;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.items.Items;
-import org.metamechanists.aircraft.vehicles.Storage;
-import org.metamechanists.aircraft.vehicles.VehicleState;
+import org.metamechanists.aircraft.vehicle.VehicleEntity;
+import org.metamechanists.kinematiccore.api.storage.EntityStorage;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 
 @CommandAlias("aircraft")
@@ -49,28 +47,27 @@ public class AircraftCommand extends BaseCommand {
     @Description("")
     @CommandPermission("aircraft.command.diagnostics")
     public static void diagnostics(@NotNull Player player, String @NotNull [] args) {
-        Pig pig = Storage.getPig(player);
-        if (pig == null) {
+        Entity riding = player.getVehicle();
+        if (riding == null) {
             player.sendMessage(ChatColor.RED + "You are not in an aircraft");
             return;
         }
 
-        VehicleState state = VehicleState.fromPig(pig);
-        if (state == null) {
+        if (!(EntityStorage.kinematicEntity(riding.getUniqueId()) instanceof VehicleEntity vehicleEntity)) {
             player.sendMessage(ChatColor.RED + "You are not in an aircraft");
             return;
         }
 
-        Map<String, Integer> groupCounts = getGroupCounts(state);
+        Map<String, Integer> groupCounts = getGroupCounts(vehicleEntity);
         List<String> sorted = new ArrayList<>(groupCounts.keySet().stream().toList());
         sorted.sort(Comparator.comparingInt(groupCounts::get));
 
-        player.sendMessage(ChatColor.GRAY + "Total components: " + (state.componentGroup.getDisplays().size() + state.hudGroup.getDisplays().size()));
+        player.sendMessage(ChatColor.GRAY + "Total components: " + (vehicleEntity.getComponents().size() + vehicleEntity.getHud().size()));
 
         player.sendMessage(ChatColor.YELLOW + "-----------");
 
-        player.sendMessage(ChatColor.GRAY + "Model components: " + state.componentGroup.getDisplays().size());
-        player.sendMessage(ChatColor.GRAY + "HUD components: " + state.hudGroup.getDisplays().size());
+        player.sendMessage(ChatColor.GRAY + "Model components: " + vehicleEntity.getComponents().size());
+        player.sendMessage(ChatColor.GRAY + "HUD components: " + vehicleEntity.getHud().size());
 
         player.sendMessage(ChatColor.YELLOW + "-----------");
 
@@ -80,10 +77,10 @@ public class AircraftCommand extends BaseCommand {
     }
 
     @NotNull
-    private static Map<String, Integer> getGroupCounts(@NotNull VehicleState state) {
+    private static Map<String, Integer> getGroupCounts(@NotNull VehicleEntity state) {
         Map<String, Integer> groupCounts = new HashMap<>();
 
-        for (String key : state.componentGroup.getDisplays().keySet()) {
+        for (String key : state.getComponents().keySet()) {
             String group = key.split("[.]")[0] + "." + key.split("[.]")[1];
             if (groupCounts.containsKey(group)) {
                 groupCounts.put(group, groupCounts.get(group) + 1);
@@ -92,7 +89,7 @@ public class AircraftCommand extends BaseCommand {
             }
         }
 
-        for (String key : state.hudGroup.getDisplays().keySet()) {
+        for (String key : state.getHud().keySet()) {
             String group = key.split("[.]")[0] + "." + key.split("[.]")[1];
             if (groupCounts.containsKey(group)) {
                 groupCounts.put(group, groupCounts.get(group) + 1);
