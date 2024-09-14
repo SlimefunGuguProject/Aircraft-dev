@@ -9,7 +9,9 @@ import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Keys;
 import org.metamechanists.aircraft.vehicle.VehicleEntitySchema;
@@ -66,23 +68,29 @@ public final class Items {
     private static final SlimefunItemStack CRUDE_AIRCRAFT_STACK = new SlimefunItemStack(
             "AIRCRAFT_CRUDE_AIRCRAFT",
             new CustomItemStack(Material.FEATHER, ChatColor.WHITE + "Crude Aircraft"));
-    private static final VehicleItem CRUDE_AIRCRAFT = new VehicleItem(
-            AIRCRAFT_GROUP,
-            CRUDE_AIRCRAFT_STACK,
-            RecipeType.NULL,
-            new ItemStack[]{});
+    private static @NotNull VehicleItem crudeAircraft(VehicleEntitySchema schema) {
+        return new VehicleItem(
+                schema,
+                AIRCRAFT_GROUP,
+                CRUDE_AIRCRAFT_STACK,
+                RecipeType.NULL,
+                new ItemStack[]{});
+    }
 
     private static final Set<String> loadedAircraft = new HashSet<>();
 
     private Items() {}
 
-    private static void loadVehicle(@NotNull String id) {
+    private static @Nullable VehicleEntitySchema loadVehicle(@NotNull String id) {
         try {
             loadedAircraft.add(id);
-            new VehicleEntitySchema(id).register();
+            VehicleEntitySchema schema = new VehicleEntitySchema(id);
+            schema.register();
+            return schema;
         } catch (RuntimeException e) {
             Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + id);
             e.printStackTrace();
+            return null;
         }
     }
 
@@ -94,6 +102,8 @@ public final class Items {
         THROTTLE_DOWN.register(addon);
         STEER_LEFT.register(addon);
         STEER_RIGHT.register(addon);
+
+
         CRUDE_AIRCRAFT.register(addon);
 
         loadVehicle("crude_aircraft");

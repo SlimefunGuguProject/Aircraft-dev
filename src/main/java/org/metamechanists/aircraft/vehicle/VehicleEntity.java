@@ -119,8 +119,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         }
 
         // Add any new vehicle components
-        for (String id : components.keySet()) {
-            if (!expectedComponents.containsKey(id)) {
+        //noinspection KeySetIterationMayUseEntrySet
+        for (String id : expectedComponents.keySet()) {
+            if (!components.containsKey(id)) {
                 components.put(id, expectedComponents.get(id).build(this).uuid());
             }
         }
