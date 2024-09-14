@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
-import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicle.component.base.ItemComponent;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
@@ -181,8 +180,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
         velocity.mul(1.0 - schema().getVelocityDamping());
         Vector3d acceleration = acceleration(forces);
-        cancelVelocityAndAcceleration(pig, velocity, acceleration);
         velocity.add(new Vector3d(acceleration).div(PHYSICS_UPDATES_PER_SECOND));
+        cancelVelocityAndAcceleration(pig, velocity, acceleration);
 
         angularVelocity.mul(1.0 - schema().getAngularVelocityDamping());
         Vector3d angularAcceleration = angularAcceleration(forces);
@@ -213,33 +212,26 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     public static void cancelVelocityAndAcceleration(@NotNull Pig pig, Vector3d velocity, Vector3d acceleration) {
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(-0.1, 0.0, 0.0)))) {
             velocity.x = Math.max(velocity.x, 0.0);
-            acceleration.x = Math.max(acceleration.x, 0.0);
         }
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.1, 0.0, 0.0)))) {
             velocity.x = Math.min(velocity.x, 0.0);
-            acceleration.x = Math.min(acceleration.x, 0.0);
         }
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, -0.1, 0.0)))) {
             velocity.y = Math.max(velocity.y, 0.0);
-            acceleration.y = Math.max(acceleration.y, 0.0);
-            Aircraft.getInstance().getLogger().severe(velocity.toString());
         }
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, 0.1, 0.0)))) {
             velocity.y = Math.min(velocity.y, 0.0);
-            acceleration.y = Math.min(acceleration.y, 0.0);
         }
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, 0.0, -0.1)))) {
             velocity.z = Math.max(velocity.z, 0.0);
-            acceleration.z = Math.max(acceleration.z, 0.0);
         }
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, 0.0, 0.1)))) {
             velocity.z = Math.min(velocity.z, 0.0);
-            acceleration.z = Math.min(acceleration.z, 0.0);
         }
     }
 
