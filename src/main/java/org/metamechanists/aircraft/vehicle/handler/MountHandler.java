@@ -16,16 +16,13 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 
 public class MountHandler implements Listener {
     @EventHandler
-    public static void onMount(@NotNull PlayerInteractEntityEvent e) {
-        Bukkit.getLogger().severe("oh my god");
-        if (EntityStorage.kinematicEntity(e.getRightClicked().getUniqueId()) != null) {
-            Bukkit.getLogger().severe(EntityStorage.kinematicEntity(e.getRightClicked().getUniqueId()).schema().getId());
-            return;
+    public static void onMount(@NotNull PlayerInteractEntityEvent event) {
+        Bukkit.getLogger().severe("3");
+        KinematicEntity<?, ?> kinematicEntity = EntityStorage.kinematicEntity(event.getRightClicked().getUniqueId());
+        if (kinematicEntity != null) {
+            Bukkit.getLogger().severe("4");
+            kinematicEntity.onRightClick(event.getPlayer());
         }
-        if (!(EntityStorage.kinematicEntity(e.getRightClicked().getUniqueId()) instanceof VehicleInteractor interactor)) {
-            return;
-        }
-
     }
 
     @EventHandler
