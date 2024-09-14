@@ -61,10 +61,12 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
 
         for (YamlTraverser componentSectionTraverser : traverser.getSection("components").getSections()) {
             for (YamlTraverser componentTraverser : componentSectionTraverser.getSections()) {
-                VehicleComponent.VehicleComponentSchema schema = VehicleComponent.VehicleComponentSchema.fromTraverser(traverser, translation, false);
+                VehicleComponent.VehicleComponentSchema schema = VehicleComponent.VehicleComponentSchema.fromTraverser(
+                        componentTraverser, translation, false);
                 components.put(schema.getId(), schema);
-                if (traverser.get("mirror", false)) {
-                    VehicleComponent.VehicleComponentSchema mirroredSchema = VehicleComponent.VehicleComponentSchema.fromTraverser(traverser, translation, true);
+                if (componentTraverser.get("mirror", false)) {
+                    VehicleComponent.VehicleComponentSchema mirroredSchema = VehicleComponent.VehicleComponentSchema.fromTraverser(
+                            componentTraverser, translation, true);
                     components.put(mirroredSchema.getId(), mirroredSchema);
                 }
             }
