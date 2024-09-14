@@ -71,8 +71,10 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
         writer.set("angle", angle);
     }
 
-    public void update(double throttle) {
-        angle += throttle * schema().getMaxRotationRate() / 100.0;
+    @Override
+    public void update(@NotNull VehicleEntity vehicleEntity) {
+        super.update(vehicleEntity);
+        angle += vehicleEntity.getThrottle() * schema().getMaxRotationRate() / 100.0;
         angle %= 2.0 * PI;
     }
 

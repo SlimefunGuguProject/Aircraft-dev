@@ -90,7 +90,10 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
         return schema().modelItem(vehicleEntity, extraRotation, extraTranslation);
     }
 
-    public void update() {
+    @Override
+    public void update(@NotNull VehicleEntity vehicleEntity) {
+        super.update(vehicleEntity);
+
         if (ticksUntilReturn > 0) {
             ticksUntilReturn--;
             return;

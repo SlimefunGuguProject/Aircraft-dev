@@ -11,6 +11,7 @@ import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.kinematiccore.api.storage.StateReader;
 
+import javax.annotation.OverridingMethodsMustInvokeSuper;
 import java.util.function.Supplier;
 
 
@@ -28,7 +29,8 @@ public abstract class ItemComponent<T extends KinematicEntitySchema> extends Kin
         super(schema, spawnEntity);
     }
 
-    public final void update(@NotNull VehicleEntity vehicleEntity) {
+    @OverridingMethodsMustInvokeSuper
+    public void update(@NotNull VehicleEntity vehicleEntity) {
         ItemDisplay display = entity();
         if (display == null) {
             return;
