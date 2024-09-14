@@ -19,6 +19,7 @@ public class VehicleItem extends SlimefunItem {
     public VehicleItem(VehicleEntitySchema schema, ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe) {
         super(itemGroup, item, recipeType, recipe);
         this.schema = schema;
+        addItemHandler(onItemUse());
     }
 
     private @NotNull ItemUseHandler onItemUse() {
