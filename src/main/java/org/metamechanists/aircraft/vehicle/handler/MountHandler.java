@@ -19,7 +19,7 @@ public class MountHandler implements Listener {
     public static void onMount(@NotNull PlayerInteractEntityEvent e) {
         Bukkit.getLogger().severe("oh my god");
         if (EntityStorage.kinematicEntity(e.getRightClicked().getUniqueId()) != null) {
-            Bukkit.getLogger().severe("wtf");
+            Bukkit.getLogger().severe(EntityStorage.kinematicEntity(e.getRightClicked().getUniqueId()).schema().getId());
             return;
         }
         if (!(EntityStorage.kinematicEntity(e.getRightClicked().getUniqueId()) instanceof VehicleInteractor interactor)) {
