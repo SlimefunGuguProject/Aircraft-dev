@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.VehicleInteractor;
+import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.storage.EntityStorage;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
@@ -17,6 +18,10 @@ public class MountHandler implements Listener {
     @EventHandler
     public static void onMount(@NotNull PlayerInteractEntityEvent e) {
         Bukkit.getLogger().severe("oh my god");
+        if (EntityStorage.kinematicEntity(e.getRightClicked().getUniqueId()) != null) {
+            Bukkit.getLogger().severe("wtf");
+            return;
+        }
         if (!(EntityStorage.kinematicEntity(e.getRightClicked().getUniqueId()) instanceof VehicleInteractor interactor)) {
             return;
         }
