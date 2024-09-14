@@ -39,7 +39,6 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
 
         // Update matrix
         if (visible && computeMatrixDifference(matrixLastUpdate, modelText.getMatrix()) > MATRIX_DIFFERENCE_THRESHOLD) {
-            Aircraft.getInstance().getLogger().severe("1");
             display.setTransformationMatrix(modelText.getMatrix());
             display.setInterpolationDelay(0);
             display.setInterpolationDuration(VehicleEntity.TICK_INTERVAL);
@@ -47,21 +46,28 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
 
         // Update text if changed
         if (display.getText() != null) {
-            Aircraft.getInstance().getLogger().severe("2");
+            if (modelText.getMain().getTextComponent() != null && !display.text().equals(modelText.getMain().getTextComponent())) {
+                Aircraft.getInstance().getLogger().severe("bruh");
+                display.text(modelText.getMain().getTextComponent());
+            }
             if (modelText.getMain().getTextString() != null && !display.getText().equals(modelText.getMain().getTextString())) {
+                Aircraft.getInstance().getLogger().severe("bruh");
                 display.setText(modelText.getMain().getTextString());
             }
         }
 
         // Set text visible
         if (visible && visibleLastUpdate && display.getText() == null) {
-            Aircraft.getInstance().getLogger().severe("3");
-            display.setText(modelText.getMain().getTextString());
+            if (modelText.getMain().getTextComponent() != null) {
+                display.text(modelText.getMain().getTextComponent());
+            }
+            if (modelText.getMain().getTextString() != null) {
+                display.setText(modelText.getMain().getTextString());
+            }
         }
 
         // Set text invisible
         if (!visible && display.getText() != null) {
-            Aircraft.getInstance().getLogger().severe("4");
             display.setText(null);
         }
 
