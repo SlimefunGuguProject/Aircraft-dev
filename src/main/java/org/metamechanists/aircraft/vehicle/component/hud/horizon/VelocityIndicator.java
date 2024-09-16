@@ -34,10 +34,10 @@ public class VelocityIndicator extends HudTextComponent<VelocityIndicator.Veloci
 
     @Override
     protected @NotNull ModelText modelText(@NotNull VehicleEntity vehicleEntity) {
-        float horizonOffset = (float) (0.5 * vehicleEntity.getVelocityPitch()) + Horizon.HorizonSchema.offset(vehicleEntity);
+        float offset = (float) (0.5 * vehicleEntity.getVelocityPitch()) + Horizon.HorizonSchema.offset(vehicleEntity);
         return schema().getSectionSchema().rollIndependentText(vehicleEntity)
                 .text(Component.text(schema().text).color(schema().color))
-                .translate(new Vector3f(0, horizonOffset, 0))
+                .translate(new Vector3f(0, offset, 0))
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
                 .translate(0.5F, 0.35F, 0.05F);
     }

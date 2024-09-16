@@ -30,12 +30,13 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
 
         @SuppressWarnings("DataFlowIssue")
         public PropellerComponentSchema(
+                @NotNull String id,
                 @NotNull YamlTraverser traverser,
                 @NotNull YamlTraverser propellerTraverser,
                 @NotNull Vector3f translation,
                 boolean mirror
         ) {
-            super(PropellerComponent.class, traverser, translation, mirror);
+            super(id, PropellerComponent.class, traverser, translation, mirror);
             rotationAxis = propellerTraverser.getVector3d("rotationAxis", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             maxRotationRate = propellerTraverser.get("maxRotationRate");
         }

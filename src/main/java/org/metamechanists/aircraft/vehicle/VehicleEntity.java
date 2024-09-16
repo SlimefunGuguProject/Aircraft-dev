@@ -181,9 +181,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         velocity.mul(1.0 - schema().getVelocityDamping());
         Vector3d acceleration = acceleration(forces);
         velocity.add(new Vector3d(acceleration).div(PHYSICS_UPDATES_PER_SECOND));
-        velocity.rotate(rotation);
         cancelVelocityAndAcceleration(pig, velocity, acceleration);
-        velocity.rotate(new Quaterniond(rotation).invert());
 
         angularVelocity.mul(1.0 - schema().getAngularVelocityDamping());
         Vector3d angularAcceleration = angularAcceleration(forces);
@@ -211,7 +209,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         return new Vector3d(resultantTorque).div(schema().getMomentOfInertia());
     }
 
-    public static void cancelVelocityAndAcceleration(@NotNull Pig pig, Vector3d velocity, Vector3d acceleration) {
+    public void cancelVelocityAndAcceleration(@NotNull Pig pig, @NotNull Vector3d velocity, Vector3d acceleration) {
+        velocity.rotate(rotation);
+
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(-0.1, 0.0, 0.0)))) {
             velocity.x = Math.max(velocity.x, 0.0);
         }
@@ -235,6 +235,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(0.0, 0.0, 0.1)))) {
             velocity.z = Math.min(velocity.z, 0.0);
         }
+
+        velocity.rotate(new Quaterniond(rotation).invert());
     }
 
     public @NotNull Set<SpatialForce> getForces(boolean isOnGround) {

@@ -11,7 +11,6 @@ import org.metamechanists.aircraft.vehicle.component.base.ItemComponent;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
 import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.kinematiccore.api.storage.StateReader;
-import org.metamechanists.kinematiccore.api.storage.StateWriter;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.Set;
@@ -19,8 +18,12 @@ import java.util.Set;
 
 public class FixedComponent extends VehicleComponent<VehicleComponent.VehicleComponentSchema> {
     public static class FixedComponentSchema extends VehicleComponentSchema {
-        public FixedComponentSchema(@NotNull YamlTraverser traverser, @NotNull Vector3f translation, boolean mirror) {
-            super(FixedComponent.class, traverser, translation, mirror);
+        public FixedComponentSchema(
+                @NotNull String id,
+                @NotNull YamlTraverser traverser,
+                @NotNull Vector3f translation,
+                boolean mirror) {
+            super(id, FixedComponent.class, traverser, translation, mirror);
         }
 
         @Override
@@ -43,9 +46,6 @@ public class FixedComponent extends VehicleComponent<VehicleComponent.VehicleCom
     public FixedComponent(@NotNull StateReader reader) {
         super(reader);
     }
-
-    @Override
-    public void write(@NotNull StateWriter writer) {}
 
     @Override
     protected @NotNull ModelItem modelItem(@NotNull VehicleEntity vehicleEntity) {

@@ -33,12 +33,13 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
 
         @SuppressWarnings("DataFlowIssue")
         public HingedComponentSchema(
+                @NotNull String id,
                 @NotNull YamlTraverser traverser,
                 @NotNull YamlTraverser hingedTraverser,
                 @NotNull Vector3f translation,
                 boolean mirror
         ) {
-            super(HingedComponent.class, traverser, translation, mirror);
+            super(id, HingedComponent.class, traverser, translation, mirror);
 
             rotationAxis = hingedTraverser.getVector3d("rotationAxis", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             rotationRate = hingedTraverser.get("rotationRate");

@@ -41,12 +41,13 @@ public abstract class VehicleComponent<T extends KinematicEntitySchema> extends 
 
         @SuppressWarnings("DataFlowIssue")
         protected VehicleComponentSchema(
+                @NotNull String id,
                 @NotNull Class<? extends KinematicEntity<?, ?>> kinematicClass,
                 @NotNull YamlTraverser traverser,
                 @NotNull Vector3f translation,
                 boolean mirror
         ) {
-            super(traverser.name() + "_" + traverser.path() + (mirror ? "" : "_mirror"), Aircraft.class, kinematicClass, ItemDisplay.class);
+            super(id + (mirror ? "" : "_mirror"), Aircraft.class, kinematicClass, ItemDisplay.class);
 
             material = Material.valueOf(traverser.get("material"));
             size = traverser.getVector3f("size");
@@ -125,18 +126,18 @@ public abstract class VehicleComponent<T extends KinematicEntitySchema> extends 
         }
 
         public static @NotNull VehicleComponent.VehicleComponentSchema fromTraverser(
-                @NotNull YamlTraverser traverser, @NotNull Vector3f translation, boolean mirror) {
+                @NotNull String id, @NotNull YamlTraverser traverser, @NotNull Vector3f translation, boolean mirror) {
             YamlTraverser hingedTraverser = traverser.getSection("hinged", YamlTraverser.ErrorSetting.NO_BEHAVIOUR);
             if (hingedTraverser != null) {
-                return new HingedComponent.HingedComponentSchema(traverser, hingedTraverser, translation, mirror);
+                return new HingedComponent.HingedComponentSchema(id, traverser, hingedTraverser, translation, mirror);
             }
 
             YamlTraverser propellerTraverser = traverser.getSection("propeller", YamlTraverser.ErrorSetting.NO_BEHAVIOUR);
             if (propellerTraverser != null) {
-                return new PropellerComponent.PropellerComponentSchema(traverser, propellerTraverser, translation, mirror);
+                return new PropellerComponent.PropellerComponentSchema(id, traverser, propellerTraverser, translation, mirror);
             }
 
-            return new FixedComponent.FixedComponentSchema(traverser, translation, mirror);
+            return new FixedComponent.FixedComponentSchema(id, traverser, translation, mirror);
         }
     }
 
