@@ -51,7 +51,7 @@ public class HorizonDegree extends HudTextComponent<HorizonDegree.HorizonDegreeS
         Vector3f horizonOffset = new Vector3f(0, (float) (0.5 * -vehicleEntity.pitch()), 0);
         float verticalSpacing = 0.25F * (float) ((PI / 1.14) / (Horizon.BARS));
         Vector3f barOffset = new Vector3f(0, verticalSpacing * index, 0);
-        Vector3f totalAdjustment = new Vector3f(barOffset).add(horizonOffset).add(0.0F, 0.0F, 0.08F);
+        Vector3f totalAdjustment = new Vector3f(barOffset).add(horizonOffset).add(0.08F, 0.0F, 0.0F);
 
         setVisible(Math.abs(totalAdjustment.length()) < Horizon.RADIUS);
 
@@ -59,6 +59,6 @@ public class HorizonDegree extends HudTextComponent<HorizonDegree.HorizonDegreeS
                 .text(Component.text(index * (90 / (Horizon.BARS-1))).color(schema().color))
                 .translate(totalAdjustment)
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
-                .translate(0.5F, 0.35F, 0.05F);
+                .translate(0.5F, 0.35F, 0.0F);
     }
 }
