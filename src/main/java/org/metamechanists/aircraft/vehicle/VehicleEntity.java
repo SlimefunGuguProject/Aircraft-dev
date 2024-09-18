@@ -126,6 +126,11 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             }
         }
 
+        // Do physics update (before component updates for immediate effect)
+        for (int i = 0; i < PHYSICS_UPDATES_PER_AIRCRAFT_UPDATE; i++) {
+            updatePhysics(pig);
+        }
+
         // Update components
         for (UUID uuid : components.values()) {
             if (EntityStorage.kinematicEntity(uuid) instanceof ItemComponent<?> component) {
@@ -138,11 +143,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             if (EntityStorage.kinematicEntity(horizon) instanceof Horizon horizon) {
                 horizon.update(this);
             }
-        }
-
-        // Do physics update
-        for (int i = 0; i < PHYSICS_UPDATES_PER_AIRCRAFT_UPDATE; i++) {
-            updatePhysics(pig);
         }
 
         // Update pig velocity
