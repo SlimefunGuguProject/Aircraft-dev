@@ -91,7 +91,9 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         for (VehicleComponent.VehicleComponentSchema schema : components.values()) {
             EntitySchemas.unregister(schema.getId());
         }
-        horizonSchema.unregister();
+        if (horizonSchema != null) {
+            horizonSchema.unregister();
+        }
         EntitySchemas.unregister(getId());
     }
 }

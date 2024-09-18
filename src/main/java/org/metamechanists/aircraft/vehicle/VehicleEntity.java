@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicle;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
@@ -111,10 +112,12 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         Map<String, VehicleComponent.VehicleComponentSchema> expectedComponents = schema().getComponents();
 
         // Remove any additional vehicle components
-        List<String> toRemove = new ArrayList<>();
         for (String id : components.keySet()) {
             if (!expectedComponents.containsKey(id)) {
-                components.remove(id);
+                KinematicEntity<?, ?> kinematicEntity = EntityStorage.kinematicEntity(components.remove(id));
+                if (kinematicEntity != null) {
+                    kinematicEntity.remove();
+                }
             }
         }
 
