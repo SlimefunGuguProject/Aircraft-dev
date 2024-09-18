@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("WeakerAccess")
 @Getter
 public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
-    public static final int TICK_INTERVAL = 4;
+    public static final int TICK_INTERVAL = 2;
     private static final int PHYSICS_INTERVAL = 1;
     private static final int PHYSICS_UPDATES_PER_SECOND = 20 / PHYSICS_INTERVAL;
     private static final int PHYSICS_UPDATES_PER_AIRCRAFT_UPDATE = TICK_INTERVAL / PHYSICS_INTERVAL;

@@ -38,6 +38,8 @@ public class Horizon extends HudSection<Horizon.HorizonSchema> {
             altitudeTextSchema.unregister();
             altitudeBracketsSchema.unregister();
             velocityIndicatorSchema.unregister();
+            horizonBarSchema.unregister();
+            horizonDegreeSchema.unregister();
         }
 
         public static float offset(@NotNull VehicleEntity vehicleEntity) {
