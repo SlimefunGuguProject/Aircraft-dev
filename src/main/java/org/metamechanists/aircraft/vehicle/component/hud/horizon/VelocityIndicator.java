@@ -17,8 +17,8 @@ public class VelocityIndicator extends HudTextComponent<VelocityIndicator.Veloci
         private final TextColor color;
         private final String text;
 
-        public VelocityIndicatorSchema(@NotNull Horizon.HorizonSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super("velocity_indicator", sectionSchema, traverser, VelocityIndicator.class, TextDisplay.class);
+        public VelocityIndicatorSchema(@NotNull String id, @NotNull Horizon.HorizonSchema sectionSchema, @NotNull YamlTraverser traverser) {
+            super(id + "velocity_indicator", sectionSchema, traverser, VelocityIndicator.class, TextDisplay.class);
             color = traverser.getTextColor("velocityIndicatorColor");
             text = traverser.get("velocityIndicatorText");
         }

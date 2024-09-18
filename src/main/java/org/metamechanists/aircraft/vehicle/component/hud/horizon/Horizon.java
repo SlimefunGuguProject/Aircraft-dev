@@ -25,11 +25,11 @@ public class Horizon extends HudSection<Horizon.HorizonSchema> {
 
         public HorizonSchema(@NotNull String id, @NotNull YamlTraverser traverser) {
             super(id, traverser, Horizon.class, Interaction.class);
-            altitudeTextSchema = new AltitudeText.AltitudeTextSchema(this, traverser);
-            altitudeBracketsSchema = new AltitudeBrackets.AltitudeBracketsSchema(this, traverser);
-            velocityIndicatorSchema = new VelocityIndicator.VelocityIndicatorSchema(this, traverser);
-            horizonBarSchema = new HorizonBar.HorizonBarSchema(this, traverser);
-            horizonDegreeSchema = new HorizonDegree.HorizonDegreeSchema(this, traverser);
+            altitudeTextSchema = new AltitudeText.AltitudeTextSchema(id, this, traverser);
+            altitudeBracketsSchema = new AltitudeBrackets.AltitudeBracketsSchema(id, this, traverser);
+            velocityIndicatorSchema = new VelocityIndicator.VelocityIndicatorSchema(id, this, traverser);
+            horizonBarSchema = new HorizonBar.HorizonBarSchema(id, this, traverser);
+            horizonDegreeSchema = new HorizonDegree.HorizonDegreeSchema(id, this, traverser);
         }
 
         @Override

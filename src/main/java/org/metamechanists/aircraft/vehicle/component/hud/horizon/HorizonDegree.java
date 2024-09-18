@@ -22,8 +22,8 @@ public class HorizonDegree extends HudTextComponent<HorizonDegree.HorizonDegreeS
         private static final float RADIUS = 0.15F;
         private final TextColor color;
 
-        public HorizonDegreeSchema(@NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super("horizon_degree", sectionSchema, traverser, HorizonBar.class, TextDisplay.class);
+        public HorizonDegreeSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
+            super(id + "horizon_degree", sectionSchema, traverser, HorizonBar.class, TextDisplay.class);
             color = traverser.getTextColor("horizonDegreeColor");
         }
     }

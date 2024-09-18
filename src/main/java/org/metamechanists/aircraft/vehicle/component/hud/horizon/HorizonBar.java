@@ -25,8 +25,8 @@ public class HorizonBar extends HudTextComponent<HorizonBar.HorizonBarSchema> {
         private final String minorText;
         private final String detailText;
 
-        public HorizonBarSchema(@NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super("altitude_brackets", sectionSchema, traverser, HorizonBar.class, TextDisplay.class);
+        public HorizonBarSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
+            super(id + "_horizon_bar", sectionSchema, traverser, HorizonBar.class, TextDisplay.class);
             majorColor = traverser.getTextColor("altitudeBracketsColor");
             minorColor = traverser.getTextColor("minorColor");
             detailColor = traverser.getTextColor("detailColor");

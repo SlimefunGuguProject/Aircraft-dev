@@ -17,8 +17,8 @@ public class AltitudeText extends HudTextComponent<AltitudeText.AltitudeTextSche
     public static class AltitudeTextSchema extends HudTextComponent.HudTextComponentSchema {
         private final TextColor color;
 
-        public AltitudeTextSchema(@NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super("altitude_text", sectionSchema, traverser, AltitudeText.class, TextDisplay.class);
+        public AltitudeTextSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
+            super(id + "_altitude_text", sectionSchema, traverser, AltitudeText.class, TextDisplay.class);
             color = traverser.getTextColor("altitudeTextColor");
         }
     }

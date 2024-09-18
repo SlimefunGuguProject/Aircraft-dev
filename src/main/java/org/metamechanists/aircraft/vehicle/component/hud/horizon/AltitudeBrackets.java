@@ -18,8 +18,8 @@ public class AltitudeBrackets extends HudTextComponent<AltitudeBrackets.Altitude
         private final TextColor color;
         private final String text;
 
-        public AltitudeBracketsSchema(@NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super("altitude_brackets", sectionSchema, traverser, AltitudeBrackets.class, TextDisplay.class);
+        public AltitudeBracketsSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
+            super(id + "_altitude_brackets", sectionSchema, traverser, AltitudeBrackets.class, TextDisplay.class);
             color = traverser.getTextColor("altitudeBracketsColor");
             text = traverser.get("altitudeBracketsText");
         }
