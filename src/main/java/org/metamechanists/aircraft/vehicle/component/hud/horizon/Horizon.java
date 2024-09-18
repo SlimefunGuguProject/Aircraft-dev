@@ -7,21 +7,29 @@ import org.metamechanists.aircraft.vehicle.component.base.HudSection;
 import org.metamechanists.kinematiccore.api.storage.StateReader;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 
 public class Horizon extends HudSection<Horizon.HorizonSchema> {
+    public static final int BARS = 30;
+    public static final float RADIUS = 0.15F;
+
     public static class HorizonSchema extends HudSection.HudSectionSchema {
         private final AltitudeText.AltitudeTextSchema altitudeTextSchema;
         private final AltitudeBrackets.AltitudeBracketsSchema altitudeBracketsSchema;
         private final VelocityIndicator.VelocityIndicatorSchema velocityIndicatorSchema;
+        private final HorizonBar.HorizonBarSchema horizonBarSchema;
+        private final HorizonDegree.HorizonDegreeSchema horizonDegreeSchema;
 
         public HorizonSchema(@NotNull String id, @NotNull YamlTraverser traverser) {
             super(id, traverser, Horizon.class, Interaction.class);
             altitudeTextSchema = new AltitudeText.AltitudeTextSchema(this, traverser);
             altitudeBracketsSchema = new AltitudeBrackets.AltitudeBracketsSchema(this, traverser);
             velocityIndicatorSchema = new VelocityIndicator.VelocityIndicatorSchema(this, traverser);
+            horizonBarSchema = new HorizonBar.HorizonBarSchema(this, traverser);
+            horizonDegreeSchema = new HorizonDegree.HorizonDegreeSchema(this, traverser);
         }
 
         @Override
@@ -47,10 +55,18 @@ public class Horizon extends HudSection<Horizon.HorizonSchema> {
 
     @Override
     protected List<UUID> buildComponents(@NotNull VehicleEntity vehicleEntity) {
-        return List.of(
-                new AltitudeText(schema().altitudeTextSchema, vehicleEntity).uuid(),
-                new AltitudeBrackets(schema().altitudeBracketsSchema, vehicleEntity).uuid(),
-                new VelocityIndicator(schema().velocityIndicatorSchema, vehicleEntity).uuid()
-        );
+        List<UUID> components = new ArrayList<>();
+        components.add(new AltitudeText(schema().altitudeTextSchema, vehicleEntity).uuid());
+        components.add(new AltitudeBrackets(schema().altitudeBracketsSchema, vehicleEntity).uuid());
+        components.add(new VelocityIndicator(schema().velocityIndicatorSchema, vehicleEntity).uuid());
+
+        for (int i = -BARS; i <= BARS; i++) {
+            components.add(new HorizonBar(schema().horizonBarSchema, vehicleEntity, i).uuid());
+            if (i != 0 && i % 5 == 0) {
+                components.add(new HorizonDegree(schema().horizonDegreeSchema, vehicleEntity, i).uuid());
+            }
+        }
+
+        return components;
     }
 }

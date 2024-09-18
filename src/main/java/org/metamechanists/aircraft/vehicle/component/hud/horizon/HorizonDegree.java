@@ -16,35 +16,27 @@ import org.metamechanists.metalib.yaml.YamlTraverser;
 import static java.lang.Math.PI;
 
 
-public class HorizonBar extends HudTextComponent<HorizonBar.HorizonBarSchema> {
-    public static class HorizonBarSchema extends HudTextComponentSchema {
-        private final TextColor majorColor;
-        private final TextColor minorColor;
-        private final TextColor detailColor;
-        private final String majorText;
-        private final String minorText;
-        private final String detailText;
+public class HorizonDegree extends HudTextComponent<HorizonDegree.HorizonDegreeSchema> {
+    public static class HorizonDegreeSchema extends HudTextComponentSchema {
+        public static final int BARS = 30;
+        private static final float RADIUS = 0.15F;
+        private final TextColor color;
 
-        public HorizonBarSchema(@NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super("altitude_brackets", sectionSchema, traverser, HorizonBar.class, TextDisplay.class);
-            majorColor = traverser.getTextColor("altitudeBracketsColor");
-            minorColor = traverser.getTextColor("minorColor");
-            detailColor = traverser.getTextColor("detailColor");
-            majorText = traverser.get("altitudeBracketsText");
-            minorText = traverser.get("minorText");
-            detailText = traverser.get("detailText");
+        public HorizonDegreeSchema(@NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
+            super("horizon_degree", sectionSchema, traverser, HorizonBar.class, TextDisplay.class);
+            color = traverser.getTextColor("horizonDegreeColor");
         }
     }
 
     private final int index;
 
-    public HorizonBar(@NotNull HorizonBar.HorizonBarSchema schema, @NotNull VehicleEntity vehicleEntity, int index) {
+    public HorizonDegree(@NotNull HorizonDegreeSchema schema, @NotNull VehicleEntity vehicleEntity, int index) {
         super(schema, vehicleEntity);
         this.index = index;
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public HorizonBar(@NotNull StateReader reader) {
+    public HorizonDegree(@NotNull StateReader reader) {
         super(reader);
         index = reader.get("index", int.class);
     }
@@ -61,24 +53,10 @@ public class HorizonBar extends HudTextComponent<HorizonBar.HorizonBarSchema> {
         Vector3f barOffset = new Vector3f(0, verticalSpacing * index, 0);
         Vector3f totalAdjustment = new Vector3f(barOffset).add(horizonOffset);
 
-        String text;
-        TextColor color;
-
-        if (index == 0) {
-            color = schema().majorColor;
-            text = schema().majorText;
-        } else if (index % 5 == 0) {
-            color = schema().minorColor;
-            text = schema().minorText;
-        } else {
-            color = schema().detailColor;
-            text = schema().detailText;
-        }
-
         setVisible(Math.abs(totalAdjustment.length()) < Horizon.RADIUS);
 
         return schema().getSectionSchema().rollIndependentText(vehicleEntity)
-                .text(Component.text(text).color(color))
+                .text(Component.text(index * (90 / (Horizon.BARS-1))).color(schema().color))
                 .translate(totalAdjustment)
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
                 .translate(0.5F, 0.35F, 0.05F);
