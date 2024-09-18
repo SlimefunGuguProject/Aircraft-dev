@@ -3,7 +3,6 @@ package org.metamechanists.aircraft.vehicle;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
@@ -24,10 +23,8 @@ import org.metamechanists.kinematiccore.api.storage.EntityStorage;
 import org.metamechanists.kinematiccore.api.storage.StateReader;
 import org.metamechanists.kinematiccore.api.storage.StateWriter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -75,7 +72,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         itemDisplays = new HashSet<>();
         textDisplays = new HashSet<>();
         interaction = new VehicleInteractor(this).uuid();
-        horizon = new Horizon(schema.getHorizonSchema(), this).uuid();
+        if (schema.getHorizonSchema() != null) {
+            horizon = new Horizon(schema.getHorizonSchema(), this).uuid();
+        }
     }
 
     @SuppressWarnings("DataFlowIssue")
