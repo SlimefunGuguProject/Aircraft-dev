@@ -4,10 +4,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDismountEvent;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.kinematiccore.api.storage.EntityStorage;
-import org.spigotmc.event.entity.EntityDismountEvent;
 
 
 public class MountHandler implements Listener {
