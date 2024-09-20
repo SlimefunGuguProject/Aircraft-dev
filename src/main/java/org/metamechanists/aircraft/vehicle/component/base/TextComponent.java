@@ -34,8 +34,6 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
             return;
         }
 
-        display.setViewRange(visible ? 1 : 0);
-
         ModelText modelText = modelText(vehicleEntity);
 
         // Update matrix
@@ -63,7 +61,7 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
 
         // Set text invisible
         if (!visible && display.getText() != null) {
-            display.setText("");
+            display.setText(null);
         }
 
         visibleLastUpdate = visible;
