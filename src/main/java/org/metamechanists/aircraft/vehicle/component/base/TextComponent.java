@@ -17,6 +17,7 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
     private static final double MATRIX_DIFFERENCE_THRESHOLD = 1.0e-4;
     private boolean visible = true;
     private boolean visibleLastUpdate = true;
+    private boolean visibleLastLastUpdate = true;
     private Matrix4f matrixLastUpdate = new Matrix4f();
 
     protected TextComponent(@NotNull StateReader reader) {
@@ -50,8 +51,8 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
         }
 
         // Set text visible
-        if (visible && visibleLastUpdate && modelText.getMain().getText() != null) {
-            if (display.getText() == null || Objects.equals(display.getText(), "")) {
+        if (visible && visibleLastUpdate && visibleLastLastUpdate && modelText.getMain().getText() != null) {
+            if (display.getText() == null) {
                 display.text(modelText.getMain().getText());
             }
 
@@ -66,6 +67,7 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
         }
 
         visibleLastUpdate = visible;
+        visibleLastLastUpdate = visibleLastUpdate;
         matrixLastUpdate = modelText.getMatrix();
     }
 
