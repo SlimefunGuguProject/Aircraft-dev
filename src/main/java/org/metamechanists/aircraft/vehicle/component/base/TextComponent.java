@@ -44,26 +44,25 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
             display.setInterpolationDuration(VehicleEntity.TICK_INTERVAL);
         }
 
-        // Update text if changed
-        if (display.getText() != null
-                && modelText.getMain().getText() != null
-                && !display.text().equals(modelText.getMain().getText())) {
-            display.text(modelText.getMain().getText());
-        }
-
         // Update background if changed
         if (!Objects.equals(display.getBackgroundColor(), modelText.getMain().getBackgroundColor())) {
             display.setBackgroundColor(modelText.getMain().getBackgroundColor());
         }
 
         // Set text visible
-        if (visible && visibleLastUpdate && display.getText() == null && modelText.getMain().getText() != null) {
-            display.text(modelText.getMain().getText());
+        if (visible && visibleLastUpdate && modelText.getMain().getText() != null) {
+            if (display.getText() == null || Objects.equals(display.getText(), "")) {
+                display.text(modelText.getMain().getText());
+            }
+
+            if (display.getText() != null && !display.text().equals(modelText.getMain().getText())) {
+                display.text(modelText.getMain().getText());
+            }
         }
 
         // Set text invisible
         if (!visible && display.getText() != null) {
-            display.setText(null);
+            display.setText("");
         }
 
         visibleLastUpdate = visible;

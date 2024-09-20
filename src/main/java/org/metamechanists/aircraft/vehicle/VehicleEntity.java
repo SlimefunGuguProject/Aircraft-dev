@@ -110,6 +110,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
         Map<String, VehicleComponent.VehicleComponentSchema> expectedComponents = schema().getComponents();
 
+        // TODO do this for hud components too, in another method
         // Remove any additional vehicle components
         for (String id : components.keySet()) {
             if (!expectedComponents.containsKey(id)) {
@@ -151,6 +152,18 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         Vector pigVelocity = Vector.fromJOML(absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND));
         pig.setVelocity(pigVelocity);
     }
+
+    private static void removeRedundantComponents(@NotNull Map<String, UUID> components, @NotNull Set<String> expected) {
+        for (String id : components.keySet()) {
+            if (!expected.contains(id)) {
+                KinematicEntity<?, ?> kinematicEntity = EntityStorage.kinematicEntity(components.remove(id));
+                if (kinematicEntity != null) {
+                    kinematicEntity.remove();
+                }
+            }
+        }
+    }
+
 
     public void onKey(char key) {
         for (UUID uuid : components.values()) {
