@@ -57,7 +57,7 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
 
         // Set text invisible
         if (!visible && display.getText() != null) {
-            display.setText("-");
+            display.setText("");
         }
 
         visibleLastLastUpdate = visibleLastUpdate;
