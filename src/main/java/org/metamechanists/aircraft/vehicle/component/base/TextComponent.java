@@ -50,11 +50,7 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
 
         // Set text visible
         if (visible && visibleLastUpdate && visibleLastLastUpdate && modelText.getMain().getText() != null) {
-            if (display.getText() == null) {
-                display.text(modelText.getMain().getText());
-            }
-
-            if (display.getText() != null && !display.text().equals(modelText.getMain().getText())) {
+            if (display.getText() == null || !display.text().equals(modelText.getMain().getText())) {
                 display.text(modelText.getMain().getText());
             }
         }
@@ -64,8 +60,8 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
             display.setText("-");
         }
 
-        visibleLastUpdate = visible;
         visibleLastLastUpdate = visibleLastUpdate;
+        visibleLastUpdate = visible;
         matrixLastUpdate = modelText.getMatrix();
     }
 
