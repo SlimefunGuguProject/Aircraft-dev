@@ -4,6 +4,7 @@ import lombok.Setter;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -28,7 +29,7 @@ public class QuantityBar extends HudItemComponent<QuantityBar.QuantityBarSchema>
                 @NotNull HudSection.HudSectionSchema sectionSchema,
                 @NotNull YamlTraverser traverser
         ) {
-            super(id + "_bottom_panel_" + prefix, sectionSchema, traverser, QuantityBar.class, TextDisplay.class);
+            super(id + "_bottom_panel_" + prefix, sectionSchema, traverser, QuantityBar.class, ItemDisplay.class);
             material = Material.getMaterial(traverser.get(prefix + "Material"));
             height = traverser.get(prefix + "Height");
             width = traverser.get(prefix + "Width");
