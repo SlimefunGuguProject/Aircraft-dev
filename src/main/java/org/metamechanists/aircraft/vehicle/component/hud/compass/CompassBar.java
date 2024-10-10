@@ -86,7 +86,7 @@ public class CompassBar extends HudTextComponent<CompassBar.CompassBarSchema> {
             size = schema().detailSize;
         }
 
-        setVisible(Math.abs(totalAdjustment.length()) < Horizon.RADIUS);
+        //setVisible(Math.abs(totalAdjustment.length()) < Horizon.RADIUS);
 
         return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(text).color(color))
