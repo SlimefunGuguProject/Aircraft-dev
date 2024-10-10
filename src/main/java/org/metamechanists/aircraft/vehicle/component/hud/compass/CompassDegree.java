@@ -25,7 +25,7 @@ public class CompassDegree extends HudTextComponent<CompassDegree.CompassDegreeS
         public CompassDegreeSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
             super(id + "_compass_degree", sectionSchema, traverser, CompassDegree.class, TextDisplay.class);
             color = traverser.getTextColor("degreeColor");
-            size = traverser.get("degreeSize ");
+            size = traverser.get("degreeSize");
         }
     }
 
