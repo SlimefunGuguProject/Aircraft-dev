@@ -14,6 +14,7 @@ import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicle.component.base.ItemComponent;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
+import org.metamechanists.aircraft.vehicle.component.hud.compass.Compass;
 import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
 import org.metamechanists.aircraft.vehicle.component.vehicle.HingedComponent;
 import org.metamechanists.aircraft.vehicle.forces.SpatialForce;
@@ -51,6 +52,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     private final Set<UUID> textDisplays;
     private @Nullable UUID interaction;
     private @Nullable UUID horizon;
+    private @Nullable UUID compass;
 
     public VehicleEntity(@NotNull VehicleEntitySchema schema, @NotNull Block block, @NotNull Player player) {
         super(schema, () -> {
@@ -75,6 +77,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         if (schema.getHorizonSchema() != null) {
             horizon = new Horizon(schema.getHorizonSchema(), this).uuid();
         }
+        if (schema.getCompassSchema() != null) {
+            compass = new Compass(schema.getCompassSchema(), this).uuid();
+        }
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -87,8 +92,10 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         interaction = reader.get("interaction", UUID.class);
         components = reader.get("components", new HashMap<>());
         hud = reader.get("hud", new HashMap<>());
-        itemDisplays = reader.get("hud", new HashSet<>());
-        textDisplays = reader.get("hud", new HashSet<>());
+        itemDisplays = reader.get("itemDisplays", new HashSet<>());
+        textDisplays = reader.get("textDisplays", new HashSet<>());
+        horizon = reader.get("horizon", UUID.class);
+        compass = reader.get("compass", UUID.class);
     }
 
     @Override
@@ -100,6 +107,10 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         writer.set("interaction", interaction);
         writer.set("components", components);
         writer.set("hud", hud);
+        writer.set("itemDisplays", new HashSet<>());
+        writer.set("textDisplays", new HashSet<>());
+        writer.set("horizon", horizon);
+        writer.set("compass", compass);
     }
 
     @Override
@@ -163,7 +174,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             }
         }
     }
-
 
     public void onKey(char key) {
         for (UUID uuid : components.values()) {

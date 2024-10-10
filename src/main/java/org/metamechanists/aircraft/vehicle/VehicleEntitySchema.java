@@ -8,6 +8,7 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
+import org.metamechanists.aircraft.vehicle.component.hud.compass.Compass;
 import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.kinematiccore.api.storage.EntitySchemas;
@@ -34,6 +35,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     private final double groundPitchDamping;
     private final Map<String, VehicleComponent.VehicleComponentSchema> components = new HashMap<>();
     private final @Nullable Horizon.HorizonSchema horizonSchema;
+    private final @Nullable Compass.CompassSchema compassSchema;
 
     @SuppressWarnings("DataFlowIssue")
     public VehicleEntitySchema(@NotNull String id) {
@@ -82,6 +84,13 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
             horizonSchema = null;
         } else {
             horizonSchema = new Horizon.HorizonSchema(id + "_horizon", horizonSection);
+        }
+
+        YamlTraverser compassSection = hudTraverser.getSection("compass", YamlTraverser.ErrorSetting.NO_BEHAVIOUR);
+        if (compassSection == null) {
+            compassSchema = null;
+        } else {
+            compassSchema  = new Compass.CompassSchema(id + "_compass", compassSection);
         }
     }
 
