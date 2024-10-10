@@ -25,9 +25,9 @@ public class CompassBar extends HudTextComponent<CompassBar.CompassBarSchema> {
         private final String majorText;
         private final String minorText;
         private final String detailText;
-        private final float majorSize;
-        private final float minorSize;
-        private final float detailSize;
+        private final double majorSize;
+        private final double minorSize;
+        private final double detailSize;
 
         public CompassBarSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
             super(id + "_compass_bar", sectionSchema, traverser, CompassBar.class, TextDisplay.class);
@@ -70,7 +70,7 @@ public class CompassBar extends HudTextComponent<CompassBar.CompassBarSchema> {
 
         String text;
         TextColor color;
-        float size;
+        double size;
 
         if (index % 30 == 0) {
             text = schema().majorText;
@@ -91,7 +91,7 @@ public class CompassBar extends HudTextComponent<CompassBar.CompassBarSchema> {
         return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(text).color(color))
                 .translate(totalAdjustment)
-                .scale(new Vector3f(size, size, 0.001F))
+                .scale(new Vector3f((float) size, (float) size, 0.001F))
                 .translate(0.5F, 0.35F, -0.01F);
     }
 }

@@ -20,7 +20,7 @@ import static java.lang.Math.PI;
 public class CompassDirection extends HudTextComponent<CompassDirection.CompassDirectionSchema> {
     public static class CompassDirectionSchema extends HudTextComponentSchema {
         private final TextColor color;
-        private final float size;
+        private final double size;
         private final String textN;
         private final String textE;
         private final String textS;
@@ -75,7 +75,7 @@ public class CompassDirection extends HudTextComponent<CompassDirection.CompassD
         return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(text).color(schema().color))
                 .translate(totalAdjustment)
-                .scale(new Vector3f(schema().size, schema().size, 0.001F))
+                .scale(new Vector3f((float) schema().size, (float) schema().size, 0.001F))
                 .translate(0.5F, 0.0F, -0.01F);
     }
 }

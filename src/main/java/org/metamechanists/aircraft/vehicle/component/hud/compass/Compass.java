@@ -4,11 +4,6 @@ import org.bukkit.entity.Interaction;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
-import org.metamechanists.aircraft.vehicle.component.hud.horizon.AltitudeBrackets;
-import org.metamechanists.aircraft.vehicle.component.hud.horizon.AltitudeText;
-import org.metamechanists.aircraft.vehicle.component.hud.horizon.HorizonBar;
-import org.metamechanists.aircraft.vehicle.component.hud.horizon.HorizonDegree;
-import org.metamechanists.aircraft.vehicle.component.hud.horizon.VelocityIndicator;
 import org.metamechanists.kinematiccore.api.storage.StateReader;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 

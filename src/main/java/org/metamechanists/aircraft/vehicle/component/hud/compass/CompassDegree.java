@@ -20,7 +20,7 @@ import static java.lang.Math.PI;
 public class CompassDegree extends HudTextComponent<CompassDegree.CompassDegreeSchema> {
     public static class CompassDegreeSchema extends HudTextComponentSchema {
         private final TextColor color;
-        private final float size;
+        private final double size;
 
         public CompassDegreeSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
             super(id + "_compass_degree", sectionSchema, traverser, CompassDegree.class, TextDisplay.class);
@@ -64,7 +64,7 @@ public class CompassDegree extends HudTextComponent<CompassDegree.CompassDegreeS
         return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(degrees).color(schema().color))
                 .translate(totalAdjustment)
-                .scale(new Vector3f(schema().size, schema().size, 0.001F))
+                .scale(new Vector3f((float) schema().size, (float) schema().size, 0.001F))
                 .translate(0.5F, 0.0F, -0.01F);
     }
 }
