@@ -28,7 +28,7 @@ public class CompassDirection extends HudTextComponent<CompassDirection.CompassD
 
         public CompassDirectionSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
             super(id + "_compass_direction", sectionSchema, traverser, CompassDirection.class, TextDisplay.class);
-            color = traverser.getTextColor("directionOffset");
+            color = traverser.getTextColor("directionColor");
             size = traverser.get("directionSize");
             offset = traverser.get("directionOffset");
             textN = traverser.get("directionTextN");
