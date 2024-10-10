@@ -103,6 +103,9 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         if (horizonSchema != null) {
             horizonSchema.unregister();
         }
+        if (compassSchema != null) {
+            compassSchema.unregister();
+        }
         EntitySchemas.unregister(getId());
     }
 }
