@@ -58,7 +58,7 @@ public class Compass extends HudSection<Compass.CompassSchema> {
         List<UUID> components = new ArrayList<>();
         components.add(new CompassNotch(schema().compassNotchSchema, vehicleEntity).uuid());
 
-        for (int i = -BARS; i <= BARS; i++) {
+        for (int i = -BARS - EXTRA_BARS; i <= BARS + EXTRA_BARS; i++) {
             components.add(new CompassBar(schema().compassBarSchema, vehicleEntity, i).uuid());
             int degrees = i + 420;
             if (degrees % 30 == 0) {
