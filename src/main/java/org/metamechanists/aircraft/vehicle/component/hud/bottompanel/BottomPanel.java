@@ -1,5 +1,6 @@
 package org.metamechanists.aircraft.vehicle.component.hud.bottompanel;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Interaction;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -23,6 +24,7 @@ public class BottomPanel extends HudSection<BottomPanel.BottomPanelSchema> {
 
         public BottomPanelSchema(@NotNull String id, @NotNull YamlTraverser traverser) {
             super(id, traverser, BottomPanel.class, Interaction.class);
+            Bukkit.getServer().getLogger().info("1");
             throttleBarBackgroundSchema = new QuantityBar.QuantityBarSchema(id, "throttleBackground", this, traverser);
             throttleBarForegroundSchema = new QuantityBar.QuantityBarSchema(id, "throttleForeground", this, traverser);
         }
@@ -46,6 +48,7 @@ public class BottomPanel extends HudSection<BottomPanel.BottomPanelSchema> {
     @Override
     protected List<UUID> buildComponents(@NotNull VehicleEntity vehicleEntity) {
         List<UUID> components = new ArrayList<>();
+        Bukkit.getServer().getLogger().info("2");
         components.add(new QuantityBar(schema().throttleBarBackgroundSchema, vehicleEntity, 1.0F).uuid());
         components.add(new QuantityBar(schema().throttleBarForegroundSchema, vehicleEntity, 0.2F).uuid());
         return components;

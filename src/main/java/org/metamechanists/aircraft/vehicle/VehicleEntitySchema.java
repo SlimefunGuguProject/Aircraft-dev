@@ -99,7 +99,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         if (bottomPanelSection  == null) {
             bottomPanelSchema = null;
         } else {
-            bottomPanelSchema   = new BottomPanel.BottomPanelSchema(id + "_bottomPanel", bottomPanelSection);
+            bottomPanelSchema = new BottomPanel.BottomPanelSchema(id + "_bottomPanel", bottomPanelSection);
         }
     }
 
@@ -116,7 +116,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
             compassSchema.unregister();
         }
         if (bottomPanelSchema != null) {
-            bottomPanelSchema .unregister();
+            bottomPanelSchema.unregister();
         }
         EntitySchemas.unregister(getId());
     }
