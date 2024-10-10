@@ -8,6 +8,7 @@ import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
+import org.metamechanists.aircraft.vehicle.component.hud.bottompanel.BottomPanel;
 import org.metamechanists.aircraft.vehicle.component.hud.compass.Compass;
 import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
@@ -36,6 +37,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     private final Map<String, VehicleComponent.VehicleComponentSchema> components = new HashMap<>();
     private final @Nullable Horizon.HorizonSchema horizonSchema;
     private final @Nullable Compass.CompassSchema compassSchema;
+    private final @Nullable BottomPanel.BottomPanelSchema bottomPanelSchema;
 
     @SuppressWarnings("DataFlowIssue")
     public VehicleEntitySchema(@NotNull String id) {
@@ -92,6 +94,13 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         } else {
             compassSchema  = new Compass.CompassSchema(id + "_compass", compassSection);
         }
+
+        YamlTraverser bottomPanelSection = hudTraverser.getSection("bottomPanel", YamlTraverser.ErrorSetting.NO_BEHAVIOUR);
+        if (bottomPanelSection  == null) {
+            bottomPanelSchema = null;
+        } else {
+            bottomPanelSchema   = new BottomPanel.BottomPanelSchema(id + "_bottomPanel", bottomPanelSection);
+        }
     }
 
     @Override
@@ -105,6 +114,9 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         }
         if (compassSchema != null) {
             compassSchema.unregister();
+        }
+        if (bottomPanelSchema != null) {
+            bottomPanelSchema .unregister();
         }
         EntitySchemas.unregister(getId());
     }

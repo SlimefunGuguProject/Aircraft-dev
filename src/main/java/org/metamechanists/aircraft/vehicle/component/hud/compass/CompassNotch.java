@@ -39,7 +39,7 @@ public class CompassNotch extends HudTextComponent<CompassNotch.CompassNotchSche
 
     @Override
     protected @NotNull ModelText modelText(@NotNull VehicleEntity vehicleEntity) {
-        return schema().getSectionSchema().rollIndependentText(vehicleEntity)
+        return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(schema().text).color(schema().color))
                 .translate(0.0F, schema().offset, 0.05F)
                 .scale(new Vector3f((float) schema().size, (float) schema().size, 0.001F))

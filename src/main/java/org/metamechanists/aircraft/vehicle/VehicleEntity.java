@@ -14,6 +14,7 @@ import org.joml.Vector3d;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicle.component.base.ItemComponent;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
+import org.metamechanists.aircraft.vehicle.component.hud.bottompanel.BottomPanel;
 import org.metamechanists.aircraft.vehicle.component.hud.compass.Compass;
 import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
 import org.metamechanists.aircraft.vehicle.component.vehicle.HingedComponent;
@@ -53,6 +54,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     private @Nullable UUID interaction;
     private @Nullable UUID horizon;
     private @Nullable UUID compass;
+    private @Nullable UUID bottomPanel;
 
     public VehicleEntity(@NotNull VehicleEntitySchema schema, @NotNull Block block, @NotNull Player player) {
         super(schema, () -> {
@@ -80,6 +82,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         if (schema.getCompassSchema() != null) {
             compass = new Compass(schema.getCompassSchema(), this).uuid();
         }
+        if (schema.getBottomPanelSchema() != null) {
+            bottomPanel = new BottomPanel(schema.getBottomPanelSchema(), this).uuid();
+        }
     }
 
     @SuppressWarnings("DataFlowIssue")
@@ -96,6 +101,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         textDisplays = reader.get("textDisplays", new HashSet<>());
         horizon = reader.get("horizon", UUID.class);
         compass = reader.get("compass", UUID.class);
+        bottomPanel = reader.get("bottomPanel ", UUID.class);
     }
 
     @Override
@@ -111,6 +117,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         writer.set("textDisplays", new HashSet<>());
         writer.set("horizon", horizon);
         writer.set("compass", compass);
+        writer.set("bottomPanel", bottomPanel);
     }
 
     @Override
@@ -161,6 +168,11 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         if (compass != null) {
             if (EntityStorage.kinematicEntity(compass) instanceof Compass compass) {
                 compass.update(this);
+            }
+        }
+        if (bottomPanel != null) {
+            if (EntityStorage.kinematicEntity(bottomPanel ) instanceof BottomPanel bottomPanel) {
+                bottomPanel.update(this);
             }
         }
 
