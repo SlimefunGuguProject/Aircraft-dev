@@ -158,6 +158,11 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
                 horizon.update(this);
             }
         }
+        if (compass != null) {
+            if (EntityStorage.kinematicEntity(compass) instanceof Compass compass) {
+                compass.update(this);
+            }
+        }
 
         // Update pig velocity
         Vector pigVelocity = Vector.fromJOML(absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND));
