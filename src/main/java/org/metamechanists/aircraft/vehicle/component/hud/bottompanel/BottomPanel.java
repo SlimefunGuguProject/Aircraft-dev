@@ -24,8 +24,8 @@ public class BottomPanel extends HudSection<BottomPanel.BottomPanelSchema> {
 
         public BottomPanelSchema(@NotNull String id, @NotNull YamlTraverser traverser) {
             super(id, traverser, BottomPanel.class, Interaction.class);
-            throttleBarBackgroundSchema = new QuantityBar.QuantityBarSchema(id, "throttleBackground", this, traverser);
-            throttleBarForegroundSchema = new QuantityBar.QuantityBarSchema(id, "throttleForeground", this, traverser);
+            throttleBarBackgroundSchema = new QuantityBar.QuantityBarSchema(id, "throttleBackground", false, this, traverser);
+            throttleBarForegroundSchema = new QuantityBar.QuantityBarSchema(id, "throttleForeground", true, this, traverser);
         }
 
         @Override
