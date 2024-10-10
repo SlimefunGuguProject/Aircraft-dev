@@ -49,10 +49,10 @@ public class CompassDegree extends HudTextComponent<CompassDegree.CompassDegreeS
 
     @Override
     protected @NotNull ModelText modelText(@NotNull VehicleEntity vehicleEntity) {
-        Vector3f compassOffset = new Vector3f((float) (0.5 * vehicleEntity.yaw()), -0.27F, 0);
-        final float horizontalSpacing = 0.5F * (float) (PI / (Compass.BARS));
-        Vector3f barOffset = new Vector3f(horizontalSpacing * index, 0, 0);
-        Vector3f totalAdjustment = new Vector3f(barOffset).add(compassOffset);
+        float compassOffset = (float) (0.5 * vehicleEntity.yaw());
+        float horizontalSpacing = 0.5F * (float) (PI / (Compass.BARS));
+        float barOffset = horizontalSpacing * index;
+        Vector3f totalAdjustment = new Vector3f(barOffset + compassOffset, 0, 0);
 
         int degrees = (index + 60) * 3 - 90;
         if (degrees < 0) {
