@@ -75,8 +75,9 @@ public class CompassDirection extends HudTextComponent<CompassDirection.CompassD
         return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(text).color(schema().color))
                 .translate(totalAdjustment)
-                .translate(0.5F, 0.0F, -0.01F)
-                .scale(new Vector3f((float) schema().size, (float) schema().size, 0.001F));
+                .translate(0.0F, -0.05F, -0.01F)
+                .scale(new Vector3f((float) schema().size, (float) schema().size, 0.001F))
+                .translate(0.5F, 0.0F, 0.0F);
     }
 }
 
