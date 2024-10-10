@@ -70,7 +70,7 @@ public class CompassDirection extends HudTextComponent<CompassDirection.CompassD
             default -> "ERROR";
         };
 
-        setVisible(Math.abs(totalAdjustment.length()) < Horizon.RADIUS);
+        setVisible(Math.abs(totalAdjustment.length()) < Compass.RADIUS);
 
         return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(text).color(schema().color))

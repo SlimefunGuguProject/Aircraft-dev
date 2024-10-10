@@ -59,7 +59,7 @@ public class CompassDegree extends HudTextComponent<CompassDegree.CompassDegreeS
             degrees += 360;
         }
 
-        setVisible(Math.abs(totalAdjustment.length()) < Horizon.RADIUS);
+        setVisible(Math.abs(totalAdjustment.length()) < Compass.RADIUS);
 
         return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(degrees).color(schema().color))
