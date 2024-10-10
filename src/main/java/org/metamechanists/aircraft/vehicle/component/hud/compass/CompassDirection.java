@@ -8,7 +8,6 @@ import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
 import org.metamechanists.aircraft.vehicle.component.base.HudTextComponent;
-import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
 import org.metamechanists.displaymodellib.models.components.ModelText;
 import org.metamechanists.kinematiccore.api.storage.StateReader;
 import org.metamechanists.kinematiccore.api.storage.StateWriter;
@@ -29,7 +28,7 @@ public class CompassDirection extends HudTextComponent<CompassDirection.CompassD
 
         public CompassDirectionSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
             super(id + "_compass_direction", sectionSchema, traverser, CompassDirection.class, TextDisplay.class);
-            color = traverser.getTextColor("degreeColor");
+            color = traverser.getTextColor("directionOffset");
             size = traverser.get("directionSize");
             offset = traverser.get("directionOffset");
             textN = traverser.get("directionTextN");

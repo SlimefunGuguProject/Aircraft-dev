@@ -17,12 +17,14 @@ public class CompassNotch extends HudTextComponent<CompassNotch.CompassNotchSche
     public static class CompassNotchSchema extends HudTextComponentSchema {
         private final TextColor color;
         private final String text;
+        private final double size;
         private final double offset;
 
         public CompassNotchSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
             super(id + "_compass_notch", sectionSchema, traverser, CompassNotch.class, TextDisplay.class);
             color = traverser.getTextColor("notchColor");
             text = traverser.get("notchText");
+            size = traverser.get("notchSize");
             offset = traverser.get("notchOffset");
         }
     }
@@ -40,7 +42,7 @@ public class CompassNotch extends HudTextComponent<CompassNotch.CompassNotchSche
         return schema().getSectionSchema().rollIndependentText(vehicleEntity)
                 .text(Component.text(schema().text).color(schema().color))
                 .translate(0.0F, schema().offset, 0.05F)
-                .scale(new Vector3f(0.15F, 0.15F, 0.001F))
+                .scale(new Vector3f((float) schema().size, (float) schema().size, 0.001F))
                 .translate(0.5F, 0.35F, 0.0F);
     }
 }
