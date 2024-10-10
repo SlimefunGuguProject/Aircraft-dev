@@ -38,8 +38,8 @@ public class CompassBar extends HudTextComponent<CompassBar.CompassBarSchema> {
             minorText = traverser.get("minorText");
             detailText = traverser.get("detailText");
             majorSize = traverser.get("majorSize");
-            minorSize = traverser.get("minorSize ");
-            detailSize = traverser.get("detailSize ");
+            minorSize = traverser.get("minorSize");
+            detailSize = traverser.get("detailSize");
         }
     }
 
