@@ -21,6 +21,7 @@ public class CompassDirection extends HudTextComponent<CompassDirection.CompassD
     public static class CompassDirectionSchema extends HudTextComponentSchema {
         private final TextColor color;
         private final double size;
+        private final double offset;
         private final String textN;
         private final String textE;
         private final String textS;
@@ -30,6 +31,7 @@ public class CompassDirection extends HudTextComponent<CompassDirection.CompassD
             super(id + "_compass_direction", sectionSchema, traverser, CompassDirection.class, TextDisplay.class);
             color = traverser.getTextColor("degreeColor");
             size = traverser.get("directionSize");
+            offset = traverser.get("directionOffset");
             textN = traverser.get("directionTextN");
             textE = traverser.get("directionTextE");
             textS = traverser.get("directionTextS");
@@ -75,7 +77,7 @@ public class CompassDirection extends HudTextComponent<CompassDirection.CompassD
         return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(text).color(schema().color))
                 .translate(totalAdjustment)
-                .translate(0.0F, -0.05F, -0.01F)
+                .translate(0.0F, schema().offset, -0.01F)
                 .scale(new Vector3f((float) schema().size, (float) schema().size, 0.001F))
                 .translate(0.5F, 0.35F, 0.0F);
     }
