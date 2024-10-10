@@ -2,6 +2,7 @@ package org.metamechanists.aircraft.vehicle.component.hud.bottompanel;
 
 import lombok.Setter;
 import net.kyori.adventure.text.format.TextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
@@ -49,6 +50,11 @@ public class QuantityBar extends HudItemComponent<QuantityBar.QuantityBarSchema>
 
     @Override
     protected @NotNull ModelItem modelItem(@NotNull VehicleEntity vehicleEntity) {
+        Bukkit.getServer().getLogger().info(schema().material.toString());
+        Bukkit.getServer().getLogger().info(String.valueOf(schema().width));
+        Bukkit.getServer().getLogger().info(String.valueOf(schema().height));
+        Bukkit.getServer().getLogger().info(String.valueOf(schema().offset));
+        Bukkit.getServer().getLogger().info(String.valueOf(fraction));
         return schema().getSectionSchema().rollCuboid(vehicleEntity)
                 .material(schema().material)
                 .translate(-0.5F * fraction * schema().width, schema().offset, 0.05F)
