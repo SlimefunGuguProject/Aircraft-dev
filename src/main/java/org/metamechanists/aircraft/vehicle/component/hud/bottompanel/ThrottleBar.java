@@ -45,7 +45,7 @@ public class ThrottleBar extends HudItemComponent<ThrottleBar.QuantityBarSchema>
     @Override
     protected @NotNull ModelItem modelItem(@NotNull VehicleEntity vehicleEntity) {
         float fraction = vehicleEntity.getThrottle() / 100.0F;
-        double offsetX = -0.5F * schema().width + fraction * schema().width;
+        double offsetX = -0.5F * schema().width + 0.25F * fraction * schema().width;
         return schema().getSectionSchema().rollCuboid(vehicleEntity)
                 .material(schema().material)
                 .translate(offsetX, schema().offset, 0.04F)
