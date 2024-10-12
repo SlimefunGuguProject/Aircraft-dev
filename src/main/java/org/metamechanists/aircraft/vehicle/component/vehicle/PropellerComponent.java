@@ -64,7 +64,7 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
     @SuppressWarnings("DataFlowIssue")
     public PropellerComponent(@NotNull StateReader reader) {
         super(reader);
-        angle = reader.get("angle", double.class);
+        angle = reader.get("angle", Double.class);
     }
 
     @Override
