@@ -47,7 +47,7 @@ public abstract class VehicleComponent<T extends KinematicEntitySchema> extends 
                 @NotNull Vector3f translation,
                 boolean mirror
         ) {
-            super(id + (mirror ? "" : "_mirror"), Aircraft.class, kinematicClass, ItemDisplay.class);
+            super(id + (mirror ? "_mirror" : ""), Aircraft.class, kinematicClass, ItemDisplay.class);
 
             material = Material.valueOf(traverser.get("material"));
             size = traverser.getVector3f("size");
