@@ -11,7 +11,7 @@ import org.metamechanists.displaymodellib.models.components.ModelText;
 
 public final class Utils {
     public static final Vector3f PLAYER_HEAD_OFFSET = new Vector3f(0, 1.2F, 0);
-    public static final Vector3f RIDING_OFFSETPLAYER_HEAD_OFFSET = new Vector3f(0, 1.0F, 0);
+    public static final Vector3f RIDING_OFFSET = new Vector3f(0, 1.0F, 0);
 
     private Utils() {}
 
