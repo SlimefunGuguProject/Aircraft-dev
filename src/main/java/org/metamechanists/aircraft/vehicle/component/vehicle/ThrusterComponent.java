@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicle.component.vehicle;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.NotNull;
@@ -93,5 +94,12 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     @Override
     public @NotNull Set<VehicleSurface> getSurfaces() {
         return new HashSet<>();
+    }
+
+    @Override
+    public void onSignal(String signal) {
+        if (schema().signal.equals(signal)) {
+            active = true;
+        }
     }
 }
