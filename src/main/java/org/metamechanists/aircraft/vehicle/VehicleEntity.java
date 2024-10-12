@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicle;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
@@ -135,7 +136,10 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             if (!expectedComponents.containsKey(id)) {
                 KinematicEntity<?, ?> kinematicEntity = KinematicEntity.get(components.remove(id));
                 if (kinematicEntity != null) {
-                    kinematicEntity.remove();
+                    Entity entity = kinematicEntity.entity();
+                    if (entity != null) {
+                        entity.remove();
+                    }
                 }
             }
         }
