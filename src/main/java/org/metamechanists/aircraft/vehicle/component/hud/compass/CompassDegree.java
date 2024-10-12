@@ -40,7 +40,7 @@ public class CompassDegree extends HudTextComponent<CompassDegree.CompassDegreeS
     @SuppressWarnings("DataFlowIssue")
     public CompassDegree(@NotNull StateReader reader) {
         super(reader);
-        index = reader.get("index", int.class);
+        index = reader.get("index", Integer.class);
     }
 
     @Override

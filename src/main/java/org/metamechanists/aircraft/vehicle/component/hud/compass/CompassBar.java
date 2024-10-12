@@ -52,7 +52,7 @@ public class CompassBar extends HudTextComponent<CompassBar.CompassBarSchema> {
     @SuppressWarnings("DataFlowIssue")
     public CompassBar(@NotNull StateReader reader) {
         super(reader);
-        index = reader.get("index", int.class);
+        index = reader.get("index", Integer.class);
     }
 
     @Override

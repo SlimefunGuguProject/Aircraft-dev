@@ -48,7 +48,7 @@ public class CompassDirection extends HudTextComponent<CompassDirection.CompassD
     @SuppressWarnings("DataFlowIssue")
     public CompassDirection(@NotNull StateReader reader) {
         super(reader);
-        index = reader.get("index", int.class);
+        index = reader.get("index", Integer.class);
     }
 
     @Override

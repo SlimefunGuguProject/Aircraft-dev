@@ -46,7 +46,7 @@ public class HorizonBar extends HudTextComponent<HorizonBar.HorizonBarSchema> {
     @SuppressWarnings("DataFlowIssue")
     public HorizonBar(@NotNull StateReader reader) {
         super(reader);
-        index = reader.get("index", int.class);
+        index = reader.get("index", Integer.class);
     }
 
     @Override

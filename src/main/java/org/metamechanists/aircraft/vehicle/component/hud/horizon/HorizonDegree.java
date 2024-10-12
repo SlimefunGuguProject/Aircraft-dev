@@ -36,7 +36,7 @@ public class HorizonDegree extends HudTextComponent<HorizonDegree.HorizonDegreeS
     @SuppressWarnings("DataFlowIssue")
     public HorizonDegree(@NotNull StateReader reader) {
         super(reader);
-        index = reader.get("index", int.class);
+        index = reader.get("index", Integer.class);
     }
 
     @Override
