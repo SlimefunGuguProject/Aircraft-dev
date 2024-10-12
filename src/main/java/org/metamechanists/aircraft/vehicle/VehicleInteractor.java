@@ -41,6 +41,7 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
     @Override
     public void write(@NotNull StateWriter writer) {
         writer.set("vehicleEntity", vehicleEntity);
+        Aircraft.getInstance().getLogger().severe("shit");
     }
 
     @Override
