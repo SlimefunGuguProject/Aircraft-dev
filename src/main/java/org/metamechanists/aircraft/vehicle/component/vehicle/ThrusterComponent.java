@@ -98,15 +98,16 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
         }
 
         Vector3d absoluteLocation = new Vector3d(schema().getLocation())
+                .add(Utils.PLAYER_HEAD_OFFSET)
                 .rotate(vehicleEntity.getRotation());
         Vector3d absoluteDirection = new Vector3d(schema().direction)
                 .rotate(vehicleEntity.getRotation())
-                .normalize();
+                .normalize()
+                .mul(-1);
 
         Pig pig = vehicleEntity.entity();
         assert pig != null;
         Location location = pig.getLocation()
-                .add(Vector.fromJOML(Utils.PLAYER_HEAD_OFFSET))
                 .add(Vector.fromJOML(absoluteLocation));
 
         new ParticleBuilder(schema().particle)
