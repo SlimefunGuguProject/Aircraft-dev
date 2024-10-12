@@ -4,6 +4,7 @@ import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
@@ -14,8 +15,6 @@ import java.util.UUID;
 
 
 public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEntitySchema> {
-
-
     private final UUID vehicleEntity;
 
     public VehicleInteractor(@NotNull VehicleEntity vehicleEntity) {
@@ -36,6 +35,7 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
     public VehicleInteractor(StateReader reader) {
         super(reader);
         vehicleEntity = reader.get("vehicleEntity", UUID.class);
+        Aircraft.getInstance().getLogger().severe(vehicleEntity.toString());
     }
 
     @Override
