@@ -94,6 +94,8 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
             Pig pig = vehicleEntity.entity();
             assert pig != null;
             Interaction interaction =(Interaction) pig.getLocation().getWorld().spawnEntity(pig.getLocation(), EntityType.INTERACTION);
+            interaction.setInteractionWidth(0);
+            interaction.setInteractionHeight(0);
             pig.addPassenger(interaction);
             return interaction;
         });
