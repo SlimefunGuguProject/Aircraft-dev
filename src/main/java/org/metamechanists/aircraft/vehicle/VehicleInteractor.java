@@ -14,18 +14,17 @@ import org.metamechanists.kinematiccore.api.state.StateWriter;
 import java.util.UUID;
 
 
-public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEntitySchema> {
-    private static final KinematicEntitySchema SCHEMA = new KinematicEntitySchema(
-            "vehicle_interactor",
-            Aircraft.class,
-            VehicleInteractor.class,
-            Interaction.class
-    );
+public class VehicleInteractor extends KinematicEntity<Interaction, VehicleInteractor.VehicleInteractorSchema> {
+    public static class VehicleInteractorSchema extends KinematicEntitySchema {
+        protected VehicleInteractorSchema() {
+            super("vehicle_interactor", Aircraft.class, VehicleInteractor.class, Interaction.class);
+        }
+    }
 
     private final UUID vehicleEntity;
 
     public VehicleInteractor(@NotNull VehicleEntity vehicleEntity) {
-        super(SCHEMA, () -> {
+        super(new VehicleInteractorSchema(), () -> {
             Pig pig = vehicleEntity.entity();
             assert pig != null;
             Interaction interaction = new InteractionBuilder()

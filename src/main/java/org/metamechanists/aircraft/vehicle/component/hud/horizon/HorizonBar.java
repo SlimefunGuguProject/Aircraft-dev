@@ -77,7 +77,7 @@ public class HorizonBar extends HudTextComponent<HorizonBar.HorizonBarSchema> {
 
         setVisible(Math.abs(totalAdjustment.length()) < Horizon.RADIUS);
 
-        return schema().getSectionSchema().rollIndependentText(vehicleEntity)
+        return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(text).color(color))
                 .translate(totalAdjustment)
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
