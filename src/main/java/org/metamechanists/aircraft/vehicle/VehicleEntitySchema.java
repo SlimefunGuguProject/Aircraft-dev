@@ -24,9 +24,9 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     private final double momentOfInertia;
     private final double velocityDamping;
     private final double angularVelocityDamping;
-    private final Vector3d thrustLocation;
+    private final Vector3d engineLocation;
     private final Vector3d weightLocation;
-    private final double thrustForce;
+    private final double engineForce;
     private final double frictionCoefficient;
     private final double steeringSpeed;
     private final double gravityAcceleration;
@@ -60,9 +60,9 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         weightLocation = weight.getVector3d("location");
         gravityAcceleration = weight.get("acceleration");
 
-        YamlTraverser thrust = traverser.getSection("thrust");
-        thrustLocation = thrust.getVector3d("location");
-        thrustForce = thrust.get("force");
+        YamlTraverser engine = traverser.getSection("engine");
+        engineLocation = engine.getVector3d("location");
+        engineForce = engine.get("force");
 
         for (YamlTraverser componentSectionTraverser : traverser.getSection("components").getSections()) {
             for (YamlTraverser componentTraverser : componentSectionTraverser.getSections()) {

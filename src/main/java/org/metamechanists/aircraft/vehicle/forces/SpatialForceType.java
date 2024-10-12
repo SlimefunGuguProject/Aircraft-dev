@@ -4,6 +4,7 @@ public enum SpatialForceType {
     LIFT,
     DRAG,
     WEIGHT,
-    THRUST,
+    ENGINE,
+    THRUSTER,
     FRICTION,
 }

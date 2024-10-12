@@ -17,6 +17,7 @@ import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
 import org.metamechanists.aircraft.vehicle.component.hud.bottompanel.BottomPanel;
 import org.metamechanists.aircraft.vehicle.component.hud.compass.Compass;
 import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
+import org.metamechanists.aircraft.vehicle.component.vehicle.ThrusterComponent;
 import org.metamechanists.aircraft.vehicle.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicle.forces.SpatialForceType;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
@@ -294,7 +295,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     public @NotNull Set<SpatialForce> getForces(boolean isOnGround) {
         Set<SpatialForce> forces = new HashSet<>();
         forces.add(getWeightForce());
-        forces.add(getThrustForce());
+        forces.add(getEngineForce());
+        forces.addAll(getThrusterForces());
         forces.addAll(getDragForces());
         forces.addAll(getLiftForces());
         forces.add(getFrictionForce(isOnGround, acceleration(forces).mul(schema().getMass())));
@@ -307,11 +309,23 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         return new SpatialForce(SpatialForceType.WEIGHT, force, location);
     }
 
-    private @NotNull SpatialForce getThrustForce() {
+    private @NotNull SpatialForce getEngineForce() {
         double throttleFraction = throttle / 100.0;
-        Vector3d force = new Vector3d(throttleFraction * schema().getThrustForce(), 0, 0);
-        Vector3d location = schema().getThrustLocation();
-        return new SpatialForce(SpatialForceType.THRUST, force, location);
+        Vector3d force = new Vector3d(throttleFraction * schema().getEngineForce(), 0, 0);
+        Vector3d location = schema().getEngineLocation();
+        return new SpatialForce(SpatialForceType.ENGINE, force, location);
+    }
+
+    @SuppressWarnings("Convert2streamapi")
+    private @NotNull Set<SpatialForce> getThrusterForces() {
+        Set<SpatialForce> set = new HashSet<>();
+        for (UUID uuid : components.values()) {
+            KinematicEntity<?, ?> kinematicEntity = KinematicEntity.get(uuid);
+            if (kinematicEntity instanceof ThrusterComponent thruster) {
+                set.add(thruster.force());
+            }
+        }
+        return set;
     }
 
     @SuppressWarnings("Convert2streamapi")
@@ -357,17 +371,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
     public Vector3d absoluteVelocity() {
         return new Vector3d(velocity).rotate(rotation);
-    }
-
-    public void steer(double direction) {
-        angularVelocity.y += direction * schema().getSteeringSpeed();
-    }
-
-    public void adjustThrottle(int increment) {
-        int newThrottle = throttle + increment;
-        if (newThrottle >= MIN_THROTTLE && newThrottle <= MAX_THROTTLE) {
-            throttle = newThrottle;
-        }
     }
 
     public double getVelocityPitch() {

@@ -13,6 +13,7 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.VehicleSurface;
+import org.metamechanists.aircraft.vehicle.component.vehicle.ThrusterComponent;
 import org.metamechanists.aircraft.vehicle.forces.AerodynamicCoefficients;
 import org.metamechanists.aircraft.vehicle.component.vehicle.FixedComponent;
 import org.metamechanists.aircraft.vehicle.component.vehicle.HingedComponent;
@@ -135,6 +136,11 @@ public abstract class VehicleComponent<T extends KinematicEntitySchema> extends 
             YamlTraverser propellerTraverser = traverser.getSection("propeller", YamlTraverser.ErrorSetting.NO_BEHAVIOUR);
             if (propellerTraverser != null) {
                 return new PropellerComponent.PropellerComponentSchema(id, traverser, propellerTraverser, translation, mirror);
+            }
+
+            YamlTraverser thrusterTraverser = traverser.getSection("thruster", YamlTraverser.ErrorSetting.NO_BEHAVIOUR);
+            if (thrusterTraverser  != null) {
+                return new ThrusterComponent.ThrusterComponentSchema(id, traverser, thrusterTraverser, translation, mirror);
             }
 
             return new FixedComponent.FixedComponentSchema(id, traverser, translation, mirror);
