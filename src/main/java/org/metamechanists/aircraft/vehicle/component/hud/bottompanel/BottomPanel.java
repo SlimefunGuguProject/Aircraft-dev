@@ -14,17 +14,20 @@ import java.util.UUID;
 
 public class BottomPanel extends HudSection<BottomPanel.BottomPanelSchema> {
     public static class BottomPanelSchema extends HudSectionSchema {
-        private final ThrottleBar.QuantityBarSchema throttleBarForegroundSchema;
+        private final ThrottleBar.ThrottleBarSchema throttleBarSchema;
+        private final ThrottleText.ThrottleTextSchema throttleTextSchema;
 
         public BottomPanelSchema(@NotNull String id, @NotNull YamlTraverser traverser) {
             super(id, traverser, BottomPanel.class, Interaction.class);
-            throttleBarForegroundSchema = new ThrottleBar.QuantityBarSchema(id, "throttleForeground", this, traverser);
+            throttleBarSchema = new ThrottleBar.ThrottleBarSchema(id, this, traverser);
+            throttleTextSchema = new ThrottleText.ThrottleTextSchema(id, this, traverser);
         }
 
         @Override
         public void unregister() {
             super.unregister();
-            throttleBarForegroundSchema.unregister();
+            throttleBarSchema.unregister();
+            throttleTextSchema.unregister();
         }
     }
 
@@ -39,7 +42,8 @@ public class BottomPanel extends HudSection<BottomPanel.BottomPanelSchema> {
     @Override
     protected List<UUID> buildComponents(@NotNull VehicleEntity vehicleEntity) {
         List<UUID> components = new ArrayList<>();
-        components.add(new ThrottleBar(schema().throttleBarForegroundSchema, vehicleEntity).uuid());
+        components.add(new ThrottleBar(schema().throttleBarSchema, vehicleEntity).uuid());
+        components.add(new ThrottleText(schema().throttleTextSchema, vehicleEntity).uuid());
         return components;
     }
 }
