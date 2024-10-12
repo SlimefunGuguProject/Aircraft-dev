@@ -98,8 +98,8 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
         }
 
         Vector3d absoluteLocation = new Vector3d(schema().getLocation())
-                .add(Utils.PLAYER_HEAD_OFFSET)
-                .rotate(vehicleEntity.getRotation());
+                .rotate(vehicleEntity.getRotation())
+                .add(Utils.PLAYER_HEAD_OFFSET);
         Vector3d absoluteDirection = new Vector3d(schema().direction)
                 .rotate(vehicleEntity.getRotation())
                 .normalize()
