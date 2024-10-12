@@ -27,7 +27,7 @@ public class ThrottleText extends HudTextComponent<ThrottleText.ThrottleTextSche
         ) {
             super(id + "_bottom_panel_throttle_text", sectionSchema, traverser, ThrottleText.class, ItemDisplay.class);
             color = traverser.getTextColor("throttleTextColor");
-            size = traverser.get("throttleTextsize");
+            size = traverser.get("throttleTextSize");
             verticalOffset = traverser.get("throttleTextVerticalOffset");
             horizontalOffset = traverser.get("throttleTextHorizontalOffset");
         }
