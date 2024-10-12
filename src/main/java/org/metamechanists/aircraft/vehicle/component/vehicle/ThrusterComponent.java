@@ -36,6 +36,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
         private final Vector3d direction;
         private final Particle particle;
         private final double particleSpeed;
+        private final Vector3d particleOffset;
 
         @SuppressWarnings("DataFlowIssue")
         public ThrusterComponentSchema(
@@ -51,6 +52,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
             direction = thrusterTraverser.getVector3d("direction", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             particle = Particle.valueOf(thrusterTraverser.get("particle", YamlTraverser.ErrorSetting.LOG_MISSING_KEY));
             particleSpeed = thrusterTraverser.get("particleSpeed", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
+            particleOffset = thrusterTraverser.getVector3d("particleOffset", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
         }
 
         @Override
@@ -97,10 +99,11 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
             return;
         }
 
-         Vector3d absoluteLocation = new Vector3d(schema().getLocation())
-                 .rotate(vehicleEntity.getRotation())
-                 .add(Utils.PLAYER_HEAD_OFFSET)
-                .add(new Vector3d(Utils.RIDING_OFFSET));
+        Vector3d absoluteLocation = new Vector3d(schema().getLocation())
+                .rotate(vehicleEntity.getRotation())
+                .add(Utils.PLAYER_HEAD_OFFSET)
+                .add(new Vector3d(Utils.RIDING_OFFSET))
+                .add(schema().particleOffset);
         Vector3d absoluteDirection = new Vector3d(schema().direction)
                 .rotate(vehicleEntity.getRotation())
                 .normalize()
