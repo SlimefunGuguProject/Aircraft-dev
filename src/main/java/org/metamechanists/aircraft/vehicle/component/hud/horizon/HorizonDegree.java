@@ -21,7 +21,7 @@ public class HorizonDegree extends HudTextComponent<HorizonDegree.HorizonDegreeS
         private final TextColor color;
 
         public HorizonDegreeSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super(id + "horizon_degree", sectionSchema, traverser, HorizonBar.class, TextDisplay.class);
+            super(id + "horizon_degree", sectionSchema, traverser, HorizonDegree.class, TextDisplay.class);
             color = traverser.getTextColor("horizonDegreeColor");
         }
     }
@@ -48,8 +48,8 @@ public class HorizonDegree extends HudTextComponent<HorizonDegree.HorizonDegreeS
     protected @NotNull ModelText modelText(@NotNull VehicleEntity vehicleEntity) {
         Vector3f horizonOffset = new Vector3f(0, (float) (0.5 * -vehicleEntity.pitch()), 0);
         float verticalSpacing = 0.25F * (float) ((PI / 1.14) / (Horizon.BARS));
-        Vector3f barOffset = new Vector3f(0, verticalSpacing * index, 0);
-        Vector3f totalAdjustment = new Vector3f(barOffset).add(horizonOffset).add(0.1F, 0.0F, 0.0F);
+        Vector3f degreeOffset = new Vector3f(0, verticalSpacing * index, 0);
+        Vector3f totalAdjustment = new Vector3f(degreeOffset).add(horizonOffset).add(0.1F, 0.0F, 0.0F);
 
         setVisible(Math.abs(totalAdjustment.length()) < Horizon.RADIUS);
 
