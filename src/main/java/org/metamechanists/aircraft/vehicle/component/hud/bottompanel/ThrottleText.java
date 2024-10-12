@@ -25,7 +25,7 @@ public class ThrottleText extends HudTextComponent<ThrottleText.ThrottleTextSche
                 @NotNull HudSection.HudSectionSchema sectionSchema,
                 @NotNull YamlTraverser traverser
         ) {
-            super(id + "_bottom_panel_throttle", sectionSchema, traverser, ThrottleText.class, ItemDisplay.class);
+            super(id + "_bottom_panel_throttle_text", sectionSchema, traverser, ThrottleText.class, ItemDisplay.class);
             color = traverser.getTextColor("throttleTextColor");
             size = traverser.get("throttleTextsize");
             verticalOffset = traverser.get("throttleTextVerticalOffset");

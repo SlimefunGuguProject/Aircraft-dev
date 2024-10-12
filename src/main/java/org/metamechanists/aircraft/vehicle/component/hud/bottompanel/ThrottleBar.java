@@ -25,7 +25,7 @@ public class ThrottleBar extends HudItemComponent<ThrottleBar.ThrottleBarSchema>
                 @NotNull HudSection.HudSectionSchema sectionSchema,
                 @NotNull YamlTraverser traverser
         ) {
-            super(id + "_bottom_panel_throttle", sectionSchema, traverser, ThrottleBar.class, ItemDisplay.class);
+            super(id + "_bottom_panel_throttle_bar", sectionSchema, traverser, ThrottleBar.class, ItemDisplay.class);
             material = Material.getMaterial(traverser.get("throttleBarMaterial"));
             assert material != null;
             height = traverser.get("throttleBarHeight");
