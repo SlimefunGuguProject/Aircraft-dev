@@ -39,6 +39,6 @@ public class VelocityIndicator extends HudTextComponent<VelocityIndicator.Veloci
                 .text(Component.text(schema().text).color(schema().color))
                 .translate(new Vector3f(0, offset, 0))
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
-                .translate(0.5F, 0.35F, 0.05F);
+                .translate(0.5F, 0.35F, 0.06F);
     }
 }

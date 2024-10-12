@@ -38,6 +38,6 @@ public class AltitudeBrackets extends HudTextComponent<AltitudeBrackets.Altitude
         return schema().getSectionSchema().rollIndependentText(vehicleEntity)
                 .text(Component.text(schema().text).color(schema().color))
                 .scale(new Vector3f(0.15F, 0.15F, 0.001F))
-                .translate(0.5F, 0.35F, 0.05F);
+                .translate(0.5F, 0.35F, 0.06F);
     }
 }
