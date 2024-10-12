@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Pig;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3d;
@@ -91,19 +92,28 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     @Override
     public void update(@NotNull VehicleEntity vehicleEntity) {
         super.update(vehicleEntity);
-        active = false;
+        if (!active) {
+            return;
+        }
+
         Vector3d absoluteLocation = new Vector3d(schema().getLocation())
                 .rotate(vehicleEntity.getRotation());
-        Vector3d velocityDirection = new Vector3d(absoluteLocation).normalize();
+        Vector3d absoluteDirection = new Vector3d(schema().direction)
+                .rotate(vehicleEntity.getRotation())
+                .normalize();
+
         Pig pig = vehicleEntity.entity();
         assert pig != null;
-        Location location = pig.getLocation();
+        Location location = pig.getLocation().add(Vector.fromJOML(absoluteLocation));
+
         new ParticleBuilder(schema().particle)
                 .location(location)
                 .count(0)
                 .extra(schema().particleSpeed)
-                .offset(velocityDirection.x, velocityDirection.y, velocityDirection.z)
+                .offset(absoluteDirection.x, absoluteDirection.y, absoluteDirection.z)
                 .spawn();
+
+        active = false;
     }
 
     @Override
