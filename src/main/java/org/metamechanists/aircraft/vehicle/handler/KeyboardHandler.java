@@ -27,15 +27,15 @@ public final class KeyboardHandler {
         }
 
         if (rightLeft < 0) {
-            vehicleEntity.onKey('d');
+            vehicleEntity.onSignal("d");
         } else if (rightLeft > 0) {
-            vehicleEntity.onKey('a');
+            vehicleEntity.onSignal("a");
         }
 
         if (forwardbackwards < 0) {
-            vehicleEntity.onKey('s');
+            vehicleEntity.onSignal("s");
         } else if (forwardbackwards > 0) {
-            vehicleEntity.onKey('w');
+            vehicleEntity.onSignal("w");
         }
     }
 

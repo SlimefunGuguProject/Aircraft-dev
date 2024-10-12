@@ -17,7 +17,6 @@ import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
 import org.metamechanists.aircraft.vehicle.component.hud.bottompanel.BottomPanel;
 import org.metamechanists.aircraft.vehicle.component.hud.compass.Compass;
 import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
-import org.metamechanists.aircraft.vehicle.component.vehicle.HingedComponent;
 import org.metamechanists.aircraft.vehicle.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicle.forces.SpatialForceType;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
@@ -27,6 +26,7 @@ import org.metamechanists.kinematiccore.api.state.StateWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -41,6 +41,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     private static final int PHYSICS_UPDATES_PER_AIRCRAFT_UPDATE = TICK_INTERVAL / PHYSICS_INTERVAL;
     private static final int MIN_THROTTLE = 0;
     private static final int MAX_THROTTLE = 100;
+    private static final int THROTTLE_INCREMENT = 5;
 
     private int throttle;
     private final Vector3d velocity;
@@ -180,21 +181,31 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         pig.setVelocity(pigVelocity);
     }
 
-    private static void removeRedundantComponents(@NotNull Map<String, UUID> components, @NotNull Set<String> expected) {
-        for (String id : components.keySet()) {
-            if (!expected.contains(id)) {
-                KinematicEntity<?, ?> kinematicEntity = KinematicEntity.get(components.remove(id));
-                if (kinematicEntity != null) {
-                    kinematicEntity.remove();
-                }
-            }
+    public void onSignal(String signal) {
+        Pig pig = entity();
+        if (pig == null) {
+            return;
         }
-    }
 
-    public void onKey(char key) {
+        if (Objects.equals(signal, "THROTTLE_UP")) {
+            throttle = Math.min(MAX_THROTTLE, throttle + THROTTLE_INCREMENT);
+        }
+
+        if (Objects.equals(signal, "THROTTLE_DOWN")) {
+            throttle = Math.max(MIN_THROTTLE, throttle - THROTTLE_INCREMENT);
+        }
+
+        if (Objects.equals(signal, "STEER_RIGHT") && isOnGround(pig)) {
+            angularVelocity.y -= schema().getSteeringSpeed();
+        }
+
+        if (Objects.equals(signal, "STEER_LEFT") && isOnGround(pig)) {
+            angularVelocity.y += schema().getSteeringSpeed();
+        }
+
         for (UUID uuid : components.values()) {
-            if (KinematicEntity.get(uuid) instanceof HingedComponent component) {
-                component.onKey(key);
+            if (KinematicEntity.get(uuid) instanceof VehicleComponent<?> component) {
+                component.onSignal(signal);
             }
         }
     }
@@ -222,7 +233,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         velocity.mul(1.0 - schema().getVelocityDamping());
         Vector3d acceleration = acceleration(forces);
         velocity.add(new Vector3d(acceleration).div(PHYSICS_UPDATES_PER_SECOND));
-        cancelVelocityAndAcceleration(pig, velocity, acceleration);
+        cancelVelocityAndAcceleration(pig, velocity);
 
         angularVelocity.mul(1.0 - schema().getAngularVelocityDamping());
         Vector3d angularAcceleration = angularAcceleration(forces);
@@ -250,7 +261,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         return new Vector3d(resultantTorque).div(schema().getMomentOfInertia());
     }
 
-    public void cancelVelocityAndAcceleration(@NotNull Pig pig, @NotNull Vector3d velocity, Vector3d acceleration) {
+    public void cancelVelocityAndAcceleration(@NotNull Pig pig, @NotNull Vector3d velocity) {
         velocity.rotate(rotation);
 
         if (pig.wouldCollideUsing(pig.getBoundingBox().shift(new Vector(-0.1, 0.0, 0.0)))) {

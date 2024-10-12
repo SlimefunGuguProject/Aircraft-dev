@@ -6,7 +6,6 @@ import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -14,12 +13,12 @@ import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 
 
-public class SteerControl extends SlimefunItem {
-    private final int direction;
+public class AircraftControl extends SlimefunItem {
+    private final String signal;
 
-    public SteerControl(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, int direction) {
+    public AircraftControl(ItemGroup itemGroup, SlimefunItemStack item, RecipeType recipeType, ItemStack[] recipe, String signal) {
         super(itemGroup, item, recipeType, recipe);
-        this.direction = direction;
+        this.signal = signal;
         addItemHandler(onItemUse());
     }
 
@@ -35,16 +34,7 @@ public class SteerControl extends SlimefunItem {
                 return;
             }
 
-            Pig pig = vehicleEntity.entity();
-            if (pig == null) {
-                return;
-            }
-
-            if (!VehicleEntity.isOnGround(pig)) {
-                return;
-            }
-
-            vehicleEntity.steer(direction);
+            vehicleEntity.onSignal(signal);
         };
     }
 }

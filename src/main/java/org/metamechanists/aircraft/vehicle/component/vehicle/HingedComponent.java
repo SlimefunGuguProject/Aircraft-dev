@@ -17,6 +17,7 @@ import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.kinematiccore.api.state.StateWriter;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
+import java.util.Objects;
 import java.util.Set;
 
 import static java.lang.Math.sin;
@@ -28,8 +29,8 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
         private final Vector3d rotationAxis;
         private final double rotationRate;
         private final double rotationMax;
-        private final char keyUp;
-        private final char keyDown;
+        private final String signalUp;
+        private final String signalDown;
 
         @SuppressWarnings("DataFlowIssue")
         public HingedComponentSchema(
@@ -44,8 +45,8 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
             rotationAxis = hingedTraverser.getVector3d("rotationAxis", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             rotationRate = hingedTraverser.get("rotationRate");
             rotationMax = hingedTraverser.get("rotationMax");
-            keyUp = hingedTraverser.getChar("keyUp");
-            keyDown = hingedTraverser.getChar("keyDown");
+            signalUp = hingedTraverser.get("signalUp");
+            signalDown = hingedTraverser.get("signalDown");
         }
 
         @Override
@@ -109,11 +110,12 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
         }
     }
 
-    public void onKey(char key) {
+    @Override
+    public void onSignal(String signal) {
         double directionUnit ;
-        if (key == schema().getKeyDown()) {
+        if (Objects.equals(signal, schema().getSignalDown())) {
             directionUnit = -1.0;
-        } else if (key == schema().getKeyUp()) {
+        } else if (Objects.equals(signal, schema().getSignalUp())) {
             directionUnit = 1.0;
         } else {
             return;

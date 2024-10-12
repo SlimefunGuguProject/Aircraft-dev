@@ -27,46 +27,87 @@ public final class Items {
     private static final SlimefunItemStack THROTTLE_UP_STACK = new SlimefunItemStack(
                     "AIRCRAFT_THROTTLE_UP",
                     new CustomItemStack(Material.LIME_DYE, ChatColor.WHITE + "Throttle up"));
-    private static final ThrottleControl THROTTLE_UP = new ThrottleControl(
+    private static final AircraftControl THROTTLE_UP = new AircraftControl(
             AIRCRAFT_GROUP,
             THROTTLE_UP_STACK,
             RecipeType.NULL,
             new ItemStack[]{},
-            5);
+            "THROTTLE_UP");
 
     private static final SlimefunItemStack THROTTLE_DOWN_STACK = new SlimefunItemStack(
             "AIRCRAFT_THROTTLE_DOWN",
             new CustomItemStack(Material.RED_DYE, ChatColor.WHITE + "Throttle down"));
-    private static final ThrottleControl THROTTLE_DOWN = new ThrottleControl(
+    private static final AircraftControl THROTTLE_DOWN = new AircraftControl(
             AIRCRAFT_GROUP,
             THROTTLE_DOWN_STACK,
             RecipeType.NULL,
             new ItemStack[]{},
-            -5);
+            "THROTTLE_DOWN");
 
     private static final SlimefunItemStack STEER_LEFT_STACK = new SlimefunItemStack(
                         "AIRCRAFT_STEER_LEFT",
                         new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer left"));
-    private static final SteerControl STEER_LEFT = new SteerControl(
+    private static final AircraftControl STEER_LEFT = new AircraftControl(
             AIRCRAFT_GROUP,
             STEER_LEFT_STACK,
             RecipeType.NULL,
             new ItemStack[]{},
-            1);
+            "STEER_LEFT");
 
     private static final SlimefunItemStack STEER_RIGHT_STACK = new SlimefunItemStack(
                         "AIRCRAFT_STEER_RIGHT",
                         new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer right"));
-    private static final SteerControl STEER_RIGHT = new SteerControl(
+    private static final AircraftControl STEER_RIGHT = new AircraftControl(
             AIRCRAFT_GROUP,
             STEER_RIGHT_STACK,
             RecipeType.NULL,
             new ItemStack[]{},
-            -1);
+            "STEER_RIGHT");
+
+    private static final SlimefunItemStack STRAFE_LEFT_STACK  = new SlimefunItemStack(
+            "AIRCRAFT_STRAFE_LEFT",
+            new CustomItemStack(Material.ECHO_SHARD, ChatColor.WHITE + "Strafe left"));
+    private static final AircraftControl STRAFE_LEFT = new AircraftControl(
+            AIRCRAFT_GROUP,
+            STRAFE_LEFT_STACK,
+            RecipeType.NULL,
+            new ItemStack[]{},
+            "STRAFE_LEFT");
+
+    private static final SlimefunItemStack STRAFE_RIGHT_STACK = new SlimefunItemStack(
+            "AIRCRAFT_STRAFE_RIGHT",
+            new CustomItemStack(Material.AMETHYST_SHARD, ChatColor.WHITE + "Strafe right"));
+    private static final AircraftControl STRAFE_RIGHT = new AircraftControl(
+            AIRCRAFT_GROUP,
+            STRAFE_RIGHT_STACK,
+            RecipeType.NULL,
+            new ItemStack[]{},
+            "STRAFE_RIGHT");
+
+    private static final SlimefunItemStack STRAFE_UP_STACK  = new SlimefunItemStack(
+            "AIRCRAFT_STRAFE_UP",
+            new CustomItemStack(Material.LIME_CANDLE, ChatColor.WHITE + "Strafe up"));
+    private static final AircraftControl STRAFE_UP = new AircraftControl(
+            AIRCRAFT_GROUP,
+            STRAFE_UP_STACK,
+            RecipeType.NULL,
+            new ItemStack[]{},
+            "STRAFE_UP");
+
+    private static final SlimefunItemStack STRAFE_DOWN_STACK = new SlimefunItemStack(
+            "AIRCRAFT_STRAFE_DOWN",
+            new CustomItemStack(Material.RED_CANDLE, ChatColor.WHITE + "Strafe down"));
+    private static final AircraftControl STRAFE_DOWN = new AircraftControl(
+            AIRCRAFT_GROUP,
+            STRAFE_DOWN_STACK,
+            RecipeType.NULL,
+            new ItemStack[]{},
+            "STRAFE_DOWN");
 
     private static final SlimefunItemStack CRUDE_AIRCRAFT_STACK = new SlimefunItemStack(
             "AIRCRAFT_CRUDE_AIRCRAFT",
             new CustomItemStack(Material.FEATHER, ChatColor.WHITE + "Crude Aircraft"));
+
     private static @NotNull VehicleItem crudeAircraft(VehicleEntitySchema schema) {
         return new VehicleItem(
                 schema,
@@ -100,6 +141,10 @@ public final class Items {
         THROTTLE_DOWN.register(addon);
         STEER_LEFT.register(addon);
         STEER_RIGHT.register(addon);
+        STRAFE_LEFT.register(addon);
+        STRAFE_RIGHT.register(addon);
+        STRAFE_UP.register(addon);
+        STRAFE_DOWN.register(addon);
 
         VehicleEntitySchema schema = loadVehicle("crude_aircraft");
         if (schema != null) {

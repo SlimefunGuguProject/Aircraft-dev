@@ -150,4 +150,6 @@ public abstract class VehicleComponent<T extends KinematicEntitySchema> extends 
     }
 
     public abstract @NotNull Set<VehicleSurface> getSurfaces();
+
+    public void onSignal(String signal) {}
 }
