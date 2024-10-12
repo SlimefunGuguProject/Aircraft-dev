@@ -1,10 +1,14 @@
 package org.metamechanists.aircraft.vehicle.component.vehicle;
 
+import com.destroystokyo.paper.ParticleBuilder;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Quaternionf;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -28,6 +32,8 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
         private final String signal;
         private final double thrust;
         private final Vector3d direction;
+        private final Particle particle;
+        private final double particleSpeed;
 
         @SuppressWarnings("DataFlowIssue")
         public ThrusterComponentSchema(
@@ -41,6 +47,8 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
             signal = thrusterTraverser.get("signal", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             thrust = thrusterTraverser.get("thrust", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             direction = thrusterTraverser.getVector3d("direction", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
+            particle = Particle.valueOf(thrusterTraverser.get("particle", YamlTraverser.ErrorSetting.LOG_MISSING_KEY));
+            particleSpeed = thrusterTraverser.get("particleSpeed", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
         }
 
         @Override
@@ -84,6 +92,18 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     public void update(@NotNull VehicleEntity vehicleEntity) {
         super.update(vehicleEntity);
         active = false;
+        Vector3d absoluteLocation = new Vector3d(schema().getLocation())
+                .rotate(vehicleEntity.getRotation());
+        Vector3d velocityDirection = new Vector3d(absoluteLocation).normalize();
+        Pig pig = vehicleEntity.entity();
+        assert pig != null;
+        Location location = pig.getLocation();
+        new ParticleBuilder(schema().particle)
+                .location(location)
+                .count(0)
+                .extra(schema().particleSpeed)
+                .offset(velocityDirection.x, velocityDirection.y, velocityDirection.z)
+                .spawn();
     }
 
     @Override

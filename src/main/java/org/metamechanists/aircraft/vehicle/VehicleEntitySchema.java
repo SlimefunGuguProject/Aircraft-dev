@@ -114,6 +114,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     @Override
     public void unregister() {
         super.unregister();
+        interactorSchema.unregister();
         for (VehicleComponent.VehicleComponentSchema schema : components.values()) {
             schema.unregister();
         }
