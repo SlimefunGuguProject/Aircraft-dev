@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicle.component.base.ItemComponent;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
@@ -92,6 +93,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     @SuppressWarnings("DataFlowIssue")
     public VehicleEntity(StateReader reader) {
         super(reader);
+        Aircraft.getInstance().getLogger().severe("fuck");
         throttle = reader.get("throttle", Integer.class);
         velocity = reader.get("velocity", Vector3d.class);
         rotation = reader.get("rotation", Quaterniond.class);

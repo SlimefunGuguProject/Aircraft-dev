@@ -81,7 +81,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         }
 
         interactorSchema = new KinematicEntitySchema(
-                "vehicle_interactor",
+                id + "_vehicle_interactor",
                 Aircraft.class,
                 VehicleInteractor.class,
                 Interaction.class
