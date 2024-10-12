@@ -10,7 +10,7 @@ import org.metamechanists.aircraft.vehicle.VehicleSurface;
 import org.metamechanists.aircraft.vehicle.component.base.ItemComponent;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
 import org.metamechanists.displaymodellib.models.components.ModelItem;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.Set;

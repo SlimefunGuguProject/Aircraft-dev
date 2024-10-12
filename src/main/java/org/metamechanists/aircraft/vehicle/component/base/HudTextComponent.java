@@ -10,7 +10,7 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 

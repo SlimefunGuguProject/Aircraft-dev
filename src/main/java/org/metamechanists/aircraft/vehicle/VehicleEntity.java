@@ -21,9 +21,8 @@ import org.metamechanists.aircraft.vehicle.component.vehicle.HingedComponent;
 import org.metamechanists.aircraft.vehicle.forces.SpatialForce;
 import org.metamechanists.aircraft.vehicle.forces.SpatialForceType;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
-import org.metamechanists.kinematiccore.api.storage.EntityStorage;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
-import org.metamechanists.kinematiccore.api.storage.StateWriter;
+import org.metamechanists.kinematiccore.api.state.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateWriter;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -132,7 +131,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         // Remove any additional vehicle components
         for (String id : components.keySet()) {
             if (!expectedComponents.containsKey(id)) {
-                KinematicEntity<?, ?> kinematicEntity = EntityStorage.kinematicEntity(components.remove(id));
+                KinematicEntity<?, ?> kinematicEntity = KinematicEntity.get(components.remove(id));
                 if (kinematicEntity != null) {
                     kinematicEntity.remove();
                 }
@@ -154,24 +153,24 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
         // Update components
         for (UUID uuid : components.values()) {
-            if (EntityStorage.kinematicEntity(uuid) instanceof ItemComponent<?> component) {
+            if (KinematicEntity.get(uuid) instanceof ItemComponent<?> component) {
                 component.update(this);
             }
         }
 
         // Update HUD
         if (horizon != null) {
-            if (EntityStorage.kinematicEntity(horizon) instanceof Horizon horizon) {
+            if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
                 horizon.update(this);
             }
         }
         if (compass != null) {
-            if (EntityStorage.kinematicEntity(compass) instanceof Compass compass) {
+            if (KinematicEntity.get(compass) instanceof Compass compass) {
                 compass.update(this);
             }
         }
         if (bottomPanel != null) {
-            if (EntityStorage.kinematicEntity(bottomPanel ) instanceof BottomPanel bottomPanel) {
+            if (KinematicEntity.get(bottomPanel ) instanceof BottomPanel bottomPanel) {
                 bottomPanel.update(this);
             }
         }
@@ -184,7 +183,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     private static void removeRedundantComponents(@NotNull Map<String, UUID> components, @NotNull Set<String> expected) {
         for (String id : components.keySet()) {
             if (!expected.contains(id)) {
-                KinematicEntity<?, ?> kinematicEntity = EntityStorage.kinematicEntity(components.remove(id));
+                KinematicEntity<?, ?> kinematicEntity = KinematicEntity.get(components.remove(id));
                 if (kinematicEntity != null) {
                     kinematicEntity.remove();
                 }
@@ -194,7 +193,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
     public void onKey(char key) {
         for (UUID uuid : components.values()) {
-            if (EntityStorage.kinematicEntity(uuid) instanceof HingedComponent component) {
+            if (KinematicEntity.get(uuid) instanceof HingedComponent component) {
                 component.onKey(key);
             }
         }
@@ -204,7 +203,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     public Set<VehicleSurface> getSurfaces() {
         Set<VehicleSurface> surfaces = new HashSet<>();
         for (UUID uuid : components.values()) {
-            if (EntityStorage.kinematicEntity(uuid) instanceof VehicleComponent<?> component) {
+            if (KinematicEntity.get(uuid) instanceof VehicleComponent<?> component) {
                 surfaces.addAll(component.getSurfaces());
             }
         }
@@ -398,7 +397,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         pig.addPassenger(player);
 
         assert interaction != null;
-        KinematicEntity<?, ?> interaction = EntityStorage.kinematicEntity(this.interaction);
+        KinematicEntity<?, ?> interaction = KinematicEntity.get(this.interaction);
         assert interaction != null;
         interaction.remove();
     }

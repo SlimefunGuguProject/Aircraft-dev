@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.items.Items;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
-import org.metamechanists.kinematiccore.api.storage.EntityStorage;
+import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -53,7 +53,7 @@ public class AircraftCommand extends BaseCommand {
             return;
         }
 
-        if (!(EntityStorage.kinematicEntity(riding.getUniqueId()) instanceof VehicleEntity vehicleEntity)) {
+        if (!(KinematicEntity.get(riding.getUniqueId()) instanceof VehicleEntity vehicleEntity)) {
             player.sendMessage(ChatColor.RED + "You are not in an aircraft");
             return;
         }

@@ -4,7 +4,7 @@ import org.bukkit.entity.Interaction;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.ArrayList;

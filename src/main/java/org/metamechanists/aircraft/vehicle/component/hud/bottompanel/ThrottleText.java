@@ -2,7 +2,6 @@ package org.metamechanists.aircraft.vehicle.component.hud.bottompanel;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
@@ -10,7 +9,7 @@ import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
 import org.metamechanists.aircraft.vehicle.component.base.HudTextComponent;
 import org.metamechanists.displaymodellib.models.components.ModelText;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 

@@ -9,8 +9,8 @@ import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
 import org.metamechanists.aircraft.vehicle.component.base.HudTextComponent;
 import org.metamechanists.displaymodellib.models.components.ModelText;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
-import org.metamechanists.kinematiccore.api.storage.StateWriter;
+import org.metamechanists.kinematiccore.api.state.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateWriter;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import static java.lang.Math.PI;
@@ -18,8 +18,6 @@ import static java.lang.Math.PI;
 
 public class HorizonDegree extends HudTextComponent<HorizonDegree.HorizonDegreeSchema> {
     public static class HorizonDegreeSchema extends HudTextComponentSchema {
-        public static final int BARS = 30;
-        private static final float RADIUS = 0.15F;
         private final TextColor color;
 
         public HorizonDegreeSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {

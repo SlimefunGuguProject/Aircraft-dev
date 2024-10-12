@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDismountEvent;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
-import org.metamechanists.kinematiccore.api.storage.EntityStorage;
+import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 
 
 public class MountHandler implements Listener {
@@ -18,7 +18,7 @@ public class MountHandler implements Listener {
             return;
         }
 
-        if (!(EntityStorage.kinematicEntity(e.getDismounted().getUniqueId()) instanceof VehicleEntity vehicleEntity)) {
+        if (!(KinematicEntity.get(e.getDismounted().getUniqueId()) instanceof VehicleEntity vehicleEntity)) {
             return;
         }
 

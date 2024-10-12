@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
-import org.metamechanists.kinematiccore.api.storage.EntityStorage;
+import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 
 
 public final class KeyboardHandler {
@@ -22,7 +22,7 @@ public final class KeyboardHandler {
             return;
         }
 
-        if (!(EntityStorage.kinematicEntity(player.getVehicle().getUniqueId()) instanceof VehicleEntity vehicleEntity)) {
+        if (!(KinematicEntity.get(player.getVehicle().getUniqueId()) instanceof VehicleEntity vehicleEntity)) {
             return;
         }
 

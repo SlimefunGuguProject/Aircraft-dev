@@ -8,9 +8,8 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
-import org.metamechanists.kinematiccore.api.storage.EntityStorage;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
-import org.metamechanists.kinematiccore.api.storage.StateWriter;
+import org.metamechanists.kinematiccore.api.state.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateWriter;
 
 import java.util.UUID;
 
@@ -56,7 +55,7 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
             player.eject();
         }
 
-        VehicleEntity vehicleEntity = (VehicleEntity) EntityStorage.kinematicEntity(this.vehicleEntity);
+        VehicleEntity vehicleEntity = (VehicleEntity) KinematicEntity.get(this.vehicleEntity);
         assert vehicleEntity != null;
         vehicleEntity.mount(player);
     }

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Keys;
 import org.metamechanists.aircraft.vehicle.VehicleEntitySchema;
-import org.metamechanists.kinematiccore.api.storage.EntitySchemas;
+import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -109,7 +109,7 @@ public final class Items {
 
     public static void reload() {
         for (String id : loadedAircraft) {
-            if (EntitySchemas.schema(id) instanceof VehicleEntitySchema schema) {
+            if (KinematicEntitySchema.get(id) instanceof VehicleEntitySchema schema) {
                 schema.unregister();
             }
             // hacky but works

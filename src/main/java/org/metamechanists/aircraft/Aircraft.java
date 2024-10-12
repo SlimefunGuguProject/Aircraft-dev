@@ -11,7 +11,7 @@ import org.metamechanists.aircraft.commands.AircraftCommand;
 import org.metamechanists.aircraft.items.Items;
 import org.metamechanists.aircraft.vehicle.handler.MountHandler;
 import org.metamechanists.aircraft.vehicle.handler.KeyboardHandler;
-import org.metamechanists.kinematiccore.api.KinematicAddon;
+import org.metamechanists.kinematiccore.api.addon.KinematicAddon;
 
 
 public final class Aircraft extends JavaPlugin implements SlimefunAddon, KinematicAddon {

@@ -7,7 +7,7 @@ import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.displaymodellib.models.components.ModelText;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateReader;
 
 import java.util.Objects;
 import java.util.function.Supplier;

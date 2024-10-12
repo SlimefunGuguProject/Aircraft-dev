@@ -8,7 +8,7 @@ import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudTextComponent;
 import org.metamechanists.displaymodellib.models.components.ModelText;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 

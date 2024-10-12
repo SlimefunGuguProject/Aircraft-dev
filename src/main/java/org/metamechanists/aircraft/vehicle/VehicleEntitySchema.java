@@ -12,7 +12,6 @@ import org.metamechanists.aircraft.vehicle.component.hud.bottompanel.BottomPanel
 import org.metamechanists.aircraft.vehicle.component.hud.compass.Compass;
 import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
-import org.metamechanists.kinematiccore.api.storage.EntitySchemas;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashMap;
@@ -107,7 +106,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     public void unregister() {
         super.unregister();
         for (VehicleComponent.VehicleComponentSchema schema : components.values()) {
-            EntitySchemas.unregister(schema.getId());
+            schema.unregister();
         }
         if (horizonSchema != null) {
             horizonSchema.unregister();
@@ -118,6 +117,5 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         if (bottomPanelSchema != null) {
             bottomPanelSchema.unregister();
         }
-        EntitySchemas.unregister(getId());
     }
 }

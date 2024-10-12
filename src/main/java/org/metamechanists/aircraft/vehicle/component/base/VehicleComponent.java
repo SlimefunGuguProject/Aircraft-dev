@@ -21,7 +21,7 @@ import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.displaymodellib.transformations.TransformationMatrixBuilder;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashSet;

@@ -17,9 +17,8 @@ import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.displaymodellib.models.components.ModelText;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
-import org.metamechanists.kinematiccore.api.storage.EntityStorage;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
-import org.metamechanists.kinematiccore.api.storage.StateWriter;
+import org.metamechanists.kinematiccore.api.state.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateWriter;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.ArrayList;
@@ -115,10 +114,10 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
 
     public void update(@NotNull VehicleEntity vehicleEntity) {
         for (UUID uuid : components) {
-            if (EntityStorage.kinematicEntity(uuid) instanceof HudTextComponent<?> component) {
+            if (KinematicEntity.get(uuid) instanceof HudTextComponent<?> component) {
                 component.update(vehicleEntity);
             }
-            if (EntityStorage.kinematicEntity(uuid) instanceof HudItemComponent<?> component) {
+            if (KinematicEntity.get(uuid) instanceof HudItemComponent<?> component) {
                 component.update(vehicleEntity);
             }
         }

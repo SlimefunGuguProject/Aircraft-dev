@@ -8,10 +8,9 @@ import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
 import org.metamechanists.aircraft.vehicle.component.base.HudTextComponent;
-import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
 import org.metamechanists.displaymodellib.models.components.ModelText;
-import org.metamechanists.kinematiccore.api.storage.StateReader;
-import org.metamechanists.kinematiccore.api.storage.StateWriter;
+import org.metamechanists.kinematiccore.api.state.StateReader;
+import org.metamechanists.kinematiccore.api.state.StateWriter;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import static java.lang.Math.PI;

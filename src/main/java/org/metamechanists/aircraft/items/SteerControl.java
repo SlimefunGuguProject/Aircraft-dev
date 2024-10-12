@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
-import org.metamechanists.kinematiccore.api.storage.EntityStorage;
+import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 
 
 public class SteerControl extends SlimefunItem {
@@ -31,7 +31,7 @@ public class SteerControl extends SlimefunItem {
                 return;
             }
 
-            if (!(EntityStorage.kinematicEntity(riding.getUniqueId()) instanceof VehicleEntity vehicleEntity)) {
+            if (!(KinematicEntity.get(riding.getUniqueId()) instanceof VehicleEntity vehicleEntity)) {
                 return;
             }
 
