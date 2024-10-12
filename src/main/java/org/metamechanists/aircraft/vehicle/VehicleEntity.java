@@ -100,7 +100,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         textDisplays = reader.get("textDisplays", new HashSet<>());
         horizon = reader.get("horizon", UUID.class);
         compass = reader.get("compass", UUID.class);
-        bottomPanel = reader.get("bottomPanel ", UUID.class);
+        bottomPanel = reader.get("bottomPanel", UUID.class);
     }
 
     @Override

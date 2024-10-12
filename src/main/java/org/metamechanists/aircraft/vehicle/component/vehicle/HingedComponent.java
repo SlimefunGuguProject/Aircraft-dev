@@ -72,7 +72,7 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
     public HingedComponent(@NotNull StateReader reader) {
         super(reader);
         angle = reader.get("angle", Double.class);
-        ticksUntilReturn = reader.get("ticksUntilReturn ", Integer.class);
+        ticksUntilReturn = reader.get("ticksUntilReturn", Integer.class);
     }
 
     @Override
