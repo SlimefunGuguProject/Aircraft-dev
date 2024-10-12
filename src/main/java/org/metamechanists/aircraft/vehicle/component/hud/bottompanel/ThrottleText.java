@@ -46,7 +46,7 @@ public class ThrottleText extends HudTextComponent<ThrottleText.ThrottleTextSche
     protected @NotNull ModelText modelText(@NotNull VehicleEntity vehicleEntity) {
         return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(vehicleEntity.getThrottle()).color(schema().color))
-                .translate(schema().horizontalOffset, schema().verticalOffset, 0.005F)
+                .translate(schema().horizontalOffset, schema().verticalOffset, 0.001F)
                 .scale(new Vector3f((float) schema().size, (float) schema().size, 0.001F))
                 .translate(0.5F, 0.35F, 0.0F);
     }

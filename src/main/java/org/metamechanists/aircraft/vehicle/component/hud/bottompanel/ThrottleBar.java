@@ -49,7 +49,7 @@ public class ThrottleBar extends HudItemComponent<ThrottleBar.ThrottleBarSchema>
         double offsetX = -0.5F * schema().width + schema().horizontalOffset;
         return schema().getSectionSchema().rollCuboid(vehicleEntity)
                 .material(schema().material)
-                .translate(offsetX, schema().verticalOffset, 0.005F)
+                .translate(offsetX, schema().verticalOffset, 0.001F)
                 .scale(new Vector3f((float) schema().width * fraction, (float) schema().height, 0.001F))
                 .translate(0.5F, 0.35F, 0.0F);
     }
