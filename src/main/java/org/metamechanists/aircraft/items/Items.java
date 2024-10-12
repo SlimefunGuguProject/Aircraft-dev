@@ -108,11 +108,24 @@ public final class Items {
             "AIRCRAFT_CRUDE_AIRCRAFT",
             new CustomItemStack(Material.FEATHER, ChatColor.WHITE + "Crude Aircraft"));
 
+    private static final SlimefunItemStack CRUDE_AIRSHIP_STACK = new SlimefunItemStack(
+            "AIRCRAFT_CRUDE_AIRSHIP",
+            new CustomItemStack(Material.FEATHER, ChatColor.WHITE + "Crude Airship"));
+
     private static @NotNull VehicleItem crudeAircraft(VehicleEntitySchema schema) {
         return new VehicleItem(
                 schema,
                 AIRCRAFT_GROUP,
                 CRUDE_AIRCRAFT_STACK,
+                RecipeType.NULL,
+                new ItemStack[]{});
+    }
+
+    private static @NotNull VehicleItem crudeAirship(VehicleEntitySchema schema) {
+        return new VehicleItem(
+                schema,
+                AIRCRAFT_GROUP,
+                CRUDE_AIRSHIP_STACK,
                 RecipeType.NULL,
                 new ItemStack[]{});
     }
@@ -146,9 +159,14 @@ public final class Items {
         STRAFE_UP.register(addon);
         STRAFE_DOWN.register(addon);
 
-        VehicleEntitySchema schema = loadVehicle("crude_aircraft");
-        if (schema != null) {
-            crudeAircraft(schema).register(addon);
+        VehicleEntitySchema crudeAircraftSchema = loadVehicle("crude_aircraft");
+        if (crudeAircraftSchema != null) {
+            crudeAircraft(crudeAircraftSchema).register(addon);
+        }
+
+        VehicleEntitySchema crudeAirshipSchema = loadVehicle("crude_airship");
+        if (crudeAirshipSchema != null) {
+            crudeAirship(crudeAirshipSchema).register(addon);
         }
     }
 

@@ -26,6 +26,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     public static class ThrusterComponentSchema extends VehicleComponentSchema {
         private final String signal;
         private final double thrust;
+        private final Vector3d direction;
 
         @SuppressWarnings("DataFlowIssue")
         public ThrusterComponentSchema(
@@ -38,6 +39,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
             super(id, ThrusterComponent.class, traverser, translation, mirror);
             signal = thrusterTraverser.get("signal", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             thrust = thrusterTraverser.get("thrust", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
+            direction = thrusterTraverser.getVector3d("direction", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
         }
 
         @Override
@@ -61,11 +63,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
 
     public SpatialForce force() {
         double thrust = active ? schema().thrust : 0;
-        Vector3d rotation = super.schema().getRotation();
-        Vector3d force = new Vector3d(0, 0, thrust)
-                .rotateX(rotation.x)
-                .rotateY(rotation.y)
-                .rotateZ(rotation.z);
+        Vector3d force = new Vector3d(schema().direction).normalize().mul(thrust);
         Vector3d location = new Vector3d(super.schema().getLocation());
         return new SpatialForce(SpatialForceType.THRUSTER, force, location);
     }

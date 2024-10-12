@@ -35,13 +35,11 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
     public VehicleInteractor(StateReader reader) {
         super(reader);
         vehicleEntity = reader.get("vehicleEntity", UUID.class);
-        Aircraft.getInstance().getLogger().severe(vehicleEntity.toString());
     }
 
     @Override
     public void write(@NotNull StateWriter writer) {
         writer.set("vehicleEntity", vehicleEntity);
-        Aircraft.getInstance().getLogger().severe("shit");
     }
 
     @Override
