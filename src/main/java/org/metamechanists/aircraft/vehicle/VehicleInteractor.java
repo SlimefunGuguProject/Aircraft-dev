@@ -4,34 +4,22 @@ import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.kinematiccore.api.state.StateWriter;
-import org.metamechanists.kinematiccore.internal.entity.EntitySchemas;
-import org.metamechanists.kinematiccore.internal.entity.EntityStorage;
 
 import java.util.UUID;
 
 
 public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEntitySchema> {
-    private static final KinematicEntitySchema SCHEMA = new KinematicEntitySchema(
-            "vehicle_interactor",
-            Aircraft.class,
-            VehicleInteractor.class,
-            Interaction.class
-    );
 
-    static {
-        EntitySchemas.register(SCHEMA);
-    }
 
     private final UUID vehicleEntity;
 
     public VehicleInteractor(@NotNull VehicleEntity vehicleEntity) {
-        super(SCHEMA, () -> {
+        super(vehicleEntity.schema().getInteractorSchema(), () -> {
             Pig pig = vehicleEntity.entity();
             assert pig != null;
             Interaction interaction = new InteractionBuilder()

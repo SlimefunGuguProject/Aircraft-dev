@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicle;
 
 import lombok.Getter;
+import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -34,6 +35,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     private final double groundRollDamping;
     private final double groundPitchDamping;
     private final Map<String, VehicleComponent.VehicleComponentSchema> components = new HashMap<>();
+    private final KinematicEntitySchema interactorSchema;
     private final @Nullable Horizon.HorizonSchema horizonSchema;
     private final @Nullable Compass.CompassSchema compassSchema;
     private final @Nullable BottomPanel.BottomPanelSchema bottomPanelSchema;
@@ -77,6 +79,13 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
                 }
             }
         }
+
+        interactorSchema = new KinematicEntitySchema(
+                "vehicle_interactor",
+                Aircraft.class,
+                VehicleInteractor.class,
+                Interaction.class
+        );
 
         YamlTraverser hudTraverser = traverser.getSection("hud");
 
