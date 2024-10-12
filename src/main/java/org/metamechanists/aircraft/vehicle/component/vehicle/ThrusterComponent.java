@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Quaternionf;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
+import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.VehicleSurface;
 import org.metamechanists.aircraft.vehicle.component.base.ItemComponent;
@@ -104,7 +105,9 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
 
         Pig pig = vehicleEntity.entity();
         assert pig != null;
-        Location location = pig.getLocation().add(Vector.fromJOML(absoluteLocation));
+        Location location = pig.getLocation()
+                .add(Vector.fromJOML(Utils.PLAYER_HEAD_OFFSET))
+                .add(Vector.fromJOML(absoluteLocation));
 
         new ParticleBuilder(schema().particle)
                 .location(location)
