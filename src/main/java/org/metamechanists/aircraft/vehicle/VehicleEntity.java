@@ -417,7 +417,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         assert interaction != null;
         KinematicEntity<?, ?> interaction = KinematicEntity.get(this.interaction);
         assert interaction != null;
-        interaction.remove();
+        Entity entity = interaction.entity();
+        assert entity != null;
+        entity.remove();
     }
 
     public void unmount(@NotNull Player player) {
