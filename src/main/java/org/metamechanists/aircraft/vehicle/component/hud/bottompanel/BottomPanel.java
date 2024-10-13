@@ -26,8 +26,12 @@ public class BottomPanel extends HudSection<BottomPanel.BottomPanelSchema> {
         @Override
         public void unregister() {
             super.unregister();
-            throttleBarSchema.unregister();
-            throttleTextSchema.unregister();
+            if (throttleBarSchema != null) {
+                throttleBarSchema.unregister();
+            }
+            if (throttleTextSchema != null) {
+                throttleTextSchema.unregister();
+            }
         }
     }
 

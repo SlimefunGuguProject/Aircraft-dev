@@ -26,8 +26,10 @@ import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.kinematiccore.api.state.StateWriter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -133,14 +135,16 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
         // TODO do this for hud components too, in another method
         // Remove any additional vehicle components
-        for (String id : components.keySet()) {
-            if (!expectedComponents.containsKey(id)) {
-                KinematicEntity<?, ?> kinematicEntity = KinematicEntity.get(components.remove(id));
-                if (kinematicEntity != null) {
-                    Entity entity = kinematicEntity.entity();
-                    if (entity != null) {
-                        entity.remove();
-                    }
+        List<String> toRemove = components.keySet()
+                .stream()
+                .filter(id -> !expectedComponents.containsKey(id))
+                .toList();
+        for (String id : toRemove) {
+            KinematicEntity<?, ?> kinematicEntity = KinematicEntity.get(components.remove(id));
+            if (kinematicEntity != null) {
+                Entity entity = kinematicEntity.entity();
+                if (entity != null) {
+                    entity.remove();
                 }
             }
         }

@@ -35,11 +35,21 @@ public class Horizon extends HudSection<Horizon.HorizonSchema> {
         @Override
         public void unregister() {
             super.unregister();
-            altitudeTextSchema.unregister();
-            altitudeBracketsSchema.unregister();
-            velocityIndicatorSchema.unregister();
-            horizonBarSchema.unregister();
-            horizonDegreeSchema.unregister();
+            if (altitudeTextSchema != null) {
+                altitudeTextSchema.unregister();
+            }
+            if (altitudeBracketsSchema != null) {
+                altitudeBracketsSchema.unregister();
+            }
+            if (velocityIndicatorSchema != null) {
+                velocityIndicatorSchema.unregister();
+            }
+            if (horizonBarSchema != null) {
+                horizonBarSchema.unregister();
+            }
+            if (horizonDegreeSchema != null) {
+                horizonDegreeSchema.unregister();
+            }
         }
 
         public static float offset(@NotNull VehicleEntity vehicleEntity) {

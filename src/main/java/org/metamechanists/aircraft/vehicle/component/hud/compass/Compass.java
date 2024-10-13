@@ -34,14 +34,18 @@ public class Compass extends HudSection<Compass.CompassSchema> {
         @Override
         public void unregister() {
             super.unregister();
-            compassBarSchema.unregister();
-            compassDegreeSchema.unregister();
-            compassDirectionSchema.unregister();
-            compassNotchSchema.unregister();
-        }
-
-        public static float offset(@NotNull VehicleEntity vehicleEntity) {
-            return (float) (0.5F * -vehicleEntity.pitch());
+            if (compassBarSchema != null) {
+                compassBarSchema.unregister();
+            }
+            if (compassDegreeSchema != null) {
+                compassDegreeSchema.unregister();
+            }
+            if (compassDirectionSchema != null) {
+                compassDirectionSchema.unregister();
+            }
+            if (compassNotchSchema != null) {
+                compassNotchSchema.unregister();
+            }
         }
     }
 
