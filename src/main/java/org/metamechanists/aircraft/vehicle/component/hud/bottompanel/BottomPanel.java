@@ -22,17 +22,6 @@ public class BottomPanel extends HudSection<BottomPanel.BottomPanelSchema> {
             throttleBarSchema = new ThrottleBar.ThrottleBarSchema(id, this, traverser);
             throttleTextSchema = new ThrottleText.ThrottleTextSchema(id, this, traverser);
         }
-
-        @Override
-        public void unregister() {
-            super.unregister();
-            if (throttleBarSchema != null) {
-                throttleBarSchema.unregister();
-            }
-            if (throttleTextSchema != null) {
-                throttleTextSchema.unregister();
-            }
-        }
     }
 
     public BottomPanel(@NotNull BottomPanel.BottomPanelSchema schema, @NotNull VehicleEntity vehicleEntity) {

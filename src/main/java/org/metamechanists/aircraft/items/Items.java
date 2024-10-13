@@ -15,6 +15,7 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Keys;
 import org.metamechanists.aircraft.vehicle.VehicleEntitySchema;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
+import org.metamechanists.kinematiccore.internal.entity.EntitySchemas;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -171,10 +172,11 @@ public final class Items {
     }
 
     public static void reload() {
+        for (String id : EntitySchemas.registeredSchemasByAddon(Aircraft.getInstance())) {
+            KinematicEntitySchema.get(id).unregister();
+        }
+
         for (String id : loadedAircraft) {
-            if (KinematicEntitySchema.get(id) instanceof VehicleEntitySchema schema) {
-                schema.unregister();
-            }
             // hacky but works
             new VehicleEntitySchema(id.replaceAll("aircraft:", ""));
         }

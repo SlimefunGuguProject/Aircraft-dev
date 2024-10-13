@@ -32,26 +32,6 @@ public class Horizon extends HudSection<Horizon.HorizonSchema> {
             horizonDegreeSchema = new HorizonDegree.HorizonDegreeSchema(id, this, traverser);
         }
 
-        @Override
-        public void unregister() {
-            super.unregister();
-            if (altitudeTextSchema != null) {
-                altitudeTextSchema.unregister();
-            }
-            if (altitudeBracketsSchema != null) {
-                altitudeBracketsSchema.unregister();
-            }
-            if (velocityIndicatorSchema != null) {
-                velocityIndicatorSchema.unregister();
-            }
-            if (horizonBarSchema != null) {
-                horizonBarSchema.unregister();
-            }
-            if (horizonDegreeSchema != null) {
-                horizonDegreeSchema.unregister();
-            }
-        }
-
         public static float offset(@NotNull VehicleEntity vehicleEntity) {
             return (float) (0.5F * -vehicleEntity.pitch());
         }

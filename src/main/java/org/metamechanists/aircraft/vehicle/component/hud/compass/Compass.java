@@ -30,23 +30,6 @@ public class Compass extends HudSection<Compass.CompassSchema> {
             compassDirectionSchema = new CompassDirection.CompassDirectionSchema(id, this, traverser);
             compassNotchSchema = new CompassNotch.CompassNotchSchema(id, this, traverser);
         }
-
-        @Override
-        public void unregister() {
-            super.unregister();
-            if (compassBarSchema != null) {
-                compassBarSchema.unregister();
-            }
-            if (compassDegreeSchema != null) {
-                compassDegreeSchema.unregister();
-            }
-            if (compassDirectionSchema != null) {
-                compassDirectionSchema.unregister();
-            }
-            if (compassNotchSchema != null) {
-                compassNotchSchema.unregister();
-            }
-        }
     }
 
     public Compass(@NotNull Compass.CompassSchema schema, @NotNull VehicleEntity vehicleEntity) {

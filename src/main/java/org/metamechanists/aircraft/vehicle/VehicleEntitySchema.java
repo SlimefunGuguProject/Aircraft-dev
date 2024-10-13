@@ -110,24 +110,4 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
             bottomPanelSchema = new BottomPanel.BottomPanelSchema(id + "_bottomPanel", bottomPanelSection);
         }
     }
-
-    @Override
-    public void unregister() {
-        super.unregister();
-        if (interactorSchema != null) {
-            interactorSchema.unregister();
-        }
-        for (VehicleComponent.VehicleComponentSchema schema : components.values()) {
-            schema.unregister();
-        }
-        if (horizonSchema != null) {
-            horizonSchema.unregister();
-        }
-        if (compassSchema != null) {
-            compassSchema.unregister();
-        }
-        if (bottomPanelSchema != null) {
-            bottomPanelSchema.unregister();
-        }
-    }
 }
