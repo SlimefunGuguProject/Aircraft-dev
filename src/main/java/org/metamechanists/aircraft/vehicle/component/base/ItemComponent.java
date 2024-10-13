@@ -41,8 +41,9 @@ public abstract class ItemComponent<T extends KinematicEntitySchema> extends Kin
         ModelItem modelItem = modelItem(vehicleEntity);
 
         // Update matrix
-        if (visible && computeMatrixDifference(matrixLastUpdate, modelItem.getMatrix()) > MATRIX_DIFFERENCE_THRESHOLD) {
-            display.setTransformationMatrix(modelItem.getMatrix());
+        Matrix4f matrix = modelItem.getMatrix();
+        if (visible && computeMatrixDifference(matrixLastUpdate, matrix) > MATRIX_DIFFERENCE_THRESHOLD) {
+            display.setTransformationMatrix(matrix);
             display.setInterpolationDelay(0);
             display.setInterpolationDuration(VehicleEntity.TICK_INTERVAL);
         }
@@ -65,7 +66,7 @@ public abstract class ItemComponent<T extends KinematicEntitySchema> extends Kin
         }
 
         visibleLastUpdate = visible;
-        matrixLastUpdate = modelItem.getMatrix();
+        matrixLastUpdate = matrix;
     }
 
     protected void setVisible(boolean visible) {

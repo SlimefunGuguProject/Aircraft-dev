@@ -37,8 +37,9 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
         ModelText modelText = modelText(vehicleEntity);
 
         // Update matrix
-        if (visible && computeMatrixDifference(matrixLastUpdate, modelText.getMatrix()) > MATRIX_DIFFERENCE_THRESHOLD) {
-            display.setTransformationMatrix(modelText.getMatrix());
+        Matrix4f matrix = modelText.getMatrix();
+        if (visible && computeMatrixDifference(matrixLastUpdate, matrix) > MATRIX_DIFFERENCE_THRESHOLD) {
+            display.setTransformationMatrix(matrix);
             display.setInterpolationDelay(0);
             display.setInterpolationDuration(VehicleEntity.TICK_INTERVAL);
         }
@@ -62,7 +63,7 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
 
         visibleLastLastUpdate = visibleLastUpdate;
         visibleLastUpdate = visible;
-        matrixLastUpdate = modelText.getMatrix();
+        matrixLastUpdate = matrix;
     }
 
     protected void setVisible(boolean visible) {
