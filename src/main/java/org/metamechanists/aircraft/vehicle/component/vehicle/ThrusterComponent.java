@@ -2,14 +2,12 @@ package org.metamechanists.aircraft.vehicle.component.vehicle;
 
 import com.destroystokyo.paper.ParticleBuilder;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Pig;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Quaternionf;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.utils.Utils;
@@ -25,13 +23,14 @@ import org.metamechanists.kinematiccore.api.state.StateWriter;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
 public class ThrusterComponent extends VehicleComponent<ThrusterComponent.ThrusterComponentSchema> {
     @Getter
     public static class ThrusterComponentSchema extends VehicleComponentSchema {
-        private final String signal;
+        private final List<String> signals;
         private final double thrust;
         private final Vector3d direction;
         private final Particle particle;
@@ -47,7 +46,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
                 boolean mirror
         ) {
             super(id, ThrusterComponent.class, traverser, translation, mirror);
-            signal = thrusterTraverser.get("signal", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
+            signals = thrusterTraverser.get("signals", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             thrust = thrusterTraverser.get("thrust", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             direction = thrusterTraverser.getVector3d("direction", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             particle = Particle.valueOf(thrusterTraverser.get("particle", YamlTraverser.ErrorSetting.LOG_MISSING_KEY));
@@ -136,7 +135,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
 
     @Override
     public void onSignal(String signal) {
-        if (schema().signal.equals(signal)) {
+        if (schema().signals.contains(signal)) {
             active = true;
         }
     }

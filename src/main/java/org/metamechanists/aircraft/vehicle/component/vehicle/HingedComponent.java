@@ -17,7 +17,7 @@ import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.kinematiccore.api.state.StateWriter;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
-import java.util.Objects;
+import java.util.List;
 import java.util.Set;
 
 import static java.lang.Math.sin;
@@ -29,8 +29,8 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
         private final Vector3d rotationAxis;
         private final double rotationRate;
         private final double rotationMax;
-        private final String signalUp;
-        private final String signalDown;
+        private final List<String> signalsUp;
+        private final List<String> signalsDown;
 
         @SuppressWarnings("DataFlowIssue")
         public HingedComponentSchema(
@@ -45,8 +45,8 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
             rotationAxis = hingedTraverser.getVector3d("rotationAxis", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             rotationRate = hingedTraverser.get("rotationRate");
             rotationMax = hingedTraverser.get("rotationMax");
-            signalUp = hingedTraverser.get("signalUp");
-            signalDown = hingedTraverser.get("signalDown");
+            signalsUp = hingedTraverser.get("signalsUp");
+            signalsDown = hingedTraverser.get("signalsDown");
         }
 
         @Override
@@ -113,9 +113,9 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
     @Override
     public void onSignal(String signal) {
         double directionUnit ;
-        if (Objects.equals(signal, schema().getSignalDown())) {
+        if (schema().getSignalsDown().contains(signal)) {
             directionUnit = -1.0;
-        } else if (Objects.equals(signal, schema().getSignalUp())) {
+        } else if (schema().getSignalsUp().contains(signal)) {
             directionUnit = 1.0;
         } else {
             return;
