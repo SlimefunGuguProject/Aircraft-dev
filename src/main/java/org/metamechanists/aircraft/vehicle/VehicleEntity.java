@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
-import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicle.component.base.ItemComponent;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
@@ -26,7 +25,6 @@ import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.kinematiccore.api.state.StateWriter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -187,7 +185,11 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         }
 
         // Update pig velocity
-        Vector pigVelocity = Vector.fromJOML(absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND));
+        Vector3d pigVelocityJoml = absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND);
+        if (!pigVelocityJoml.isFinite()) {
+            pigVelocityJoml = new Vector3d();
+        }
+        Vector pigVelocity = Vector.fromJOML(pigVelocityJoml);
         pig.setVelocity(pigVelocity);
     }
 
