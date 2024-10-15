@@ -35,7 +35,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 
-@SuppressWarnings("WeakerAccess")
+@SuppressWarnings({"WeakerAccess", "OverlyComplexClass"})
 @Getter
 public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     public static final int TICK_INTERVAL = 2;
@@ -187,7 +187,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         // Update pig velocity
         Vector3d pigVelocityJoml = absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND);
         if (!pigVelocityJoml.isFinite()) {
-            pigVelocityJoml = new Vector3d();
+            pigVelocityJoml = new Vector3d(0.001, 0.0, 0.0);
         }
         Vector pigVelocity = Vector.fromJOML(pigVelocityJoml);
         pig.setVelocity(pigVelocity);

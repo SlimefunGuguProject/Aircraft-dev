@@ -45,4 +45,9 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon, Kinemat
     public @Nullable String getBugTrackerURL() {
         return null;
     }
+
+    @Override
+    public @NotNull String name() {
+        return "aircraft";
+    }
 }

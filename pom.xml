@@ -118,7 +118,7 @@
         <dependency>
             <groupId>org.metamechanists</groupId>
             <artifactId>KinematicCore</artifactId>
-            <version>19</version>
+            <version>21</version>
             <scope>provided</scope>
         </dependency>
 

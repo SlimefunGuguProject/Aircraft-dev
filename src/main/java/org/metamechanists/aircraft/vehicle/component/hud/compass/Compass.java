@@ -14,7 +14,7 @@ import java.util.UUID;
 
 public class Compass extends HudSection<Compass.CompassSchema> {
     public static final int BARS = 60;
-    public static final int EXTRA_BARS = 8;
+    private static final int EXTRA_BARS = 8;
     public static final float RADIUS = 0.2F;
 
     public static class CompassSchema extends HudSectionSchema {
