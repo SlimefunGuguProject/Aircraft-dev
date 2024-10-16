@@ -1,6 +1,6 @@
 package org.metamechanists.aircraft.vehicle.component.hud.horizon;
 
-import org.bukkit.entity.Interaction;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
@@ -24,7 +24,7 @@ public class Horizon extends HudSection<Horizon.HorizonSchema> {
         private final HorizonDegree.HorizonDegreeSchema horizonDegreeSchema;
 
         public HorizonSchema(@NotNull String id, @NotNull YamlTraverser traverser) {
-            super(id, traverser, Horizon.class, Interaction.class);
+            super(id, EntityType.INTERACTION, traverser, Horizon.class);
             altitudeTextSchema = new AltitudeText.AltitudeTextSchema(id, this, traverser);
             altitudeBracketsSchema = new AltitudeBrackets.AltitudeBracketsSchema(id, this, traverser);
             velocityIndicatorSchema = new VelocityIndicator.VelocityIndicatorSchema(id, this, traverser);

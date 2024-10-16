@@ -1,9 +1,9 @@
 package org.metamechanists.aircraft.vehicle.component.base;
 
 import lombok.Getter;
+import lombok.experimental.Accessors;
 import org.bukkit.Color;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
@@ -27,6 +27,7 @@ import java.util.UUID;
 
 
 public abstract class HudSection<T extends HudSection.HudSectionSchema> extends KinematicEntity<Interaction, T> {
+    @Accessors(fluent = true)
     @Getter
     public abstract static class HudSectionSchema extends KinematicEntitySchema {
         private final Vector3f position;
@@ -34,12 +35,13 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
 
         protected HudSectionSchema(
                 @NotNull String id,
+                @NotNull EntityType entityType,
                 @NotNull YamlTraverser traverser,
-                @NotNull Class<? extends KinematicEntity<?, ?>> kinematicClass,
-                @NotNull Class<? extends Entity> entityClass) {
-            super(id, Aircraft.class, kinematicClass, entityClass);
+                @NotNull Class<? extends KinematicEntity<?, ?>> kinematicClass) {
+            super(id, entityType, kinematicClass);
             this.position = traverser.getVector3f("position");
             this.rotation = traverser.getVector3f("rotation");
+            register(Aircraft.getInstance());
         }
 
         private static ModelText defaultText(@NotNull VehicleEntity vehicleEntity) {

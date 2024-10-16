@@ -2,7 +2,7 @@ package org.metamechanists.aircraft.vehicle.component.hud.compass;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.entity.TextDisplay;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -27,7 +27,7 @@ public class CompassDirection extends HudTextComponent<CompassDirection.CompassD
         private final String textW;
 
         public CompassDirectionSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super(id + "_compass_direction", sectionSchema, traverser, CompassDirection.class, TextDisplay.class);
+            super(id + "_compass_direction", sectionSchema, EntityType.TEXT_DISPLAY, traverser, CompassDirection.class);
             color = traverser.getTextColor("directionColor");
             size = traverser.get("directionSize");
             offset = traverser.get("directionOffset");

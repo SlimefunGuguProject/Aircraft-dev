@@ -137,7 +137,7 @@ public final class Items {
     private static @Nullable VehicleEntitySchema loadVehicle(@NotNull String id) {
         try {
             VehicleEntitySchema schema = new VehicleEntitySchema(id);
-            loadedAircraft.add(schema.getId());
+            loadedAircraft.add(schema.id());
             return schema;
         } catch (RuntimeException e) {
             Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + id);
@@ -172,7 +172,10 @@ public final class Items {
 
     public static void reload() {
         for (String id : KinematicEntitySchema.registeredSchemasByAddon(Aircraft.getInstance())) {
-            KinematicEntitySchema.get(id).unregister();
+            KinematicEntitySchema schema = KinematicEntitySchema.get(id);
+            if (schema != null) {
+                schema.unregister();
+            }
         }
 
         for (String id : loadedAircraft) {

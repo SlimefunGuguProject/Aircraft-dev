@@ -1,7 +1,7 @@
 package org.metamechanists.aircraft.vehicle.component.hud.bottompanel;
 
 import org.bukkit.Material;
-import org.bukkit.entity.ItemDisplay;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -25,7 +25,7 @@ public class ThrottleBar extends HudItemComponent<ThrottleBar.ThrottleBarSchema>
                 @NotNull HudSection.HudSectionSchema sectionSchema,
                 @NotNull YamlTraverser traverser
         ) {
-            super(id + "_bottom_panel_throttle_bar", sectionSchema, traverser, ThrottleBar.class, ItemDisplay.class);
+            super(id + "_bottom_panel_throttle_bar", EntityType.ITEM_DISPLAY, sectionSchema, traverser, ThrottleBar.class);
             material = Material.getMaterial(traverser.get("throttleBarMaterial"));
             assert material != null;
             height = traverser.get("throttleBarHeight");

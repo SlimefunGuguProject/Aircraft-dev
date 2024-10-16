@@ -2,6 +2,7 @@ package org.metamechanists.aircraft.vehicle.component.base;
 
 import lombok.Getter;
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -48,7 +49,7 @@ public abstract class VehicleComponent<T extends KinematicEntitySchema> extends 
                 @NotNull Vector3f translation,
                 boolean mirror
         ) {
-            super(id + (mirror ? "_mirror" : ""), Aircraft.class, kinematicClass, ItemDisplay.class);
+            super(id + (mirror ? "_mirror" : ""), EntityType.ITEM_DISPLAY, kinematicClass);
 
             material = Material.valueOf(traverser.get("material"));
             size = traverser.getVector3f("size");
@@ -68,6 +69,8 @@ public abstract class VehicleComponent<T extends KinematicEntitySchema> extends 
                 rotation.x = -rotation.x;
                 rotation.y = -rotation.y;
             }
+
+            register(Aircraft.getInstance());
         }
 
         public abstract ItemComponent<?> build(@NotNull VehicleEntity vehicleEntity);

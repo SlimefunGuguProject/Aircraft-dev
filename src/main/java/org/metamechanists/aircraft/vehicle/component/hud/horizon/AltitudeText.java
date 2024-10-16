@@ -2,7 +2,7 @@ package org.metamechanists.aircraft.vehicle.component.hud.horizon;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.entity.TextDisplay;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -18,7 +18,7 @@ public class AltitudeText extends HudTextComponent<AltitudeText.AltitudeTextSche
         private final TextColor color;
 
         public AltitudeTextSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super(id + "_altitude_text", sectionSchema, traverser, AltitudeText.class, TextDisplay.class);
+            super(id + "_altitude_text", sectionSchema, EntityType.TEXT_DISPLAY, traverser, AltitudeText.class);
             color = traverser.getTextColor("altitudeTextColor");
         }
     }

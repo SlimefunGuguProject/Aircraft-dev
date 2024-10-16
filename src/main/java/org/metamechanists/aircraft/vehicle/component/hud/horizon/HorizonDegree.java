@@ -2,7 +2,7 @@ package org.metamechanists.aircraft.vehicle.component.hud.horizon;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.entity.TextDisplay;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -21,7 +21,7 @@ public class HorizonDegree extends HudTextComponent<HorizonDegree.HorizonDegreeS
         private final TextColor color;
 
         public HorizonDegreeSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super(id + "horizon_degree", sectionSchema, traverser, HorizonDegree.class, TextDisplay.class);
+            super(id + "horizon_degree", sectionSchema, EntityType.TEXT_DISPLAY, traverser, HorizonDegree.class);
             color = traverser.getTextColor("horizonDegreeColor");
         }
     }

@@ -2,7 +2,7 @@ package org.metamechanists.aircraft.vehicle.component.hud.bottompanel;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.entity.TextDisplay;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -25,7 +25,7 @@ public class ThrottleText extends HudTextComponent<ThrottleText.ThrottleTextSche
                 @NotNull HudSection.HudSectionSchema sectionSchema,
                 @NotNull YamlTraverser traverser
         ) {
-            super(id + "_bottom_panel_throttle_text", sectionSchema, traverser, ThrottleText.class, TextDisplay.class);
+            super(id + "_bottom_panel_throttle_text", sectionSchema, EntityType.TEXT_DISPLAY, traverser, ThrottleText.class);
             color = traverser.getTextColor("throttleTextColor");
             size = traverser.get("throttleTextSize");
             verticalOffset = traverser.get("throttleTextVerticalOffset");

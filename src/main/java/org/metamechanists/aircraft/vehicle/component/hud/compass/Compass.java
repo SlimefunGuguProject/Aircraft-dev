@@ -1,6 +1,6 @@
 package org.metamechanists.aircraft.vehicle.component.hud.compass;
 
-import org.bukkit.entity.Interaction;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
@@ -24,7 +24,7 @@ public class Compass extends HudSection<Compass.CompassSchema> {
         private final CompassNotch.CompassNotchSchema compassNotchSchema;
 
         public CompassSchema(@NotNull String id, @NotNull YamlTraverser traverser) {
-            super(id, traverser, Compass.class, Interaction.class);
+            super(id, EntityType.INTERACTION, traverser, Compass.class);
             compassBarSchema = new CompassBar.CompassBarSchema(id, this, traverser);
             compassDegreeSchema = new CompassDegree.CompassDegreeSchema(id, this, traverser);
             compassDirectionSchema = new CompassDirection.CompassDirectionSchema(id, this, traverser);

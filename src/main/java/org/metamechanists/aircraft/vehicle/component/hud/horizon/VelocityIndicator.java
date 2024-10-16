@@ -2,7 +2,7 @@ package org.metamechanists.aircraft.vehicle.component.hud.horizon;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.entity.TextDisplay;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -18,7 +18,7 @@ public class VelocityIndicator extends HudTextComponent<VelocityIndicator.Veloci
         private final String text;
 
         public VelocityIndicatorSchema(@NotNull String id, @NotNull Horizon.HorizonSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super(id + "velocity_indicator", sectionSchema, traverser, VelocityIndicator.class, TextDisplay.class);
+            super(id + "velocity_indicator", sectionSchema, EntityType.TEXT_DISPLAY, traverser, VelocityIndicator.class);
             color = traverser.getTextColor("velocityIndicatorColor");
             text = traverser.get("velocityIndicatorText");
         }

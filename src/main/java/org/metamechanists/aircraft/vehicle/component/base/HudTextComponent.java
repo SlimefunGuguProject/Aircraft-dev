@@ -1,7 +1,6 @@
 package org.metamechanists.aircraft.vehicle.component.base;
 
 import lombok.Getter;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.TextDisplay;
@@ -22,11 +21,12 @@ public abstract class HudTextComponent<T extends HudTextComponent.HudTextCompone
         protected HudTextComponentSchema(
                 @NotNull String id,
                 @NotNull HudSection.HudSectionSchema sectionSchema,
+                @NotNull EntityType entityType,
                 @NotNull YamlTraverser traverser,
-                @NotNull Class<? extends KinematicEntity<?, ?>> kinematicClass,
-                @NotNull Class<? extends Entity> entityClass) {
-            super(sectionSchema.getId() + "_" + id, Aircraft.class, kinematicClass, entityClass);
+                @NotNull Class<? extends KinematicEntity<?, ?>> kinematicClass) {
+            super(sectionSchema.idWithoutNamespace() + "_" + id, entityType, kinematicClass);
             this.sectionSchema = sectionSchema;
+            register(Aircraft.getInstance());
         }
     }
 

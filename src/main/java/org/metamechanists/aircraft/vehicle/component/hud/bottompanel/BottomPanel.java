@@ -1,6 +1,6 @@
 package org.metamechanists.aircraft.vehicle.component.hud.bottompanel;
 
-import org.bukkit.entity.Interaction;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
@@ -18,7 +18,7 @@ public class BottomPanel extends HudSection<BottomPanel.BottomPanelSchema> {
         private final ThrottleText.ThrottleTextSchema throttleTextSchema;
 
         public BottomPanelSchema(@NotNull String id, @NotNull YamlTraverser traverser) {
-            super(id, traverser, BottomPanel.class, Interaction.class);
+            super(id, EntityType.INTERACTION, traverser, BottomPanel.class);
             throttleBarSchema = new ThrottleBar.ThrottleBarSchema(id, this, traverser);
             throttleTextSchema = new ThrottleText.ThrottleTextSchema(id, this, traverser);
         }

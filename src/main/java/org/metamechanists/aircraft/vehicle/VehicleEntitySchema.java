@@ -1,8 +1,7 @@
 package org.metamechanists.aircraft.vehicle;
 
 import lombok.Getter;
-import org.bukkit.entity.Interaction;
-import org.bukkit.entity.Pig;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
@@ -42,7 +41,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
 
     @SuppressWarnings("DataFlowIssue")
     public VehicleEntitySchema(@NotNull String id) {
-        super(id, Aircraft.class, VehicleEntity.class, Pig.class);
+        super(id, EntityType.PIG, VehicleEntity.class);
 
         YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), "vehicles/" + id + ".yml");
         Vector3f translation = traverser.getVector3f("translation");
@@ -71,21 +70,17 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
                 String componentId = id + "_" + componentTraverser.path();
                 VehicleComponent.VehicleComponentSchema schema = VehicleComponent.VehicleComponentSchema.fromTraverser(
                         componentId, componentTraverser, translation, false);
-                components.put(schema.getId(), schema);
+                components.put(schema.id(), schema);
                 if (componentTraverser.get("mirror", false)) {
                     VehicleComponent.VehicleComponentSchema mirroredSchema = VehicleComponent.VehicleComponentSchema.fromTraverser(
                             componentId, componentTraverser, translation, true);
-                    components.put(mirroredSchema.getId(), mirroredSchema);
+                    components.put(mirroredSchema.id(), mirroredSchema);
                 }
             }
         }
 
-        interactorSchema = new KinematicEntitySchema(
-                id + "_vehicle_interactor",
-                Aircraft.class,
-                VehicleInteractor.class,
-                Interaction.class
-        );
+        interactorSchema = new KinematicEntitySchema(id + "_vehicle_interactor", EntityType.INTERACTION, VehicleInteractor.class);
+        interactorSchema.register(Aircraft.getInstance());
 
         YamlTraverser hudTraverser = traverser.getSection("hud");
 
@@ -109,5 +104,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         } else {
             bottomPanelSchema = new BottomPanel.BottomPanelSchema(id + "_bottomPanel", bottomPanelSection);
         }
+
+        register(Aircraft.getInstance());
     }
 }

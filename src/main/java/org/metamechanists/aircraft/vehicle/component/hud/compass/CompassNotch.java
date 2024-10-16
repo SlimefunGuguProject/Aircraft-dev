@@ -2,7 +2,7 @@ package org.metamechanists.aircraft.vehicle.component.hud.compass;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
-import org.bukkit.entity.TextDisplay;
+import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -21,7 +21,7 @@ public class CompassNotch extends HudTextComponent<CompassNotch.CompassNotchSche
         private final double offset;
 
         public CompassNotchSchema(@NotNull String id, @NotNull HudSection.HudSectionSchema sectionSchema, @NotNull YamlTraverser traverser) {
-            super(id + "_compass_notch", sectionSchema, traverser, CompassNotch.class, TextDisplay.class);
+            super(id + "_compass_notch", sectionSchema, EntityType.TEXT_DISPLAY, traverser, CompassNotch.class);
             color = traverser.getTextColor("notchColor");
             text = traverser.get("notchText");
             size = traverser.get("notchSize");
