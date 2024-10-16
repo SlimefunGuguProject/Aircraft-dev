@@ -146,6 +146,11 @@ public abstract class VehicleComponent<T extends KinematicEntitySchema> extends 
                 return new ThrusterComponent.ThrusterComponentSchema(id, traverser, thrusterTraverser, translation, mirror);
             }
 
+            YamlTraverser visibleTraverser = traverser.getSection("visible", YamlTraverser.ErrorSetting.NO_BEHAVIOUR);
+            if (visibleTraverser  != null) {
+                return new ThrusterComponent.ThrusterComponentSchema(id, traverser, visibleTraverser, translation, mirror);
+            }
+
             return new FixedComponent.FixedComponentSchema(id, traverser, translation, mirror);
         }
     }

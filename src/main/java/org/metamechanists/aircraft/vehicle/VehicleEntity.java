@@ -187,7 +187,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         // Signals
         onSignal("TICK");
         if (!pig.getPassengers().isEmpty()) {
-            onSignal("HAS_PASSENGER_TICK");
+            onSignal("HAS_PILOT_TICK");
         }
 
         // Update pig velocity
