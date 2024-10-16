@@ -2,6 +2,7 @@ package org.metamechanists.aircraft.vehicle.component.vehicle;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.bukkit.Material;
 import org.bukkit.entity.ItemDisplay;
 import org.bukkit.entity.Pig;
 import org.jetbrains.annotations.NotNull;
@@ -68,7 +69,11 @@ public class VisibleComponent extends VehicleComponent<VisibleComponent.VisibleC
 
     @Override
     protected @NotNull ModelItem modelItem(@NotNull VehicleEntity vehicleEntity) {
-        return schema().modelItem(vehicleEntity, new Vector3d(), new Vector3d()).viewRange(visible ? 1 : 0);
+        ModelItem item = schema().modelItem(vehicleEntity, new Vector3d(), new Vector3d());
+        if (visible) {
+            item.material(Material.AIR);
+        }
+        return item;
     }
 
     @Override
