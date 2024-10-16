@@ -184,6 +184,12 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             }
         }
 
+        // Signals
+        onSignal("TICK");
+        if (!pig.getPassengers().isEmpty()) {
+            onSignal("HAS_PASSENGER_TICK");
+        }
+
         // Update pig velocity
         Vector3d pigVelocityJoml = absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND);
         if (!pigVelocityJoml.isFinite()) {
