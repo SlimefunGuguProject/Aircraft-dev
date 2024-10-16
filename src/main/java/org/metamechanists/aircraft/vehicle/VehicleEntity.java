@@ -46,6 +46,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     private static final int MAX_THROTTLE = 100;
     private static final int THROTTLE_INCREMENT = 5;
 
+    private boolean hasPilot;
     private int throttle;
     private final Vector3d velocity;
     private final Quaterniond rotation;
@@ -186,7 +187,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
         // Signals
         onSignal("TICK");
-        if (!pig.getPassengers().isEmpty()) {
+        if (hasPilot) {
             onSignal("HAS_PILOT_TICK");
         }
 
@@ -422,6 +423,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public void mount(@NotNull Player player) {
+        hasPilot = true;
+
         Pig pig = entity();
         assert pig != null;
         player.setInvisible(true);
@@ -433,10 +436,12 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         Entity entity = interaction.entity();
         assert entity != null;
         entity.remove();
+
     }
 
     public void unmount(@NotNull Player player) {
         throttle = 0;
+        hasPilot = false;
         interaction = new VehicleInteractor(this).uuid();
         player.setInvisible(false);
     }
