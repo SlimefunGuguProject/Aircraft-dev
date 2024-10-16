@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Set;
 
 
-public class VisibleComponent extends VehicleComponent<VisibleComponent.FixedComponentSchema> {
+public class VisibleComponent extends VehicleComponent<VisibleComponent.VisibleComponentSchema> {
     @Getter
     @Accessors(fluent = true)
-    public static class FixedComponentSchema extends VehicleComponentSchema {
+    public static class VisibleComponentSchema extends VehicleComponentSchema {
         private final List<String> signals;
 
-        public FixedComponentSchema(
+        public VisibleComponentSchema(
                 @NotNull String id,
                 @NotNull YamlTraverser traverser,
                 @NotNull YamlTraverser visibleTraverser,
@@ -45,7 +45,7 @@ public class VisibleComponent extends VehicleComponent<VisibleComponent.FixedCom
     private boolean visible;
 
     @SuppressWarnings("WeakerAccess")
-    public VisibleComponent(@NotNull FixedComponentSchema schema, @NotNull VehicleEntity vehicleEntity) {
+    public VisibleComponent(@NotNull VisibleComponent.VisibleComponentSchema schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, () -> {
             Pig pig = vehicleEntity.entity();
             assert pig != null;
