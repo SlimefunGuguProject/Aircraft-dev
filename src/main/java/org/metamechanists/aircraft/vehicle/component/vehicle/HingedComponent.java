@@ -42,7 +42,7 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
         ) {
             super(id, HingedComponent.class, traverser, translation, mirror);
 
-            rotationAxis = hingedTraverser.getVector3d("rotationAxis", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
+            rotationAxis = hingedTraverser.getVector3d("rotationAxis");
             rotationRate = hingedTraverser.get("rotationRate");
             rotationMax = hingedTraverser.get("rotationMax");
             signalsUp = hingedTraverser.get("signalsUp");

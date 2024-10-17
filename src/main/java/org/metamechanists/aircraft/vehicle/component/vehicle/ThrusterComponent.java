@@ -46,12 +46,12 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
                 boolean mirror
         ) {
             super(id, ThrusterComponent.class, traverser, translation, mirror);
-            signals = thrusterTraverser.get("signals", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
-            thrust = thrusterTraverser.get("thrust", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
-            direction = thrusterTraverser.getVector3d("direction", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
-            particle = Particle.valueOf(thrusterTraverser.get("particle", YamlTraverser.ErrorSetting.LOG_MISSING_KEY));
-            particleSpeed = thrusterTraverser.get("particleSpeed", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
-            particleOffset = thrusterTraverser.getVector3d("particleOffset", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
+            signals = thrusterTraverser.get("signals");
+            thrust = thrusterTraverser.get("thrust");
+            direction = thrusterTraverser.getVector3d("direction");
+            particle = Particle.valueOf(thrusterTraverser.get("particle"));
+            particleSpeed = thrusterTraverser.get("particleSpeed");
+            particleOffset = thrusterTraverser.getVector3d("particleOffset");
         }
 
         @Override

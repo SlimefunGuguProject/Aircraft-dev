@@ -15,7 +15,6 @@ import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -73,13 +72,9 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         engineForce = engine.get("force");
 
         // Resources
-        YamlTraverser resources = traverser.getSection("resources");
-        for (YamlTraverser section : resources.getSections()) {
-            String name = section.name();
-            double capacity = section.get("capacity", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
-            double drainRate = section.get("drainRate", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
-            boolean isEngine = section.get("isEngine", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
-            List<String> signals = section.get("signals", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
+        YamlTraverser resourcesTraverser = traverser.getSection("resources");
+        for (YamlTraverser resourceTraverser : resourcesTraverser.getSections()) {
+            resources.put(resourcesTraverser.name(), new VehicleResource(resourceTraverser));
         }
 
         // Horizon

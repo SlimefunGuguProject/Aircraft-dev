@@ -25,6 +25,7 @@ import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.kinematiccore.api.state.StateWriter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -48,7 +49,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
     private boolean hasPilot;
     private int throttle;
-    private final Map<String, Integer> resources = new HashMap<>();
+    private final List<String> signalsThisTick;
+    private final Map<String, Double> resources;
     private final Vector3d velocity;
     private final Quaterniond rotation;
     private final Vector3d angularVelocity;
@@ -73,6 +75,11 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         });
 
         throttle = 0;
+        signalsThisTick = new ArrayList<>();
+        resources = new HashMap<>();
+        for (Map.Entry<String, VehicleResource> pair : schema.getResources().entrySet()) {
+            resources.put(pair.getKey(), pair.getValue().capacity());
+        }
         velocity = new Vector3d();
         rotation = new Quaterniond().rotationY(Math.toRadians(-90.0-player.getEyeLocation().getYaw()));
         angularVelocity = new Vector3d();
@@ -96,6 +103,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     public VehicleEntity(StateReader reader) {
         super(reader);
         throttle = reader.get("throttle", Integer.class);
+        signalsThisTick = reader.get("signalsThisTick", new ArrayList<>());
+        resources = reader.get("resources", new HashMap<>());
         velocity = reader.get("velocity", Vector3d.class);
         rotation = reader.get("rotation", Quaterniond.class);
         angularVelocity = reader.get("angularVelocity", Vector3d.class);
@@ -112,6 +121,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     @Override
     public void write(@NotNull StateWriter writer) {
         writer.set("throttle", throttle);
+        writer.set("signalsThisTick", signalsThisTick);
+        writer.set("resources", resources);
         writer.set("velocity", velocity);
         writer.set("rotation", rotation);
         writer.set("angularVelocity", angularVelocity);
@@ -169,6 +180,13 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             }
         }
 
+        // Update resources
+        for (Map.Entry<String, Double> resource : resources.entrySet()) {
+            String name = resource.getKey();
+            double drained = schema().getResources().get(name).drainedThisTick(this);
+            resources.put(name, resources.get(name) - drained);
+        }
+
         // Update HUD
         if (horizon != null) {
             if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
@@ -187,6 +205,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         }
 
         // Signals
+        signalsThisTick.clear();
         onSignal("TICK");
         if (hasPilot) {
             onSignal("HAS_PILOT_TICK");
@@ -202,10 +221,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public void onSignal(String signal) {
+        signalsThisTick.add(signal);
+
         Pig pig = entity();
-        if (pig == null) {
-            return;
-        }
 
         if (Objects.equals(signal, "THROTTLE_UP")) {
             throttle = Math.min(MAX_THROTTLE, throttle + THROTTLE_INCREMENT);
@@ -215,11 +233,11 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             throttle = Math.max(MIN_THROTTLE, throttle - THROTTLE_INCREMENT);
         }
 
-        if (Objects.equals(signal, "STEER_RIGHT") && isOnGround(pig)) {
+        if (Objects.equals(signal, "STEER_RIGHT") && pig != null && isOnGround(pig)) {
             angularVelocity.y -= schema().getSteeringSpeed();
         }
 
-        if (Objects.equals(signal, "STEER_LEFT") && isOnGround(pig)) {
+        if (Objects.equals(signal, "STEER_LEFT") && pig != null && isOnGround(pig)) {
             angularVelocity.y += schema().getSteeringSpeed();
         }
 
@@ -228,6 +246,13 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
                 component.onSignal(signal);
             }
         }
+    }
+
+    public int signalCountThisTick(String signal) {
+        return signalsThisTick.stream()
+                .filter(s -> s.equals(signal))
+                .toList()
+                .size();
     }
 
     @SuppressWarnings("Convert2streamapi")

@@ -34,7 +34,7 @@ public class VisibleComponent extends VehicleComponent<VisibleComponent.VisibleC
                 @NotNull Vector3f translation,
                 boolean mirror) {
             super(id, VisibleComponent.class, traverser, translation, mirror);
-            signals = visibleTraverser.get("signals", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
+            signals = visibleTraverser.get("signals");
         }
 
         @Override
