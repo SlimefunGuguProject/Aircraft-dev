@@ -74,7 +74,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         // Resources
         YamlTraverser resourcesTraverser = traverser.getSection("resources");
         for (YamlTraverser resourceTraverser : resourcesTraverser.getSections()) {
-            resources.put(resourcesTraverser.name(), new VehicleResource(resourceTraverser));
+            resources.put(resourceTraverser.name(), new VehicleResource(resourceTraverser));
         }
 
         // Horizon
