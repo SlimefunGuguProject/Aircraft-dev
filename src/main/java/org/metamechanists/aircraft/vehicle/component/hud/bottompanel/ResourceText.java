@@ -30,9 +30,9 @@ public class ResourceText extends HudTextComponent<ResourceText.ResourceTextSche
             super(id + "_bottom_panel_" + resource + "_text", sectionSchema, EntityType.TEXT_DISPLAY, traverser, ResourceText.class);
             this.resource = resource;
             color = traverser.getTextColor(resource + "TextColor");
-            size = traverser.get(resource + "TextSize");
-            verticalOffset = traverser.get(resource + "TextVerticalOffset");
-            horizontalOffset = traverser.get(resource + "TextHorizontalOffset");
+            size = traverser.get("textSize");
+            verticalOffset = traverser.get("textVerticalOffset");
+            horizontalOffset = traverser.get("textHorizontalOffset");
         }
     }
 
