@@ -1,4 +1,4 @@
-package org.metamechanists.aircraft;
+package org.metamechanists.aircraft.vehicle;
 
 import java.util.List;
 

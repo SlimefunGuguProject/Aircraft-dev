@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
-import org.metamechanists.aircraft.VehicleResource;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
 import org.metamechanists.aircraft.vehicle.component.hud.bottompanel.BottomPanel;
 import org.metamechanists.aircraft.vehicle.component.hud.compass.Compass;
