@@ -41,7 +41,7 @@ public class VehicleResource {
     private record EngineResourceDrain(double rate) implements ResourceDrain {
         @Override
         public double drainedThisTick(@NotNull VehicleEntity vehicleEntity) {
-            return rate * vehicleEntity.getThrottle();
+            return rate * vehicleEntity.getThrottle() / 100.0;
         }
     }
 

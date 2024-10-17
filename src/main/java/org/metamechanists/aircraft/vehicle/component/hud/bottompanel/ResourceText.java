@@ -47,7 +47,7 @@ public class ResourceText extends HudTextComponent<ResourceText.ResourceTextSche
 
     @Override
     protected @NotNull ModelText modelText(@NotNull VehicleEntity vehicleEntity) {
-        double amount = vehicleEntity.getResources().get(schema().resource);
+        long amount = Math.round(vehicleEntity.getResources().get(schema().resource));
         return schema().getSectionSchema().rollText(vehicleEntity)
                 .text(Component.text(amount).color(schema().color))
                 .translate(schema().horizontalOffset, schema().verticalOffset, 0.001F)
