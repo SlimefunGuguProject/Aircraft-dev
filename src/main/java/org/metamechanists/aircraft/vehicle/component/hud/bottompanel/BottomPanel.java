@@ -19,13 +19,14 @@ public class BottomPanel extends HudSection<BottomPanel.BottomPanelSchema> {
         private final List<ResourceBar.ResourceBarSchema> resourceBarSchemas = new ArrayList<>();
         private final List<ResourceText.ResourceTextSchema> resourceTextSchemas = new ArrayList<>();
 
+        @SuppressWarnings("DataFlowIssue")
         public BottomPanelSchema(@NotNull String id, @NotNull YamlTraverser traverser) {
             super(id, EntityType.INTERACTION, traverser, BottomPanel.class);
 
             // Throttle
             YamlTraverser throttleTraverser = traverser.getSection("throttle");
-            throttleBarSchema = new ThrottleBar.ThrottleBarSchema(id, this, traverser);
-            throttleTextSchema = new ThrottleText.ThrottleTextSchema(id, this, traverser);
+            throttleBarSchema = new ThrottleBar.ThrottleBarSchema(id, this, throttleTraverser);
+            throttleTextSchema = new ThrottleText.ThrottleTextSchema(id, this, throttleTraverser);
 
             // Resources
             YamlTraverser resourcesTraverser = traverser.getSection("resources");
