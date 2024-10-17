@@ -12,20 +12,23 @@ import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 
-public class ThrottleBar extends HudItemComponent<ThrottleBar.ThrottleBarSchema> {
-    public static class ThrottleBarSchema extends HudItemComponentSchema {
+public class ResourceBar extends HudItemComponent<ResourceBar.ResourceBarSchema> {
+    public static class ResourceBarSchema extends HudItemComponentSchema {
+        private final String resource;
         private final Material material;
         private final double width;
         private final double height;
         private final double verticalOffset;
         private final double horizontalOffset;
 
-        public ThrottleBarSchema(
+        public ResourceBarSchema(
                 @NotNull String id,
+                @NotNull String resource,
                 @NotNull HudSection.HudSectionSchema sectionSchema,
                 @NotNull YamlTraverser traverser
         ) {
-            super(id + "_bottom_panel_throttle_bar", EntityType.ITEM_DISPLAY, sectionSchema, traverser, ThrottleBar.class);
+            super(id + "_bottom_panel_" + resource + "_bar", EntityType.ITEM_DISPLAY, sectionSchema, traverser, ResourceBar.class);
+            this.resource = resource;
             material = Material.getMaterial(traverser.get("barMaterial"));
             assert material != null;
             height = traverser.get("barHeight");
@@ -35,17 +38,19 @@ public class ThrottleBar extends HudItemComponent<ThrottleBar.ThrottleBarSchema>
         }
     }
 
-    public ThrottleBar(@NotNull ThrottleBar.ThrottleBarSchema schema, @NotNull VehicleEntity vehicleEntity) {
+    public ResourceBar(@NotNull ResourceBar.ResourceBarSchema schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, vehicleEntity);
     }
 
-    public ThrottleBar(@NotNull StateReader reader) {
+    public ResourceBar(@NotNull StateReader reader) {
         super(reader);
     }
 
     @Override
     protected @NotNull ModelItem modelItem(@NotNull VehicleEntity vehicleEntity) {
-        float fraction = vehicleEntity.getThrottle() / 100.0F;
+        double remaining = vehicleEntity.getResources().get(schema().resource);
+        double capacity = vehicleEntity.schema().getResources().get(schema().resource).capacity();
+        float fraction = (float) (remaining / capacity);
         double offsetX = -0.5F * schema().width + schema().horizontalOffset;
         return schema().getSectionSchema().rollCuboid(vehicleEntity)
                 .material(schema().material)

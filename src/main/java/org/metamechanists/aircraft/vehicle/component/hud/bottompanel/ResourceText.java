@@ -13,38 +13,42 @@ import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 
-public class ThrottleText extends HudTextComponent<ThrottleText.ThrottleTextSchema> {
-    public static class ThrottleTextSchema extends HudTextComponentSchema {
+public class ResourceText extends HudTextComponent<ResourceText.ResourceTextSchema> {
+    public static class ResourceTextSchema extends HudTextComponentSchema {
+        private final String resource;
         private final TextColor color;
         private final double size;
         private final double verticalOffset;
         private final double horizontalOffset;
 
-        public ThrottleTextSchema(
+        public ResourceTextSchema(
                 @NotNull String id,
+                @NotNull String resource,
                 @NotNull HudSection.HudSectionSchema sectionSchema,
                 @NotNull YamlTraverser traverser
         ) {
-            super(id + "_bottom_panel_throttle_text", sectionSchema, EntityType.TEXT_DISPLAY, traverser, ThrottleText.class);
-            color = traverser.getTextColor("textColor");
-            size = traverser.get("textSize");
-            verticalOffset = traverser.get("textVerticalOffset");
-            horizontalOffset = traverser.get("textHorizontalOffset");
+            super(id + "_bottom_panel_" + resource + "_text", sectionSchema, EntityType.TEXT_DISPLAY, traverser, ResourceText.class);
+            this.resource = resource;
+            color = traverser.getTextColor(resource + "TextColor");
+            size = traverser.get(resource + "TextSize");
+            verticalOffset = traverser.get(resource + "TextVerticalOffset");
+            horizontalOffset = traverser.get(resource + "TextHorizontalOffset");
         }
     }
 
-    public ThrottleText(@NotNull ThrottleText.ThrottleTextSchema schema, @NotNull VehicleEntity vehicleEntity) {
+    public ResourceText(@NotNull ResourceText.ResourceTextSchema schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, vehicleEntity);
     }
 
-    public ThrottleText(@NotNull StateReader reader) {
+    public ResourceText(@NotNull StateReader reader) {
         super(reader);
     }
 
     @Override
     protected @NotNull ModelText modelText(@NotNull VehicleEntity vehicleEntity) {
+        double amount = vehicleEntity.getResources().get(schema().resource);
         return schema().getSectionSchema().rollText(vehicleEntity)
-                .text(Component.text(vehicleEntity.getThrottle()).color(schema().color))
+                .text(Component.text(amount).color(schema().color))
                 .translate(schema().horizontalOffset, schema().verticalOffset, 0.001F)
                 .scale(new Vector3f((float) schema().size, (float) schema().size, 0.001F))
                 .translate(0.5F, 0.35F, 0.0F);
