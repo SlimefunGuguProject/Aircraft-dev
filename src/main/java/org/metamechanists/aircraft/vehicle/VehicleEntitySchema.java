@@ -78,7 +78,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
             String name = section.name();
             double capacity = section.get("capacity", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             double drainRate = section.get("drainRate", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
-            boolean isEngine = section.get("engine", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
+            boolean isEngine = section.get("isEngine", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
             List<String> signals = section.get("signals", YamlTraverser.ErrorSetting.LOG_MISSING_KEY);
         }
 
