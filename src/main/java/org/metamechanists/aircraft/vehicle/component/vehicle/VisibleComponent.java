@@ -70,7 +70,7 @@ public class VisibleComponent extends VehicleComponent<VisibleComponent.VisibleC
     @Override
     protected @NotNull ModelItem modelItem(@NotNull VehicleEntity vehicleEntity) {
         ModelItem item = schema().modelItem(vehicleEntity, new Vector3d(), new Vector3d());
-        if (visible) {
+        if (!visible) {
             item.material(Material.AIR);
         }
         return item;
