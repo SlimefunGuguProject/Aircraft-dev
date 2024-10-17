@@ -38,6 +38,11 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon, Kinemat
     }
 
     @Override
+    public void onDisable() {
+        cleanup();
+    }
+
+    @Override
     public @NotNull JavaPlugin getJavaPlugin() {
         return this;
     }

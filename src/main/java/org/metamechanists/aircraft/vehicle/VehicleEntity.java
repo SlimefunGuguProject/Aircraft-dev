@@ -48,6 +48,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
     private boolean hasPilot;
     private int throttle;
+    private final Map<String, Integer> resources = new HashMap<>();
     private final Vector3d velocity;
     private final Quaterniond rotation;
     private final Vector3d angularVelocity;
