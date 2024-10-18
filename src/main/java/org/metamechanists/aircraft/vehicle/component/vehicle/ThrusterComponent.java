@@ -61,6 +61,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     }
 
     private boolean active;
+    private boolean engineOnCache;
 
     @SuppressWarnings("WeakerAccess")
     public ThrusterComponent(@NotNull ThrusterComponent.ThrusterComponentSchema schema, @NotNull VehicleEntity vehicleEntity) {
@@ -74,7 +75,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     }
 
     public SpatialForce force() {
-        double thrust = active ? schema().thrust : 0;
+        double thrust = (active && engineOnCache) ? schema().thrust : 0;
         Vector3d force = new Vector3d(schema().direction).normalize().mul(thrust);
         Vector3d location = new Vector3d(super.schema().getLocation());
         return new SpatialForce(SpatialForceType.THRUSTER, force, location);
@@ -95,8 +96,8 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     public void update(@NotNull VehicleEntity vehicleEntity) {
         super.update(vehicleEntity);
 
-        active = active && vehicleEntity.isEngineOn();
-        if (!active) {
+        engineOnCache = vehicleEntity.isEngineOn();
+        if (!active || !engineOnCache) {
             return;
         }
 
