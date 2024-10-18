@@ -143,7 +143,9 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
         active = false;
 
         for (String fuel : schema().fuels) {
-            vehicleEntity.drainResource(fuel, schema().fuelDrain.get(fuel));
+            if (schema().fuelDrain.containsKey(fuel)) {
+                vehicleEntity.drainResource(fuel, schema().fuelDrain.get(fuel));
+            }
         }
     }
 
