@@ -142,6 +142,11 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             return;
         }
 
+        // Engine
+        if (!isEngineOn()) {
+            throttle = 0;
+        }
+
         Map<String, VehicleComponent.VehicleComponentSchema> expectedComponents = schema().getComponents();
 
         // TODO do this for hud components too, in another method

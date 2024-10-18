@@ -94,6 +94,8 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     @Override
     public void update(@NotNull VehicleEntity vehicleEntity) {
         super.update(vehicleEntity);
+
+        active = active && vehicleEntity.isEngineOn();
         if (!active) {
             return;
         }

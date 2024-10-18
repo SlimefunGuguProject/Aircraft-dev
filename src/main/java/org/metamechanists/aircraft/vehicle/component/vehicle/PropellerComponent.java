@@ -75,6 +75,11 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
     @Override
     public void update(@NotNull VehicleEntity vehicleEntity) {
         super.update(vehicleEntity);
+
+        if (!vehicleEntity.isEngineOn()) {
+            return;
+        }
+
         angle += vehicleEntity.getThrottle() * schema().getMaxRotationRate() / 100.0;
         angle %= 2.0 * PI;
     }
