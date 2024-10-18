@@ -18,7 +18,6 @@ import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import static java.lang.Math.PI;
@@ -30,7 +29,6 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
         private final Vector3d rotationAxis;
         private final double maxRotationRate;
         private final List<String> fuels;
-        private final Map<String, Double> fuelDrain;
 
         @SuppressWarnings("DataFlowIssue")
         public PropellerComponentSchema(
@@ -44,7 +42,6 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
             rotationAxis = propellerTraverser.getVector3d("rotationAxis");
             maxRotationRate = propellerTraverser.get("maxRotationRate");
             fuels = propellerTraverser.get("fuels");
-            fuelDrain = propellerTraverser.get("fuelDrain");
         }
 
         @Override
