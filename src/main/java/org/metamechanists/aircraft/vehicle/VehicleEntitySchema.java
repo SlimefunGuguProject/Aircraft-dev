@@ -15,6 +15,7 @@ import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -27,6 +28,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     private final Vector3d engineLocation;
     private final Vector3d weightLocation;
     private final double engineForce;
+    private final List<String> engineFuels;
     private final double frictionCoefficient;
     private final double steeringSpeed;
     private final double gravityAcceleration;
@@ -73,6 +75,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         YamlTraverser engine = traverser.getSection("engine");
         engineLocation = engine.getVector3d("location");
         engineForce = engine.get("force");
+        engineFuels = engine.get("fuels");
 
         // Resources
         YamlTraverser resourcesTraverser = traverser.getSection("resources");

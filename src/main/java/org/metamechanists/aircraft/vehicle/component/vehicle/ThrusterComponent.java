@@ -24,6 +24,7 @@ import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 
@@ -36,6 +37,8 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
         private final Particle particle;
         private final double particleSpeed;
         private final Vector3d particleOffset;
+        private final List<String> fuels;
+        private final Map<String, Double> fuelDrain;
 
         @SuppressWarnings("DataFlowIssue")
         public ThrusterComponentSchema(
@@ -52,6 +55,8 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
             particle = Particle.valueOf(thrusterTraverser.get("particle"));
             particleSpeed = thrusterTraverser.get("particleSpeed");
             particleOffset = thrusterTraverser.getVector3d("particleOffset");
+            fuels = thrusterTraverser.get("fuels");
+            fuelDrain = thrusterTraverser.get("fuelDrain ");
         }
 
         @Override
@@ -61,7 +66,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     }
 
     private boolean active;
-    private boolean engineOnCache;
+    private boolean sufficientResourcesCache;
 
     @SuppressWarnings("WeakerAccess")
     public ThrusterComponent(@NotNull ThrusterComponent.ThrusterComponentSchema schema, @NotNull VehicleEntity vehicleEntity) {
@@ -75,7 +80,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     }
 
     public SpatialForce force() {
-        double thrust = (active && engineOnCache) ? schema().thrust : 0;
+        double thrust = (active) ? schema().thrust : 0;
         Vector3d force = new Vector3d(schema().direction).normalize().mul(thrust);
         Vector3d location = new Vector3d(super.schema().getLocation());
         return new SpatialForce(SpatialForceType.THRUSTER, force, location);
@@ -85,19 +90,27 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     public ThrusterComponent(@NotNull StateReader reader) {
         super(reader);
         active = reader.get("active", Boolean.class);
+        sufficientResourcesCache = reader.get("sufficientResourcesCache ", Boolean.class);
     }
 
     @Override
     public void write(@NotNull StateWriter writer) {
         writer.set("active", active);
+        writer.set("sufficientResourcesCache", sufficientResourcesCache);
     }
 
     @Override
     public void update(@NotNull VehicleEntity vehicleEntity) {
         super.update(vehicleEntity);
 
-        engineOnCache = vehicleEntity.isEngineOn();
-        if (!active || !engineOnCache) {
+        sufficientResourcesCache = true;
+        for (String fuel : schema().fuels) {
+            if (vehicleEntity.remainingResource(fuel) <= 0) {
+                sufficientResourcesCache = false;
+            }
+        }
+
+        if (!active && sufficientResourcesCache) {
             return;
         }
 
@@ -124,6 +137,10 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
                 .spawn();
 
         active = false;
+
+        for (String fuel : schema().fuels) {
+            vehicleEntity.drainResource(fuel, schema().fuelDrain.get(fuel));
+        }
     }
 
     @Override

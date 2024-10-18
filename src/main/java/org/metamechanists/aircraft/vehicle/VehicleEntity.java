@@ -142,11 +142,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             return;
         }
 
-        // Engine
-        if (!isEngineOn()) {
-            throttle = 0;
-        }
-
         Map<String, VehicleComponent.VehicleComponentSchema> expectedComponents = schema().getComponents();
 
         // TODO do this for hud components too, in another method
@@ -178,22 +173,21 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             updatePhysics(pig);
         }
 
-        // Update components
+        // Components
         for (UUID uuid : components.values()) {
             if (KinematicEntity.get(uuid) instanceof ItemComponent<?> component) {
                 component.update(this);
             }
         }
 
-        // Update resources
-        for (Map.Entry<String, Double> resource : resources.entrySet()) {
-            String name = resource.getKey();
-            double drained = schema().getResources().get(name).drainedThisTick(this);
-            double updatedResourceAmount = Math.max(0.0, resources.get(name) - drained);
-            resources.put(name, updatedResourceAmount);
+        // Resources
+        //noinspection KeySetIterationMayUseEntrySet
+        for (String resource : resources.keySet()) {
+            double drainedThisTick = schema().getResources().get(resource).drainedThisTick(this);
+            resources.put(resource, resources.get(resource) - drainedThisTick);
         }
 
-        // Update HUD
+        // HUD
         if (horizon != null) {
             if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
                 horizon.update(this);
@@ -210,6 +204,11 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             }
         }
 
+        // Engine
+        if (isEngineOn()) {
+            throttle = 0;
+        }
+
         // Signals
         signalsThisTick.clear();
         onSignal("TICK");
@@ -220,7 +219,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             onSignal("ENGINE_TICK");
         }
 
-        // Update pig velocity
+        // Pig velocity
         Vector3d pigVelocityJoml = absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND);
         if (!pigVelocityJoml.isFinite()) {
             pigVelocityJoml = new Vector3d(0.001, 0.0, 0.0);
@@ -230,7 +229,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public boolean isEngineOn() {
-        return hasPilot && resources.values().stream().allMatch(v -> v > 0);
+        return resources.entrySet()
+                .stream()
+                .anyMatch(pair -> schema().getEngineFuels().contains(pair.getKey()) && pair.getValue() > 0);
     }
 
     public void onSignal(String signal) {
@@ -266,6 +267,15 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
                 .filter(s -> s.equals(signal))
                 .toList()
                 .size();
+    }
+
+    public double remainingResource(String resource) {
+        return resources.get(resource);
+    }
+
+    public void drainResource(String resource, double drainAmount) {
+        double newAmount = Math.max(0.0, resources.get(resource) - drainAmount);
+        resources.put(resource, newAmount);
     }
 
     @SuppressWarnings("Convert2streamapi")

@@ -17,6 +17,8 @@ import org.metamechanists.kinematiccore.api.state.StateWriter;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static java.lang.Math.PI;
@@ -27,6 +29,8 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
     public static class PropellerComponentSchema extends VehicleComponentSchema {
         private final Vector3d rotationAxis;
         private final double maxRotationRate;
+        private final List<String> fuels;
+        private final Map<String, Double> fuelDrain;
 
         @SuppressWarnings("DataFlowIssue")
         public PropellerComponentSchema(
@@ -39,6 +43,8 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
             super(id, PropellerComponent.class, traverser, translation, mirror);
             rotationAxis = propellerTraverser.getVector3d("rotationAxis");
             maxRotationRate = propellerTraverser.get("maxRotationRate");
+            fuels = propellerTraverser.get("fuels");
+            fuelDrain = propellerTraverser.get("fuelDrain");
         }
 
         @Override
@@ -76,11 +82,15 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
     public void update(@NotNull VehicleEntity vehicleEntity) {
         super.update(vehicleEntity);
 
-        if (!vehicleEntity.isEngineOn()) {
-            return;
+        for (String fuel : schema().fuels) {
+            if (vehicleEntity.remainingResource(fuel) <= 0) {
+                return;
+            }
         }
 
-        angle += vehicleEntity.getThrottle() * schema().getMaxRotationRate() / 100.0;
+        double throttleFraction = vehicleEntity.getThrottle() / 100.0;
+
+        angle += throttleFraction * schema().getMaxRotationRate();
         angle %= 2.0 * PI;
     }
 
