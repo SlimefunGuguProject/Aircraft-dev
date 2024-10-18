@@ -56,7 +56,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
             particleSpeed = thrusterTraverser.get("particleSpeed");
             particleOffset = thrusterTraverser.getVector3d("particleOffset");
             fuels = thrusterTraverser.get("fuels");
-            fuelDrain = thrusterTraverser.get("fuelDrain ");
+            fuelDrain = thrusterTraverser.get("fuelDrain");
         }
 
         @Override
@@ -90,7 +90,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     public ThrusterComponent(@NotNull StateReader reader) {
         super(reader);
         active = reader.get("active", Boolean.class);
-        sufficientResourcesCache = reader.get("sufficientResourcesCache ", Boolean.class);
+        sufficientResourcesCache = reader.get("sufficientResourcesCache", Boolean.class);
     }
 
     @Override

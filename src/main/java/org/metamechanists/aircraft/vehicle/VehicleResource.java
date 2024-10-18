@@ -16,8 +16,8 @@ public class VehicleResource {
     @SuppressWarnings("DataFlowIssue")
     public VehicleResource(@NotNull YamlTraverser traverser) {
         capacity = traverser.get("capacity");
-        passiveEngineDrain = traverser.get("passiveEngineDrain ");
-        throttleDrain = traverser.get("throttleDrain ");
+        passiveEngineDrain = traverser.get("passiveEngineDrain");
+        throttleDrain = traverser.get("throttleDrain");
     }
 
     public double drainedThisTick(@NotNull VehicleEntity vehicleEntity) {
