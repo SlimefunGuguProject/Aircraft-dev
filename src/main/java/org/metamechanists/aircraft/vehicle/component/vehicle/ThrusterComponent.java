@@ -22,6 +22,7 @@ import org.metamechanists.kinematiccore.api.state.StateReader;
 import org.metamechanists.kinematiccore.api.state.StateWriter;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -56,7 +57,10 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
             particleSpeed = thrusterTraverser.get("particleSpeed");
             particleOffset = thrusterTraverser.getVector3d("particleOffset");
             fuels = thrusterTraverser.get("fuels");
-            fuelDrain = thrusterTraverser.get("fuelDrain");
+            fuelDrain = new HashMap<>();
+            for (YamlTraverser fuelDrainTraverser : thrusterTraverser.getSection("fuelDrain").getSections()) {
+                fuelDrain.put(fuelDrainTraverser.name(), fuelDrainTraverser.get("drain"));
+            }
         }
 
         @Override
