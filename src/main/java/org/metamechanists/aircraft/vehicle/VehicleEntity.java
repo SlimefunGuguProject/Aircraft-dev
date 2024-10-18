@@ -184,7 +184,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         for (Map.Entry<String, Double> resource : resources.entrySet()) {
             String name = resource.getKey();
             double drained = schema().getResources().get(name).drainedThisTick(this);
-            resources.put(name, resources.get(name) - drained);
+            double updatedResourceAmount = Math.max(0.0, resources.get(name) - drained);
+            resources.put(name, updatedResourceAmount);
         }
 
         // Update HUD
@@ -210,6 +211,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         if (hasPilot) {
             onSignal("HAS_PILOT_TICK");
         }
+        if (isEngineOn()) {
+            onSignal("ENGINE_TICK");
+        }
 
         // Update pig velocity
         Vector3d pigVelocityJoml = absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND);
@@ -218,6 +222,10 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         }
         Vector pigVelocity = Vector.fromJOML(pigVelocityJoml);
         pig.setVelocity(pigVelocity);
+    }
+
+    public boolean isEngineOn() {
+        return hasPilot && resources.values().stream().allMatch(v -> v > 0);
     }
 
     public void onSignal(String signal) {
