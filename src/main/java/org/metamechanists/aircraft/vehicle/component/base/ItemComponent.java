@@ -46,6 +46,7 @@ public abstract class ItemComponent<T extends KinematicEntitySchema> extends Kin
             display.setTransformationMatrix(matrix);
             display.setInterpolationDelay(0);
             display.setInterpolationDuration(VehicleEntity.TICK_INTERVAL);
+            matrixLastUpdate = matrix;
         }
 
         // Update itemstack / material if changed
@@ -66,7 +67,6 @@ public abstract class ItemComponent<T extends KinematicEntitySchema> extends Kin
         }
 
         visibleLastUpdate = visible;
-        matrixLastUpdate = matrix;
     }
 
     protected void setVisible(boolean visible) {

@@ -42,6 +42,7 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
             display.setTransformationMatrix(matrix);
             display.setInterpolationDelay(0);
             display.setInterpolationDuration(VehicleEntity.TICK_INTERVAL);
+            matrixLastUpdate = matrix;
         }
 
         // Update background if changed
@@ -63,7 +64,6 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
 
         visibleLastLastUpdate = visibleLastUpdate;
         visibleLastUpdate = visible;
-        matrixLastUpdate = matrix;
     }
 
     protected void setVisible(boolean visible) {

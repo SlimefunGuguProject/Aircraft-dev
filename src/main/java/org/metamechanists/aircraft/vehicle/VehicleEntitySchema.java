@@ -33,16 +33,19 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     private final double airDensity;
     private final double groundRollDamping;
     private final double groundPitchDamping;
-    private final Map<String, VehicleResource> resources = new HashMap<>();
+    private final Map<String, VehicleResource> resources;
     private final @Nullable Horizon.HorizonSchema horizonSchema;
     private final @Nullable Compass.CompassSchema compassSchema;
     private final @Nullable BottomPanel.BottomPanelSchema bottomPanelSchema;
-    private final Map<String, VehicleComponent.VehicleComponentSchema> components = new HashMap<>();
+    private final Map<String, VehicleComponent.VehicleComponentSchema> components;
     private final KinematicEntitySchema interactorSchema;
 
     @SuppressWarnings("DataFlowIssue")
     public VehicleEntitySchema(@NotNull String id) {
         super(id, EntityType.PIG, VehicleEntity.class);
+
+        resources = new HashMap<>();
+        components = new HashMap<>();
 
         YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), "vehicles/" + id + ".yml");
 
