@@ -84,7 +84,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     }
 
     public SpatialForce force() {
-        double thrust = (active) ? schema().thrust : 0;
+        double thrust = (active && sufficientResourcesCache) ? schema().thrust : 0;
         Vector3d force = new Vector3d(schema().direction).normalize().mul(thrust);
         Vector3d location = new Vector3d(super.schema().getLocation());
         return new SpatialForce(SpatialForceType.THRUSTER, force, location);
@@ -114,7 +114,7 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
             }
         }
 
-        if (!active && sufficientResourcesCache) {
+        if (!active || !sufficientResourcesCache) {
             return;
         }
 

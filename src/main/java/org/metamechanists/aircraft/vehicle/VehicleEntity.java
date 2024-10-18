@@ -181,10 +181,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         }
 
         // Resources
-        //noinspection KeySetIterationMayUseEntrySet
         for (String resource : resources.keySet()) {
             double drainedThisTick = schema().getResources().get(resource).drainedThisTick(this);
-            resources.put(resource, resources.get(resource) - drainedThisTick);
+            drainResource(resource, drainedThisTick);
         }
 
         // HUD
@@ -205,7 +204,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         }
 
         // Engine
-        if (isEngineOn()) {
+        if (!isEngineOn()) {
             throttle = 0;
         }
 
@@ -229,7 +228,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public boolean isEngineOn() {
-        return resources.entrySet()
+        return hasPilot && resources.entrySet()
                 .stream()
                 .anyMatch(pair -> schema().getEngineFuels().contains(pair.getKey()) && pair.getValue() > 0);
     }
