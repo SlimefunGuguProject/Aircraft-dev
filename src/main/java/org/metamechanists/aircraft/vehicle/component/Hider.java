@@ -33,18 +33,18 @@ public final class Hider implements Listener {
         Bukkit.getPluginManager().registerEvents(new Hider(), Aircraft.getInstance());
     }
 
-    private static void hide(@NotNull Player player, @NotNull HideSpecification hideSpecification) {
-        if (player.getUniqueId().equals(hideSpecification.playerToExempt)) {
-            return;
-        }
-
+    private static void update(@NotNull Player player, @NotNull HideSpecification hideSpecification) {
         for (UUID uuid : hideSpecification.toHide) {
             Entity entity = Bukkit.getEntity(uuid);
             if (entity == null) {
                 continue;
             }
 
-            player.hideEntity(Aircraft.getInstance(), entity);
+            if (player.getUniqueId().equals(hideSpecification.playerToExempt)) {
+                player.showEntity(Aircraft.getInstance(), entity);
+            } else {
+                player.hideEntity(Aircraft.getInstance(), entity);
+            }
         }
     }
 
@@ -52,18 +52,32 @@ public final class Hider implements Listener {
         HideSpecification hideSpecification = new HideSpecification(toHide, playerToExempt);
         hideSpecifications.put(uuid, hideSpecification);
         for (Player player : Bukkit.getOnlinePlayers()) {
-            hide(player, hideSpecification);
+            update(player, hideSpecification);
         }
     }
 
-    public static void setExempt(@NotNull UUID uuid, @Nullable Player exempt) {
-        hideSpecifications.get(uuid).playerToExempt = (exempt == null) ? null : exempt.getUniqueId();
+    public static void setExempt(@NotNull UUID uuid, @Nullable Player player) {
+        UUID oldPlayerUuid = hideSpecifications.get(uuid).playerToExempt;
+        hideSpecifications.get(uuid).playerToExempt = (player == null) ? null : player.getUniqueId();
+
+        // Update old player
+        if (oldPlayerUuid != null) {
+            Player oldPlayer = Bukkit.getPlayer(oldPlayerUuid);
+            if (oldPlayer != null) {
+                update(oldPlayer, hideSpecifications.get(uuid));
+            }
+        }
+
+        // Update new player
+        if (player != null) {
+            update(player, hideSpecifications.get(uuid));
+        }
     }
 
     @EventHandler
     private static void onJoin(PlayerJoinEvent event) {
         for (HideSpecification hideSpecification : hideSpecifications.values()) {
-            hide(event.getPlayer(), hideSpecification);
+            update(event.getPlayer(), hideSpecification);
         }
     }
 }
