@@ -105,7 +105,6 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
             return interaction;
         });
         components = buildComponents(vehicleEntity);
-        Hider.hide(uuid(), components, null);
     }
 
     protected HudSection(@NotNull StateReader reader) {
@@ -129,6 +128,8 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
                 component.update(vehicleEntity);
             }
         }
+
+        Hider.hideIfNotAlreadyHidden(uuid(), components, pilot);
         Hider.setExempt(uuid(), pilot);
     }
 }

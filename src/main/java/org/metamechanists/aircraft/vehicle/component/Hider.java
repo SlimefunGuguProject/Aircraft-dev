@@ -48,8 +48,14 @@ public final class Hider implements Listener {
         }
     }
 
-    public static void hide(@NotNull UUID uuid, @NotNull List<UUID> toHide, @Nullable UUID playerToExempt) {
-        HideSpecification hideSpecification = new HideSpecification(toHide, playerToExempt);
+    public static void hideIfNotAlreadyHidden(@NotNull UUID uuid, @NotNull List<UUID> toHide, @Nullable Player playerToExempt) {
+        if (hideSpecifications.containsKey(uuid)) {
+            return;
+        }
+
+        UUID playerToExemptUuid = playerToExempt == null ? null : playerToExempt.getUniqueId();
+
+        HideSpecification hideSpecification = new HideSpecification(toHide, playerToExemptUuid);
         hideSpecifications.put(uuid, hideSpecification);
         for (Player player : Bukkit.getOnlinePlayers()) {
             update(player, hideSpecification);
