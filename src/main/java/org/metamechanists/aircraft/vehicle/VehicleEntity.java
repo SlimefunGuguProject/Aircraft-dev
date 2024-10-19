@@ -49,7 +49,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     private static final int MAX_THROTTLE = 100;
     private static final int THROTTLE_INCREMENT = 5;
 
-    private UUID pilot;
+    private @Nullable UUID pilot;
     private int throttle;
     private final List<String> signalsThisTick;
     private final Map<String, Double> resources;
@@ -509,10 +509,11 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
     public void onMount(@NotNull Player player) {
         pilot = player.getUniqueId();
+        player.setInvisible(true);
     }
 
     public void onUnmount(@NotNull Player player) {
-        pilot = player.getUniqueId();
+        pilot = null;
         player.setInvisible(false);
     }
 }

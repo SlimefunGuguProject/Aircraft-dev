@@ -42,7 +42,7 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
     }
 
     @Override
-    public void onRightClick(Player player) {
+    public void onRightClick(@NotNull Player player) {
         if (player.isInsideVehicle()) {
             player.eject();
         }
@@ -51,7 +51,6 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
         assert vehicleEntity != null;
         Pig pig = vehicleEntity.entity();
         assert pig != null;
-        player.setInvisible(true);
         pig.addPassenger(player);
     }
 }
