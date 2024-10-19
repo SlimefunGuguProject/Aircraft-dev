@@ -120,11 +120,7 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
 
     protected abstract List<UUID> buildComponents(@NotNull VehicleEntity vehicleEntity);
 
-    public void setPilot(@Nullable Player player) {
-        Hider.setExempt(uuid(), player);
-    }
-
-    public void update(@NotNull VehicleEntity vehicleEntity) {
+    public void update(@NotNull VehicleEntity vehicleEntity, @Nullable Player pilot) {
         for (UUID uuid : components) {
             if (KinematicEntity.get(uuid) instanceof HudTextComponent<?> component) {
                 component.update(vehicleEntity);
@@ -133,5 +129,6 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
                 component.update(vehicleEntity);
             }
         }
+        Hider.setExempt(uuid(), pilot);
     }
 }

@@ -208,20 +208,17 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         // HUD
         if (horizon != null) {
             if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
-                horizon.update(this);
-                horizon.setPilot(pilotAsPlayer());
+                horizon.update(this, pilotAsPlayer());
             }
         }
         if (compass != null) {
             if (KinematicEntity.get(compass) instanceof Compass compass) {
-                compass.update(this);
-                compass.setPilot(pilotAsPlayer());
+                compass.update(this, pilotAsPlayer());
             }
         }
         if (bottomPanel != null) {
             if (KinematicEntity.get(bottomPanel ) instanceof BottomPanel bottomPanel) {
-                bottomPanel.update(this);
-                bottomPanel.setPilot(pilotAsPlayer());
+                bottomPanel.update(this, pilotAsPlayer());
             }
         }
 
