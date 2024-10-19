@@ -146,7 +146,7 @@ public final class Items {
         }
     }
 
-    public static void initialize() {
+    public static void init() {
         JavaPlugin plugin = Aircraft.getInstance();
         SlimefunAddon addon = (SlimefunAddon) plugin;
 

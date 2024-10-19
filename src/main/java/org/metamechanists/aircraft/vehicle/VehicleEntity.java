@@ -144,7 +144,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
         Map<String, VehicleComponent.VehicleComponentSchema> expectedComponents = schema().getComponents();
 
-        // TODO do this for hud components too, in another method
         // Remove any additional vehicle components
         List<String> toRemove = components.keySet()
                 .stream()
@@ -485,11 +484,42 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         assert entity != null;
         entity.remove();
 
+        if (horizon != null) {
+            if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
+                horizon.setPilot(player);
+            }
+        }
+        if (compass != null) {
+            if (KinematicEntity.get(compass) instanceof Compass compass) {
+                compass.setPilot(player);
+            }
+        }
+        if (bottomPanel != null) {
+            if (KinematicEntity.get(bottomPanel ) instanceof BottomPanel bottomPanel) {
+                bottomPanel.setPilot(player);
+            }
+        }
     }
 
     public void unmount(@NotNull Player player) {
         hasPilot = false;
         interaction = new VehicleInteractor(this).uuid();
         player.setInvisible(false);
+
+        if (horizon != null) {
+            if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
+                horizon.setPilot(null);
+            }
+        }
+        if (compass != null) {
+            if (KinematicEntity.get(compass) instanceof Compass compass) {
+                compass.setPilot(null);
+            }
+        }
+        if (bottomPanel != null) {
+            if (KinematicEntity.get(bottomPanel ) instanceof BottomPanel bottomPanel) {
+                bottomPanel.setPilot(null);
+            }
+        }
     }
 }

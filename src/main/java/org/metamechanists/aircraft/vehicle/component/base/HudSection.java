@@ -7,12 +7,15 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
+import org.metamechanists.aircraft.vehicle.component.Hider;
 import org.metamechanists.displaymodellib.models.components.ModelItem;
 import org.metamechanists.displaymodellib.models.components.ModelText;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
@@ -102,6 +105,7 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
             return interaction;
         });
         components = buildComponents(vehicleEntity);
+        Hider.hide(uuid(), components, null);
     }
 
     protected HudSection(@NotNull StateReader reader) {
@@ -115,6 +119,10 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
     }
 
     protected abstract List<UUID> buildComponents(@NotNull VehicleEntity vehicleEntity);
+
+    public void setPilot(@Nullable Player player) {
+        Hider.setExempt(uuid(), player);
+    }
 
     public void update(@NotNull VehicleEntity vehicleEntity) {
         for (UUID uuid : components) {
