@@ -60,7 +60,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     private final Map<String, UUID> hud;
     private final Set<UUID> itemDisplays;
     private final Set<UUID> textDisplays;
-    private @Nullable UUID interaction;
+    private @Nullable UUID interactor;
     private @Nullable UUID horizon;
     private @Nullable UUID compass;
     private @Nullable UUID bottomPanel;
@@ -89,7 +89,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         hud = new HashMap<>();
         itemDisplays = new HashSet<>();
         textDisplays = new HashSet<>();
-        interaction = new VehicleInteractor(this).uuid();
+        interactor = new VehicleInteractor(this).uuid();
         if (schema.getHorizonSchema() != null) {
             horizon = new Horizon(schema.getHorizonSchema(), this).uuid();
         }
@@ -110,7 +110,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         velocity = reader.get("velocity", Vector3d.class);
         rotation = reader.get("rotation", Quaterniond.class);
         angularVelocity = reader.get("angularVelocity", Vector3d.class);
-        interaction = reader.get("interaction", UUID.class);
+        interactor = reader.get("interaction", UUID.class);
         components = reader.get("components", new HashMap<>());
         hud = reader.get("hud", new HashMap<>());
         itemDisplays = reader.get("itemDisplays", new HashSet<>());
@@ -146,7 +146,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         writer.set("velocity", velocity);
         writer.set("rotation", rotation);
         writer.set("angularVelocity", angularVelocity);
-        writer.set("interaction", interaction);
+        writer.set("interaction", interactor);
         writer.set("components", components);
         writer.set("hud", hud);
         writer.set("itemDisplays", new HashSet<>());
@@ -209,17 +209,30 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         if (horizon != null) {
             if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
                 horizon.update(this);
+                horizon.setPilot(pilotAsPlayer());
             }
         }
         if (compass != null) {
             if (KinematicEntity.get(compass) instanceof Compass compass) {
                 compass.update(this);
+                compass.setPilot(pilotAsPlayer());
             }
         }
         if (bottomPanel != null) {
             if (KinematicEntity.get(bottomPanel ) instanceof BottomPanel bottomPanel) {
                 bottomPanel.update(this);
+                bottomPanel.setPilot(pilotAsPlayer());
             }
+        }
+
+        // Interactor
+        KinematicEntity<?, ?> interactor = KinematicEntity.get(this.interactor);
+        if (interactor == null && pilot == null) {
+            this.interactor = new VehicleInteractor(this).uuid();
+        } else if (interactor != null && pilot != null) {
+            Entity entity = interactor.entity();
+            assert entity != null;
+            entity.remove();
         }
 
         // Engine
@@ -251,6 +264,13 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         return pilot != null && resources.keySet()
                 .stream()
                 .noneMatch(resource -> resources.get(resource) <= 0);
+    }
+
+    public @Nullable Player pilotAsPlayer() {
+        if (pilot == null) {
+            return null;
+        }
+        return Bukkit.getPlayer(pilot);
     }
 
     public void onSignal(String signal) {
@@ -492,50 +512,10 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
     public void onMount(@NotNull Player player) {
         pilot = player.getUniqueId();
-
-        assert interaction != null;
-        KinematicEntity<?, ?> interaction = KinematicEntity.get(this.interaction);
-        assert interaction != null;
-        Entity entity = interaction.entity();
-        assert entity != null;
-        entity.remove();
-
-        if (horizon != null) {
-            if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
-                horizon.setPilot(player);
-            }
-        }
-        if (compass != null) {
-            if (KinematicEntity.get(compass) instanceof Compass compass) {
-                compass.setPilot(player);
-            }
-        }
-        if (bottomPanel != null) {
-            if (KinematicEntity.get(bottomPanel ) instanceof BottomPanel bottomPanel) {
-                bottomPanel.setPilot(player);
-            }
-        }
     }
 
     public void onUnmount(@NotNull Player player) {
         pilot = player.getUniqueId();
-        interaction = new VehicleInteractor(this).uuid();
         player.setInvisible(false);
-
-        if (horizon != null) {
-            if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
-                horizon.setPilot(null);
-            }
-        }
-        if (compass != null) {
-            if (KinematicEntity.get(compass) instanceof Compass compass) {
-                compass.setPilot(null);
-            }
-        }
-        if (bottomPanel != null) {
-            if (KinematicEntity.get(bottomPanel ) instanceof BottomPanel bottomPanel) {
-                bottomPanel.setPilot(null);
-            }
-        }
     }
 }
