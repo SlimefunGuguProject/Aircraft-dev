@@ -39,7 +39,7 @@ public final class KeyboardHandler {
         }
     }
 
-    public static void addProtocolListener() {
+    public static void init() {
         ProtocolManager manager = ProtocolLibrary.getProtocolManager();
 
         manager.addPacketListener(new PacketAdapter(

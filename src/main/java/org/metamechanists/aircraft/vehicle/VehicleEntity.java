@@ -47,7 +47,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     private static final int MAX_THROTTLE = 100;
     private static final int THROTTLE_INCREMENT = 5;
 
-    private boolean hasPilot;
+    private UUID pilot;
     private int throttle;
     private final List<String> signalsThisTick;
     private final Map<String, Double> resources;
@@ -210,7 +210,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         // Signals
         signalsThisTick.clear();
         onSignal("TICK");
-        if (hasPilot) {
+        //noinspection VariableNotUsedInsideIf
+        if (pilot != null) {
             onSignal("HAS_PILOT_TICK");
         }
         if (isEngineOn()) {
@@ -227,7 +228,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public boolean isEngineOn() {
-        return hasPilot && resources.keySet()
+        return pilot != null && resources.keySet()
                 .stream()
                 .noneMatch(resource -> resources.get(resource) <= 0);
     }
@@ -469,13 +470,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         return pig.getLocation().getBlockY();
     }
 
-    public void mount(@NotNull Player player) {
-        hasPilot = true;
-
-        Pig pig = entity();
-        assert pig != null;
-        player.setInvisible(true);
-        pig.addPassenger(player);
+    public void onMount(@NotNull Player player) {
+        pilot = player.getUniqueId();
 
         assert interaction != null;
         KinematicEntity<?, ?> interaction = KinematicEntity.get(this.interaction);
@@ -501,8 +497,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         }
     }
 
-    public void unmount(@NotNull Player player) {
-        hasPilot = false;
+    public void onUnmount(@NotNull Player player) {
+        pilot = player.getUniqueId();
         interaction = new VehicleInteractor(this).uuid();
         player.setInvisible(false);
 

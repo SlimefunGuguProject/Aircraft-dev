@@ -49,6 +49,9 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
 
         VehicleEntity vehicleEntity = (VehicleEntity) KinematicEntity.get(this.vehicleEntity);
         assert vehicleEntity != null;
-        vehicleEntity.mount(player);
+        Pig pig = vehicleEntity.entity();
+        assert pig != null;
+        player.setInvisible(true);
+        pig.addPassenger(player);
     }
 }

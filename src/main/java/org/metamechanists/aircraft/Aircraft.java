@@ -3,7 +3,6 @@ package org.metamechanists.aircraft;
 import co.aikar.commands.PaperCommandManager;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -19,11 +18,6 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon, Kinemat
     @Getter
     private static Aircraft instance;
 
-    private void initializeListeners() {
-        KeyboardHandler.addProtocolListener();
-        Bukkit.getServer().getPluginManager().registerEvents(new MountHandler(), this);
-    }
-
     private void initializeCommands() {
         PaperCommandManager commandManager = new PaperCommandManager(this);
         commandManager.registerCommand(new AircraftCommand());
@@ -35,7 +29,8 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon, Kinemat
         instance = this;
         Items.init();
         Hider.init();
-        initializeListeners();
+        KeyboardHandler.init();
+        MountHandler.init();
         initializeCommands();
     }
 
