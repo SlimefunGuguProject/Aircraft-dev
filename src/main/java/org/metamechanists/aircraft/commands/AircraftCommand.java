@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.metamechanists.aircraft.items.Items;
+import org.metamechanists.aircraft.slimefun.Items;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 

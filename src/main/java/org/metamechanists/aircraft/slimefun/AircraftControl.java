@@ -1,4 +1,4 @@
-package org.metamechanists.aircraft.items;
+package org.metamechanists.aircraft.slimefun;
 
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;

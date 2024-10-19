@@ -8,7 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.commands.AircraftCommand;
-import org.metamechanists.aircraft.items.Items;
+import org.metamechanists.aircraft.slimefun.Items;
 import org.metamechanists.aircraft.vehicle.handler.MountHandler;
 import org.metamechanists.aircraft.vehicle.handler.KeyboardHandler;
 import org.metamechanists.kinematiccore.api.addon.KinematicAddon;
