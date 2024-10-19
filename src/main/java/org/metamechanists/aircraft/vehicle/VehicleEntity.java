@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicle;
 
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Quaterniond;
 import org.joml.Vector3d;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
 import org.metamechanists.aircraft.vehicle.component.base.ItemComponent;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
@@ -117,18 +119,23 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         compass = reader.get("compass", UUID.class);
         bottomPanel = reader.get("bottomPanel", UUID.class);
 
-        // Fixes an edge case when a player rejoins and loads the chunk, where kinematic entities
-        // do not finish loading when the Mount event iscalled, meaning KinematicEntity.get()
-        // returns null and the onMount() method is never called
-        Pig pig = entity();
-        assert pig != null;
-        for (Entity entity : pig.getPassengers()) {
-            if (entity instanceof Player player) {
-                if (pilot == null) {
+        Bukkit.getScheduler().runTask(Aircraft.getInstance(), () -> {
+            // Fixes an edge case when a player rejoins and loads the chunk, where kinematic entities
+            // do not finish loading when the Mount event iscalled, meaning KinematicEntity.get()
+            // returns null and the onMount() method is never called
+            //noinspection VariableNotUsedInsideIf
+            if (pilot != null) {
+                return;
+            }
+
+            Pig pig = entity();
+            assert pig != null;
+            for (Entity entity : pig.getPassengers()) {
+                if (entity instanceof Player player) {
                     onMount(player);
                 }
             }
-        }
+        });
     }
 
     @Override
