@@ -116,6 +116,19 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         horizon = reader.get("horizon", UUID.class);
         compass = reader.get("compass", UUID.class);
         bottomPanel = reader.get("bottomPanel", UUID.class);
+
+        // Fixes an edge case when a player rejoins and loads the chunk, where kinematic entities
+        // do not finish loading when the Mount event iscalled, meaning KinematicEntity.get()
+        // returns null and the onMount() method is never called
+        Pig pig = entity();
+        assert pig != null;
+        for (Entity entity : pig.getPassengers()) {
+            if (entity instanceof Player player) {
+                if (pilot == null) {
+                    pilot = player.getUniqueId();
+                }
+            }
+        }
     }
 
     @Override
