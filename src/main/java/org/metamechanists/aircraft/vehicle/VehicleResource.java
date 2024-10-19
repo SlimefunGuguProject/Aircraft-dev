@@ -21,6 +21,6 @@ public class VehicleResource {
     }
 
     public double drainedThisTick(@NotNull VehicleEntity vehicleEntity) {
-        return passiveEngineDrain + vehicleEntity.getThrottle() * throttleDrain;
+        return passiveEngineDrain + vehicleEntity.getThrottle() * throttleDrain / 100.0;
     }
 }
