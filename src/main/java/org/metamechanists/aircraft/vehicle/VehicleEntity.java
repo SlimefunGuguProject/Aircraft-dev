@@ -125,7 +125,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         for (Entity entity : pig.getPassengers()) {
             if (entity instanceof Player player) {
                 if (pilot == null) {
-                    pilot = player.getUniqueId();
+                    onMount(player);
                 }
             }
         }
