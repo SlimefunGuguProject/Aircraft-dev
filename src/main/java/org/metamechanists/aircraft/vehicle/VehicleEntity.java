@@ -228,9 +228,9 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public boolean isEngineOn() {
-        return hasPilot && resources.entrySet()
+        return hasPilot && resources.keySet()
                 .stream()
-                .anyMatch(pair -> schema().getEngineFuels().contains(pair.getKey()) && pair.getValue() > 0);
+                .noneMatch(resource -> resources.get(resource) <= 0);
     }
 
     public void onSignal(String signal) {
