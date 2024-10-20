@@ -5,9 +5,6 @@ import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -91,14 +88,10 @@ public final class Items {
     private static final SlimefunItemStack CRUDE_AIRCRAFT_STACK  = new SlimefunItemStack(
             "AIRCRAFT_CRUDE_AIRCRAFT",
             new ItemStackBuilder(Material.FEATHER)
-                    .name(Component.text("Crude Aircraft")
-                            .color(NamedTextColor.WHITE)
-                            .decoration(TextDecoration.ITALIC, false))
+                    .name("Crude Aircraft")
                     .loreLine(ItemStackBuilder.VEHICLE)
                     .loreLine("")
-                    .loreLine(Component.text("Slow and inefficient, but at least it flies")
-                            .color(NamedTextColor.GRAY)
-                            .decoration(TextDecoration.ITALIC, false))
+                    .loreLine("<color:gray>Slow and inefficient, but at least it flies")
                     .loreLine("")
                     .build()
     );
@@ -106,14 +99,10 @@ public final class Items {
     private static final SlimefunItemStack CRUDE_AIRSHIP_STACK = new SlimefunItemStack(
             "AIRCRAFT_CRUDE_AIRSHIP",
             new ItemStackBuilder(Material.FEATHER)
-                    .name(Component.text("Crude Airship")
-                            .color(NamedTextColor.WHITE)
-                            .decoration(TextDecoration.ITALIC, false))
+                    .name("Crude Airship")
                     .loreLine(ItemStackBuilder.VEHICLE)
                     .loreLine("")
-                    .loreLine(Component.text("Slow and inefficient, but at least it flies")
-                            .color(NamedTextColor.GRAY)
-                            .decoration(TextDecoration.ITALIC, false))
+                    .loreLine("<color:gray>Slow and inefficient, but at least it flies")
                     .loreLine("")
                     .loreLine("Passengers", "0")
                     .loreLine("Cargo capacity", "9", "stacks")
