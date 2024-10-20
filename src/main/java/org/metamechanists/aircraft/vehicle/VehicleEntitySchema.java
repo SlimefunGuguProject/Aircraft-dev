@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicle;
 
 import lombok.Getter;
+import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,6 +15,7 @@ import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,10 @@ import java.util.Map;
 
 @Getter
 public class VehicleEntitySchema extends KinematicEntitySchema {
+    private final String name;
+    private final Material material;
+    private final String description;
+    private final List<LoreData> loreData;
     private final double mass;
     private final double momentOfInertia;
     private final double velocityDamping;
@@ -42,14 +48,25 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     private final Map<String, VehicleComponent.VehicleComponentSchema> components;
     private final KinematicEntitySchema interactorSchema;
 
+    public record LoreData(String name, String amount, String unit) {}
+
     @SuppressWarnings("DataFlowIssue")
     public VehicleEntitySchema(@NotNull String id) {
         super(id, EntityType.PIG, VehicleEntity.class);
 
         resources = new HashMap<>();
         components = new HashMap<>();
+        loreData = new ArrayList<>();
 
         YamlTraverser traverser = new YamlTraverser(Aircraft.getInstance(), "vehicles/" + id + ".yml");
+
+        // Item stack
+        name = traverser.get("name");
+        material = Material.getMaterial(traverser.get("material"));
+        description = traverser.get("description");
+        for (YamlTraverser loreTraverser : traverser.getSection("lore").getSections()) {
+            loreData.add(new LoreData(loreTraverser.get("name"), loreTraverser.get("amount"), loreTraverser.get("unit")));
+        }
 
         // General
         Vector3f translation = traverser.getVector3f("translation");

@@ -21,6 +21,10 @@ public class VehicleResource {
     }
 
     public double drainedThisTick(@NotNull VehicleEntity vehicleEntity) {
-        return passiveEngineDrain + vehicleEntity.getThrottle() * throttleDrain / 100.0;
+        double total = vehicleEntity.getThrottle() * throttleDrain / 100.0;
+        if (!vehicleEntity.isEngineOn()) {
+            total += passiveEngineDrain;
+        }
+        return total;
     }
 }
