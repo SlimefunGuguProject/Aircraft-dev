@@ -7,6 +7,8 @@ import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.ItemUseHandler;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -39,10 +41,12 @@ public class VehicleItem extends SlimefunItem {
 
     private static ItemStack fromVehicleEntitySchema(@NotNull VehicleEntitySchema schema) {
         ItemStackBuilder builder = new ItemStackBuilder(schema.getMaterial())
-                .name(Component.text(schema.getName()).color(NamedTextColor.WHITE))
+                .name(Component.text(schema.getName())
+                        .color(NamedTextColor.WHITE)
+                        .decoration(TextDecoration.ITALIC, false))
                 .loreLine(ItemStackBuilder.VEHICLE)
                 .loreLine("")
-                .loreLineWrapped(schema.getDescription())
+                .loreLine(schema.getDescription())
                 .loreLine("");
         for (VehicleEntitySchema.LoreData loreData : schema.getLoreData()) {
             builder = builder.loreLine(loreData.name(), loreData.amount(), loreData.unit());
