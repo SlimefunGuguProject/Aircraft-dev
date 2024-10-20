@@ -104,28 +104,20 @@ public final class Items {
             new ItemStack[]{},
             "STRAFE_DOWN");
 
-    private static final SlimefunItemStack CRUDE_AIRCRAFT_STACK = new SlimefunItemStack(
-            "AIRCRAFT_CRUDE_AIRCRAFT",
-            new CustomItemStack(Material.FEATHER, ChatColor.WHITE + "Crude Aircraft"));
-
-    private static final SlimefunItemStack CRUDE_AIRSHIP_STACK = new SlimefunItemStack(
-            "AIRCRAFT_CRUDE_AIRSHIP",
-            new CustomItemStack(Material.FEATHER, ChatColor.WHITE + "Crude Airship"));
-
     private static @NotNull VehicleItem crudeAircraft(VehicleEntitySchema schema) {
         return new VehicleItem(
+                "AIRCRAFT_CRUDE_AIRCRAFT",
                 schema,
                 AIRCRAFT_GROUP,
-                CRUDE_AIRCRAFT_STACK,
                 RecipeType.NULL,
                 new ItemStack[]{});
     }
 
     private static @NotNull VehicleItem crudeAirship(VehicleEntitySchema schema) {
         return new VehicleItem(
+                "AIRCRAFT_CRUDE_AIRSHIP",
                 schema,
                 AIRCRAFT_GROUP,
-                CRUDE_AIRSHIP_STACK,
                 RecipeType.NULL,
                 new ItemStack[]{});
     }
