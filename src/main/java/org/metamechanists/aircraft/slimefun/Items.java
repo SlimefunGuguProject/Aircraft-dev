@@ -5,6 +5,9 @@ import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +18,7 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Keys;
 import org.metamechanists.aircraft.vehicle.VehicleEntitySchema;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
+import org.metamechanists.kinematiccore.api.item.ItemStackBuilder;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,8 +29,8 @@ public final class Items {
             new CustomItemStack(Material.COMPASS, "&aAircraft"));
 
     private static final SlimefunItemStack THROTTLE_UP_STACK = new SlimefunItemStack(
-                    "AIRCRAFT_THROTTLE_UP",
-                    new CustomItemStack(Material.LIME_DYE, ChatColor.WHITE + "Throttle up"));
+            "AIRCRAFT_THROTTLE_UP",
+            new CustomItemStack(Material.LIME_DYE, ChatColor.WHITE + "Throttle up"));
     private static final AircraftControl THROTTLE_UP = new AircraftControl(
             AIRCRAFT_GROUP,
             THROTTLE_UP_STACK,
@@ -45,8 +49,8 @@ public final class Items {
             "THROTTLE_DOWN");
 
     private static final SlimefunItemStack STEER_LEFT_STACK = new SlimefunItemStack(
-                        "AIRCRAFT_STEER_LEFT",
-                        new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer left"));
+            "AIRCRAFT_STEER_LEFT",
+            new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer left"));
     private static final AircraftControl STEER_LEFT = new AircraftControl(
             AIRCRAFT_GROUP,
             STEER_LEFT_STACK,
@@ -55,8 +59,8 @@ public final class Items {
             "STEER_LEFT");
 
     private static final SlimefunItemStack STEER_RIGHT_STACK = new SlimefunItemStack(
-                        "AIRCRAFT_STEER_RIGHT",
-                        new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer right"));
+            "AIRCRAFT_STEER_RIGHT",
+            new CustomItemStack(Material.MUSIC_DISC_STAL, ChatColor.WHITE + "Steer right"));
     private static final AircraftControl STEER_RIGHT = new AircraftControl(
             AIRCRAFT_GROUP,
             STEER_RIGHT_STACK,
@@ -84,29 +88,53 @@ public final class Items {
             new ItemStack[]{},
             "STRAFE_RIGHT");
 
-    private static final SlimefunItemStack STRAFE_UP_STACK  = new SlimefunItemStack(
-            "AIRCRAFT_STRAFE_UP",
-            new CustomItemStack(Material.LIME_CANDLE, ChatColor.WHITE + "Strafe up"));
-    private static final AircraftControl STRAFE_UP = new AircraftControl(
-            AIRCRAFT_GROUP,
-            STRAFE_UP_STACK,
-            RecipeType.NULL,
-            new ItemStack[]{},
-            "STRAFE_UP");
+    private static final SlimefunItemStack CRUDE_AIRCRAFT_STACK  = new SlimefunItemStack(
+            "AIRCRAFT_CRUDE_AIRCRAFT",
+            new ItemStackBuilder(Material.FEATHER)
+                    .name(Component.text("Crude Aircraft")
+                            .color(NamedTextColor.WHITE)
+                            .decoration(TextDecoration.ITALIC, false))
+                    .loreLine(ItemStackBuilder.VEHICLE)
+                    .loreLine("")
+                    .loreLine(Component.text("Slow and inefficient, but at least it flies")
+                            .color(NamedTextColor.GRAY)
+                            .decoration(TextDecoration.ITALIC, false))
+                    .loreLine("")
+                    .build()
+    );
 
-    private static final SlimefunItemStack STRAFE_DOWN_STACK = new SlimefunItemStack(
-            "AIRCRAFT_STRAFE_DOWN",
-            new CustomItemStack(Material.RED_CANDLE, ChatColor.WHITE + "Strafe down"));
-    private static final AircraftControl STRAFE_DOWN = new AircraftControl(
-            AIRCRAFT_GROUP,
-            STRAFE_DOWN_STACK,
-            RecipeType.NULL,
-            new ItemStack[]{},
-            "STRAFE_DOWN");
+    private static final SlimefunItemStack CRUDE_AIRSHIP_STACK = new SlimefunItemStack(
+            "AIRCRAFT_CRUDE_AIRSHIP",
+            new ItemStackBuilder(Material.FEATHER)
+                    .name(Component.text("Crude Airship")
+                            .color(NamedTextColor.WHITE)
+                            .decoration(TextDecoration.ITALIC, false))
+                    .loreLine(ItemStackBuilder.VEHICLE)
+                    .loreLine("")
+                    .loreLine(Component.text("Slow and inefficient, but at least it flies")
+                            .color(NamedTextColor.GRAY)
+                            .decoration(TextDecoration.ITALIC, false))
+                    .loreLine("")
+                    .loreLine("Passengers", "0")
+                    .loreLine("Cargo capacity", "9", "stacks")
+                    .loreLine("")
+                    .loreLine("Fuel usage", "1.0", "fuel/s")
+                    .loreLine("Water usage (max throttle)", "5.0", "water/s")
+                    .loreLine("Water usage (turning)", "5.0", "water/s")
+                    .loreLine("Water usage (ascending/descending)", "5.0", "water/s")
+                    .loreLine("Water usage (strafing)", "5.0", "water/s")
+                    .loreLine("")
+                    .loreLine("Speed", "4.0", "blocks/s")
+                    .loreLine("Turn speed", "45.0", "seconds/full turn")
+                    .loreLine("Ascend/descend speed", "0.5", "blocks/s")
+                    .loreLine("Strafe speed", "0.5", "blocks/s")
+                    .build()
+            );
 
     private static @NotNull VehicleItem crudeAircraft(VehicleEntitySchema schema) {
         return new VehicleItem(
                 "AIRCRAFT_CRUDE_AIRCRAFT",
+                CRUDE_AIRCRAFT_STACK,
                 schema,
                 AIRCRAFT_GROUP,
                 RecipeType.NULL,
@@ -116,6 +144,7 @@ public final class Items {
     private static @NotNull VehicleItem crudeAirship(VehicleEntitySchema schema) {
         return new VehicleItem(
                 "AIRCRAFT_CRUDE_AIRSHIP",
+                CRUDE_AIRSHIP_STACK,
                 schema,
                 AIRCRAFT_GROUP,
                 RecipeType.NULL,
@@ -148,8 +177,6 @@ public final class Items {
         STEER_RIGHT.register(addon);
         STRAFE_LEFT.register(addon);
         STRAFE_RIGHT.register(addon);
-        STRAFE_UP.register(addon);
-        STRAFE_DOWN.register(addon);
 
         VehicleEntitySchema crudeAircraftSchema = loadVehicle("crude_aircraft");
         if (crudeAircraftSchema != null) {
