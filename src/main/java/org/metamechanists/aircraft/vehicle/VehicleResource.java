@@ -22,7 +22,7 @@ public class VehicleResource {
 
     public double drainedThisTick(@NotNull VehicleEntity vehicleEntity) {
         double total = vehicleEntity.getThrottle() * throttleDrain / 100.0;
-        if (!vehicleEntity.isEngineOn()) {
+        if (vehicleEntity.isEngineOn()) {
             total += passiveEngineDrain;
         }
         return total;
