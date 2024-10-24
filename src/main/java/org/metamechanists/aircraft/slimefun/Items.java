@@ -102,7 +102,7 @@ public final class Items {
                     .name("Crude Airship")
                     .loreLine(ItemStackBuilder.VEHICLE)
                     .loreLine("")
-                    .loreLine("<color:gray>Slow and inefficient, but at least it flies")
+                    .loreLine("<color:#c9c9c9>Slow and inefficient, but at least it flies")
                     .loreLine("")
                     .loreLine("Passengers", "0")
                     .loreLine("Cargo capacity", "9", "stacks")
