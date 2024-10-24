@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.commands.AircraftCommand;
 import org.metamechanists.aircraft.slimefun.Items;
 import org.metamechanists.aircraft.vehicle.component.Hider;
+import org.metamechanists.aircraft.vehicle.component.Protector;
 import org.metamechanists.aircraft.vehicle.handler.MountHandler;
 import org.metamechanists.aircraft.vehicle.handler.KeyboardHandler;
 import org.metamechanists.kinematiccore.api.addon.KinematicAddon;
@@ -29,6 +30,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon, Kinemat
         instance = this;
         Items.init();
         Hider.init();
+        Protector.init();
         KeyboardHandler.init();
         MountHandler.init();
         initializeCommands();

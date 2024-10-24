@@ -15,6 +15,7 @@ import org.joml.Quaterniond;
 import org.joml.Vector3d;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Utils;
+import org.metamechanists.aircraft.vehicle.component.Protector;
 import org.metamechanists.aircraft.vehicle.component.base.ItemComponent;
 import org.metamechanists.aircraft.vehicle.component.base.VehicleComponent;
 import org.metamechanists.aircraft.vehicle.component.hud.bottompanel.BottomPanel;
@@ -73,6 +74,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             pig.setGravity(false);
             pig.setInvisible(true);
             pig.setSilent(true);
+            Protector.protect(pig);
             return pig;
         });
 
@@ -130,6 +132,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
             Pig pig = entity();
             assert pig != null;
+            Protector.protect(pig);
             for (Entity entity : pig.getPassengers()) {
                 if (entity instanceof Player player) {
                     onMount(player);
