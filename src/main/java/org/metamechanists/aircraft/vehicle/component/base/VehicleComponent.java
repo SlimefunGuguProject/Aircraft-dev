@@ -156,8 +156,8 @@ public abstract class VehicleComponent<T extends KinematicEntitySchema> extends 
         }
     }
 
-    protected VehicleComponent(@NotNull StateReader reader) {
-        super(reader);
+    protected VehicleComponent(@NotNull StateReader reader, ItemDisplay itemDisplay) {
+        super(reader, itemDisplay);
     }
 
     protected VehicleComponent(@NotNull T schema, @NotNull Supplier<ItemDisplay> spawnEntity) {

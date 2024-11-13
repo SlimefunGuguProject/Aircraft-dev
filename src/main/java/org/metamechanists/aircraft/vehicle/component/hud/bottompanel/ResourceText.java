@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicle.component.hud.bottompanel;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -41,8 +42,8 @@ public class ResourceText extends HudTextComponent<ResourceText.ResourceTextSche
         super(schema, vehicleEntity);
     }
 
-    public ResourceText(@NotNull StateReader reader) {
-        super(reader);
+    public ResourceText(@NotNull StateReader reader, TextDisplay textDisplay) {
+        super(reader, textDisplay);
     }
 
     @Override

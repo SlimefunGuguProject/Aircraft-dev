@@ -20,8 +20,8 @@ public abstract class TextComponent<T extends KinematicEntitySchema> extends Kin
     private boolean visibleLastLastUpdate = true;
     private Matrix4f matrixLastUpdate = new Matrix4f();
 
-    protected TextComponent(@NotNull StateReader reader) {
-        super(reader);
+    protected TextComponent(@NotNull StateReader reader, TextDisplay textDisplay) {
+        super(reader, textDisplay);
     }
 
     protected TextComponent(@NotNull T schema, @NotNull Supplier<TextDisplay> spawnEntity) {

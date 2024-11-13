@@ -56,7 +56,6 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
     public PropellerComponent(@NotNull PropellerComponent.PropellerComponentSchema schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, () -> {
             Pig pig = vehicleEntity.entity();
-            assert pig != null;
             ItemDisplay item = schema.modelItem(vehicleEntity, new Vector3d(), new Vector3d()).build(pig.getLocation());
             pig.addPassenger(item);
             return item;
@@ -65,8 +64,8 @@ public class PropellerComponent extends VehicleComponent<PropellerComponent.Prop
 
 
     @SuppressWarnings("DataFlowIssue")
-    public PropellerComponent(@NotNull StateReader reader) {
-        super(reader);
+    public PropellerComponent(@NotNull StateReader reader, ItemDisplay itemDisplay) {
+        super(reader, itemDisplay);
         angle = reader.get("angle", Double.class);
     }
 

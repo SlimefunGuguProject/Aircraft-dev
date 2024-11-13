@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicle.component.hud.bottompanel;
 
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Interaction;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
@@ -41,8 +42,8 @@ public class BottomPanel extends HudSection<BottomPanel.BottomPanelSchema> {
         super(schema, vehicleEntity);
     }
 
-    public BottomPanel(@NotNull StateReader reader) {
-        super(reader);
+    public BottomPanel(@NotNull StateReader reader, Interaction interaction) {
+        super(reader, interaction);
     }
 
     @Override

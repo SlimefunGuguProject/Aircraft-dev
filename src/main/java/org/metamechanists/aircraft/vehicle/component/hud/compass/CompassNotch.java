@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicle.component.hud.compass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -33,8 +34,8 @@ public class CompassNotch extends HudTextComponent<CompassNotch.CompassNotchSche
         super(schema, vehicleEntity);
     }
 
-    public CompassNotch(@NotNull StateReader reader) {
-        super(reader);
+    public CompassNotch(@NotNull StateReader reader, TextDisplay textDisplay) {
+        super(reader, textDisplay);
     }
 
     @Override

@@ -49,7 +49,6 @@ public class VisibleComponent extends VehicleComponent<VisibleComponent.VisibleC
     public VisibleComponent(@NotNull VisibleComponent.VisibleComponentSchema schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, () -> {
             Pig pig = vehicleEntity.entity();
-            assert pig != null;
             ItemDisplay item = schema.modelItem(vehicleEntity, new Vector3d(), new Vector3d()).build(pig.getLocation());
             pig.addPassenger(item);
             return item;
@@ -57,8 +56,8 @@ public class VisibleComponent extends VehicleComponent<VisibleComponent.VisibleC
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public VisibleComponent(@NotNull StateReader reader) {
-        super(reader);
+    public VisibleComponent(@NotNull StateReader reader, ItemDisplay itemDisplay) {
+        super(reader, itemDisplay);
         visible = reader.get("visible", Boolean.class);
     }
 

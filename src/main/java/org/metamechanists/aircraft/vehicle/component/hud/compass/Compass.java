@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicle.component.hud.compass;
 
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Interaction;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
@@ -36,8 +37,8 @@ public class Compass extends HudSection<Compass.CompassSchema> {
         super(schema, vehicleEntity);
     }
 
-    public Compass(@NotNull StateReader reader) {
-        super(reader);
+    public Compass(@NotNull StateReader reader, Interaction interaction) {
+        super(reader, interaction);
     }
 
     @Override

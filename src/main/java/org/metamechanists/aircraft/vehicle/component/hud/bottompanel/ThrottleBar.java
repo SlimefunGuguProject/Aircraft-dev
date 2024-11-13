@@ -2,6 +2,7 @@ package org.metamechanists.aircraft.vehicle.component.hud.bottompanel;
 
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.ItemDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -39,8 +40,8 @@ public class ThrottleBar extends HudItemComponent<ThrottleBar.ThrottleBarSchema>
         super(schema, vehicleEntity);
     }
 
-    public ThrottleBar(@NotNull StateReader reader) {
-        super(reader);
+    public ThrottleBar(@NotNull StateReader reader, ItemDisplay itemDisplay) {
+        super(reader, itemDisplay);
     }
 
     @Override

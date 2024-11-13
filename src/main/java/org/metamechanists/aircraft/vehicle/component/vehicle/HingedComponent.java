@@ -62,7 +62,6 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
     public HingedComponent(@NotNull HingedComponent.HingedComponentSchema schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, () -> {
             Pig pig = vehicleEntity.entity();
-            assert pig != null;
             ItemDisplay item = schema.modelItem(vehicleEntity, new Vector3d(), new Vector3d()).build(pig.getLocation());
             pig.addPassenger(item);
             return item;
@@ -70,8 +69,8 @@ public class HingedComponent extends VehicleComponent<HingedComponent.HingedComp
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public HingedComponent(@NotNull StateReader reader) {
-        super(reader);
+    public HingedComponent(@NotNull StateReader reader, ItemDisplay itemDisplay) {
+        super(reader, itemDisplay);
         angle = reader.get("angle", Double.class);
         ticksUntilReturn = reader.get("ticksUntilReturn", Integer.class);
     }

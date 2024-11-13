@@ -33,14 +33,13 @@ public abstract class HudTextComponent<T extends HudTextComponent.HudTextCompone
     protected HudTextComponent(@NotNull T schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, () -> {
             Pig pig = vehicleEntity.entity();
-            assert pig != null;
             TextDisplay text = (TextDisplay) pig.getLocation().getWorld().spawnEntity(pig.getLocation(), EntityType.TEXT_DISPLAY);
             pig.addPassenger(text);
             return text;
         });
     }
 
-    protected HudTextComponent(@NotNull StateReader reader) {
-        super(reader);
+    protected HudTextComponent(@NotNull StateReader reader, TextDisplay textDisplay) {
+        super(reader, textDisplay);
     }
 }

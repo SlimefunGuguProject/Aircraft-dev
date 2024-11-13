@@ -107,8 +107,8 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
         components = buildComponents(vehicleEntity);
     }
 
-    protected HudSection(@NotNull StateReader reader) {
-        super(reader);
+    protected HudSection(@NotNull StateReader reader, @NotNull Interaction interaction) {
+        super(reader, interaction);
         components = reader.get("components", new ArrayList<>());
     }
 

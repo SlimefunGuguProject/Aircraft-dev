@@ -76,7 +76,6 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     public ThrusterComponent(@NotNull ThrusterComponent.ThrusterComponentSchema schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, () -> {
             Pig pig = vehicleEntity.entity();
-            assert pig != null;
             ItemDisplay item = schema.modelItem(vehicleEntity, new Vector3d(), new Vector3d()).build(pig.getLocation());
             pig.addPassenger(item);
             return item;
@@ -91,8 +90,8 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public ThrusterComponent(@NotNull StateReader reader) {
-        super(reader);
+    public ThrusterComponent(@NotNull StateReader reader, ItemDisplay itemDisplay) {
+        super(reader, itemDisplay);
         active = reader.get("active", Boolean.class);
         sufficientResourcesCache = reader.get("sufficientResourcesCache", Boolean.class);
     }
@@ -129,7 +128,6 @@ public class ThrusterComponent extends VehicleComponent<ThrusterComponent.Thrust
                 .mul(-1);
 
         Pig pig = vehicleEntity.entity();
-        assert pig != null;
         Location location = pig.getLocation()
                 .add(Vector.fromJOML(absoluteLocation));
 

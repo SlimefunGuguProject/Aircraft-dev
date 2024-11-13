@@ -33,14 +33,13 @@ public abstract class HudItemComponent<T extends HudItemComponent.HudItemCompone
     protected HudItemComponent(@NotNull T schema, @NotNull VehicleEntity vehicleEntity) {
         super(schema, () -> {
             Pig pig = vehicleEntity.entity();
-            assert pig != null;
             ItemDisplay item = (ItemDisplay) pig.getLocation().getWorld().spawnEntity(pig.getLocation(), EntityType.ITEM_DISPLAY);
             pig.addPassenger(item);
             return item;
         });
     }
 
-    protected HudItemComponent(@NotNull StateReader reader) {
-        super(reader);
+    protected HudItemComponent(@NotNull StateReader reader, ItemDisplay itemDisplay) {
+        super(reader, itemDisplay);
     }
 }

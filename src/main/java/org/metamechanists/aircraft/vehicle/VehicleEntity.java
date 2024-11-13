@@ -104,8 +104,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     @SuppressWarnings("DataFlowIssue")
-    public VehicleEntity(StateReader reader) {
-        super(reader);
+    public VehicleEntity(StateReader reader, Pig pig) {
+        super(reader, pig);
         throttle = reader.get("throttle", Integer.class);
         signalsThisTick = reader.get("signalsThisTick", new ArrayList<>());
         resources = reader.get("resources", new HashMap<>());
@@ -130,8 +130,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
                 return;
             }
 
-            Pig pig = entity();
-            assert pig != null;
             Protector.protect(pig);
             for (Entity entity : pig.getPassengers()) {
                 if (entity instanceof Player player) {
@@ -175,10 +173,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         for (String id : toRemove) {
             KinematicEntity<?, ?> kinematicEntity = KinematicEntity.get(components.remove(id));
             if (kinematicEntity != null) {
-                Entity entity = kinematicEntity.entity();
-                if (entity != null) {
-                    entity.remove();
-                }
+                kinematicEntity.entity().remove();
             }
         }
 
@@ -209,6 +204,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         }
 
         // HUD
+        //noinspection VariableNotUsedInsideIf
         if (pilot != null) {
             if (horizon != null) {
                 if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
@@ -232,9 +228,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         if (interactor == null && pilot == null) {
             this.interactor = new VehicleInteractor(this).uuid();
         } else if (interactor != null && pilot != null) {
-            Entity entity = interactor.entity();
-            assert entity != null;
-            entity.remove();
+            interactor.entity().remove();
         }
 
         // Engine
@@ -288,11 +282,11 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             throttle = Math.max(MIN_THROTTLE, throttle - THROTTLE_INCREMENT);
         }
 
-        if (Objects.equals(signal, "STEER_RIGHT") && pig != null && isOnGround(pig)) {
+        if (Objects.equals(signal, "STEER_RIGHT") && isOnGround(pig)) {
             angularVelocity.y -= schema().getSteeringSpeed();
         }
 
-        if (Objects.equals(signal, "STEER_LEFT") && pig != null && isOnGround(pig)) {
+        if (Objects.equals(signal, "STEER_LEFT") && isOnGround(pig)) {
             angularVelocity.y += schema().getSteeringSpeed();
         }
 
@@ -507,9 +501,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public int altitude() {
-        Pig pig = entity();
-        assert pig != null;
-        return pig.getLocation().getBlockY();
+        return entity().getLocation().getBlockY();
     }
 
     public void onMount(@NotNull Player player) {

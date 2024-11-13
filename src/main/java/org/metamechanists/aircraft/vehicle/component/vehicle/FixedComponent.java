@@ -36,15 +36,14 @@ public class FixedComponent extends VehicleComponent<VehicleComponent.VehicleCom
     public FixedComponent(@NotNull VehicleComponent.VehicleComponentSchema vehicleComponentSchema, @NotNull VehicleEntity vehicleEntity) {
         super(vehicleComponentSchema, () -> {
             Pig pig = vehicleEntity.entity();
-            assert pig != null;
             ItemDisplay item = vehicleComponentSchema.modelItem(vehicleEntity, new Vector3d(), new Vector3d()).build(pig.getLocation());
             pig.addPassenger(item);
             return item;
         });
     }
 
-    public FixedComponent(@NotNull StateReader reader) {
-        super(reader);
+    public FixedComponent(@NotNull StateReader reader, ItemDisplay itemDisplay) {
+        super(reader, itemDisplay);
     }
 
     @Override

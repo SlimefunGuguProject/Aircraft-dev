@@ -1,6 +1,7 @@
 package org.metamechanists.aircraft.vehicle.component.hud.horizon;
 
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Interaction;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.component.base.HudSection;
@@ -41,8 +42,8 @@ public class Horizon extends HudSection<Horizon.HorizonSchema> {
         super(schema, vehicleEntity);
     }
 
-    public Horizon(@NotNull StateReader reader) {
-        super(reader);
+    public Horizon(@NotNull StateReader reader, Interaction interaction) {
+        super(reader, interaction);
     }
 
     @Override

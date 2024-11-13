@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicle.component.hud.horizon;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.TextDisplay;
 import org.jetbrains.annotations.NotNull;
 import org.joml.Vector3f;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
@@ -28,8 +29,8 @@ public class VelocityIndicator extends HudTextComponent<VelocityIndicator.Veloci
         super(schema, vehicleEntity);
     }
 
-    public VelocityIndicator(@NotNull StateReader reader) {
-        super(reader);
+    public VelocityIndicator(@NotNull StateReader reader, TextDisplay textDisplay) {
+        super(reader, textDisplay);
     }
 
     @Override

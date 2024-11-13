@@ -21,8 +21,8 @@ public abstract class ItemComponent<T extends KinematicEntitySchema> extends Kin
     private boolean visibleLastUpdate = true;
     private Matrix4f matrixLastUpdate = new Matrix4f();
 
-    protected ItemComponent(@NotNull StateReader reader) {
-        super(reader);
+    protected ItemComponent(@NotNull StateReader reader, ItemDisplay itemDisplay) {
+        super(reader, itemDisplay);
     }
 
     protected ItemComponent(@NotNull T schema, @NotNull Supplier<ItemDisplay> spawnEntity) {

@@ -5,6 +5,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.Aircraft;
 
 import java.util.HashSet;
@@ -18,12 +19,12 @@ public class Protector implements Listener {
         Bukkit.getPluginManager().registerEvents(new Protector(), Aircraft.getInstance());
     }
 
-    public static void protect(Entity entity) {
+    public static void protect(@NotNull Entity entity) {
         protectedEntities.add(entity.getUniqueId());
     }
 
     @EventHandler
-    private static void onDamage(EntityDamageEvent event) {
+    private static void onDamage(@NotNull EntityDamageEvent event) {
         if (protectedEntities.contains(event.getEntity().getUniqueId())) {
             event.setCancelled(true);
         }

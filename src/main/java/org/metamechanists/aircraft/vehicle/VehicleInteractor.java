@@ -19,7 +19,6 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
     public VehicleInteractor(@NotNull VehicleEntity vehicleEntity) {
         super(vehicleEntity.schema().getInteractorSchema(), () -> {
             Pig pig = vehicleEntity.entity();
-            assert pig != null;
             Interaction interaction = new InteractionBuilder()
                 .width(1.2F)
                 .height(1.2F)
@@ -31,8 +30,8 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
         this.vehicleEntity = vehicleEntity.uuid();
     }
 
-    public VehicleInteractor(StateReader reader) {
-        super(reader);
+    public VehicleInteractor(StateReader reader, Interaction interaction) {
+        super(reader, interaction);
         vehicleEntity = reader.get("vehicleEntity", UUID.class);
     }
 
@@ -49,8 +48,6 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
 
         VehicleEntity vehicleEntity = (VehicleEntity) KinematicEntity.get(this.vehicleEntity);
         assert vehicleEntity != null;
-        Pig pig = vehicleEntity.entity();
-        assert pig != null;
-        pig.addPassenger(player);
+        vehicleEntity.entity().addPassenger(player);
     }
 }
