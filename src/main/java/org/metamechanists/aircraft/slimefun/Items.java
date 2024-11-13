@@ -22,6 +22,11 @@ import java.util.Set;
 
 
 public final class Items {
+    private static final String DIAMOND_COLOR = "<color:#eec250>";
+    private static final String KEY_COLOR = "<color:#eec250>";
+    private static final String VALUE_COLOR = "<color:#eec250>";
+    private static final String UNIT_COLOR = "<color:#eec250>";
+
     private static final ItemGroup AIRCRAFT_GROUP = new ItemGroup(Keys.AIRCRAFT,
             new CustomItemStack(Material.COMPASS, "&aAircraft"));
 
@@ -98,25 +103,25 @@ public final class Items {
 
     private static final SlimefunItemStack CRUDE_AIRSHIP_STACK = new SlimefunItemStack(
             "AIRCRAFT_CRUDE_AIRSHIP",
-            new ItemStackBuilder(Material.FEATHER)
+            new AircraftItemStackBuilder(Material.FEATHER)
                     .name("Crude Airship")
                     .loreLine(ItemStackBuilder.VEHICLE)
                     .loreLine("")
                     .loreLine("<color:#c9c9c9>Slow and inefficient, but at least it flies")
                     .loreLine("")
-                    .loreLine("Passengers", "0")
-                    .loreLine("Cargo capacity", "9", "stacks")
+                    .loreLine(keyValueUnit("Passengers", "0", ""))
+                    .loreLine(keyValueUnit("Cargo capacity", "9", "stacks"))
                     .loreLine("")
-                    .loreLine("Fuel usage", "1.0", "fuel/s")
-                    .loreLine("Water usage (max throttle)", "5.0", "water/s")
-                    .loreLine("Water usage (turning)", "5.0", "water/s")
-                    .loreLine("Water usage (ascending/descending)", "5.0", "water/s")
-                    .loreLine("Water usage (strafing)", "5.0", "water/s")
+                    .loreLine(keyValueUnit("Fuel usage", "1.0", "fuel/s"))
+                    .loreLine(keyValueUnit("Water usage (max throttle)", "5.0", "water/s"))
+                    .loreLine(keyValueUnit("Water usage (turning)", "5.0", "water/s"))
+                    .loreLine(keyValueUnit("Water usage (ascending/descending)", "5.0", "water/s"))
+                    .loreLine(keyValueUnit("Water usage (strafing)", "5.0", "water/s"))
                     .loreLine("")
-                    .loreLine("Speed", "4.0", "blocks/s")
-                    .loreLine("Turn speed", "45.0", "seconds/full turn")
-                    .loreLine("Ascend/descend speed", "0.5", "blocks/s")
-                    .loreLine("Strafe speed", "0.5", "blocks/s")
+                    .loreLine(keyValueUnit("Speed", "4.0", "blocks/s"))
+                    .loreLine(keyValueUnit("Turn speed", "45.0", "seconds/full turn"))
+                    .loreLine(keyValueUnit("Ascend/descend speed", "0.5", "blocks/s"))
+                    .loreLine(keyValueUnit("Strafe speed", "0.5", "blocks/s"))
                     .build()
             );
 
@@ -190,5 +195,12 @@ public final class Items {
             // hacky but works
             new VehicleEntitySchema(id.replaceAll("aircraft:", ""));
         }
+    }
+
+    private static @NotNull String keyValueUnit(String key, String value, String unit) {
+        return DIAMOND_COLOR + ItemStackBuilder.DIAMOND
+                + " " + KEY_COLOR + key
+                + " " + VALUE_COLOR + value
+                + " " + UNIT_COLOR + unit;
     }
 }

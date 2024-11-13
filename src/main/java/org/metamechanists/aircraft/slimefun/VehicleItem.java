@@ -16,8 +16,8 @@ import org.metamechanists.aircraft.vehicle.VehicleEntitySchema;
 public class VehicleItem extends SlimefunItem {
     private final VehicleEntitySchema schema;
 
-    public VehicleItem(String id, SlimefunItemStack stack, VehicleEntitySchema schema, ItemGroup itemGroup, RecipeType recipeType, ItemStack[] recipe) {
-        super(itemGroup, stack, recipeType, recipe);
+    public VehicleItem(String id, SlimefunItemStack item, VehicleEntitySchema schema, ItemGroup itemGroup, RecipeType recipeType, ItemStack[] recipe) {
+        super(itemGroup, item, recipeType, recipe);
         this.schema = schema;
         addItemHandler(onItemUse());
     }
