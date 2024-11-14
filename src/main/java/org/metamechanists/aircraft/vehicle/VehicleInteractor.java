@@ -4,7 +4,7 @@ import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.metamechanists.aircraft.vehicle.gui.VehicleGui;
+import org.metamechanists.aircraft.vehicle.gui.main.MainGui;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
@@ -45,6 +45,6 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
     public void onRightClick(@NotNull Player player) {
         VehicleEntity vehicleEntity = (VehicleEntity) KinematicEntity.get(this.vehicleEntity);
         assert vehicleEntity != null;
-        VehicleGui.show(vehicleEntity, player);
+        MainGui.show(vehicleEntity, player);
     }
 }

@@ -1,4 +1,4 @@
-package org.metamechanists.aircraft.vehicle.gui;
+package org.metamechanists.aircraft.vehicle.gui.main;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -9,8 +9,8 @@ import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.window.Window;
 
 
-public final class VehicleGui {
-    private VehicleGui() {}
+public final class MainGui {
+    private MainGui() {}
 
     public static void show(@NotNull VehicleEntity vehicleEntity, @NotNull Player player) {
         Gui gui = Gui.normal()
@@ -18,12 +18,13 @@ public final class VehicleGui {
                         "# # # # # # # # #",
                         "# # # # i # # # #",
                         "# # # # # # # # #",
-                        "# 1 2 # # # # # #",
+                        "# 1 2 3 # # # # #",
                         "# # # # # # # # #")
                 .addIngredient('#', new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE))
                 .addIngredient('i', vehicleEntity.schema().getItemStack())
                 .addIngredient('1', () -> new FlyItem(vehicleEntity, player))
                 .addIngredient('2', () -> new PickUpItem(vehicleEntity, player))
+                .addIngredient('3', () -> new FuelItem(vehicleEntity))
                 .build();
 
         Window.single()
