@@ -4,6 +4,7 @@ import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.metamechanists.aircraft.vehicle.gui.VehicleGui;
 import org.metamechanists.displaymodellib.builders.InteractionBuilder;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
@@ -42,12 +43,12 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
 
     @Override
     public void onRightClick(@NotNull Player player) {
-        if (player.isInsideVehicle()) {
-            player.eject();
-        }
-
         VehicleEntity vehicleEntity = (VehicleEntity) KinematicEntity.get(this.vehicleEntity);
         assert vehicleEntity != null;
-        vehicleEntity.entity().addPassenger(player);
+        VehicleGui.show(vehicleEntity, player);
+        //if (player.isInsideVehicle()) {
+        //    player.eject();
+        //}
+        //vehicleEntity.entity().addPassenger(player);
     }
 }

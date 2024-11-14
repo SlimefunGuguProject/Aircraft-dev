@@ -22,6 +22,7 @@ import java.util.Map;
 
 @Getter
 public class VehicleEntitySchema extends KinematicEntitySchema {
+    @Getter
     private final ItemStack itemStack;
     private final double mass;
     private final double momentOfInertia;
