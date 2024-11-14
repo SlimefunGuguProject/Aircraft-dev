@@ -42,8 +42,16 @@
                             <shadedPattern>org.metamechanists.aircraft.displaymodellib</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>co.aiker</pattern>
+                            <pattern>co.aikar</pattern>
                             <shadedPattern>org.metamechanists.aircraft.co.aikar</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>xyz.xenondevs.invui</pattern>
+                            <shadedPattern>org.metamechanists.aircraft.invui</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>xyz.xenondevs.inventoryaccess</pattern>
+                            <shadedPattern>org.metamechanists.aircraft.inventoryaccess</shadedPattern>
                         </relocation>
                     </relocations>
                     <filters>
