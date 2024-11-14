@@ -28,7 +28,7 @@ public final class MountHandler implements Listener {
             return;
         }
 
-        vehicleEntity.unmount(player);
+        vehicleEntity.onUnmount(player);
     }
 
     @EventHandler
@@ -42,6 +42,6 @@ public final class MountHandler implements Listener {
             return;
         }
 
-        vehicleEntity.becomePilot(player);
+        vehicleEntity.onMount(player);
     }
 }

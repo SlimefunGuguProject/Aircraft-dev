@@ -130,7 +130,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             Protector.protect(pig);
             for (Entity entity : pig.getPassengers()) {
                 if (entity instanceof Player player) {
-                    becomePilot(player);
+                    onMount(player);
                 }
             }
         });
@@ -530,17 +530,12 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         return pilot == null;
     }
 
-    public void becomePilot(@NotNull Player player) {
-        if (player.isInsideVehicle()) {
-            player.eject();
-        }
-
-        entity().addPassenger(player);
+    public void onMount(@NotNull Player player) {
         pilot = player.getUniqueId();
         player.setInvisible(true);
     }
 
-    public void unmount(@NotNull Player player) {
+    public void onUnmount(@NotNull Player player) {
         pilot = null;
         player.setInvisible(false);
     }

@@ -36,7 +36,10 @@ public class FlyItem extends AbstractItem {
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
         if (vehicleEntity.canBecomePilot(player)) {
             player.closeInventory();
-            vehicleEntity.becomePilot(player);
+            if (player.isInsideVehicle()) {
+                player.eject();
+            }
+            vehicleEntity.entity().addPassenger(player);
         }
     }
 }
