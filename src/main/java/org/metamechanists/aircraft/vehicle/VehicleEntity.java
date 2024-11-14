@@ -546,5 +546,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
     public void pickUp() {
         entity().remove();
+        onRemove();
     }
 }
