@@ -39,7 +39,8 @@ public final class ResourcesGui {
         double capacity = resource.capacity();
         int green = (int) (255 * remaining / capacity);
         int red = 255 - green;
-        return GRAY + "(<color:#" + red + green + "00>" + vehicleEntity.remainingResource(name) + GRAY + "/" + "<color:ffffff>" + capacity + GRAY + ")";
+        String color = "<color:#" + Integer.toHexString(red) + Integer.toHexString(green) + "00>";
+        return GRAY + "(" + color + vehicleEntity.remainingResource(name) + GRAY + "/" + "<color:#ffffff>" + capacity + GRAY + ")";
     }
 
     private static @NotNull Item item(@NotNull VehicleEntity vehicleEntity, @NotNull String name, @NotNull VehicleResource resource) {
@@ -49,14 +50,16 @@ public final class ResourcesGui {
                             + resourceBar(vehicleEntity, name, resource)
                             + " "
                             + resourceRemaining(vehicleEntity, name, resource)))
-                    .addLoreLines("", INFO + "\u2193 Place fuel (anything that can be burnt) here \u2193");
+                    .addLoreLines("")
+                    .addLoreLines(Utils.formatMiniMessage(INFO + "\u2193 Place fuel (anything that can be burnt) here"));
 
             case VehicleResource.ResourceType.WATER -> new ItemBuilder(Material.ICE)
                     .setDisplayName(Utils.formatMiniMessage(resourceColor(resource) + "Water "
                             + resourceBar(vehicleEntity, name, resource)
                             + " "
                             + resourceRemaining(vehicleEntity, name, resource)))
-                    .addLoreLines("", INFO + "\u2193 Place water buckets here");
+                    .addLoreLines("")
+                    .addLoreLines(Utils.formatMiniMessage(INFO + "\u2193 Place water buckets here"));
         });
     }
 
