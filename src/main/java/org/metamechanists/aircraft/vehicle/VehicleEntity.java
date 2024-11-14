@@ -558,6 +558,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     }
 
     public void pickUp() {
+        Location location = entity().getLocation();
+        location.getWorld().dropItemNaturally(location, schema().getItemStack());
         entity().remove();
         onRemove();
     }
