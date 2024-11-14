@@ -49,14 +49,14 @@ public final class ResourcesGui {
                             + resourceBar(vehicleEntity, name, resource)
                             + " "
                             + resourceRemaining(vehicleEntity, name, resource)))
-                    .addLoreLines("", INFO + "\u2193 Place fuel here \u2193");
+                    .addLoreLines("", INFO + "\u2193 Place fuel (anything that can be burnt) here \u2193");
 
             case VehicleResource.ResourceType.WATER -> new ItemBuilder(Material.ICE)
                     .setDisplayName(Utils.formatMiniMessage(resourceColor(resource) + "Water "
                             + resourceBar(vehicleEntity, name, resource)
                             + " "
                             + resourceRemaining(vehicleEntity, name, resource)))
-                    .addLoreLines("", INFO + "\u2193 Place water here \u2193");
+                    .addLoreLines("", INFO + "\u2193 Place water buckets here");
         });
     }
 
