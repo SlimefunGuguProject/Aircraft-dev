@@ -2,8 +2,10 @@ package org.metamechanists.aircraft.vehicle.component.base;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Pig;
@@ -115,6 +117,16 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
     @Override
     public void write(@NotNull StateWriter writer) {
         writer.set("components", components);
+    }
+
+    @Override
+    public void onRemove() {
+        for (UUID uuid : components) {
+            Entity entity = Bukkit.getEntity(uuid);
+            if (entity != null) {
+                entity.remove();
+            }
+        }
     }
 
     protected abstract List<UUID> buildComponents(@NotNull VehicleEntity vehicleEntity);

@@ -58,7 +58,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     private final Quaterniond rotation;
     private final Vector3d angularVelocity;
     private final Map<String, UUID> components;
-    private final Map<String, UUID> hud;
     private final Set<UUID> itemDisplays;
     private final Set<UUID> textDisplays;
     private @Nullable UUID interactor;
@@ -88,7 +87,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         rotation = new Quaterniond().rotationY(Math.toRadians(-90.0-player.getEyeLocation().getYaw()));
         angularVelocity = new Vector3d();
         components = new HashMap<>();
-        hud = new HashMap<>();
         itemDisplays = new HashSet<>();
         textDisplays = new HashSet<>();
         interactor = new VehicleInteractor(this).uuid();
@@ -114,7 +112,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         angularVelocity = reader.get("angularVelocity", Vector3d.class);
         interactor = reader.get("interaction", UUID.class);
         components = reader.get("components", new HashMap<>());
-        hud = reader.get("hud", new HashMap<>());
         itemDisplays = reader.get("itemDisplays", new HashSet<>());
         textDisplays = reader.get("textDisplays", new HashSet<>());
         horizon = reader.get("horizon", UUID.class);
@@ -133,7 +130,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
             Protector.protect(pig);
             for (Entity entity : pig.getPassengers()) {
                 if (entity instanceof Player player) {
-                    onMount(player);
+                    becomePilot(player);
                 }
             }
         });
@@ -149,7 +146,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         writer.set("angularVelocity", angularVelocity);
         writer.set("interaction", interactor);
         writer.set("components", components);
-        writer.set("hud", hud);
         writer.set("itemDisplays", new HashSet<>());
         writer.set("textDisplays", new HashSet<>());
         writer.set("horizon", horizon);
@@ -254,6 +250,32 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         }
         Vector pigVelocity = Vector.fromJOML(pigVelocityJoml);
         pig.setVelocity(pigVelocity);
+    }
+
+    @Override
+    public void onRemove() {
+        super.onRemove();
+        if (horizon != null) {
+            if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
+                horizon.entity().remove();
+            }
+        }
+        if (compass != null) {
+            if (KinematicEntity.get(compass) instanceof Compass compass) {
+                compass.entity().remove();
+            }
+        }
+        if (bottomPanel != null) {
+            if (KinematicEntity.get(bottomPanel) instanceof BottomPanel bottomPanel) {
+                bottomPanel.entity().remove();
+            }
+        }
+
+        for (UUID uuid : components.values()) {
+            if (KinematicEntity.get(uuid) instanceof ItemComponent<?> component) {
+                component.entity().remove();
+            }
+        }
     }
 
     public boolean isEngineOn() {
@@ -504,13 +526,30 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         return entity().getLocation().getBlockY();
     }
 
-    public void onMount(@NotNull Player player) {
+    public boolean canBecomePilot(@NotNull Player player) {
+        return pilot == null;
+    }
+
+    public void becomePilot(@NotNull Player player) {
+        if (player.isInsideVehicle()) {
+            player.eject();
+        }
+
+        entity().addPassenger(player);
         pilot = player.getUniqueId();
         player.setInvisible(true);
     }
 
-    public void onUnmount(@NotNull Player player) {
+    public void unmount(@NotNull Player player) {
         pilot = null;
         player.setInvisible(false);
+    }
+
+    public boolean canPickUp(@NotNull Player player) {
+        return pilot == null;
+    }
+
+    public void pickUp() {
+        entity().remove();
     }
 }

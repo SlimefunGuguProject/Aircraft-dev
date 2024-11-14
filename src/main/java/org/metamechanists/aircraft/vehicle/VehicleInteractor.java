@@ -46,9 +46,5 @@ public class VehicleInteractor extends KinematicEntity<Interaction, KinematicEnt
         VehicleEntity vehicleEntity = (VehicleEntity) KinematicEntity.get(this.vehicleEntity);
         assert vehicleEntity != null;
         VehicleGui.show(vehicleEntity, player);
-        //if (player.isInsideVehicle()) {
-        //    player.eject();
-        //}
-        //vehicleEntity.entity().addPassenger(player);
     }
 }
