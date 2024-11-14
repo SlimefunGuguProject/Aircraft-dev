@@ -23,9 +23,9 @@ import java.util.Set;
 
 public final class Items {
     private static final String DIAMOND_COLOR = "<color:#eec250>";
-    private static final String KEY_COLOR = "<color:#eec250>";
-    private static final String VALUE_COLOR = "<color:#eec250>";
-    private static final String UNIT_COLOR = "<color:#eec250>";
+    private static final String KEY_COLOR = "<color:#b4b4b4>";
+    private static final String VALUE_COLOR = "<color:#2182ff>";
+    private static final String UNIT_COLOR = "<color:#416a7f>";
 
     private static final ItemGroup AIRCRAFT_GROUP = new ItemGroup(Keys.AIRCRAFT,
             new CustomItemStack(Material.COMPASS, "&aAircraft"));
@@ -103,7 +103,7 @@ public final class Items {
 
     private static final SlimefunItemStack CRUDE_AIRSHIP_STACK = new SlimefunItemStack(
             "AIRCRAFT_CRUDE_AIRSHIP",
-            new AircraftItemStackBuilder(Material.FEATHER)
+            new ItemStackBuilder(Material.FEATHER)
                     .name("Crude Airship")
                     .loreLine(ItemStackBuilder.VEHICLE)
                     .loreLine("")
