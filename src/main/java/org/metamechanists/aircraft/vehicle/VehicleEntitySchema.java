@@ -2,6 +2,7 @@ package org.metamechanists.aircraft.vehicle;
 
 import lombok.Getter;
 import org.bukkit.entity.EntityType;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector3d;
@@ -21,6 +22,7 @@ import java.util.Map;
 
 @Getter
 public class VehicleEntitySchema extends KinematicEntitySchema {
+    private final ItemStack itemStack;
     private final double mass;
     private final double momentOfInertia;
     private final double velocityDamping;
@@ -43,8 +45,10 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     private final KinematicEntitySchema interactorSchema;
 
     @SuppressWarnings("DataFlowIssue")
-    public VehicleEntitySchema(@NotNull String id) {
+    public VehicleEntitySchema(@NotNull String id, @NotNull ItemStack itemStack) {
         super(id, EntityType.PIG, VehicleEntity.class);
+
+        this.itemStack = itemStack;
 
         resources = new HashMap<>();
         components = new HashMap<>();

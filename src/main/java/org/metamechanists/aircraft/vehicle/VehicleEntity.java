@@ -106,7 +106,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     @SuppressWarnings("DataFlowIssue")
     public VehicleEntity(StateReader reader, Pig pig) {
         super(reader, pig);
-        assert pig != null;
         throttle = reader.get("throttle", Integer.class);
         signalsThisTick = reader.get("signalsThisTick", new ArrayList<>());
         resources = reader.get("resources", new HashMap<>());

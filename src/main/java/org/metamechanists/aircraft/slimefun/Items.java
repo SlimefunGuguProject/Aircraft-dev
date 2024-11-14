@@ -17,9 +17,6 @@ import org.metamechanists.aircraft.vehicle.VehicleEntitySchema;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.kinematiccore.api.item.ItemStackBuilder;
 
-import java.util.HashSet;
-import java.util.Set;
-
 
 public final class Items {
     private static final String DIAMOND_COLOR = "<color:#eec250>";
@@ -112,6 +109,9 @@ public final class Items {
                     .loreLine(keyValueUnit("Passengers", "0", ""))
                     .loreLine(keyValueUnit("Cargo capacity", "9", "stacks"))
                     .loreLine("")
+                    .loreLine(keyValueUnit("Fuel capacity", "600.0", "fuel/s"))
+                    .loreLine(keyValueUnit("Water capacity", "8000.0", "water/s"))
+                    .loreLine("")
                     .loreLine(keyValueUnit("Fuel usage", "1.0", "fuel/s"))
                     .loreLine(keyValueUnit("Water usage (max throttle)", "5.0", "water/s"))
                     .loreLine(keyValueUnit("Water usage (turning)", "5.0", "water/s"))
@@ -145,15 +145,11 @@ public final class Items {
                 new ItemStack[]{});
     }
 
-    private static final Set<String> loadedAircraft = new HashSet<>();
-
     private Items() {}
 
-    private static @Nullable VehicleEntitySchema loadVehicle(@NotNull String id) {
+    private static @Nullable VehicleEntitySchema loadVehicle(@NotNull String id, @NotNull ItemStack itemStack) {
         try {
-            VehicleEntitySchema schema = new VehicleEntitySchema(id);
-            loadedAircraft.add(schema.id());
-            return schema;
+            return new VehicleEntitySchema(id, itemStack);
         } catch (RuntimeException e) {
             Aircraft.getInstance().getLogger().severe("Failed to load aircraft " + id);
             e.printStackTrace();
@@ -172,12 +168,16 @@ public final class Items {
         STRAFE_LEFT.register(addon);
         STRAFE_RIGHT.register(addon);
 
-        VehicleEntitySchema crudeAircraftSchema = loadVehicle("crude_aircraft");
+        initAircraftItems(addon);
+    }
+
+    private static void initAircraftItems(SlimefunAddon addon) {
+        VehicleEntitySchema crudeAircraftSchema = loadVehicle("crude_aircraft", CRUDE_AIRCRAFT_STACK);
         if (crudeAircraftSchema != null) {
             crudeAircraft(crudeAircraftSchema).register(addon);
         }
 
-        VehicleEntitySchema crudeAirshipSchema = loadVehicle("crude_airship");
+        VehicleEntitySchema crudeAirshipSchema = loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK);
         if (crudeAirshipSchema != null) {
             crudeAirship(crudeAirshipSchema).register(addon);
         }
@@ -191,10 +191,10 @@ public final class Items {
             }
         }
 
-        for (String id : loadedAircraft) {
-            // hacky but works
-            new VehicleEntitySchema(id.replaceAll("aircraft:", ""));
-        }
+        //noinspection DataFlowIssue
+        loadVehicle("crude_aircraft", CRUDE_AIRCRAFT_STACK).register(Aircraft.getInstance());
+        //noinspection DataFlowIssue
+        loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK).register(Aircraft.getInstance());
     }
 
     private static @NotNull String keyValueUnit(String key, String value, String unit) {
