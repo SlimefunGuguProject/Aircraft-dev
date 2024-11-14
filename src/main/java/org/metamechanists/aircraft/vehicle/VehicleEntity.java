@@ -258,22 +258,26 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         if (horizon != null) {
             if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
                 horizon.entity().remove();
+                horizon.onRemove();
             }
         }
         if (compass != null) {
             if (KinematicEntity.get(compass) instanceof Compass compass) {
                 compass.entity().remove();
+                compass.onRemove();
             }
         }
         if (bottomPanel != null) {
             if (KinematicEntity.get(bottomPanel) instanceof BottomPanel bottomPanel) {
                 bottomPanel.entity().remove();
+                bottomPanel.onRemove();
             }
         }
 
         for (UUID uuid : components.values()) {
             if (KinematicEntity.get(uuid) instanceof ItemComponent<?> component) {
                 component.entity().remove();
+                component.onRemove();
             }
         }
     }
