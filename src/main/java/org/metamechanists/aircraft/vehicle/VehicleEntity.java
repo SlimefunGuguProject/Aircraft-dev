@@ -202,21 +202,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         // HUD
         //noinspection VariableNotUsedInsideIf
         if (pilot != null) {
-            if (horizon != null) {
-                if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
-                    horizon.update(this, pilotAsPlayer());
-                }
-            }
-            if (compass != null) {
-                if (KinematicEntity.get(compass) instanceof Compass compass) {
-                    compass.update(this, pilotAsPlayer());
-                }
-            }
-            if (bottomPanel != null) {
-                if (KinematicEntity.get(bottomPanel) instanceof BottomPanel bottomPanel) {
-                    bottomPanel.update(this, pilotAsPlayer());
-                }
-            }
+            updateHud();
         }
 
         // Interactor
@@ -252,6 +238,24 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         pig.setVelocity(pigVelocity);
     }
 
+    private void updateHud() {
+        if (horizon != null) {
+            if (KinematicEntity.get(horizon) instanceof Horizon horizon) {
+                horizon.update(this, pilotAsPlayer());
+            }
+        }
+        if (compass != null) {
+            if (KinematicEntity.get(compass) instanceof Compass compass) {
+                compass.update(this, pilotAsPlayer());
+            }
+        }
+        if (bottomPanel != null) {
+            if (KinematicEntity.get(bottomPanel) instanceof BottomPanel bottomPanel) {
+                bottomPanel.update(this, pilotAsPlayer());
+            }
+        }
+    }
+
     @Override
     public void onRemove() {
         super.onRemove();
@@ -279,6 +283,10 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
                 component.entity().remove();
                 component.onRemove();
             }
+        }
+
+        if (KinematicEntity.get(interactor) instanceof VehicleInteractor vehicleInteractor) {
+            vehicleInteractor.entity().remove();
         }
     }
 
@@ -542,6 +550,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     public void onUnmount(@NotNull Player player) {
         pilot = null;
         player.setInvisible(false);
+        updateHud();
     }
 
     public boolean canPickUp(@NotNull Player player) {
