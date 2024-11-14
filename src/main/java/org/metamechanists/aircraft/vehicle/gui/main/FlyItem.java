@@ -26,10 +26,10 @@ public class FlyItem extends AbstractItem {
     public ItemProvider getItemProvider() {
         if (vehicleEntity.canBecomePilot(player)) {
             return new ItemBuilder(Material.LIME_CONCRETE)
-                    .setDisplayName(Utils.formatMiniMessage("<color:00ff00>Fly"));
+                    .setDisplayName(Utils.formatMiniMessage("<color:#00ff00>Fly"));
         }
         return new ItemBuilder(Material.RED_CONCRETE)
-                .setDisplayName(Utils.formatMiniMessage("<color:ff0000>Fly"));
+                .setDisplayName(Utils.formatMiniMessage("<color:#ff0000>Fly"));
     }
 
     @Override

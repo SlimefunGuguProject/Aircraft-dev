@@ -26,10 +26,10 @@ public class PickUpItem extends AbstractItem {
     public ItemProvider getItemProvider() {
         if (vehicleEntity.canPickUp(player)) {
             return new ItemBuilder(Material.LIME_CONCRETE)
-                    .setDisplayName(Utils.formatMiniMessage("<color:00ff00>Pick Up"));
+                    .setDisplayName(Utils.formatMiniMessage("<color:#00ff00>Pick Up"));
         }
         return new ItemBuilder(Material.RED_CONCRETE)
-                    .setDisplayName(Utils.formatMiniMessage("<color:ff0000>Pick Up"));
+                    .setDisplayName(Utils.formatMiniMessage("<color:#ff0000>Pick Up"));
     }
 
     @Override

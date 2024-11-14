@@ -17,14 +17,14 @@ public final class ResourcesGui {
     private ResourcesGui() {}
 
     private static final int RESOURCE_BARS = 20;
-    private static final String GRAY = "<color:777777>";
-    private static final String EMPTY_BAR = "<color:444444>";
-    private static final String INFO = "<color:aaaaaa>";
+    private static final String GRAY = "<color:#777777>";
+    private static final String EMPTY_BAR = "<color:#444444>";
+    private static final String INFO = "<color:#aaaaaa>";
 
     private static String resourceColor(@NotNull VehicleResource resource) {
         return switch (resource.type()) {
-            case VehicleResource.ResourceType.COMBUSTIBLE -> "<color:e08523>";
-            case VehicleResource.ResourceType.WATER -> "<color:237aed>";
+            case VehicleResource.ResourceType.COMBUSTIBLE -> "<color:#e08523>";
+            case VehicleResource.ResourceType.WATER -> "<color:#237aed>";
         };
     }
 
@@ -39,7 +39,7 @@ public final class ResourcesGui {
         double capacity = resource.capacity();
         int green = (int) (255 * remaining / capacity);
         int red = 255 - green;
-        return GRAY + "(<color:" + red + green + "00>" + vehicleEntity.remainingResource(name) + GRAY + "/" + "<color:ffffff>" + capacity + GRAY + ")";
+        return GRAY + "(<color:#" + red + green + "00>" + vehicleEntity.remainingResource(name) + GRAY + "/" + "<color:ffffff>" + capacity + GRAY + ")";
     }
 
     private static @NotNull Item item(@NotNull VehicleEntity vehicleEntity, @NotNull String name, @NotNull VehicleResource resource) {
