@@ -24,7 +24,7 @@ public final class MainGui {
                 .addIngredient('i', vehicleEntity.schema().getItemStack())
                 .addIngredient('1', () -> new FlyItem(vehicleEntity, player))
                 .addIngredient('2', () -> new PickUpItem(vehicleEntity, player))
-                .addIngredient('3', () -> new FuelItem(vehicleEntity))
+                .addIngredient('3', () -> new ResourceItem(vehicleEntity))
                 .build();
 
         Window.single()
