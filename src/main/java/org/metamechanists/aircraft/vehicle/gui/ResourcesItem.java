@@ -1,4 +1,4 @@
-package org.metamechanists.aircraft.vehicle.gui.main;
+package org.metamechanists.aircraft.vehicle.gui;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,7 +15,7 @@ import xyz.xenondevs.invui.item.impl.AbstractItem;
 import java.util.Map;
 
 
-public class ResourceItem extends AbstractItem {
+public class ResourcesItem extends AbstractItem {
     private final VehicleEntity vehicleEntity;
 
     private static final int RESOURCE_BARS = 20;
@@ -42,7 +42,7 @@ public class ResourceItem extends AbstractItem {
         int green = (int) (255 * remaining / capacity);
         int red = 255 - green;
         String color = "<color:#" + Integer.toHexString(red) + Integer.toHexString(green) + "00>";
-        return GRAY + "(" + color + vehicleEntity.remainingResource(name) + GRAY + "/" + "<color:#ffffff>" + capacity + GRAY + ")";
+        return GRAY + "(" + color + Math.round(vehicleEntity.remainingResource(name)) + GRAY + "/" + "<color:#ffffff>" + Math.round(capacity) + GRAY + ")";
     }
 
     private static @NotNull String resourceLoreLine(@NotNull VehicleEntity vehicleEntity, @NotNull String name, @NotNull VehicleResource resource) {
@@ -59,7 +59,7 @@ public class ResourceItem extends AbstractItem {
                 + resourceRemaining(vehicleEntity, name, resource));
     }
 
-    public ResourceItem(@NotNull VehicleEntity vehicleEntity) {
+    public ResourcesItem(@NotNull VehicleEntity vehicleEntity) {
         super();
         this.vehicleEntity = vehicleEntity;
     }
@@ -73,7 +73,7 @@ public class ResourceItem extends AbstractItem {
             itemBuilder.addLoreLines(resourceLoreLine(vehicleEntity, pair.getKey(), pair.getValue()));
         }
 
-        itemBuilder.addLoreLines(INFO + "Refuel using a Maintenance Station.");
+//        itemBuilder.addLoreLines(resourceLoreLine(INFO + "Refuel using a Maintenance Station."));
 
         return itemBuilder;
     }

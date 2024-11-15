@@ -1,4 +1,4 @@
-package org.metamechanists.aircraft.vehicle.gui.main;
+package org.metamechanists.aircraft.vehicle.gui;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,7 +24,7 @@ public final class MainGui {
                 .addIngredient('i', vehicleEntity.schema().getItemStack())
                 .addIngredient('1', () -> new FlyItem(vehicleEntity, player))
                 .addIngredient('2', () -> new PickUpItem(vehicleEntity, player))
-                .addIngredient('3', () -> new ResourceItem(vehicleEntity))
+                .addIngredient('3', () -> new ResourcesItem(vehicleEntity))
                 .build();
 
         Window.single()
