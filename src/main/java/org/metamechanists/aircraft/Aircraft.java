@@ -28,6 +28,8 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon, Kinemat
     @Override
     public void onEnable() {
         instance = this;
+        saveResource("vehicles/crude_airplane.yml", false);
+        saveResource("vehicles/crude_airship.yml", false);
         Items.init();
         Hider.init();
         Protector.init();

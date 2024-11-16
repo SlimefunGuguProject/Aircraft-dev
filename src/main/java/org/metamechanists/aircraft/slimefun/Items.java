@@ -87,10 +87,10 @@ public final class Items {
             new ItemStack[]{},
             "STRAFE_RIGHT");
 
-    private static final SlimefunItemStack CRUDE_AIRCRAFT_STACK  = new SlimefunItemStack(
-            "AIRCRAFT_CRUDE_AIRCRAFT",
+    private static final SlimefunItemStack CRUDE_AIRPLANE_STACK = new SlimefunItemStack(
+            "AIRCRAFT_CRUDE_AIRPLANE",
             new ItemStackBuilder(Material.FEATHER)
-                    .name("Crude Aircraft")
+                    .name("Crude Airplane")
                     .loreLine(ItemStackBuilder.VEHICLE)
                     .loreLine("")
                     .loreLine("<color:gray>Slow and inefficient, but at least it flies")
@@ -126,10 +126,10 @@ public final class Items {
                     .build()
             );
 
-    private static @NotNull VehicleItem crudeAircraft(VehicleEntitySchema schema) {
+    private static @NotNull VehicleItem crudeAirplane(VehicleEntitySchema schema) {
         return new VehicleItem(
-                "AIRCRAFT_CRUDE_AIRCRAFT",
-                CRUDE_AIRCRAFT_STACK,
+                "AIRCRAFT_CRUDE_AIRPLANE",
+                CRUDE_AIRPLANE_STACK,
                 schema,
                 AIRCRAFT_GROUP,
                 RecipeType.NULL,
@@ -173,9 +173,9 @@ public final class Items {
     }
 
     private static void initAircraftItems(SlimefunAddon addon) {
-        VehicleEntitySchema crudeAircraftSchema = loadVehicle("crude_aircraft", CRUDE_AIRCRAFT_STACK);
-        if (crudeAircraftSchema != null) {
-            crudeAircraft(crudeAircraftSchema).register(addon);
+        VehicleEntitySchema crudeAirplaneSchema = loadVehicle("crude_airplane", CRUDE_AIRPLANE_STACK);
+        if (crudeAirplaneSchema != null) {
+            crudeAirplane(crudeAirplaneSchema).register(addon);
         }
 
         VehicleEntitySchema crudeAirshipSchema = loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK);
@@ -193,7 +193,7 @@ public final class Items {
         }
 
         //noinspection DataFlowIssue
-        loadVehicle("crude_aircraft", CRUDE_AIRCRAFT_STACK).register(Aircraft.getInstance());
+        loadVehicle("crude_airplane", CRUDE_AIRPLANE_STACK).register(Aircraft.getInstance());
         //noinspection DataFlowIssue
         loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK).register(Aircraft.getInstance());
     }
