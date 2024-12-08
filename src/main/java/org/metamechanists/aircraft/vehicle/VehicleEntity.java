@@ -146,8 +146,8 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         writer.set("angularVelocity", angularVelocity);
         writer.set("interaction", interactor);
         writer.set("components", components);
-        writer.set("itemDisplays", new HashSet<>());
-        writer.set("textDisplays", new HashSet<>());
+        writer.set("itemDisplays", itemDisplays);
+        writer.set("textDisplays", textDisplays);
         writer.set("horizon", horizon);
         writer.set("compass", compass);
         writer.set("bottomPanel", bottomPanel);
