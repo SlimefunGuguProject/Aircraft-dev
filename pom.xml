@@ -130,7 +130,7 @@
         <dependency>
             <groupId>org.metamechanists</groupId>
             <artifactId>KinematicCore</artifactId>
-            <version>32</version>
+            <version>33</version>
             <scope>provided</scope>
         </dependency>
 

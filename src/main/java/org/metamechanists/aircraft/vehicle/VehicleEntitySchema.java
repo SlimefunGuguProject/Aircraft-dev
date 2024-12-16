@@ -15,6 +15,7 @@ import org.metamechanists.aircraft.vehicle.component.hud.horizon.Horizon;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +43,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     private final @Nullable Horizon.HorizonSchema horizonSchema;
     private final @Nullable Compass.CompassSchema compassSchema;
     private final @Nullable BottomPanel.BottomPanelSchema bottomPanelSchema;
+    private final List<String> guiStructure;
     private final Map<String, VehicleComponent.VehicleComponentSchema> components;
     private final KinematicEntitySchema interactorSchema;
 
@@ -112,6 +114,9 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         } else {
             bottomPanelSchema = new BottomPanel.BottomPanelSchema(id + "_bottomPanel", bottomPanelSection);
         }
+
+        // GUI structure
+        guiStructure = hudTraverser.get("gui");
 
         // Components
         for (YamlTraverser componentSectionTraverser : traverser.getSection("components").getSections()) {

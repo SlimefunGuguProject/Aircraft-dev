@@ -13,24 +13,23 @@ public final class MainGui {
     private MainGui() {}
 
     public static void show(@NotNull VehicleEntity vehicleEntity, @NotNull Player player) {
-        Gui gui = Gui.normal()
-                .setStructure(
-                        "# # # # # # # # #",
-                        "# # # # i # # # #",
-                        "# # # # # # # # #",
-                        "# 1 2 3 # # # # #",
-                        "# # # # # # # # #")
+        Gui.Builder.Normal gui = Gui.normal()
+                .setStructure(vehicleEntity.schema().getGuiStructure().toArray(new String[]{}))
                 .addIngredient('#', new ItemBuilder(Material.GRAY_STAINED_GLASS_PANE))
                 .addIngredient('i', vehicleEntity.schema().getItemStack())
-                .addIngredient('1', () -> new FlyItem(vehicleEntity, player))
-                .addIngredient('2', () -> new PickUpItem(vehicleEntity, player))
-                .addIngredient('3', () -> new ResourcesItem(vehicleEntity))
-                .build();
+                .addIngredient('f', () -> new FlyItem(vehicleEntity, player))
+                .addIngredient('p', () -> new PickUpItem(vehicleEntity, player));
+
+        int i = 0;
+        for (String resourceName : vehicleEntity.getResources().keySet()) {
+            gui.addIngredient(String.valueOf(i).charAt(0), () -> new ResourcesItem(vehicleEntity, resourceName));
+            i++;
+        }
 
         Window.single()
                 .setViewer(player)
                 .setTitle(vehicleEntity.schema().getItemStack().getItemMeta().getDisplayName())
-                .setGui(gui)
+                .setGui(gui.build())
                 .build()
                 .open();
         // customise, resources, passengers, cargo, fly, permissions, pick up,

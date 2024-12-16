@@ -2,6 +2,7 @@ package org.metamechanists.aircraft.vehicle;
 
 import lombok.Getter;
 import lombok.experimental.Accessors;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
@@ -16,7 +17,21 @@ public class VehicleResource {
 
     public enum ResourceType {
         COMBUSTIBLE,
-        WATER
+        WATER;
+
+        public String color() {
+            return switch (this) {
+                case COMBUSTIBLE -> "<color:#e08523>";
+                case WATER -> "<color:#237aed>";
+            };
+        }
+
+        public Material icon() {
+            return switch (this) {
+                case COMBUSTIBLE -> Material.CHARCOAL;
+                case WATER -> Material.WATER;
+            };
+        }
     }
 
     @SuppressWarnings("DataFlowIssue")
