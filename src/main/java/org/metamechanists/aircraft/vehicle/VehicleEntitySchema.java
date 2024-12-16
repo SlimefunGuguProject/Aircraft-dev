@@ -116,7 +116,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         }
 
         // GUI structure
-        guiStructure = hudTraverser.get("gui");
+        guiStructure = traverser.get("gui");
 
         // Components
         for (YamlTraverser componentSectionTraverser : traverser.getSection("components").getSections()) {
