@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Keys;
+import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.VehicleEntitySchema;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.kinematiccore.api.item.ItemStackBuilder;
@@ -201,12 +202,13 @@ public final class Items {
         if (crudeAirplaneSchema != null) {
             SlimefunItem newItem = crudeAirplane(crudeAirplaneSchema);
             Slimefun.getRegistry().getSlimefunItemIds().put(newItem.getId(), newItem);
+            ((VehicleItem) Slimefun.getRegistry().getSlimefunItemIds().get(newItem.getId())).schema = crudeAirplaneSchema;
         }
 
         VehicleEntitySchema crudeAirshipSchema = loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK);
         if (crudeAirshipSchema != null) {
             SlimefunItem newItem = crudeAirship(crudeAirshipSchema);
-            Slimefun.getRegistry().getSlimefunItemIds().put(newItem.getId(), newItem);
+            ((VehicleItem) Slimefun.getRegistry().getSlimefunItemIds().get(newItem.getId())).schema = crudeAirshipSchema;
         }
     }
 
