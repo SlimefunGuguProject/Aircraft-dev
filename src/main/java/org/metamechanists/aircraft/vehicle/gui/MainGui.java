@@ -3,6 +3,7 @@ package org.metamechanists.aircraft.vehicle.gui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
@@ -21,6 +22,7 @@ public final class MainGui {
                 .addIngredient('p', () -> new PickUpItem(vehicleEntity, player));
 
         for (String resourceName : vehicleEntity.getResources().keySet()) {
+            Aircraft.getInstance().getLogger().severe("" + Character.toUpperCase(resourceName.charAt(0)));
             gui.addIngredient(Character.toUpperCase(resourceName.charAt(0)), () -> new ResourcesItem(vehicleEntity, resourceName));
         }
 
