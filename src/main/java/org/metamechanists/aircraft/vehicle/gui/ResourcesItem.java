@@ -74,6 +74,8 @@ public class ResourcesItem extends AbstractItem {
         for (Map.Entry<Material, Double> entry : acceptedFuels.entrySet()) {
             if (inventoryClickEvent.getCursor().getType() == entry.getKey()) {
                 inventoryClickEvent.getCursor().subtract(1);
+                //noinspection DataFlowIssue
+                vehicleEntity.getResources().compute(resourceName, (s, amount) -> amount + entry.getValue());
                 break;
             }
         }

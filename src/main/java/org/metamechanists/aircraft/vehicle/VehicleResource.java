@@ -55,7 +55,7 @@ public class VehicleResource {
         capacity = traverser.get("capacity");
         passiveEngineDrain = traverser.get("passiveEngineDrain");
         throttleDrain = traverser.get("throttleDrain");
-        guiKey = traverser.get("guiKey");
+        guiKey = traverser.getChar("guiKey");
     }
 
     public double drainedThisTick(@NotNull VehicleEntity vehicleEntity) {
