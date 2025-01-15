@@ -193,7 +193,7 @@ public final class Items {
             }
         }
 
-        Aircraft.getInstance().getLogger().severe(KinematicEntitySchema.registeredSchemasByAddon(Aircraft.getInstance()).toString());
+        Aircraft.getInstance().getLogger().severe(KinematicEntitySchema.registeredSchemas().toString());
 
         //noinspection DataFlowIssue
         loadVehicle("crude_airplane", CRUDE_AIRPLANE_STACK).register(Aircraft.getInstance());
