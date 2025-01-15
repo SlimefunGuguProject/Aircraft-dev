@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
+import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.VehicleResource;
 import org.metamechanists.kinematiccore.api.item.ItemStackBuilder;
@@ -16,7 +17,7 @@ import java.util.Map;
 
 import static org.metamechanists.aircraft.utils.Utils.formatMiniMessage;
 
-public class ResourcesItem extends AbstractItem {
+public class ResourceItem extends AbstractItem {
     private final VehicleEntity vehicleEntity;
     private final String resourceName;
 
@@ -25,19 +26,29 @@ public class ResourcesItem extends AbstractItem {
     private static final String EMPTY_BAR = "<color:#444444>";
     private static final String INFO = "<color:#aaaaaa>";
 
+    private static @NotNull String resourceAmountColor(@NotNull VehicleEntity vehicleEntity, @NotNull String name, @NotNull VehicleResource resource) {
+        int green = (int) (255 * vehicleEntity.remainingResource(name) / resource.capacity());
+        Aircraft.getInstance().getLogger().severe(String.valueOf(green));
+        int red = 255 - green;
+        return "<color:#" + Integer.toHexString(red) + Integer.toHexString(green) + "00>";
+    }
+
     private static @NotNull String resourceBar(@NotNull VehicleEntity vehicleEntity, @NotNull String name, @NotNull VehicleResource resource) {
         int filledBars = (int) (RESOURCE_BARS * vehicleEntity.remainingResource(name) / resource.capacity());
         int emptyBars = RESOURCE_BARS - filledBars;
-        return GRAY + "[" + resource.type().color() + "|".repeat(filledBars) + INFO + "|".repeat(emptyBars) + GRAY + "]";
+        return GRAY + "["
+                + resourceAmountColor(vehicleEntity, name, resource) + "|".repeat(filledBars)
+                + INFO + "|".repeat(emptyBars)
+                + GRAY + "]";
     }
 
     private static @NotNull String resourceRemaining(@NotNull VehicleEntity vehicleEntity, @NotNull String name, @NotNull VehicleResource resource) {
-        double remaining = vehicleEntity.remainingResource(name);
-        double capacity = resource.capacity();
-        int green = (int) (255 * remaining / capacity);
-        int red = 255 - green;
-        String color = "<color:#" + Integer.toHexString(red) + Integer.toHexString(green) + "00>";
-        return GRAY + "(" + color + Math.round(vehicleEntity.remainingResource(name)) + GRAY + "/" + "<color:#ffffff>" + Math.round(capacity) + GRAY + ")";
+        return GRAY + "("
+                + resourceAmountColor(vehicleEntity, name, resource)
+                + Math.round(vehicleEntity.remainingResource(name))
+                + GRAY + "/"
+                + "<color:#ffffff>" + Math.round(resource.capacity())
+                + GRAY + ")";
     }
 
     private static @NotNull String resourceItemName(@NotNull VehicleEntity vehicleEntity, @NotNull String name, @NotNull VehicleResource resource) {
@@ -54,7 +65,7 @@ public class ResourcesItem extends AbstractItem {
                 + resourceRemaining(vehicleEntity, name, resource));
     }
 
-    public ResourcesItem(@NotNull VehicleEntity vehicleEntity, String resourceName) {
+    public ResourceItem(@NotNull VehicleEntity vehicleEntity, String resourceName) {
         super();
         this.vehicleEntity = vehicleEntity;
         this.resourceName = resourceName;

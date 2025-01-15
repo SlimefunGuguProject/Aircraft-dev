@@ -3,7 +3,6 @@ package org.metamechanists.aircraft.vehicle.gui;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import xyz.xenondevs.invui.gui.Gui;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
@@ -23,7 +22,7 @@ public final class MainGui {
 
         for (String resourceName : vehicleEntity.getResources().keySet()) {
             char key = vehicleEntity.schema().getResources().get(resourceName).guiKey();
-            gui.addIngredient(key, () -> new ResourcesItem(vehicleEntity, resourceName));
+            gui.addIngredient(key, () -> new ResourceItem(vehicleEntity, resourceName));
         }
 
         Window.single()
