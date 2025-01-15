@@ -22,8 +22,8 @@ public final class MainGui {
                 .addIngredient('p', () -> new PickUpItem(vehicleEntity, player));
 
         for (String resourceName : vehicleEntity.getResources().keySet()) {
-            Aircraft.getInstance().getLogger().severe("" + Character.toUpperCase(resourceName.charAt(0)));
-            gui.addIngredient(Character.toUpperCase(resourceName.charAt(0)), () -> new ResourcesItem(vehicleEntity, resourceName));
+            char key = vehicleEntity.schema().getResources().get(resourceName).guiKey();
+            gui.addIngredient(key, () -> new ResourcesItem(vehicleEntity, resourceName));
         }
 
         Window.single()

@@ -16,6 +16,7 @@ public class VehicleResource {
     private final double passiveEngineDrain;
     private final double throttleDrain;
     private final ResourceType type;
+    private final char guiKey;
 
     public enum ResourceType {
         COMBUSTIBLE,
@@ -54,6 +55,7 @@ public class VehicleResource {
         capacity = traverser.get("capacity");
         passiveEngineDrain = traverser.get("passiveEngineDrain");
         throttleDrain = traverser.get("throttleDrain");
+        guiKey = traverser.get("guiKey");
     }
 
     public double drainedThisTick(@NotNull VehicleEntity vehicleEntity) {
