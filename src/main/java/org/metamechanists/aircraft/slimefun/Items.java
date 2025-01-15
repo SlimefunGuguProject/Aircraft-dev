@@ -195,10 +195,8 @@ public final class Items {
 
         Aircraft.getInstance().getLogger().severe(KinematicEntitySchema.registeredSchemas().toString());
 
-        //noinspection DataFlowIssue
-        loadVehicle("crude_airplane", CRUDE_AIRPLANE_STACK).register(Aircraft.getInstance());
-        //noinspection DataFlowIssue
-        loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK).register(Aircraft.getInstance());
+        loadVehicle("crude_airplane", CRUDE_AIRPLANE_STACK);
+        loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK);
     }
 
     private static @NotNull String keyValueUnit(String key, String value, String unit) {
