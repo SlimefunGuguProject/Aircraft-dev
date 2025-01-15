@@ -35,14 +35,14 @@ public class VehicleResource {
             };
         }
 
-        public Map<Material, Integer> acceptedFuels() {
+        public Map<Material, Double> acceptedFuels() {
             return switch (this) {
                 case COMBUSTIBLE -> Map.of(
-                        Material.CHARCOAL, 50,
-                        Material.COAL, 50
+                        Material.CHARCOAL, 50.0,
+                        Material.COAL, 50.0
                 );
                 case WATER -> Map.of(
-                    Material.WATER_BUCKET, 1000
+                    Material.WATER_BUCKET, 1000.0
                 );
             };
         }

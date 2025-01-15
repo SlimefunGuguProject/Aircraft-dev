@@ -15,7 +15,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.utils.Keys;
-import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.VehicleEntitySchema;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntitySchema;
 import org.metamechanists.kinematiccore.api.item.ItemStackBuilder;

@@ -20,10 +20,8 @@ public final class MainGui {
                 .addIngredient('f', () -> new FlyItem(vehicleEntity, player))
                 .addIngredient('p', () -> new PickUpItem(vehicleEntity, player));
 
-        int i = 0;
         for (String resourceName : vehicleEntity.getResources().keySet()) {
-            gui.addIngredient(String.valueOf(i).charAt(0), () -> new ResourcesItem(vehicleEntity, resourceName));
-            i++;
+            gui.addIngredient(Character.toUpperCase(resourceName.charAt(0)), () -> new ResourcesItem(vehicleEntity, resourceName));
         }
 
         Window.single()

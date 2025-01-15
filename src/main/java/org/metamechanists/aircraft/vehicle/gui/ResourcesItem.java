@@ -1,5 +1,6 @@
 package org.metamechanists.aircraft.vehicle.gui;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -10,6 +11,8 @@ import org.metamechanists.kinematiccore.api.item.ItemStackBuilder;
 import xyz.xenondevs.invui.item.ItemProvider;
 import xyz.xenondevs.invui.item.builder.ItemBuilder;
 import xyz.xenondevs.invui.item.impl.AbstractItem;
+
+import java.util.Map;
 
 import static org.metamechanists.aircraft.utils.Utils.formatMiniMessage;
 
@@ -69,6 +72,8 @@ public class ResourcesItem extends AbstractItem {
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
         inventoryClickEvent.getCursor().subtract(1);
 
-        vehicleEntity.schema().getResources().get(resourceName).type().acceptedFuels();
+        for (Map.Entry<Material, Double> entry : vehicleEntity.schema().getResources().get(resourceName).type().acceptedFuels().entrySet()) {
+
+        }
     }
 }
