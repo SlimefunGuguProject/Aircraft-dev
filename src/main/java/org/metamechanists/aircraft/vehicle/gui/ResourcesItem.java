@@ -66,5 +66,9 @@ public class ResourcesItem extends AbstractItem {
     }
 
     @Override
-    public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {}
+    public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
+        inventoryClickEvent.getCursor().subtract(1);
+
+        vehicleEntity.schema().getResources().get(resourceName).type().acceptedFuels();
+    }
 }

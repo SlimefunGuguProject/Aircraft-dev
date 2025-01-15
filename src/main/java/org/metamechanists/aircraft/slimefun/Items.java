@@ -186,6 +186,7 @@ public final class Items {
 
     public static void reload() {
         for (String id : KinematicEntitySchema.registeredSchemasByAddon(Aircraft.getInstance())) {
+            Aircraft.getInstance().getLogger().info("bruh");
             KinematicEntitySchema schema = KinematicEntitySchema.get(id);
             if (schema != null) {
                 schema.unregister();

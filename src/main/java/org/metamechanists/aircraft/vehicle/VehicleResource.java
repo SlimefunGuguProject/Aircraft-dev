@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.metalib.yaml.YamlTraverser;
 
+import java.util.Map;
+
 
 @Accessors(fluent = true)
 @Getter
@@ -30,6 +32,18 @@ public class VehicleResource {
             return switch (this) {
                 case COMBUSTIBLE -> Material.CHARCOAL;
                 case WATER -> Material.WATER;
+            };
+        }
+
+        public Map<Material, Integer> acceptedFuels() {
+            return switch (this) {
+                case COMBUSTIBLE -> Map.of(
+                        Material.CHARCOAL, 50,
+                        Material.COAL, 50
+                );
+                case WATER -> Map.of(
+                    Material.WATER_BUCKET, 1000
+                );
             };
         }
     }
