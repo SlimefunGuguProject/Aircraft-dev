@@ -81,7 +81,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
         signalsThisTick = new ArrayList<>();
         resources = new HashMap<>();
         for (Map.Entry<String, VehicleResource> pair : schema.getResources().entrySet()) {
-            resources.put(pair.getKey(), pair.getValue().capacity());
+            resources.put(pair.getKey(), 0.0);
         }
         velocity = new Vector3d();
         rotation = new Quaterniond().rotationY(Math.toRadians(-90.0-player.getEyeLocation().getYaw()));
