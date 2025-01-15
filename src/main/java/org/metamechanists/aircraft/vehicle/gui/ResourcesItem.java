@@ -70,12 +70,17 @@ public class ResourcesItem extends AbstractItem {
 
     @Override
     public void handleClick(@NotNull ClickType clickType, @NotNull Player player, @NotNull InventoryClickEvent inventoryClickEvent) {
-        Map<Material, Double> acceptedFuels = vehicleEntity.schema().getResources().get(resourceName).type().acceptedFuels();
-        for (Map.Entry<Material, Double> entry : acceptedFuels.entrySet()) {
+        VehicleResource resource = vehicleEntity.schema().getResources().get(resourceName);
+        for (Map.Entry<Material, Double> entry : resource.type().acceptedFuels().entrySet()) {
+
             if (inventoryClickEvent.getCursor().getType() == entry.getKey()) {
-                inventoryClickEvent.getCursor().subtract(1);
-                //noinspection DataFlowIssue
-                vehicleEntity.getResources().compute(resourceName, (s, amount) -> amount + entry.getValue());
+                double newAmount = vehicleEntity.getResources().get(resourceName) + entry.getValue();
+
+                if (newAmount <= resource.capacity()) {
+                    inventoryClickEvent.getCursor().subtract(1);
+                    vehicleEntity.getResources().put(resourceName, newAmount);
+                }
+
                 break;
             }
         }

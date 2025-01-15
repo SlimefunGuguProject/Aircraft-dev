@@ -32,7 +32,7 @@ public class VehicleResource {
         public Material icon() {
             return switch (this) {
                 case COMBUSTIBLE -> Material.CHARCOAL;
-                case WATER -> Material.WATER;
+                case WATER -> Material.WATER_BUCKET;
             };
         }
 
