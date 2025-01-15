@@ -3,8 +3,10 @@ package org.metamechanists.aircraft.slimefun;
 import io.github.bakedlibs.dough.items.CustomItemStack;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.ItemGroup;
+import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
+import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -193,10 +195,19 @@ public final class Items {
             }
         }
 
-        Aircraft.getInstance().getLogger().severe(KinematicEntitySchema.registeredSchemas().toString());
+        SlimefunAddon addon = Aircraft.getInstance();
 
-        loadVehicle("crude_airplane", CRUDE_AIRPLANE_STACK);
-        loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK);
+        VehicleEntitySchema crudeAirplaneSchema = loadVehicle("crude_airplane", CRUDE_AIRPLANE_STACK);
+        if (crudeAirplaneSchema != null) {
+            SlimefunItem newItem = crudeAirplane(crudeAirplaneSchema);
+            Slimefun.getRegistry().getSlimefunItemIds().put(newItem.getId(), newItem);
+        }
+
+        VehicleEntitySchema crudeAirshipSchema = loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK);
+        if (crudeAirshipSchema != null) {
+            SlimefunItem newItem = crudeAirship(crudeAirshipSchema);
+            Slimefun.getRegistry().getSlimefunItemIds().put(newItem.getId(), newItem);
+        }
     }
 
     private static @NotNull String keyValueUnit(String key, String value, String unit) {
