@@ -34,18 +34,15 @@ public final class MountHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     private static void onMount(@NotNull EntityMountEvent e) {
-        Bukkit.getLogger().severe("bruh1");
         Entity maybePlayer = e.getEntity();
         if (!(maybePlayer instanceof Player player)) {
             return;
         }
 
-        Bukkit.getLogger().severe("bruh2");
         if (!(KinematicEntity.get(e.getMount().getUniqueId()) instanceof VehicleEntity vehicleEntity)) {
             return;
         }
 
-        Bukkit.getLogger().severe("bruh3");
         vehicleEntity.onMount(player);
     }
 }

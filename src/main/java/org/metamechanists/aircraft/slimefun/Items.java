@@ -200,7 +200,6 @@ public final class Items {
         VehicleEntitySchema crudeAirplaneSchema = loadVehicle("crude_airplane", CRUDE_AIRPLANE_STACK);
         if (crudeAirplaneSchema != null) {
             SlimefunItem newItem = crudeAirplane(crudeAirplaneSchema);
-            Slimefun.getRegistry().getSlimefunItemIds().put(newItem.getId(), newItem);
             ((VehicleItem) Slimefun.getRegistry().getSlimefunItemIds().get(newItem.getId())).schema = crudeAirplaneSchema;
         }
 
