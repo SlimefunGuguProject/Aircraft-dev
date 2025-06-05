@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.EntityMountEvent;
@@ -31,7 +32,7 @@ public final class MountHandler implements Listener {
         vehicleEntity.onUnmount(player);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private static void onMount(@NotNull EntityMountEvent e) {
         Entity maybePlayer = e.getEntity();
         if (!(maybePlayer instanceof Player player)) {

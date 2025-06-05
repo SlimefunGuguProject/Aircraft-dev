@@ -545,7 +545,6 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
     public void onMount(@NotNull Player player) {
         pilot = player.getUniqueId();
         player.setInvisible(true);
-        entity().addPassenger(player);
     }
 
     public void onUnmount(@NotNull Player player) {
