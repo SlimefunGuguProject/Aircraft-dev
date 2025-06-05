@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.VehicleResource;
@@ -88,6 +89,9 @@ public class ResourceItem extends AbstractItem {
                 if (newAmount <= resource.capacity()) {
                     inventoryClickEvent.getCursor().subtract(1);
                     vehicleEntity.getResources().put(resourceName, newAmount);
+                    if (inventoryClickEvent.getCursor().getType() == Material.WATER_BUCKET) {
+                        player.getInventory().addItem(new ItemStack(Material.BUCKET));
+                    }
                     notifyWindows();
                 }
 

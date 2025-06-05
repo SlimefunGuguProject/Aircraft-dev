@@ -30,7 +30,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
     private final double angularVelocityDamping;
     private final Vector3d engineLocation;
     private final Vector3d weightLocation;
-    private final double engineForce;
+    private final Vector3d engineForce;
     private final List<String> engineFuels;
     private final double frictionCoefficient;
     private final double steeringSpeed;
@@ -80,7 +80,7 @@ public class VehicleEntitySchema extends KinematicEntitySchema {
         // Engine
         YamlTraverser engine = traverser.getSection("engine");
         engineLocation = engine.getVector3d("location");
-        engineForce = engine.get("force");
+        engineForce = engine.getVector3d("force");
         engineFuels = engine.get("fuels");
 
         // Resources

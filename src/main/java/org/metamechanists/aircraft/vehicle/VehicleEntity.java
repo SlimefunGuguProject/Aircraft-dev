@@ -447,7 +447,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
     private @NotNull SpatialForce getEngineForce() {
         double throttleFraction = throttle / 100.0;
-        Vector3d force = new Vector3d(throttleFraction * schema().getEngineForce(), 0, 0);
+        Vector3d force = new Vector3d(schema().getEngineForce()).mul(throttleFraction);
         Vector3d location = schema().getEngineLocation();
         return new SpatialForce(SpatialForceType.ENGINE, force, location);
     }
