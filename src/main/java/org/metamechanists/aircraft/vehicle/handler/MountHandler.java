@@ -34,10 +34,7 @@ public final class MountHandler implements Listener {
         vehicleEntity.onUnmount(player);
     }
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private static void onMount(@NotNull EntityMountEvent e) {
-
-
         Entity maybePlayer = e.getEntity();
         if (!(maybePlayer instanceof Player player)) {
             return;
