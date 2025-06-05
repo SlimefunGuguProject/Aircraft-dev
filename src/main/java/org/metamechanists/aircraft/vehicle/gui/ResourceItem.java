@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.jetbrains.annotations.NotNull;
-import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.aircraft.vehicle.VehicleResource;
 import org.metamechanists.kinematiccore.api.item.ItemStackBuilder;
@@ -26,32 +25,31 @@ public class ResourceItem extends AbstractItem {
     private static final String EMPTY_BAR = "<color:#444444>";
     private static final String INFO = "<color:#aaaaaa>";
 
-    private static @NotNull String resourceAmountColor(@NotNull VehicleEntity vehicleEntity, @NotNull String name, @NotNull VehicleResource resource) {
+    private @NotNull String resourceAmountColor(@NotNull String name, @NotNull VehicleResource resource) {
         int green = (int) (255 * vehicleEntity.remainingResource(name) / resource.capacity());
-        Aircraft.getInstance().getLogger().severe(String.valueOf(green));
         int red = 255 - green;
         return "<color:#" + Integer.toHexString(red) + Integer.toHexString(green) + "00>";
     }
 
-    private static @NotNull String resourceBar(@NotNull VehicleEntity vehicleEntity, @NotNull String name, @NotNull VehicleResource resource) {
+    private @NotNull String resourceBar(@NotNull String name, @NotNull VehicleResource resource) {
         int filledBars = (int) (RESOURCE_BARS * vehicleEntity.remainingResource(name) / resource.capacity());
         int emptyBars = RESOURCE_BARS - filledBars;
         return GRAY + "["
-                + resourceAmountColor(vehicleEntity, name, resource) + "|".repeat(filledBars)
+                + resourceAmountColor(name, resource) + "|".repeat(filledBars)
                 + INFO + "|".repeat(emptyBars)
                 + GRAY + "]";
     }
 
-    private static @NotNull String resourceRemaining(@NotNull VehicleEntity vehicleEntity, @NotNull String name, @NotNull VehicleResource resource) {
+    private @NotNull String resourceRemaining(@NotNull String name, @NotNull VehicleResource resource) {
         return GRAY + "("
-                + resourceAmountColor(vehicleEntity, name, resource)
+                + resourceAmountColor(name, resource)
                 + Math.round(vehicleEntity.remainingResource(name))
                 + GRAY + "/"
                 + "<color:#ffffff>" + Math.round(resource.capacity())
                 + GRAY + ")";
     }
 
-    private static @NotNull String resourceItemName(@NotNull VehicleEntity vehicleEntity, @NotNull String name, @NotNull VehicleResource resource) {
+    private @NotNull String resourceItemName(@NotNull String name, @NotNull VehicleResource resource) {
         String title = switch (resource.type()) {
             case VehicleResource.ResourceType.COMBUSTIBLE -> "Fuel";
             case VehicleResource.ResourceType.WATER -> "Water";
@@ -60,9 +58,9 @@ public class ResourceItem extends AbstractItem {
         return formatMiniMessage(resource.type().color()
                 + title
                 + " "
-                + resourceBar(vehicleEntity, name, resource)
+                + resourceBar(name, resource)
                 + " "
-                + resourceRemaining(vehicleEntity, name, resource));
+                + resourceRemaining(name, resource));
     }
 
     public ResourceItem(@NotNull VehicleEntity vehicleEntity, String resourceName) {
@@ -75,7 +73,7 @@ public class ResourceItem extends AbstractItem {
     public ItemProvider getItemProvider() {
         VehicleResource resource = vehicleEntity.schema().getResources().get(resourceName);
         return new ItemBuilder(resource.type().icon())
-                .setDisplayName(resourceItemName(vehicleEntity, resourceName, resource))
+                .setDisplayName(resourceItemName(resourceName, resource))
                 .addLoreLines(formatMiniMessage("<color:#999999>" + ItemStackBuilder.RIGHT_ARROW + " Click to refuel"));
     }
 
@@ -90,6 +88,7 @@ public class ResourceItem extends AbstractItem {
                 if (newAmount <= resource.capacity()) {
                     inventoryClickEvent.getCursor().subtract(1);
                     vehicleEntity.getResources().put(resourceName, newAmount);
+                    notifyWindows();
                 }
 
                 break;
