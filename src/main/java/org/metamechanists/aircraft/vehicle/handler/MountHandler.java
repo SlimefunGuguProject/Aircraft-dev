@@ -13,15 +13,13 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 
-import java.util.Arrays;
-
 
 public final class MountHandler implements Listener {
     public static void init() {
         Bukkit.getServer().getPluginManager().registerEvents(new MountHandler(), Aircraft.getInstance());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     private static void onUnmount(@NotNull EntityDismountEvent e) {
         if (!(e.getEntity() instanceof Player player)) {
             return;
@@ -34,24 +32,20 @@ public final class MountHandler implements Listener {
         vehicleEntity.onUnmount(player);
     }
 
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     private static void onMount(@NotNull EntityMountEvent e) {
+        Bukkit.getLogger().severe("bruh1");
         Entity maybePlayer = e.getEntity();
         if (!(maybePlayer instanceof Player player)) {
             return;
         }
 
+        Bukkit.getLogger().severe("bruh2");
         if (!(KinematicEntity.get(e.getMount().getUniqueId()) instanceof VehicleEntity vehicleEntity)) {
             return;
         }
 
-        new EntityMountEvent(e.getEntity(), e.getMount()) {
-            @Override
-            public void setCancelled(boolean cancel) {
-                Bukkit.getLogger().severe(Arrays.toString(Thread.currentThread().getStackTrace()));
-                super.setCancelled(cancel);
-            }
-        }.callEvent();
-
+        Bukkit.getLogger().severe("bruh3");
         vehicleEntity.onMount(player);
     }
 }
