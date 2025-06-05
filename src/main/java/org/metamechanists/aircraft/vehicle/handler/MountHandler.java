@@ -13,6 +13,8 @@ import org.metamechanists.aircraft.Aircraft;
 import org.metamechanists.aircraft.vehicle.VehicleEntity;
 import org.metamechanists.kinematiccore.api.entity.KinematicEntity;
 
+import java.util.Arrays;
+
 
 public final class MountHandler implements Listener {
     public static void init() {
@@ -34,6 +36,14 @@ public final class MountHandler implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     private static void onMount(@NotNull EntityMountEvent e) {
+        new EntityMountEvent(e.getEntity(), e.getMount()) {
+            @Override
+            public void setCancelled(boolean cancel) {
+                Bukkit.getLogger().severe(Arrays.toString(Thread.currentThread().getStackTrace()));
+                super.setCancelled(cancel);
+            }
+        }.callEvent();
+
         Entity maybePlayer = e.getEntity();
         if (!(maybePlayer instanceof Player player)) {
             return;
