@@ -189,7 +189,7 @@ public final class Items {
             crudeAirship(crudeAirshipSchema).register(addon);
         }
 
-        VehicleEntitySchema crudeDroneSchema = loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK);
+        VehicleEntitySchema crudeDroneSchema = loadVehicle("crude_drone", CRUDE_DRONE_STACK);
         if (crudeDroneSchema != null) {
             crudeDrone(crudeDroneSchema).register(addon);
         }
