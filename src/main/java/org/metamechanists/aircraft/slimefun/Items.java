@@ -111,6 +111,17 @@ public final class Items {
                     .build()
             );
 
+    private static final SlimefunItemStack CRUDE_DRONE_STACK = new SlimefunItemStack(
+            "AIRCRAFT_CRUDE_DRONE",
+            new ItemStackBuilder(Material.FEATHER)
+                    .name("Crude Drone")
+                    .loreLine(ItemStackBuilder.VEHICLE)
+                    .loreLine("")
+                    .loreLine("<color:#c9c9c9>Slow and inefficient, but at least it flies")
+                    .loreLine("")
+                    .build()
+    );
+
     private static @NotNull VehicleItem crudeAirplane(VehicleEntitySchema schema) {
         return new VehicleItem(
                 "AIRCRAFT_CRUDE_AIRPLANE",
@@ -125,6 +136,16 @@ public final class Items {
         return new VehicleItem(
                 "AIRCRAFT_CRUDE_AIRSHIP",
                 CRUDE_AIRSHIP_STACK,
+                schema,
+                AIRCRAFT_GROUP,
+                RecipeType.NULL,
+                new ItemStack[]{});
+    }
+
+    private static @NotNull VehicleItem crudeDrone(VehicleEntitySchema schema) {
+        return new VehicleItem(
+                "AIRCRAFT_CRUDE_DRONE",
+                CRUDE_DRONE_STACK,
                 schema,
                 AIRCRAFT_GROUP,
                 RecipeType.NULL,
@@ -167,6 +188,11 @@ public final class Items {
         if (crudeAirshipSchema != null) {
             crudeAirship(crudeAirshipSchema).register(addon);
         }
+
+        VehicleEntitySchema crudeDroneSchema = loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK);
+        if (crudeDroneSchema != null) {
+            crudeDrone(crudeDroneSchema).register(addon);
+        }
     }
 
     public static void reload() {
@@ -190,6 +216,12 @@ public final class Items {
         if (crudeAirshipSchema != null) {
             SlimefunItem newItem = crudeAirship(crudeAirshipSchema);
             ((VehicleItem) Slimefun.getRegistry().getSlimefunItemIds().get(newItem.getId())).schema = crudeAirshipSchema;
+        }
+
+        VehicleEntitySchema crudeDroneSchema = loadVehicle("crude_airship", CRUDE_AIRSHIP_STACK);
+        if (crudeDroneSchema != null) {
+            SlimefunItem newItem = crudeAirship(crudeDroneSchema);
+            ((VehicleItem) Slimefun.getRegistry().getSlimefunItemIds().get(newItem.getId())).schema = crudeDroneSchema;
         }
     }
 
