@@ -231,7 +231,7 @@ public class VehicleEntity extends KinematicEntity<Pig, VehicleEntitySchema> {
 
         // Pig velocity
         Vector3d pigVelocityJoml = absoluteVelocity().div(PHYSICS_UPDATES_PER_SECOND);
-        if (!pigVelocityJoml.isFinite()) {
+        if (pigVelocityJoml.length() > 1.0e2) {
             pigVelocityJoml = new Vector3d(0.001, 0.0, 0.0);
         }
         Vector pigVelocity = Vector.fromJOML(pigVelocityJoml);

@@ -64,7 +64,8 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
             return defaultText(vehicleEntity)
                     .translate(position)
                     .translate(offset)
-                    .lookAlong(BlockFace.WEST);
+                    .lookAlong(BlockFace.WEST)
+                    .rotate(rotation);
         }
 
         public ModelText rollText(@NotNull VehicleEntity vehicleEntity) {
@@ -74,7 +75,8 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
         public ModelItem rollCuboid(@NotNull VehicleEntity vehicleEntity) {
             return defaultCuboid(vehicleEntity)
                     .translate(position)
-                    .lookAlong(BlockFace.WEST);
+                    .lookAlong(BlockFace.WEST)
+                    .rotate(rotation);
         }
 
         public ModelText rollIndependentText(@NotNull VehicleEntity vehicleEntity) {
@@ -82,7 +84,8 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
                     .translate(position)
                     .undoRotate(vehicleEntity.getRotation())
                     .rotate(new Vector3d(0, vehicleEntity.yaw(), vehicleEntity.pitch()))
-                    .lookAlong(BlockFace.WEST);
+                    .lookAlong(BlockFace.WEST)
+                    .rotate(rotation);
         }
 
         public ModelItem rollIndependentCuboid(@NotNull VehicleEntity vehicleEntity) {
@@ -90,7 +93,8 @@ public abstract class HudSection<T extends HudSection.HudSectionSchema> extends 
                     .translate(position)
                     .undoRotate(vehicleEntity.getRotation())
                     .rotate(new Vector3d(0, vehicleEntity.yaw(), vehicleEntity.pitch()))
-                    .lookAlong(BlockFace.WEST);
+                    .lookAlong(BlockFace.WEST)
+                    .rotate(rotation);
         }
     }
 
