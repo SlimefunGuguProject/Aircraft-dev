@@ -416,7 +416,15 @@ public final class Items {
                     .loreLine(ItemStackBuilder.VEHICLE)
                     .loreLine("")
                     .loreLine("<color:gray>Slow and inefficient, but at least it flies")
+                    .loreLine("<color:gray>(That is, until you crash it. You buffoon)")
+                    .loreLine("<color:#c9c9c9>Consumes coal/charcoal")
                     .loreLine("")
+                    .loreLine(KEY_COLOR + "Throttle: " + VALUE_COLOR + "Throttle Up | Throttle Down")
+                    .loreLine(KEY_COLOR + "Pitch: " + VALUE_COLOR + "w | s")
+                    .loreLine(KEY_COLOR + "Roll: " + VALUE_COLOR + "a | d")
+                    .loreLine(KEY_COLOR + "Steer (on the ground only): " + VALUE_COLOR + "Steer Left | Steer Right")
+                    .loreLine("")
+                    .loreLine("<color:yellow>Model by Idra")
                     .build()
     );
 
@@ -426,8 +434,15 @@ public final class Items {
                     .name("Crude Airship")
                     .loreLine(ItemStackBuilder.VEHICLE)
                     .loreLine("")
-                    .loreLine("<color:#c9c9c9>Slow and inefficient, but at least it flies")
+                    .loreLine("<color:#c9c9c9>Easier to fly than the Crude Airplane, but rather slow...")
+                    .loreLine("<color:#c9c9c9>Consumes coal/charcoal and water")
                     .loreLine("")
+                    .loreLine(KEY_COLOR + "Throttle: " + VALUE_COLOR + "Throttle Up | Throttle Down")
+                    .loreLine(KEY_COLOR + "Ascend/Descend: " + VALUE_COLOR + "w | s")
+                    .loreLine(KEY_COLOR + "Yaw: " + VALUE_COLOR + "a | d")
+                    .loreLine(KEY_COLOR + "Strafe: " + VALUE_COLOR + "Strafe Left | Strafe Right")
+                    .loreLine("")
+                    .loreLine("<color:yellow>Model by Idra")
                     .build()
     );
 
@@ -437,19 +452,32 @@ public final class Items {
                     .name("Crude Drone")
                     .loreLine(ItemStackBuilder.VEHICLE)
                     .loreLine("")
-                    .loreLine("<color:#c9c9c9>Slow and inefficient, but at least it flies")
+                    .loreLine("<color:#c9c9c9>Versatile and easy to fly, but slow to turn and move")
+                    .loreLine("<color:#c9c9c9>Consumes coal/charcoal and water")
                     .loreLine("")
+                    .loreLine(KEY_COLOR + "Throttle: " + VALUE_COLOR + "Throttle Up | Throttle Down")
+                    .loreLine(KEY_COLOR + "Pitch: " + VALUE_COLOR + "w | s")
+                    .loreLine(KEY_COLOR + "Roll: " + VALUE_COLOR + "a | d")
+                    .loreLine(KEY_COLOR + "Yaw: " + VALUE_COLOR + "Steer Left | Steer Right")
+                    .loreLine("")
+                    .loreLine("<color:yellow>Model by Idra")
                     .build()
     );
 
     private static final SlimefunItemStack CESSNA_STACK = new SlimefunItemStack(
             "AIRCRAFT_CESSNA",
             new ItemStackBuilder(Material.IRON_NUGGET)
-                    .name("Crude Airplane")
+                    .name("Cessna")
                     .loreLine(ItemStackBuilder.VEHICLE)
                     .loreLine("")
                     .loreLine("<color:gray>An upgrade over the crude aircraft")
                     .loreLine("")
+                    .loreLine(KEY_COLOR + "Throttle: " + VALUE_COLOR + "Throttle Up | Throttle Down")
+                    .loreLine(KEY_COLOR + "Pitch: " + VALUE_COLOR + "w | s")
+                    .loreLine(KEY_COLOR + "Roll: " + VALUE_COLOR + "a | d")
+                    .loreLine(KEY_COLOR + "Steer (on the ground only): " + VALUE_COLOR + "Steer Left | Steer Right")
+                    .loreLine("")
+                    .loreLine("<color:yellow>Model by TK4YT")
                     .build()
     );
 
@@ -461,6 +489,11 @@ public final class Items {
                     .loreLine("")
                     .loreLine("<color:#c9c9c9>Quack quack")
                     .loreLine("")
+                    .loreLine(KEY_COLOR + "Throttle: " + VALUE_COLOR + "Throttle Up | Throttle Down")
+                    .loreLine(KEY_COLOR + "Ascend/Descend: " + VALUE_COLOR + "w | s")
+                    .loreLine(KEY_COLOR + "Yaw: " + VALUE_COLOR + "a | d")
+                    .loreLine("")
+                    .loreLine("<color:yellow>Model by Idra")
                     .build()
     );
 
@@ -474,6 +507,12 @@ public final class Items {
                     .loreLine("<color:#c9c9c9>Embrace the future of blockchain technology")
                     .loreLine("<color:#c9c9c9>TO THE MOON!!!")
                     .loreLine("")
+                    .loreLine(KEY_COLOR + "Throttle: " + VALUE_COLOR + "Throttle Up | Throttle Down")
+                    .loreLine(KEY_COLOR + "Pitch: " + VALUE_COLOR + "w | s")
+                    .loreLine(KEY_COLOR + "Roll: " + VALUE_COLOR + "a | d")
+                    .loreLine(KEY_COLOR + "Yaw: " + VALUE_COLOR + "Steer Left | Steer Right")
+                    .loreLine("")
+                    .loreLine("<color:yellow>Model by Idra")
                     .build()
     );
 
