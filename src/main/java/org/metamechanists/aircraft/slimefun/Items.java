@@ -301,7 +301,7 @@ public final class Items {
     );
     public static final SlimefunItem CESSNA_TAIL = new SlimefunItem(
             Groups.COMPONENTS,
-            CESSNA_WING_STACK,
+            CESSNA_TAIL_STACK,
             RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[]{
                     new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.IRON_BLOCK), null,
@@ -316,7 +316,7 @@ public final class Items {
     );
     public static final SlimefunItem CESSNA_ENGINE = new SlimefunItem(
             Groups.COMPONENTS,
-            CESSNA_WING_STACK,
+            CESSNA_ENGINE_STACK,
             RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[]{
                     new ItemStack(Material.ANVIL), new ItemStack(Material.PISTON), new ItemStack(Material.ANVIL),
