@@ -146,7 +146,7 @@ public final class Items {
     );
 
     private static final SlimefunItemStack CRUDE_AIRSHIP_ENGINE_STACK = new SlimefunItemStack(
-            "AIRCRAFT_AIRSHIP_AVIONICS",
+            "AIRCRAFT_AIRSHIP_ENGINE",
             new CustomItemStack(Material.PISTON, org.bukkit.ChatColor.WHITE + "Crude Airship Engine")
     );
     public static final SlimefunItem CRUDE_AIRSHIP_ENGINE = new SlimefunItem(
