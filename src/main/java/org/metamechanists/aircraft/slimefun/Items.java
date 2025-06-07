@@ -256,7 +256,7 @@ public final class Items {
     );
     public static final SlimefunItem CESSNA_FRAME = new SlimefunItem(
             Groups.COMPONENTS,
-            HOVERDUCK_ANTIGRAV_SYSTEM_STACK,
+            CESSNA_FRAME_STACK,
             RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[]{
                     new ItemStack(Material.ANVIL), new ItemStack(Material.ANVIL), new ItemStack(Material.ANVIL),
