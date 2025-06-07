@@ -9,7 +9,6 @@ import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -26,49 +25,139 @@ public final class Items {
     private static final String VALUE_COLOR = "<color:#2182ff>";
     private static final String UNIT_COLOR = "<color:#416a7f>";
 
-    private static final SlimefunItemStack CRUDE_AIRPLANE_WING = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_AIRPLANE_WING_STACK = new SlimefunItemStack(
             "AIRCRAFT_AIRPLANE_WING",
             new CustomItemStack(Material.WHITE_WOOL, org.bukkit.ChatColor.WHITE + "Crude Airplane Wing")
     );
+    public static final SlimefunItem CRUDE_AIRPLANE_WING = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_AIRPLANE_WING_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.CYAN_WOOL), new ItemStack(Material.WHITE_WOOL),
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.WHITE_WOOL), null,
+                    null, null, null,
+            }
+    );
 
-    private static final SlimefunItemStack CRUDE_AIRPLANE_FRAME = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_AIRPLANE_FRAME_STACK = new SlimefunItemStack(
             "AIRCRAFT_AIRPLANE_FRAME",
             new CustomItemStack(Material.OAK_LOG, org.bukkit.ChatColor.WHITE + "Crude Airplane Frame")
     );
+    public static final SlimefunItem CRUDE_AIRPLANE_FRAME = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_AIRPLANE_FRAME_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    null, new ItemStack(Material.OAK_LOG), null,
+                    new ItemStack(Material.OAK_LOG), new ItemStack(Material.OAK_LOG), new ItemStack(Material.OAK_LOG),
+                    null, new ItemStack(Material.OAK_LOG), null,
+            }
+    );
 
-    private static final SlimefunItemStack CRUDE_AIRPLANE_TAIL = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_AIRPLANE_TAIL_STACK = new SlimefunItemStack(
             "AIRCRAFT_AIRPLANE_TAIL",
             new CustomItemStack(Material.OAK_WOOD, org.bukkit.ChatColor.WHITE + "Crude Airplane Tail")
     );
+    public static final SlimefunItem CRUDE_AIRPLANE_TAIL = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_AIRPLANE_TAIL_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.OAK_LOG), null,
+                    new ItemStack(Material.CYAN_WOOL), new ItemStack(Material.OAK_LOG), new ItemStack(Material.OAK_LOG),
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.OAK_LOG), null,
+            }
+    );
 
-    private static final SlimefunItemStack CRUDE_AIRPLANE_AVIONICS = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_AIRPLANE_AVIONICS_STACK = new SlimefunItemStack(
             "AIRCRAFT_AIRPLANE_AVIONICS",
             new CustomItemStack(Material.REPEATER, org.bukkit.ChatColor.WHITE + "Crude Airplane Avionics")
     );
+    public static final SlimefunItem CRUDE_AIRPLANE_AVIONICS = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_AIRPLANE_AVIONICS_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    SlimefunItems.BASIC_CIRCUIT_BOARD, SlimefunItems.POWER_CRYSTAL, SlimefunItems.GPS_TRANSMITTER,
+                    null, null, null,
+                    null, null, null,
+            }
+    );
 
-    private static final SlimefunItemStack CRUDE_AIRPLANE_ENGINE = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_AIRPLANE_ENGINE_STACK = new SlimefunItemStack(
             "AIRCRAFT_AIRPLANE_ENGINE",
             new CustomItemStack(Material.PISTON, org.bukkit.ChatColor.WHITE + "Crude Airplane Engine")
     );
+    public static final SlimefunItem CRUDE_AIRPLANE_ENGINE = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_AIRPLANE_ENGINE_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.PISTON), new ItemStack(Material.IRON_BLOCK),
+                    new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT), new ItemStack(Material.IRON_INGOT),
+                    new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.PISTON), new ItemStack(Material.IRON_BLOCK),
+            }
+    );
 
-    private static final SlimefunItemStack CRUDE_AIRSHIP_BALLOON = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_AIRSHIP_BALLOON_STACK = new SlimefunItemStack(
             "AIRCRAFT_AIRSHIP_BALLOON",
             new CustomItemStack(Material.WHITE_WOOL, org.bukkit.ChatColor.WHITE + "Crude Airship Balloon")
     );
+    public static final SlimefunItem CRUDE_AIRSHIP_BALLOON = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_AIRSHIP_BALLOON_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.WHITE_WOOL),
+                    new ItemStack(Material.RED_WOOL), new ItemStack(Material.RED_WOOL), new ItemStack(Material.RED_WOOL),
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.WHITE_WOOL),
+            }
+    );
 
-    private static final SlimefunItemStack CRUDE_AIRSHIP_FRAME = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_AIRSHIP_FRAME_STACK = new SlimefunItemStack(
             "AIRCRAFT_AIRSHIP_FRAME",
             new CustomItemStack(Material.OAK_LOG, org.bukkit.ChatColor.WHITE + "Crude Airship Frame")
     );
+    public static final SlimefunItem CRUDE_AIRSHIP_FRAME = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_AIRSHIP_FRAME_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.OAK_LOG), new ItemStack(Material.OAK_WOOD), new ItemStack(Material.OAK_LOG),
+                    new ItemStack(Material.OAK_WOOD), null, new ItemStack(Material.OAK_WOOD),
+                    new ItemStack(Material.OAK_LOG), new ItemStack(Material.OAK_WOOD), new ItemStack(Material.OAK_LOG),
+            }
+    );
 
-    private static final SlimefunItemStack CRUDE_AIRSHIP_AVIONICS = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_AIRSHIP_AVIONICS_STACK = new SlimefunItemStack(
             "AIRCRAFT_AIRSHIP_AVIONICS",
             new CustomItemStack(Material.REPEATER, org.bukkit.ChatColor.WHITE + "Crude Airship Avionics")
     );
+    public static final SlimefunItem CRUDE_AIRSHIP_AVIONICS = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_AIRSHIP_AVIONICS_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    SlimefunItems.ADVANCED_CIRCUIT_BOARD, SlimefunItems.GPS_TRANSMITTER_2, SlimefunItems.POWER_CRYSTAL,
+                    null, null, null,
+                    null, null, null,
+            }
+    );
 
-    private static final SlimefunItemStack CRUDE_AIRSHIP_ENGINE = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_AIRSHIP_ENGINE_STACK = new SlimefunItemStack(
             "AIRCRAFT_AIRSHIP_AVIONICS",
             new CustomItemStack(Material.PISTON, org.bukkit.ChatColor.WHITE + "Crude Airship Engine")
+    );
+    public static final SlimefunItem CRUDE_AIRSHIP_ENGINE = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_AIRSHIP_ENGINE_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.ANVIL), null, new ItemStack(Material.ANVIL),
+                    null, SlimefunItems.ENHANCED_FURNACE_4, null,
+                    new ItemStack(Material.ANVIL), null, new ItemStack(Material.ANVIL),
+            }
     );
 
     private static final SlimefunItemStack CRUDE_DRONE_FRAME = new SlimefunItemStack(
@@ -286,9 +375,9 @@ public final class Items {
                 Groups.VEHICLES,
                 RecipeType.ENHANCED_CRAFTING_TABLE,
                 new ItemStack[]{
-                        null, CRUDE_AIRPLANE_WING, null,
-                        CRUDE_AIRPLANE_TAIL, CRUDE_AIRPLANE_FRAME, CRUDE_AIRPLANE_ENGINE,
-                        null, CRUDE_AIRPLANE_WING, CRUDE_AIRPLANE_AVIONICS,
+                        null, CRUDE_AIRPLANE_WING_STACK, null,
+                        CRUDE_AIRPLANE_TAIL_STACK, CRUDE_AIRPLANE_FRAME_STACK, CRUDE_AIRPLANE_ENGINE_STACK,
+                        null, CRUDE_AIRPLANE_WING_STACK, CRUDE_AIRPLANE_AVIONICS_STACK,
                 });
     }
 
@@ -300,9 +389,9 @@ public final class Items {
                 Groups.VEHICLES,
                 RecipeType.ENHANCED_CRAFTING_TABLE,
                 new ItemStack[]{
-                        CRUDE_AIRSHIP_BALLOON, CRUDE_AIRSHIP_BALLOON, CRUDE_AIRSHIP_BALLOON,
+                        CRUDE_AIRSHIP_BALLOON_STACK, CRUDE_AIRSHIP_BALLOON_STACK, CRUDE_AIRSHIP_BALLOON_STACK,
                         new ItemStack(Material.GRAY_CONCRETE), null, new ItemStack(Material.GRAY_CONCRETE),
-                        CRUDE_AIRSHIP_ENGINE, CRUDE_AIRSHIP_FRAME, CRUDE_AIRSHIP_AVIONICS,
+                        CRUDE_AIRSHIP_ENGINE_STACK, CRUDE_AIRSHIP_FRAME_STACK, CRUDE_AIRSHIP_AVIONICS_STACK,
                 });
     }
 
@@ -382,6 +471,17 @@ public final class Items {
     public static void init() {
         JavaPlugin plugin = Aircraft.getInstance();
         SlimefunAddon addon = (SlimefunAddon) plugin;
+
+        CRUDE_AIRPLANE_WING.register(addon);
+        CRUDE_AIRPLANE_FRAME.register(addon);
+        CRUDE_AIRPLANE_TAIL.register(addon);
+        CRUDE_AIRPLANE_AVIONICS.register(addon);
+        CRUDE_AIRPLANE_ENGINE.register(addon);
+
+        CRUDE_AIRSHIP_BALLOON.register(addon);
+        CRUDE_AIRSHIP_FRAME.register(addon);
+        CRUDE_AIRSHIP_AVIONICS.register(addon);
+        CRUDE_AIRSHIP_ENGINE.register(addon);
 
         THROTTLE_UP.register(addon);
         THROTTLE_DOWN.register(addon);
