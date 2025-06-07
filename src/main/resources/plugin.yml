@@ -8,6 +8,7 @@ depend:
   - Slimefun
   - ProtocolLib
   - KinematicCore
+  - Furnished
 
 commands:
   aircraft:
