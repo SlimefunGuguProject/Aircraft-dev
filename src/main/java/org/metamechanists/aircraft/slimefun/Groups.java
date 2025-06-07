@@ -18,7 +18,7 @@ public class Groups {
             new CustomItemStack(Material.FEATHER, "&fAircraft")
     );
 
-    public static final ItemGroup VEHICLES = new ItemGroup(
+    public static final ItemGroup VEHICLES = new DummyItemGroup(
             Keys.newKey("AIRCRAFT_VEHICLES"),
             new CustomItemStack(Material.PHANTOM_MEMBRANE, "&fVehicles")
     );

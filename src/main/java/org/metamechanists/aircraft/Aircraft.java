@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.metamechanists.aircraft.commands.AircraftCommand;
+import org.metamechanists.aircraft.slimefun.Groups;
 import org.metamechanists.aircraft.slimefun.Items;
 import org.metamechanists.aircraft.vehicle.component.Hider;
 import org.metamechanists.aircraft.vehicle.component.Protector;
@@ -31,6 +32,7 @@ public final class Aircraft extends JavaPlugin implements SlimefunAddon, Kinemat
         saveResource("vehicles/crude_airplane.yml", false);
         saveResource("vehicles/crude_airship.yml", false);
         Items.init();
+        Groups.register();
         Hider.init();
         Protector.init();
         KeyboardHandler.init();
