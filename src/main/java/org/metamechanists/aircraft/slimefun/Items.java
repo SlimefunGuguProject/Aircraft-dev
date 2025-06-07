@@ -160,59 +160,169 @@ public final class Items {
             }
     );
 
-    private static final SlimefunItemStack CRUDE_DRONE_FRAME = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_DRONE_FRAME_STACK = new SlimefunItemStack(
             "AIRCRAFT_DRONE_FRAME",
             new CustomItemStack(Material.OAK_LOG, org.bukkit.ChatColor.WHITE + "Crude Airship Frame")
     );
+    public static final SlimefunItem CRUDE_DRONE_FRAME = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_DRONE_FRAME_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.OAK_WOOD), new ItemStack(Material.OAK_WOOD), new ItemStack(Material.OAK_WOOD),
+                    new ItemStack(Material.OAK_WOOD), null, new ItemStack(Material.OAK_WOOD),
+                    new ItemStack(Material.OAK_WOOD), new ItemStack(Material.OAK_WOOD), new ItemStack(Material.OAK_WOOD),
+            }
+    );
 
-    private static final SlimefunItemStack CRUDE_DRONE_ROTOR = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_DRONE_ROTOR_STACK = new SlimefunItemStack(
             "AIRCRAFT_DRONE_ROTOR",
             new CustomItemStack(Material.GRAY_CONCRETE, org.bukkit.ChatColor.WHITE + "Crude Drone Rotor")
     );
+    public static final SlimefunItem CRUDE_DRONE_ROTOR = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_DRONE_ROTOR_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.IRON_BLOCK), null, null,
+                    null, new ItemStack(Material.IRON_BLOCK), null,
+                    null, null, new ItemStack(Material.IRON_BLOCK),
+            }
+    );
 
-    private static final SlimefunItemStack CRUDE_DRONE_ENGINE = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_DRONE_ENGINE_STACK = new SlimefunItemStack(
             "AIRCRAFT_DRONE_ENGINE",
             new CustomItemStack(Material.PISTON, org.bukkit.ChatColor.WHITE + "Crude Drone Engine")
     );
+    public static final SlimefunItem CRUDE_DRONE_ENGINE = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_DRONE_ENGINE_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.TERRACOTTA), new ItemStack(Material.TERRACOTTA), new ItemStack(Material.TERRACOTTA),
+                    new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.FURNACE), new ItemStack(Material.IRON_BLOCK),
+                    new ItemStack(Material.TERRACOTTA), new ItemStack(Material.TERRACOTTA), new ItemStack(Material.TERRACOTTA),
+            }
+    );
 
-    private static final SlimefunItemStack CRUDE_DRONE_AVIONICS = new SlimefunItemStack(
+    private static final SlimefunItemStack CRUDE_DRONE_AVIONICS_STACK = new SlimefunItemStack(
             "AIRCRAFT_DRONE_ENGINE",
             new CustomItemStack(Material.REPEATER, org.bukkit.ChatColor.WHITE + "Crude Drone Avionics")
     );
+    public static final SlimefunItem CRUDE_DRONE_AVIONICS = new SlimefunItem(
+            Groups.COMPONENTS,
+            CRUDE_DRONE_AVIONICS_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    null, SlimefunItems.BASIC_CIRCUIT_BOARD, null,
+                    null, SlimefunItems.POWER_CRYSTAL, null,
+                    null, SlimefunItems.GPS_TRANSMITTER, null,
+            }
+    );
 
-    private static final SlimefunItemStack HOVERDUCK_AVIONICS = new SlimefunItemStack(
+    private static final SlimefunItemStack HOVERDUCK_AVIONICS_STACK = new SlimefunItemStack(
             "AIRCRAFT_HOVERDUCK_AVIONICS",
             new CustomItemStack(Material.TARGET, org.bukkit.ChatColor.WHITE + "Hoverduck Avionics")
     );
+    public static final SlimefunItem HOVERDUCK_AVIONICS = new SlimefunItem(
+            Groups.COMPONENTS,
+            HOVERDUCK_AVIONICS_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    null, null, null,
+                    null, SlimefunItems.ANDROID_MEMORY_CORE, null,
+                    null, SlimefunItems.GPS_TRANSMITTER_4, null,
+            }
+    );
 
-    private static final SlimefunItemStack HOVERDUCK_ANTIGRAV_SYSTEM = new SlimefunItemStack(
+    private static final SlimefunItemStack HOVERDUCK_ANTIGRAV_SYSTEM_STACK = new SlimefunItemStack(
             "AIRCRAFT_HOVERDUCK_ANTIGRAV_SYSTEM",
             new CustomItemStack(Material.LIGHT_BLUE_CONCRETE, org.bukkit.ChatColor.WHITE + "Hoverduck Antigrav System")
     );
+    public static final SlimefunItem HOVERDUCK_ANTIGRAV_SYSTEM = new SlimefunItem(
+            Groups.COMPONENTS,
+            HOVERDUCK_ANTIGRAV_SYSTEM_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    SlimefunItems.POWER_CRYSTAL, SlimefunItems.BLISTERING_INGOT_3, SlimefunItems.POWER_CRYSTAL,
+                    SlimefunItems.REINFORCED_PLATE, SlimefunItems.STEEL_THRUSTER, SlimefunItems.REINFORCED_PLATE,
+                    SlimefunItems.REINFORCED_PLATE, SlimefunItems.STEEL_THRUSTER, SlimefunItems.REINFORCED_PLATE,
+            }
+    );
 
-    private static final SlimefunItemStack CESSNA_FRAME = new SlimefunItemStack(
+    private static final SlimefunItemStack CESSNA_FRAME_STACK = new SlimefunItemStack(
             "AIRCRAFT_CESSNA_FRAME",
             new CustomItemStack(Material.IRON_BLOCK, org.bukkit.ChatColor.WHITE + "Cessna Frame")
     );
+    public static final SlimefunItem CESSNA_FRAME = new SlimefunItem(
+            Groups.COMPONENTS,
+            HOVERDUCK_ANTIGRAV_SYSTEM_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.ANVIL), new ItemStack(Material.ANVIL), new ItemStack(Material.ANVIL),
+                    SlimefunItems.REINFORCED_PLATE, null, SlimefunItems.REINFORCED_PLATE,
+                    new ItemStack(Material.ANVIL), new ItemStack(Material.ANVIL), new ItemStack(Material.ANVIL),
+            }
+    );
 
-    private static final SlimefunItemStack CESSNA_AVIONICS = new SlimefunItemStack(
+    private static final SlimefunItemStack CESSNA_AVIONICS_STACK = new SlimefunItemStack(
             "AIRCRAFT_CESSNA_AVIONICS",
             new CustomItemStack(Material.REPEATER, org.bukkit.ChatColor.WHITE + "Cessna Avionics")
     );
+    public static final SlimefunItem CESSNA_AVIONICS = new SlimefunItem(
+            Groups.COMPONENTS,
+            CESSNA_AVIONICS_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    null, SlimefunItems.POWER_CRYSTAL, null,
+                    null, SlimefunItems.ADVANCED_CIRCUIT_BOARD, null,
+                    null, SlimefunItems.GPS_TRANSMITTER_4, null,
+            }
+    );
 
-    private static final SlimefunItemStack CESSNA_WING = new SlimefunItemStack(
+    private static final SlimefunItemStack CESSNA_WING_STACK = new SlimefunItemStack(
             "AIRCRAFT_CESSNA_WING",
             new CustomItemStack(Material.WHITE_WOOL, org.bukkit.ChatColor.WHITE + "Cessna Wing")
     );
+    public static final SlimefunItem CESSNA_WING = new SlimefunItem(
+            Groups.COMPONENTS,
+            CESSNA_WING_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.IRON_BLOCK),
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.IRON_BLOCK),
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.IRON_BLOCK),
+            }
+    );
 
-    private static final SlimefunItemStack CESSNA_TAIL = new SlimefunItemStack(
+    private static final SlimefunItemStack CESSNA_TAIL_STACK = new SlimefunItemStack(
             "AIRCRAFT_CESSNA_TAIL",
             new CustomItemStack(Material.IRON_BLOCK, org.bukkit.ChatColor.WHITE + "Cessna Tail")
     );
+    public static final SlimefunItem CESSNA_TAIL = new SlimefunItem(
+            Groups.COMPONENTS,
+            CESSNA_WING_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.IRON_BLOCK), null,
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.IRON_BLOCK),
+                    new ItemStack(Material.WHITE_WOOL), new ItemStack(Material.IRON_BLOCK), null,
+            }
+    );
 
-    private static final SlimefunItemStack CESSNA_ENGINE = new SlimefunItemStack(
+    private static final SlimefunItemStack CESSNA_ENGINE_STACK = new SlimefunItemStack(
             "AIRCRAFT_CESSNA_ENGINE",
             new CustomItemStack(Material.PISTON, org.bukkit.ChatColor.WHITE + "Cessna Engine")
+    );
+    public static final SlimefunItem CESSNA_ENGINE = new SlimefunItem(
+            Groups.COMPONENTS,
+            CESSNA_WING_STACK,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
+            new ItemStack[]{
+                    new ItemStack(Material.ANVIL), new ItemStack(Material.PISTON), new ItemStack(Material.ANVIL),
+                    new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.IRON_BLOCK), new ItemStack(Material.IRON_BLOCK),
+                    new ItemStack(Material.ANVIL), new ItemStack(Material.PISTON), new ItemStack(Material.ANVIL),
+            }
     );
 
     private static final SlimefunItemStack THROTTLE_UP_STACK = new SlimefunItemStack(
@@ -403,9 +513,9 @@ public final class Items {
                 Groups.VEHICLES,
                 RecipeType.NULL,
                 new ItemStack[]{
-                        CRUDE_DRONE_ROTOR, CRUDE_DRONE_FRAME, CRUDE_DRONE_ROTOR,
-                        null, CRUDE_DRONE_ENGINE, CRUDE_DRONE_AVIONICS,
-                        CRUDE_DRONE_ROTOR, CRUDE_DRONE_FRAME, CRUDE_DRONE_ROTOR,
+                        CRUDE_DRONE_ROTOR_STACK, CRUDE_DRONE_FRAME_STACK, CRUDE_DRONE_ROTOR_STACK,
+                        null, CRUDE_DRONE_ENGINE_STACK, CRUDE_DRONE_AVIONICS_STACK,
+                        CRUDE_DRONE_ROTOR_STACK, CRUDE_DRONE_FRAME_STACK, CRUDE_DRONE_ROTOR_STACK,
 
                 });
     }
@@ -418,9 +528,9 @@ public final class Items {
                 Groups.VEHICLES,
                 RecipeType.NULL,
                 new ItemStack[]{
-                        null, CESSNA_WING, null,
-                        CESSNA_TAIL, CESSNA_FRAME, CESSNA_ENGINE,
-                        null, CESSNA_WING, CESSNA_AVIONICS,
+                        null, CESSNA_WING_STACK, null,
+                        CESSNA_TAIL_STACK, CESSNA_FRAME_STACK, CESSNA_ENGINE_STACK,
+                        null, CESSNA_WING_STACK, CESSNA_AVIONICS_STACK,
                 });
     }
 
@@ -432,9 +542,9 @@ public final class Items {
                 Groups.VEHICLES,
                 RecipeType.NULL,
                 new ItemStack[]{
-                        new ItemStack(Material.YELLOW_WOOL), new ItemStack(Material.YELLOW_WOOL), new ItemStack(Material.YELLOW_WOOL),
-                        new ItemStack(Material.YELLOW_WOOL), HOVERDUCK_AVIONICS, new ItemStack(Material.YELLOW_WOOL),
-                        new ItemStack(Material.YELLOW_WOOL), HOVERDUCK_ANTIGRAV_SYSTEM, new ItemStack(Material.YELLOW_WOOL),
+                        null, getItem("DUCK_PLUSH_MODERATE"), null,
+                        null, HOVERDUCK_AVIONICS_STACK, null,
+                        null, HOVERDUCK_ANTIGRAV_SYSTEM_STACK, null,
                 });
     }
 
@@ -482,6 +592,20 @@ public final class Items {
         CRUDE_AIRSHIP_FRAME.register(addon);
         CRUDE_AIRSHIP_AVIONICS.register(addon);
         CRUDE_AIRSHIP_ENGINE.register(addon);
+
+        CRUDE_DRONE_FRAME.register(addon);
+        CRUDE_DRONE_ROTOR.register(addon);
+        CRUDE_DRONE_ENGINE.register(addon);
+        CRUDE_DRONE_AVIONICS.register(addon);
+
+        HOVERDUCK_AVIONICS.register(addon);
+        HOVERDUCK_ANTIGRAV_SYSTEM.register(addon);
+
+        CESSNA_FRAME.register(addon);
+        CESSNA_AVIONICS.register(addon);
+        CESSNA_WING.register(addon);
+        CESSNA_TAIL.register(addon);
+        CESSNA_ENGINE.register(addon);
 
         THROTTLE_UP.register(addon);
         THROTTLE_DOWN.register(addon);
