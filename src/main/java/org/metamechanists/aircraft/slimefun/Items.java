@@ -206,7 +206,7 @@ public final class Items {
     );
 
     private static final SlimefunItemStack CRUDE_DRONE_AVIONICS_STACK = new SlimefunItemStack(
-            "AIRCRAFT_DRONE_ENGINE",
+            "AIRCRAFT_DRONE_AVIONICS",
             new CustomItemStack(Material.REPEATER, org.bukkit.ChatColor.WHITE + "Crude Drone Avionics")
     );
     public static final SlimefunItem CRUDE_DRONE_AVIONICS = new SlimefunItem(
