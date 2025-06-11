@@ -331,7 +331,7 @@ public final class Items {
     private static final AircraftControl THROTTLE_UP = new AircraftControl(
             Groups.CONTROLS,
             THROTTLE_UP_STACK,
-            RecipeType.NULL,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[]{
                     SlimefunItems.BASIC_CIRCUIT_BOARD, null, null,
                     null, null, null,
@@ -345,7 +345,7 @@ public final class Items {
     private static final AircraftControl THROTTLE_DOWN = new AircraftControl(
             Groups.CONTROLS,
             THROTTLE_DOWN_STACK,
-            RecipeType.NULL,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[]{
                     null, SlimefunItems.BASIC_CIRCUIT_BOARD, null,
                     null, null, null,
@@ -359,7 +359,7 @@ public final class Items {
     private static final AircraftControl STEER_LEFT = new AircraftControl(
             Groups.CONTROLS,
             STEER_LEFT_STACK,
-            RecipeType.NULL,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[]{
                     null, null, SlimefunItems.BASIC_CIRCUIT_BOARD,
                     null, null, null,
@@ -373,7 +373,7 @@ public final class Items {
     private static final AircraftControl STEER_RIGHT = new AircraftControl(
             Groups.CONTROLS,
             STEER_RIGHT_STACK,
-            RecipeType.NULL,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[]{
                     null, null, null,
                     SlimefunItems.BASIC_CIRCUIT_BOARD, null, null,
@@ -387,7 +387,7 @@ public final class Items {
     private static final AircraftControl STRAFE_LEFT = new AircraftControl(
             Groups.CONTROLS,
             STRAFE_LEFT_STACK,
-            RecipeType.NULL,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[]{
                     null, null, null,
                     null, SlimefunItems.BASIC_CIRCUIT_BOARD, null,
@@ -401,7 +401,7 @@ public final class Items {
     private static final AircraftControl STRAFE_RIGHT = new AircraftControl(
             Groups.CONTROLS,
             STRAFE_RIGHT_STACK,
-            RecipeType.NULL,
+            RecipeType.ENHANCED_CRAFTING_TABLE,
             new ItemStack[]{
                     null, null, null,
                     null, null, SlimefunItems.BASIC_CIRCUIT_BOARD,
