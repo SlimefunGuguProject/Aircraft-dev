@@ -550,7 +550,7 @@ public final class Items {
                 CRUDE_DRONE_STACK,
                 schema,
                 Groups.VEHICLES,
-                RecipeType.NULL,
+                RecipeType.ENHANCED_CRAFTING_TABLE,
                 new ItemStack[]{
                         CRUDE_DRONE_ROTOR_STACK, CRUDE_DRONE_FRAME_STACK, CRUDE_DRONE_ROTOR_STACK,
                         null, CRUDE_DRONE_ENGINE_STACK, CRUDE_DRONE_AVIONICS_STACK,
@@ -565,7 +565,7 @@ public final class Items {
                 CESSNA_STACK,
                 schema,
                 Groups.VEHICLES,
-                RecipeType.NULL,
+                RecipeType.ENHANCED_CRAFTING_TABLE,
                 new ItemStack[]{
                         null, CESSNA_WING_STACK, null,
                         CESSNA_TAIL_STACK, CESSNA_FRAME_STACK, CESSNA_ENGINE_STACK,
@@ -579,7 +579,7 @@ public final class Items {
                 HOVERDUCK_STACK,
                 schema,
                 Groups.VEHICLES,
-                RecipeType.NULL,
+                RecipeType.ENHANCED_CRAFTING_TABLE,
                 new ItemStack[]{
                         null, getItem("DUCK_PLUSH_MODERATE"), null,
                         null, HOVERDUCK_AVIONICS_STACK, null,
@@ -593,7 +593,7 @@ public final class Items {
                 METACOIN_UFO_STACK,
                 schema,
                 Groups.VEHICLES,
-                RecipeType.NULL,
+                RecipeType.ENHANCED_CRAFTING_TABLE,
                 new ItemStack[]{
                         new ItemStack(Material.DEAD_BUSH), new ItemStack(Material.DEAD_BUSH), new ItemStack(Material.DEAD_BUSH),
                         new ItemStack(Material.DEAD_BUSH), getItem("INFINITY_SINGULARITY"), new ItemStack(Material.DEAD_BUSH),
